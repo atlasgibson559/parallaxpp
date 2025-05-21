@@ -1,0 +1,227 @@
+DEFINE_BASECLASS("weapon_base")
+
+SWEP.Base = "weapon_base"
+SWEP.Spawnable = false
+SWEP.AdminOnly = true
+SWEP.UseHands = true
+
+SWEP.PrintName = "Parallax Weapon Base"
+SWEP.Author = "Riggs"
+SWEP.Category = "Parallax"
+
+SWEP.Primary = {
+    ClipSize = 10,
+    DefaultClip = 0,
+    Automatic = false,
+    Ammo = "Pistol",
+    Delay = 0.2,
+    Damage = 15,
+    Cone = 0.02,
+    Recoil = 1,
+    Sound = Sound("Weapon_Pistol.Single"),
+    SoundEmpty = Sound("Weapon_Pistol.Empty"),
+    NumShots = 1
+}
+
+SWEP.Secondary = {
+    ClipSize = -1,
+    DefaultClip = -1,
+    Automatic = false,
+    Ammo = "none"
+}
+
+SWEP.ViewModel = "models/weapons/c_pistol.mdl"
+SWEP.WorldModel = "models/weapons/w_pistol.mdl"
+SWEP.HoldType = "pistol"
+SWEP.FireMode = "semi" -- semi, auto, burst, pump, projectile, grenade
+
+SWEP.ViewModelFOV = 65
+SWEP.Sensitivity = 1
+
+SWEP.IronSightsEnabled = true
+SWEP.IronSightsPos = Vector(0, 0, 0)
+SWEP.IronSightsAng = Angle(0, 0, 0)
+SWEP.IronSightsFOV = 0.8
+SWEP.IronSightsSensitivity = 0.5
+SWEP.IronSightsToggle = false
+SWEP.IronSightsDelay = 0.25
+
+SWEP.Reloading = {
+    PlaybackRate = 1,
+    Sound = Sound("Weapon_Pistol.Reload"),
+    SoundEmpty = Sound("Weapon_Pistol.ReloadEmpty")
+}
+
+local function IncludeFile(path)
+    if ( ( realm == "server" or string.find(path, "sv_") ) and SERVER ) then
+        include(path)
+    elseif ( realm == "shared" or string.find(path, "shared.lua") or string.find(path, "sh_") ) then
+        if ( SERVER ) then
+            AddCSLuaFile(path)
+        end
+
+        include(path)
+    elseif ( realm == "client" or string.find(path, "cl_") ) then
+        if ( SERVER ) then
+            AddCSLuaFile(path)
+        else
+            include(path)
+        end
+    end
+end
+
+IncludeFile("core/sh_anims.lua")
+
+function SWEP:SetupDataTables()
+    self:NetworkVar("Bool", 0, "Reloading")
+end
+
+function SWEP:GetIronSights()
+    local owner = self:GetOwner()
+    if ( !IsValid(owner) ) then return false end
+
+    if ( self:GetReloading() ) then
+        return false
+    end
+
+    if ( owner:KeyDown(IN_ATTACK2) ) then
+        return true
+    end
+end
+
+function SWEP:IsEmpty()
+    return tobool(self:Clip1() <= 0)
+end
+
+function SWEP:CanPrimaryAttack()
+    local owner = self:GetOwner()
+    if ( !IsValid(owner) ) then return false end
+
+    if ( self:IsEmpty() ) then
+        return false
+    end
+
+    return true
+end
+
+function SWEP:PrimaryAttack()
+    local owner = self:GetOwner()
+    if ( !IsValid(owner) ) then return end
+
+    local delay = self.Primary.Delay
+    if ( self.Primary.RPM ) then
+        delay = 60 / self.Primary.RPM
+    end
+
+    self:SetNextPrimaryFire(CurTime() + delay)
+
+    if ( !self:CanPrimaryAttack() ) then
+        self:EmitSound(self.Primary.SoundEmpty or "")
+        return
+    end
+
+    self:PlayAnimation(self.Primary.Sequence, self.Primary.PlaybackRate)
+
+    self:EmitSound(self.Primary.Sound)
+
+    if ( self.FireMode == "projectile" and self.ProjectileClass ) then
+        self:LaunchProjectile(self.ProjectileClass)
+    elseif ( self.FireMode == "grenade" ) then
+        self:ThrowGrenade()
+    else
+        self:ShootBullet(self.Primary.Damage, self.Primary.NumShots, self.Primary.Cone)
+    end
+
+    self:TakePrimaryAmmo(1)
+    owner:MuzzleFlash()
+    owner:SetAnimation(PLAYER_ATTACK1)
+end
+
+function SWEP:SecondaryAttack()
+    -- Secondary attack logic can be implemented here
+end
+
+function SWEP:ShootBullet(damage, num, cone)
+    local owner = self:GetOwner()
+    owner:LagCompensation(true)
+
+    local bullet = {
+        Num = num,
+        Src = owner:GetShootPos(),
+        Dir = owner:GetAimVector(),
+        Spread = Vector(cone, cone, 0),
+        Tracer = 1,
+        Damage = damage,
+        AmmoType = self.Primary.Ammo
+    }
+
+    owner:FireBullets(bullet)
+    owner:ViewPunch(Angle(-self.Primary.Recoil, math.Rand(-self.Primary.Recoil, self.Primary.Recoil), math.Rand(-self.Primary.Recoil, self.Primary.Recoil)))
+    owner:LagCompensation(false)
+end
+
+function SWEP:LaunchProjectile(class)
+    local owner = self:GetOwner()
+    local ent = ents.Create(class)
+    if ( !IsValid(ent) ) then return end
+
+    ent:SetPos(owner:GetShootPos())
+    ent:SetAngles(owner:EyeAngles())
+    ent:SetOwner(owner)
+    ent:Spawn()
+    ent:SetVelocity(owner:GetAimVector() * 1200)
+
+    return ent
+end
+
+function SWEP:ThrowGrenade()
+    local owner = self:GetOwner()
+    local ent = ents.Create("npc_grenade_frag")
+    ent:SetPos(owner:GetShootPos())
+    ent:SetAngles(owner:EyeAngles())
+    ent:SetOwner(owner)
+    ent:Spawn()
+    ent:SetVelocity(owner:GetAimVector() * 800)
+
+    return ent
+end
+
+function SWEP:Reload()
+    local owner = self:GetOwner()
+    if ( !IsValid(owner) ) then return end
+    if ( !self:CanReload() ) then return end
+
+    local anim = self.Reloading.Sequence
+    if ( self:IsEmpty() ) then
+        anim = self.Reloading.SequenceEmpty or anim
+    end
+
+    local rate = self.Reloading.PlaybackRate or 1
+    self:PlayAnimation(anim, rate)
+
+    local path = self.Reloading.Sound
+    if ( self:IsEmpty() ) then
+        path = self.Reloading.SoundEmpty or path
+    end
+
+    self:EmitSound(path)
+
+    local duration = self:GetActiveAnimationDuration()
+    if ( duration > 0 ) then
+        self:SetNextPrimaryFire(CurTime() + duration)
+        self:SetNextSecondaryFire(CurTime() + duration)
+        self:SetReloading(true)
+
+        timer.Simple(duration, function()
+            if ( IsValid(self) ) then
+                self:SetReloading(false)
+            end
+        end)
+    end
+
+    self:DefaultReload(ACT_VM_RELOAD)
+end
+
+function SWEP:CanReload()
+    return self:Clip1() < self:GetMaxClip1() and self:Ammo1() > 0
+end
