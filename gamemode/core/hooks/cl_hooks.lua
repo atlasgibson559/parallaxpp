@@ -565,6 +565,19 @@ function GM:ShouldDrawAmmoBox()
     if ( IsValid(ax.gui.mainmenu) ) then return false end
     if ( IsValid(ax.gui.tab) ) then return false end
 
+    local client = ax.client
+    local activeWeapon = client:GetActiveWeapon()
+    if ( !IsValid(activeWeapon) ) then return false end
+
+    local clip = activeWeapon:Clip1()
+    local ammo = client:GetAmmoCount(activeWeapon:GetPrimaryAmmoType())
+    if ( clip <= 0 and ammo <= 0 ) then return false end
+
+    local viewEntity = client:GetViewEntity()
+    if ( IsValid(viewEntity) and viewEntity != client ) then
+        return false
+    end
+
     return true
 end
 
