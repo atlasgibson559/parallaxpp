@@ -20,7 +20,7 @@ function PANEL:ResetPayload()
     for k, v in pairs(ax.character.variables) do
         if ( v.Editable != true ) then continue end
 
-        -- This is a bit of a hack, but it works for nax.
+        -- This is a bit of a hack, but it works for now.
         if ( v.Type == ax.types.string or v.Type == ax.types.text ) then
             self:SetPayload(k, "")
         end
@@ -109,6 +109,11 @@ function PANEL:PopulateFactionSelect()
             self:PopulateCreateCharacter()
         end
 
+        local banner = v.Image or "gamepadui/hl2/chapter14"
+        if ( type(banner) == "string" ) then
+            banner = ax.util:GetMaterial(banner)
+        end
+
         local image = factionButton:Add("DPanel")
         image:Dock(FILL)
         image:SetMouseInputEnabled(false)
@@ -118,7 +123,7 @@ function PANEL:PopulateFactionSelect()
             imageHeight = math.Round(imageHeight)
 
             surface.SetDrawColor(color_white)
-            surface.SetTexture(surface.GetTextureID(v.Image or "gamepadui/hl2/chapter14"))
+            surface.SetMaterial(banner)
             surface.DrawTexturedRect(0, 0, width, imageHeight)
 
             local inertia = factionButton:GetInertia()
