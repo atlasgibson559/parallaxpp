@@ -403,21 +403,37 @@ end
 function MODULE:DoAnimationEvent(client, event, data)
     local clientTable = client:GetTable()
     if ( event == PLAYERANIMEVENT_ATTACK_PRIMARY ) then
+        local animTable = clientTable.axAnimations
+        local desired = animTable.shoot or ACT_MP_ATTACK_STAND_PRIMARYFIRE
         if ( client:IsFlagSet(FL_ANIMDUCKING) ) then
-            client:AnimRestartGesture(GESTURE_SLOT_ATTACK_AND_RELOAD, ACT_MP_ATTACK_CROUCH_PRIMARYFIRE, true)
-        else
-            client:AnimRestartGesture(GESTURE_SLOT_ATTACK_AND_RELOAD, ACT_MP_ATTACK_STAND_PRIMARYFIRE, true)
+            desired = animTable.shoot_crouch or animTable.shoot or ACT_MP_ATTACK_CROUCH_PRIMARYFIRE
         end
+
+        if ( isstring(desired) ) then
+            desired = client:LookupSequence(desired)
+        elseif ( istable(desired) ) then
+            desired = client:LookupSequence(desired[math.random(#desired)])
+        end
+
+        client:AnimRestartGesture(GESTURE_SLOT_ATTACK_AND_RELOAD, desired, true)
 
         return ACT_VM_PRIMARYATTACK
     elseif ( event == PLAYERANIMEVENT_ATTACK_SECONDARY ) then
         return ACT_VM_SECONDARYATTACK
     elseif ( event == PLAYERANIMEVENT_RELOAD ) then
+        local animTable = clientTable.axAnimations
+        local desired = animTable.reload or ACT_MP_RELOAD_STAND
         if ( client:IsFlagSet(FL_ANIMDUCKING) ) then
-            client:AnimRestartGesture(GESTURE_SLOT_ATTACK_AND_RELOAD, ACT_MP_RELOAD_CROUCH, true)
-        else
-            client:AnimRestartGesture(GESTURE_SLOT_ATTACK_AND_RELOAD, ACT_MP_RELOAD_STAND, true)
+            desired = animTable.reload_crouch or animTable.reload or ACT_MP_RELOAD_CROUCH
         end
+
+        if ( isstring(desired) ) then
+            desired = client:LookupSequence(desired)
+        elseif ( istable(desired) ) then
+            desired = client:LookupSequence(desired[math.random(#desired)])
+        end
+
+        client:AnimRestartGesture(GESTURE_SLOT_ATTACK_AND_RELOAD, desired, true)
 
         return ACT_INVALID
     elseif ( event == PLAYERANIMEVENT_JUMP ) then
