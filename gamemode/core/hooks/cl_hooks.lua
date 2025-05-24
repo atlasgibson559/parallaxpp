@@ -284,6 +284,51 @@ function GM:HUDPaint()
     hook.Run("PostHUDPaint")
 end
 
+function GM:PostDrawTranslucentRenderables(bDrawingDepth, bDrawingSkybox)
+    if ( !ax.config:Get("debug.developer") ) then return end
+    if ( !ax.client:IsDeveloper() ) then return end
+
+    local client = ax.client
+    if ( !IsValid(client) ) then return end
+
+    local trace = client:GetEyeTrace()
+    if ( !trace.Hit or !IsValid(trace.Entity) ) then return end
+
+    local entity = trace.Entity
+    local pos = entity:GetPos()
+    local ang = entity:GetAngles()
+    local center = entity:LocalToWorld(entity:OBBCenter())
+    local model = entity:GetModel() or "N/A"
+    local class = entity:GetClass() or "N/A"
+
+    local text = string.format("Entity: %s\nClass: %s\nModel: %s\nPosition: %s\nAngles: %s",
+        tostring(entity), class, model, tostring(pos), tostring(ang))
+    local markedUp = markup.Parse("<font=parallax.developer>" .. text .. "</font>")
+    if ( !markedUp ) then return end
+
+    local textWidth, textHeight = markedUp:Size()
+    local x = -ScrW() * 0.5 + (ScrW() - textWidth) * 0.5
+    local y = -ScrH() * 0.5 + (ScrH() - textHeight) * 0.5
+
+    local distance = pos:Distance(client:GetPos())
+    if ( distance > 1024 ) then
+        return
+    end
+
+    local scale = math.Clamp(0 + (distance / 1024), 0.1, 1)
+
+    -- Draw a background for the text
+    cam.IgnoreZ(true)
+    cam.Start3D2D(center, Angle(0, client:EyeAngles().y - 90, 90), scale)
+        surface.SetDrawColor(0, 0, 0, 200)
+        surface.DrawRect(x - padding, y - padding, textWidth + padding, textHeight + padding)
+
+        -- Draw the text
+        markedUp:Draw(x - padding / 2, y - padding / 2)
+    cam.End3D2D()
+    cam.IgnoreZ(false)
+end
+
 local elements = {
     ["CHUDQuickInfo"] = true,
     ["CHudAmmo"] = true,
