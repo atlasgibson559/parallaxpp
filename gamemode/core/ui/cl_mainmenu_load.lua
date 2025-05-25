@@ -140,7 +140,7 @@ function PANEL:PopulateDelete(characterID)
     okButton:Dock(RIGHT)
     okButton:SetText("OK")
     okButton.DoClick = function()
-        ax.net:Start("character.delete", v:GetID())
+        ax.net:Start("character.delete", characterID)
     end
 end
 
