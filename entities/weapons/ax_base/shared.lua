@@ -52,6 +52,12 @@ SWEP.Reloading = {
     SoundEmpty = Sound("Weapon_Pistol.ReloadEmpty")
 }
 
+function SWEP:Precache()
+    util.PrecacheSound(self.Primary.Sound)
+    util.PrecacheModel(self.ViewModel)
+    util.PrecacheModel(self.WorldModel)
+end
+
 local function IncludeFile(path)
     if ( ( realm == "server" or string.find(path, "sv_") ) and SERVER ) then
         include(path)
@@ -98,6 +104,12 @@ function SWEP:CanPrimaryAttack()
     if ( !IsValid(owner) ) then return false end
 
     if ( self:IsEmpty() ) then
+        self:EmitSound(self.Primary.SoundEmpty or "Weapon_Pistol.Empty")
+        self:SetNextPrimaryFire(CurTime() + 1)
+        return false
+    end
+
+    if ( self:GetReloading() ) then
         return false
     end
 
@@ -108,33 +120,30 @@ function SWEP:PrimaryAttack()
     local owner = self:GetOwner()
     if ( !IsValid(owner) ) then return end
 
-    local delay = self.Primary.Delay
-    if ( self.Primary.RPM ) then
-        delay = 60 / self.Primary.RPM
+    if ( self:CanPrimaryAttack() ) then
+        local delay = self.Primary.Delay
+        if ( self.Primary.RPM ) then
+            delay = 60 / self.Primary.RPM
+        end
+
+        self:SetNextPrimaryFire(CurTime() + delay)
+
+        self:PlayAnimation(self.Primary.Sequence, self.Primary.PlaybackRate)
+
+        self:EmitSound(self.Primary.Sound)
+
+        if ( self.FireMode == "projectile" and self.ProjectileClass ) then
+            self:LaunchProjectile(self.ProjectileClass)
+        elseif ( self.FireMode == "grenade" ) then
+            self:ThrowGrenade()
+        else
+            self:ShootBullet(self.Primary.Damage, self.Primary.NumShots, self.Primary.Cone)
+        end
+
+        self:TakePrimaryAmmo(1)
+        owner:SetAnimation(PLAYER_ATTACK1)
+        owner:MuzzleFlash()
     end
-
-    self:SetNextPrimaryFire(CurTime() + delay)
-
-    if ( !self:CanPrimaryAttack() ) then
-        self:EmitSound(self.Primary.SoundEmpty or "")
-        return
-    end
-
-    self:PlayAnimation(self.Primary.Sequence, self.Primary.PlaybackRate)
-
-    self:EmitSound(self.Primary.Sound)
-
-    if ( self.FireMode == "projectile" and self.ProjectileClass ) then
-        self:LaunchProjectile(self.ProjectileClass)
-    elseif ( self.FireMode == "grenade" ) then
-        self:ThrowGrenade()
-    else
-        self:ShootBullet(self.Primary.Damage, self.Primary.NumShots, self.Primary.Cone)
-    end
-
-    self:TakePrimaryAmmo(1)
-    owner:MuzzleFlash()
-    owner:SetAnimation(PLAYER_ATTACK1)
 end
 
 function SWEP:SecondaryAttack()
@@ -208,8 +217,6 @@ function SWEP:Reload()
 
     local duration = self:GetActiveAnimationDuration()
     if ( duration > 0 ) then
-        self:SetNextPrimaryFire(CurTime() + duration)
-        self:SetNextSecondaryFire(CurTime() + duration)
         self:SetReloading(true)
 
         timer.Simple(duration, function()
