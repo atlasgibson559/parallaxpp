@@ -44,6 +44,8 @@ function GM:PostPlayerInitialSpawn(client)
         time = CurTime()
 
         ax.config:Synchronize(client)
+
+        hook.Run("PostPlayerReady", client)
     end)
 end
 
