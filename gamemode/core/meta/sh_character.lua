@@ -106,15 +106,20 @@ function CHAR:GetClassData()
     return classData
 end
 
-function CHAR:GetData(key)
-    if ( !isstring(key) or key == "" ) then return end
+function CHAR:GetData(key, default)
+    if ( !isstring(key) or key == "" ) then return default end
 
     local data = self:GetDataInternal()
     if ( !istable(data) ) then
         data = {}
     end
 
-    return data[key]
+    local value = data[key]
+    if ( value == nil ) then
+        return default
+    end
+
+    return value
 end
 
 if ( SERVER ) then
