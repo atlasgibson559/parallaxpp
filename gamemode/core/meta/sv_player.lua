@@ -28,7 +28,7 @@ function PLAYER:GetDBVar(key, default)
     return default
 end
 
-function PLAYER:SaveDB()
+function PLAYER:SaveDB(callback)
     local clientTable = self:GetTable()
 
     if ( clientTable.axDatabase ) then
@@ -36,7 +36,11 @@ function PLAYER:SaveDB()
             clientTable.axDatabase.data = util.TableToJSON(clientTable.axDatabase.data)
         end
 
-        ax.database:SaveRow("ax_players", clientTable.axDatabase, "steamid")
+        ax.database:SaveRow("ax_players", clientTable.axDatabase, "steamid", function(data)
+            if ( callback and isfunction(callback) ) then
+                callback(data)
+            end
+        end)
 
         ax.net:Start(self, "database.save", clientTable.axDatabase or {})
     else

@@ -142,9 +142,14 @@ end
 -- @tparam string query Table name
 -- @tparam table data The row data to save
 -- @tparam string key Column name to use for matching
-function ax.sqlite:SaveRow(query, data, key)
+-- @tparam function[opt] callback Optional callback to run after saving
+function ax.sqlite:SaveRow(query, data, key, callback)
     local condition = string.format("%s = %s", key, sql.SQLStr(data[key]))
     self:Update(query, data, condition)
+
+    if ( callback and isfunction(callback) ) then
+        callback(data)
+    end
 end
 
 --- Creates a table with a given schema if it doesn't already exist.
