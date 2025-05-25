@@ -29,7 +29,7 @@ function ax.character:RegisterVariable(key, data)
 
                 local field = data.Field
                 if ( field ) then
-                    ax.sqlite:RegisterVar("ax_characters", key, data.Default or nil)
+                    ax.database:RegisterVar("ax_characters", key, data.Default or nil)
                     self.fields[key] = field
                 end
             end
@@ -48,7 +48,7 @@ function ax.character:RegisterVariable(key, data)
 
             local field = data.Field
             if ( field ) then
-                ax.sqlite:RegisterVar("ax_characters", key, data.Default or nil)
+                ax.database:RegisterVar("ax_characters", key, data.Default or nil)
                 self.fields[key] = field
             end
         end
@@ -58,25 +58,28 @@ function ax.character:RegisterVariable(key, data)
 end
 
 function ax.character:SetVariable(id, key, value)
-    if ( !self.variables[key] ) then print("Attempted to set a variable that does not exist!") return end
+    if ( !self.variables[key] ) then
+        ax.util:PrintError("Attempted to set a variable that does not exist!")
+        return false, "Attempted to set a variable that does not exist!"
+    end
 
     local character = self.stored[id]
     if ( !character ) then return end
 
     local data = self.variables[key]
     if ( data.OnSet ) then
-        data:OnSet(character, value)
+        value = data:OnSet(character, value)
     end
 
     character[key] = value
 
     if ( SERVER ) then
-        ax.sqlite:Update("ax_characters", { [key] = value }, { id = id })
+        ax.database:Update("ax_characters", { [key] = value }, "id = " .. id)
 
         if ( data.Field ) then
             local field = data.Field
             if ( field ) then
-                ax.sqlite:Update("ax_characters", { [field] = value }, { id = id })
+                ax.database:Update("ax_characters", { [field] = value }, "id = " .. id)
             end
         end
 
@@ -102,7 +105,7 @@ end
 
 function ax.character:CreateObject(characterID, data, client)
     if ( !characterID or !data ) then return false, "Invalid ID or data" end
-    if ( self.stored[characterID] ) then return self.stored[characterID], "Character already exists" end
+    --if ( self.stored[characterID] ) then return self.stored[characterID], "Character already exists" end
 
     characterID = tonumber(characterID)
 
@@ -120,9 +123,11 @@ function ax.character:CreateObject(characterID, data, client)
         character.Inventories = {}
     end
 
+    print(character:GetModel())
     for k, v in pairs(self.variables) do
         if ( data[k] ) then
             character[k] = data[k]
+            print("Character " .. k .. ": " .. tostring(data[k]))
         elseif ( v.Default ) then
             character[k] = v.Default
         end
@@ -149,4 +154,8 @@ end
 
 function ax.character:GetAll()
     return self.stored
+end
+
+function ax.character:GetAllVariables()
+    return self.variables
 end

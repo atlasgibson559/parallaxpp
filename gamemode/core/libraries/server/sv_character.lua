@@ -1,15 +1,13 @@
 --- Character library.
 -- @module ax.character
 
-function ax.character:Create(client, query)
+function ax.character:Create(client, query, callback)
     if ( !IsValid(client) or !client:IsPlayer() ) then
-        ErrorNoHalt("Attempted to create character for invalid player (" .. tostring(client) .. ")")
-        return false, "Invalid player!"
+        return callback(false, "Invalid player!")
     end
 
     if ( !istable(query) ) then
-        ErrorNoHalt("Attempted to create character with invalid query (" .. tostring(query) .. ")")
-        return false, "Invalid query!"
+        return callback(false, "Invalid query!")
     end
 
     local insertQuery = {}
@@ -26,51 +24,40 @@ function ax.character:Create(client, query)
     insertQuery.play_time = 0
     insertQuery.last_played = os.time()
 
-    local characterID
-    ax.sqlite:Insert("ax_characters", insertQuery, function(result)
-        if ( !result ) then
-            ErrorNoHalt("Failed to insert character into database for player " .. tostring(client) .. "\n")
-            return false, "Failed to insert character into database!"
+    ax.database:Insert("ax_characters", insertQuery, function(characterID)
+        if ( !characterID ) then
+            return callback(false, "Failed to insert character into database!")
         end
 
-        characterID = tonumber(result)
+        local character = self:CreateObject(characterID, insertQuery, client)
+        if ( !character ) then
+            return callback(false, "Failed to create character object!")
+        end
+
+        local canCreate, reason = hook.Run("PrePlayerCreatedCharacter", client, character, query)
+        if ( canCreate == false ) then
+            self:Delete(characterID)
+            return callback(false, reason or "Hook denied character creation!")
+        end
+
+        local clientTable = client:GetTable()
+        clientTable.axCharacters = clientTable.axCharacters or {}
+        clientTable.axCharacters[characterID] = character
+
+        self.stored[characterID] = character
+
+        ax.net:Start(client, "character.cache", character)
+        ax.inventory:Register({characterID = characterID})
+
+        hook.Run("PostPlayerCreatedCharacter", client, character, query)
+
+        return callback(true, character)
     end)
-
-    if ( !characterID ) then
-        ErrorNoHalt("Failed to create character: " .. query.name .. "\n")
-        return false, "Failed to create character!"
-    end
-
-    local character = self:CreateObject(characterID, insertQuery, client)
-    if ( !character ) then
-        ErrorNoHalt("Failed to create character object for ID " .. characterID .. " for player " .. tostring(client) .. "\n")
-        return false, "Failed to create character object!"
-    end
-
-    local canCreate, reason = hook.Run("PrePlayerCreatedCharacter", client, character, query)
-    if ( canCreate == false ) then
-        self:Delete(characterID)
-        return false, reason or "Failed to create character!"
-    end
-
-    local clientTable = client:GetTable()
-    clientTable.axCharacters = clientTable.axCharacters or {}
-    clientTable.axCharacters[characterID] = character
-
-    self.stored[characterID] = character
-
-    ax.net:Start(client, "character.cache", character)
-
-    ax.inventory:Register({characterID = characterID})
-
-    hook.Run("PostPlayerCreatedCharacter", client, character, query)
-
-    return character
 end
 
 function ax.character:Load(client, characterID)
     if ( !IsValid(client) or !client:IsPlayer() ) then
-        ErrorNoHalt("Attempted to load character for invalid player (" .. tostring(client) .. ")\n")
+        ax.util:PrintError("Attempted to load character for invalid player (" .. tostring(client) .. ")")
         return false
     end
 
@@ -84,54 +71,57 @@ function ax.character:Load(client, characterID)
         currentCharacter.Player = NULL
         --currentCharacter:Save()
 
-        if ( currentCharacter:GetID() == characterID ) then
-            client:Notify("You are already using this character!")
-            return false
-        end
+        -- if ( currentCharacter:GetID() == characterID ) then
+        --     client:Notify("You are already using this character!")
+        --     return false
+        -- end
     end
 
     local steamID = client:SteamID64()
     local condition = string.format("steamid = %s AND id = %s", sql.SQLStr(steamID), sql.SQLStr(characterID))
-    local result = ax.sqlite:Select("ax_characters", nil, condition)
 
-    if ( result and result[1] ) then
-        local row = result[1]
-        local character = self:CreateObject(characterID, row, client)
-        if ( !character ) then
-            client:Notify("Failed to load character!")
-            return false
+    ax.database:Select("ax_characters", nil, condition, function(result)
+        if ( result and result[1] ) then
+            local character = self:CreateObject(characterID, result[1], client)
+            if ( !character ) then
+                client:Notify("Failed to load character!")
+                return
+            end
+
+            print(character)
+
+            self.stored[characterID] = character
+
+            hook.Run("PrePlayerLoadedCharacter", client, character, currentCharacter)
+
+            ax.net:Start(client, "character.load", characterID, character)
+
+            local clientTable = client:GetTable()
+            clientTable.axCharacters = clientTable.axCharacters or {}
+            clientTable.axCharacters[characterID] = character
+            clientTable.axCharacter = character
+
+            client:SetModel(character:GetModel())
+            client:SetTeam(character:GetFaction())
+            client:Spawn()
+
+            ax.inventory:CacheAll(characterID, function(inventory)
+                ax.item:Cache(characterID)
+            end)
+
+            hook.Run("PostPlayerLoadedCharacter", client, character, currentCharacter)
+
+            return character
+        else
+            ax.util:PrintError("Failed to load character with ID " .. characterID .. " for player " .. tostring(client))
+            return
         end
-
-        self.stored[characterID] = character
-
-        hook.Run("PrePlayerLoadedCharacter", client, character, currentCharacter)
-
-        ax.net:Start(client, "character.load", characterID)
-
-        local clientTable = client:GetTable()
-        clientTable.axCharacters = clientTable.axCharacters or {}
-        clientTable.axCharacters[characterID] = character
-        clientTable.axCharacter = character
-
-        client:SetModel(character:GetModel())
-        client:SetTeam(character:GetFaction())
-        client:Spawn()
-
-        ax.inventory:CacheAll(characterID)
-        ax.item:Cache(characterID)
-
-        hook.Run("PostPlayerLoadedCharacter", client, character, currentCharacter)
-
-        return character
-    else
-        ErrorNoHalt("Failed to load character with ID " .. characterID .. " for player " .. tostring(client) .. "\n")
-        return false
-    end
+    end)
 end
 
-function ax.character:Delete(characterID)
+function ax.character:Delete(characterID, callback)
     if ( !isnumber(characterID) ) then
-        ErrorNoHalt("Attempted to delete character with invalid ID (" .. tostring(characterID) .. ")")
+        ax.util:PrintError("Attempted to delete character with invalid ID (" .. tostring(characterID) .. ")")
         return false
     end
 
@@ -159,86 +149,112 @@ function ax.character:Delete(characterID)
         ax.net:Start(client, "character.delete", characterID)
     end
 
-    ax.sqlite:Delete("ax_characters", string.format("id = %s", sql.SQLStr(characterID)))
     self.stored[characterID] = nil
 
-    return true
+    -- Delete all related inventories and items for this character
+    ax.database:Delete("ax_inventories", string.format("character_id = %s", sql.SQLStr(characterID)))
+    ax.database:Delete("ax_items", string.format("character_id = %s", sql.SQLStr(characterID)))
+
+    -- Finally, delete the character from the database
+    ax.database:Delete("ax_characters", string.format("id = %s", sql.SQLStr(characterID)), function(result)
+        if ( callback ) then
+            callback(tobool(result))
+        end
+    end)
 end
 
-function ax.character:Cache(client, characterID)
+function ax.character:Cache(client, characterID, callback)
     if ( !IsValid(client) or !client:IsPlayer() ) then
-        ErrorNoHalt("Attempted to cache character for invalid player (" .. tostring(client) .. ")\n")
+        ax.util:PrintError("Attempted to cache character for invalid player (" .. tostring(client) .. ")")
         return false
     end
 
-    local steamID = client:SteamID64()
-    local condition = string.format("steamid = %s AND id = %s", sql.SQLStr(steamID), sql.SQLStr(characterID))
-    local result = ax.sqlite:Select("ax_characters", nil, condition)
-    if ( !result or !result[1] ) then
-        ErrorNoHalt("Failed to cache character with ID " .. characterID .. " for player " .. tostring(client) .. "\n")
-        return false
-    end
+    local condition = string.format("steamid = %s AND id = %s", sql.SQLStr(client:SteamID64()), sql.SQLStr(characterID))
+    ax.database:Select("ax_characters", nil, condition, function(result)
+        if ( !result or !result[1] ) then
+            ax.util:PrintError("Failed to cache character with ID " .. characterID .. " for player " .. tostring(client))
 
-    characterID = tonumber(characterID)
-    if ( !characterID ) then
-        ErrorNoHalt("Failed to convert character ID " .. characterID .. " to number for player " .. tostring(client) .. "\n")
-        return false
-    end
+            if ( callback ) then
+                callback(false)
+            end
 
-    -- Make sure we are not loading a character from a different schema
-    if ( result[1].schema != SCHEMA.Folder ) then
-        return false
-    end
+            return false
+        end
 
-    local clientTable = client:GetTable()
-    clientTable.axCharacters = clientTable.axCharacters or {}
-    clientTable.axCharacters[characterID] = result[1]
-    self.stored[characterID] = result[1]
+        characterID = tonumber(characterID)
+        if ( !characterID ) then
+            ax.util:PrintError("Failed to convert character ID " .. characterID .. " to number for player " .. tostring(client))
+            return false
+        end
 
-    ax.net:Start(client, "character.cache", result[1])
+        -- Make sure we are not loading a character from a different schema
+        if ( result[1].schema != SCHEMA.Folder ) then
+            return false
+        end
 
-    return true
+        local clientTable = client:GetTable()
+        clientTable.axCharacters = clientTable.axCharacters or {}
+        clientTable.axCharacters[characterID] = result[1]
+        self.stored[characterID] = result[1]
+
+        ax.net:Start(client, "character.cache", result[1])
+
+        if ( callback ) then
+            callback(true, result[1])
+        end
+    end)
 end
 
-function ax.character:CacheAll(client)
+function ax.character:CacheAll(client, callback)
     if ( !IsValid(client) or !client:IsPlayer() ) then
-        ErrorNoHalt("Attempted to load characters for invalid player (" .. tostring(client) .. ")\n")
+        ax.util:PrintError("Attempted to load characters for invalid player (" .. tostring(client) .. ")")
+
+        if ( callback ) then
+            callback(false)
+        end
+
         return false
     end
 
-    local steamID = client:SteamID64()
-
-    local condition = string.format("steamid = %s", sql.SQLStr(steamID))
-    local result = ax.sqlite:Select("ax_characters", nil, condition)
-
-    -- Ensure the player has a table to store characters
+    -- Ensure the player has a table to store characters in later
     local clientTable = client:GetTable()
     clientTable.axCharacters = {}
 
-    if ( result ) then
-        for _, row in ipairs(result) do
-            local id = tonumber(row.id)
-            if ( !id ) then
-                ErrorNoHalt("Failed to convert character ID " .. row.id .. " to number for player " .. tostring(client) .. "\n")
-                continue
+    local condition = string.format("steamid = %s", sql.SQLStr(client:SteamID64()))
+    ax.database:Select("ax_characters", nil, condition, function(result)
+        if ( result ) then
+            for _, row in ipairs(result) do
+                local id = tonumber(row.id)
+                if ( !id ) then
+                    ax.util:PrintError("Failed to convert character ID " .. row.id .. " to number for player " .. tostring(client))
+                    continue
+                end
+
+                -- Make sure we are not loading a character from a different schema
+                if ( row.schema != SCHEMA.Folder ) then
+                    continue
+                end
+
+                local character = self:CreateObject(id, row, client)
+                self.stored[id] = character
+                clientTable.axCharacters[id] = character
             end
 
-            -- Make sure we are not loading a character from a different schema
-            if ( row.schema != SCHEMA.Folder ) then
-                continue
+            ax.net:Start(client, "character.cache.all", clientTable.axCharacters)
+
+            if ( callback ) then
+                callback(true, clientTable.axCharacters)
             end
 
-            local character = self:CreateObject(id, row, client)
-            self.stored[id] = character
-            clientTable.axCharacters[id] = character
+            hook.Run("PlayerLoadedAllCharacters", client, clientTable.axCharacters)
+        else
+            ax.util:PrintError("Failed to load characters for player " .. tostring(client) .. "\n")
+
+            if ( callback ) then
+                callback(false)
+            end
         end
-    end
-
-    ax.net:Start(client, "character.cache.all", clientTable.axCharacters)
-
-    hook.Run("PlayerLoadedAllCharacters", client, clientTable.axCharacters)
-
-    return clientTable.axCharacters
+    end)
 end
 
 concommand.Add("ax_character_test_create", function(client, cmd, arguments)
