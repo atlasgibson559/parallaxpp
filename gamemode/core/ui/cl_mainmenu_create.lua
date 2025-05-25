@@ -79,7 +79,7 @@ function PANEL:PopulateFactionSelect()
         parent:Populate()
     end
 
-    local factionList = self:Add("DHorizontalScroller")
+    local factionList = self:Add("ax.scroller.horizontal")
     factionList:Dock(FILL)
     factionList:DockMargin(padding, padding * 2, padding, padding)
     factionList:InvalidateParent(true)

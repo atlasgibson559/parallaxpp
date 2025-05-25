@@ -7,7 +7,7 @@ local PANEL = {}
 function PANEL:Init()
     self:Dock(FILL)
 
-    self.buttons = self:Add("DHorizontalScroller")
+    self.buttons = self:Add("ax.scroller.horizontal")
     self.buttons:Dock(TOP)
     self.buttons:DockMargin(0, padding / 8, 0, 0)
     self.buttons:SetTall(ScreenScale(24))

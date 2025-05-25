@@ -13,7 +13,7 @@ function PANEL:Init()
     title:SetFont("parallax.title")
     title:SetText("HELP")
 
-    self.buttons = self:Add("DHorizontalScroller")
+    self.buttons = self:Add("ax.scroller.horizontal")
     self.buttons:Dock(TOP)
     self.buttons:DockMargin(0, padding / 8, 0, 0)
     self.buttons:SetTall(ScreenScale(24))
