@@ -30,16 +30,27 @@ end
 
 function PLAYER:SaveDB()
     local clientTable = self:GetTable()
-    if ( clientTable.axDatabase ) then
-        ax.sqlite:SaveRow("ax_players", clientTable.axDatabase, "steamid")
 
-        -- Network the data to the client
+    if ( clientTable.axDatabase ) then
+        if istable(clientTable.axDatabase.data) then
+            clientTable.axDatabase.data = util.TableToJSON(clientTable.axDatabase.data)
+        end
+
+        ax.database:SaveRow("ax_players", clientTable.axDatabase, "steamid")
+
         ax.net:Start(self, "database.save", clientTable.axDatabase or {})
+    else
+        ax.util:PrintError("Player database not initialized, cannot save")
     end
 end
 
 function PLAYER:GetData(key, default)
-    local data = self:GetTable().axDatabase.data or {}
+    local clientTable = self:GetTable()
+    if ( !clientTable.axDatabase ) then
+        clientTable.axDatabase = {}
+    end
+
+    local data = clientTable.axDatabase.data or {}
 
     if ( type(data) == "string" ) then
         data = util.JSONToTable(data) or {}
@@ -62,6 +73,18 @@ function PLAYER:SetData(key, value)
 
     data[key] = value
     clientTable.axDatabase.data = util.TableToJSON(data)
+end
+
+function PLAYER:SetWhitelisted(factionID, bWhitelisted)
+    local key = "whitelists_" .. SCHEMA.Folder
+    local whitelists = self:GetData(key, {}) or {}
+
+    if ( bWhitelisted == nil ) then bWhitelisted = true end
+
+    whitelists[factionID] = bWhitelisted
+    self:SetData(key, whitelists)
+
+    self:SaveDB()
 end
 
 function PLAYER:CreateServerRagdoll()

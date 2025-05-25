@@ -91,18 +91,6 @@ function PLAYER:HasWhitelist(identifier)
     return whitelist != nil and whitelist != false
 end
 
-function PLAYER:SetWhitelisted(factionID, bWhitelisted)
-    local key = "whitelists_" .. SCHEMA.Folder
-    local whitelists = self:GetData(key, {}) or {}
-
-    if ( bWhitelisted == nil ) then bWhitelisted = true end
-
-    whitelists[factionID] = bWhitelisted
-    self:SetData(key, whitelists)
-
-    self:SaveDB()
-end
-
 function PLAYER:Notify(text, iType, length)
     if ( !text or text == "" ) then return end
 

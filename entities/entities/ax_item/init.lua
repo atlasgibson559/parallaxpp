@@ -14,7 +14,7 @@ end
 function ENT:SetItem(itemID, uniqueID)
     local itemDef = ax.item:Get(uniqueID)
     if ( !istable(itemDef) ) then
-        print("Item '" .. uniqueID .. "' not found!")
+        ax.util:PrintError("Attempted to set item with an invalid item definition for entity " .. self:EntIndex() .. "!")
         return
     end
 
@@ -141,11 +141,12 @@ end
 
 function ENT:OnRemove()
     if ( self.axPickingUp and self.axPickingUp > CurTime() ) then return end
+    if ( ax.shutDown ) then return end
 
     local item = ax.item:Get(self:GetItemID())
     if ( item and item.OnRemoved ) then
         item:OnRemoved(self)
     end
 
-    ax.sqlite:Delete("ax_items", string.format("id = %s", sql.SQLStr(self:GetItemID())))
+    ax.database:Delete("ax_items", string.format("id = %s", sql.SQLStr(self:GetItemID())))
 end

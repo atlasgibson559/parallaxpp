@@ -1,7 +1,5 @@
 local time = CurTime()
 function GM:PlayerInitialSpawn(client)
-    if ( client:IsBot() ) then return end
-
     time = CurTime()
     ax.util:Print("Starting to load player " .. client:SteamName() .. " (" .. client:SteamID64() .. ")")
 
@@ -16,20 +14,23 @@ function GM:PlayerInitialSpawn(client)
 end
 
 function GM:PlayerReady(client)
-    ax.character:CacheAll(client)
-    ax.util:SendChatText(nil, Color(25, 75, 150), client:SteamName() .. " has joined the server.")
-    ax.net:Start(client, "mainmenu")
+    if ( !IsValid(client) or client:IsBot() ) then return end
 
-    hook.Run("PostPlayerInitialSpawn", client)
+    ax.character:CacheAll(client, function()
+        ax.util:SendChatText(nil, Color(25, 75, 150), client:SteamName() .. " has joined the server.")
+        ax.net:Start(client, "mainmenu")
 
-    ax.util:Print("Finished loading player " .. client:SteamName() .. " (" .. client:SteamID64() .. ") in " .. math.Round(CurTime() - time, 2) .. " seconds.")
-    time = CurTime()
+        hook.Run("PostPlayerInitialSpawn", client)
+
+        ax.util:Print("Finished loading player " .. client:SteamName() .. " (" .. client:SteamID64() .. ") in " .. math.Round(CurTime() - time, 2) .. " seconds.")
+        time = CurTime()
+    end)
 end
 
 function GM:PostPlayerInitialSpawn(client)
-    ax.sqlite:LoadRow("ax_players", "steamid", client:SteamID64(), function(data)
-        if ( !IsValid(client) ) then return end
+    if ( !IsValid(client) or client:IsBot() ) then return end
 
+    ax.database:LoadRow("ax_players", "steamid", client:SteamID64(), function(data)
         local clientTable = client:GetTable()
         clientTable.axDatabase = data or {}
 
@@ -157,6 +158,19 @@ function GM:OnReloaded()
     ax.config:Load()
 end
 
+function GM:DatabaseConnected()
+    -- Do something when the database is connected...
+end
+
+function GM:DatabaseConnectionFailed()
+    ax.util:PrintError("Database connection failed, falling back to SQLite.")
+    ax.database:Fallback()
+end
+
+function GM:DatabaseFallback(reason)
+    ax.database:LoadTables()
+end
+
 function GM:SetupPlayerVisibility(client, viewEntity)
     if ( client:Team() == 0 ) then
         AddOriginToPVS(ax.config:Get("mainmenu.pos", vector_origin))
@@ -228,7 +242,10 @@ function GM:InitPostEntity()
     hook.Run("LoadData")
 end
 
-function GM:Shutdown()
+function GM:ShutDown()
+    ax.util:Print("Shutting down Parallax...")
+    ax.shutDown = true
+
     hook.Run("SaveData")
 end
 
