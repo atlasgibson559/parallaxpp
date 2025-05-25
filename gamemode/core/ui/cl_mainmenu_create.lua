@@ -88,7 +88,20 @@ function PANEL:PopulateFactionSelect()
     factionList.btnLeft:SetAlpha(0)
     factionList.btnRight:SetAlpha(0)
 
-    for k, v in ipairs(ax.faction:GetAll()) do
+    local factions = table.Copy(ax.faction:GetAll())
+    table.sort(factions, function(a, b)
+        local aSort = a.SortOrder or 100
+        local bSort = b.SortOrder or 100
+
+        -- If the sort orders are equal, sort by name
+        if ( aSort == bSort ) then
+            return a.Name < b.Name
+        end
+
+        return aSort < bSort
+    end)
+
+    for k, v in ipairs(factions) do
         if ( !ax.faction:CanSwitchTo(ax.client, v:GetID()) ) then continue end
 
         local name = (v.Name and string.upper(v.Name)) or "UNKNOWN FACTION"
