@@ -369,6 +369,7 @@ function GM:LoadFonts()
         font = "GorDIN Regular",
         size = scale4,
         weight = 500,
+        shadow = true,
         antialias = true
     })
 
@@ -376,6 +377,7 @@ function GM:LoadFonts()
         font = "GorDIN Bold",
         size = scale4,
         weight = 700,
+        shadow = true,
         antialias = true
     })
 
@@ -383,6 +385,7 @@ function GM:LoadFonts()
         font = "GorDIN Regular",
         size = scale6,
         weight = 500,
+        shadow = true,
         antialias = true
     })
 
@@ -390,6 +393,7 @@ function GM:LoadFonts()
         font = "GorDIN Bold",
         size = scale6,
         weight = 700,
+        shadow = true,
         antialias = true
     })
 
@@ -397,6 +401,7 @@ function GM:LoadFonts()
         font = "GorDIN Regular",
         size = scale8,
         weight = 500,
+        shadow = true,
         antialias = true
     })
 
@@ -404,6 +409,7 @@ function GM:LoadFonts()
         font = "GorDIN Bold",
         size = scale8,
         weight = 700,
+        shadow = true,
         antialias = true
     })
 
@@ -411,6 +417,7 @@ function GM:LoadFonts()
         font = "GorDIN Regular",
         size = ScreenScale(8),
         weight = 500,
+        shadow = true,
         italic = true,
         antialias = true
     })
@@ -419,6 +426,7 @@ function GM:LoadFonts()
         font = "GorDIN Bold",
         size = scale8,
         weight = 700,
+        shadow = true,
         italic = true,
         antialias = true
     })
@@ -427,6 +435,7 @@ function GM:LoadFonts()
         font = "GorDIN Regular",
         size = ScreenScale(10),
         weight = 500,
+        shadow = true,
         antialias = true
     })
 
@@ -434,6 +443,7 @@ function GM:LoadFonts()
         font = "GorDIN Bold",
         size = scale10,
         weight = 700,
+        shadow = true,
         antialias = true
     })
 
@@ -441,6 +451,7 @@ function GM:LoadFonts()
         font = "GorDIN Regular",
         size = ScreenScale(10),
         weight = 500,
+        shadow = true,
         italic = true,
         antialias = true
     })
@@ -449,6 +460,7 @@ function GM:LoadFonts()
         font = "GorDIN Bold",
         size = scale10,
         weight = 700,
+        shadow = true,
         italic = true,
         antialias = true
     })
@@ -457,6 +469,7 @@ function GM:LoadFonts()
         font = "GorDIN Regular",
         size = scale12,
         weight = 500,
+        shadow = true,
         antialias = true
     })
 
@@ -464,6 +477,7 @@ function GM:LoadFonts()
         font = "GorDIN Bold",
         size = scale12,
         weight = 700,
+        shadow = true,
         antialias = true
     })
 
@@ -471,6 +485,7 @@ function GM:LoadFonts()
         font = "GorDIN",
         size = scale12,
         weight = 500,
+        shadow = true,
         italic = true,
         antialias = true
     })
@@ -479,6 +494,7 @@ function GM:LoadFonts()
         font = "GorDIN Bold",
         size = scale12,
         weight = 700,
+        shadow = true,
         italic = true,
         antialias = true
     })
@@ -487,6 +503,7 @@ function GM:LoadFonts()
         font = "GorDIN SemiBold",
         size = scale20,
         weight = 600,
+        shadow = true,
         antialias = true
     })
 
@@ -543,6 +560,7 @@ function GM:LoadFonts()
         font = "GorDIN Bold",
         size = scale24,
         weight = 700,
+        shadow = true,
         antialias = true,
     })
 
@@ -550,6 +568,7 @@ function GM:LoadFonts()
         font = "GorDIN SemiBold",
         size = scale16,
         weight = 600,
+        shadow = true,
         antialias = true,
     })
 
@@ -557,6 +576,7 @@ function GM:LoadFonts()
         font = "Courier New",
         size = 16,
         weight = 500,
+        shadow = true,
         antialias = true
     })
 
