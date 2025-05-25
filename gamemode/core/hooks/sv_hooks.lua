@@ -80,6 +80,18 @@ function GM:PlayerLoadout(client)
 
     client:SetupHands()
 
+    local character = client:GetCharacter()
+    if ( character ) then
+        -- Restore the character's bodygroups
+        local groups = character:GetData("groups", {})
+        for name, value in pairs(groups) do
+            local id = client:FindBodygroupByName(name)
+            if ( id == -1 ) then continue end
+
+            client:SetBodygroup(id, value)
+        end
+    end
+
     hook.Run("PostPlayerLoadout", client)
 
     return true

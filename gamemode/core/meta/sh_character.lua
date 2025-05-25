@@ -109,9 +109,9 @@ end
 function CHAR:GetData(key, default)
     if ( !isstring(key) or key == "" ) then return default end
 
-    local data = self:GetDataInternal()
+    local data = self:GetDataInternal() or "[]"
     if ( !istable(data) ) then
-        data = {}
+        data = util.JSONToTable(data) or {}
     end
 
     local value = data[key]
