@@ -10,6 +10,10 @@ include("core/types.lua")
 AddCSLuaFile("core/util.lua")
 include("core/util.lua")
 
+include("core/sqlite.lua")
+include("core/sqloo.lua")
+include("core/database.lua")
+
 AddCSLuaFile("core/boot.lua")
 include("core/boot.lua")
 
