@@ -15,31 +15,7 @@ ax.character:RegisterVariable("data", {
     Field = "data",
     Default = "[]",
 
-    OnGet = function(self, character, value)
-        if ( !value or value == "" ) then
-            return "[]"
-        end
-
-        local data = util.JSONToTable(value)
-        if ( !data ) then
-            data = {}
-        end
-
-        return data
-    end,
-
-    OnSet = function(self, character, value)
-        if ( !value ) then
-            value = {}
-        end
-
-        local data = util.TableToJSON(value)
-        if ( !data ) then
-            data = "[]"
-        end
-
-        character:SetData(data)
-    end
+    Alias = "DataInternal"
 })
 
 ax.character:RegisterVariable("name", {
@@ -168,13 +144,6 @@ ax.character:RegisterVariable("faction", {
     Default = 0,
 
     Editable = true,
-
-    OnValidate = function(self, parent, payload, client)
-        local canSwitch, reason = ax.faction:CanSwitchTo(client, payload.faction)
-        if ( !canSwitch ) then
-            return false, reason or "You cannot switch to this faction!"
-        end
-    end,
 
     OnSet = function(this, character, value)
         local faction = ax.faction:Get(value)

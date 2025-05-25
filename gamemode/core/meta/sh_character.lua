@@ -106,7 +106,30 @@ function CHAR:GetClassData()
     return classData
 end
 
+function CHAR:GetData(key)
+    if ( !isstring(key) or key == "" ) then return end
+
+    local data = self:GetDataInternal()
+    if ( !istable(data) ) then
+        data = {}
+    end
+
+    return data[key]
+end
+
 if ( SERVER ) then
+    function CHAR:SetData(key, value)
+        if ( !isstring(key) or key == "" ) then return end
+
+        local data = self:GetDataInternal()
+        if ( !istable(data) ) then
+            data = {}
+        end
+
+        data[key] = value
+        self:SetDataInternal(data)
+    end
+
     function CHAR:GiveFlag(flag)
         if ( !ax.flag:Get(flag) ) then return end
 
