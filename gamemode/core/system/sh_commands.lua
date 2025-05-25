@@ -1,4 +1,4 @@
-ax.command:Register("Respawn", {
+ax.command:Register("PlyRespawn", {
     Description = "Respawn a player.",
     AdminOnly = true,
     Callback = function(info, client, arguments)
@@ -17,6 +17,62 @@ ax.command:Register("Respawn", {
         target:Spawn()
 
         client:Notify("You have respawned " .. target:Nick() .. ".", NOTIFY_HINT)
+    end
+})
+
+ax.command:Register("PlyWhitelist", {
+    Description = "Whitelist a player to a faction.",
+    AdminOnly = true,
+    Callback = function(info, client, arguments)
+        local target = ax.util:FindPlayer(arguments[1])
+        if ( !IsValid(target) ) then
+            client:Notify("You must provide a valid player to whitelist!")
+            return
+        end
+
+        local identifier = arguments[2]
+        if ( !isstring(identifier) or #identifier == 0 ) then
+            client:Notify("You must provide a valid faction to whitelist the player to!")
+            return
+        end
+
+        local faction = ax.faction:Get(identifier)
+        if ( !faction ) then
+            client:Notify("You must provide a valid faction to whitelist the player to!")
+            return
+        end
+
+        target:SetWhitelisted(faction:GetUniqueID(), true)
+
+        client:Notify("You have whitelisted " .. target:Nick() .. " to the faction " .. faction:GetName() .. ".", NOTIFY_HINT)
+    end
+})
+
+ax.command:Register("PlyUnWhitelist", {
+    Description = "Unwhitelist a player from a faction.",
+    AdminOnly = true,
+    Callback = function(info, client, arguments)
+        local target = ax.util:FindPlayer(arguments[1])
+        if ( !IsValid(target) ) then
+            client:Notify("You must provide a valid player to unwhitelist!")
+            return
+        end
+
+        local identifier = arguments[2]
+        if ( !isstring(identifier) or #identifier == 0 ) then
+            client:Notify("You must provide a valid faction to unwhitelist the player from!")
+            return
+        end
+
+        local faction = ax.faction:Get(identifier)
+        if ( !faction ) then
+            client:Notify("You must provide a valid faction to unwhitelist the player from!")
+            return
+        end
+
+        target:SetWhitelisted(faction:GetUniqueID(), false)
+
+        client:Notify("You have unwhitelisted " .. target:Nick() .. " from the faction " .. faction:GetName() .. ".", NOTIFY_HINT)
     end
 })
 
