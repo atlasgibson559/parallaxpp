@@ -47,23 +47,20 @@ end
 -- @usage ax.sqloo:Query("SELECT * FROM users", print, print)
 function ax.sqloo:Query(query, onSuccess, onError)
     if ( !self.db or self.db:status() != mysqloo.DATABASE_CONNECTED ) then
-        ax.util:PrintError("[ax.sqloo:Query] Database not connected.")
+        ax.util:PrintError("Database not connected.")
         return
     end
 
     local q = self.db:query(query)
     q.onSuccess = function(_, data)
-        ax.util:PrintSuccess("[ax.sqloo:Query] Query successful")
-        ax.util:PrintSuccess("[ax.sqloo:Query] Query: " .. query)
-
         if ( onSuccess ) then
             onSuccess(data)
         end
     end
 
     q.onError = function(_, err)
-        ax.util:PrintError("[ax.sqloo:Query] Query failed: " .. err)
-        ax.util:PrintError("[ax.sqloo:Query] Query: " .. query)
+        ax.util:PrintError("Query failed: " .. err)
+        ax.util:PrintError("Query: " .. query)
 
         if ( onError ) then
             onError(err)
@@ -141,9 +138,7 @@ function ax.sqloo:AddColumn(tableName, columnName, columnType, defaultValue)
 
             alter = alter .. ";"
 
-            self:Query(alter, function()
-                ax.util:PrintSuccess("Added column '" .. columnName .. "' to table '" .. tableName .. "'.")
-            end)
+            self:Query(alter)
         else
             ax.util:PrintWarning("Column '" .. columnName .. "' already exists in table '" .. tableName .. "'.")
         end
@@ -195,9 +190,7 @@ function ax.sqloo:InitializeTable(tableName, extraSchema)
     end
 
     local query = string.format("CREATE TABLE IF NOT EXISTS `%s` (%s);", tableName, table.concat(parts, ", "))
-    self:Query(query, function()
-        ax.util:PrintSuccess("Initialized table '" .. tableName .. "' with schema.")
-    end)
+    self:Query(query)
 end
 
 --- Insert row into table
@@ -345,6 +338,4 @@ end
 function ax.sqloo:SaveRow(tableName, data, key, callback)
     local condition = string.format("`%s` = %s", key, self:Escape(data[key]))
     self:Update(tableName, data, condition, callback)
-
-    ax.util:PrintSuccess("Saved row in table '" .. tableName .. "' with key '" .. key .. "'.")
 end

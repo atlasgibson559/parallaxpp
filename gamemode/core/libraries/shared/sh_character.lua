@@ -105,7 +105,7 @@ end
 
 function ax.character:CreateObject(characterID, data, client)
     if ( !characterID or !data ) then return false, "Invalid ID or data" end
-    --if ( self.stored[characterID] ) then return self.stored[characterID], "Character already exists" end
+    if ( self.stored[characterID] ) then return self.stored[characterID], "Character already exists" end
 
     characterID = tonumber(characterID)
 
@@ -123,11 +123,9 @@ function ax.character:CreateObject(characterID, data, client)
         character.Inventories = {}
     end
 
-    print(character:GetModel())
     for k, v in pairs(self.variables) do
         if ( data[k] ) then
             character[k] = data[k]
-            print("Character " .. k .. ": " .. tostring(data[k]))
         elseif ( v.Default ) then
             character[k] = v.Default
         end
