@@ -76,13 +76,13 @@ net.Receive("ax.net.msg", function(len, ply)
 
     local ok, decoded = pcall(sfs.decode, raw)
     if ( !ok or type(decoded) != "table" ) then
-        ErrorNoHalt("[Networking] Decode failed for '" .. name .. "'\n")
+        ax.util:PrintError("[Networking] Decode failed for '" .. name .. "'")
         return
     end
 
     local callback = ax.net.stored[name]
     if ( !isfunction(callback) ) then
-        ErrorNoHalt("[Networking] No handler for '" .. name .. "'\n")
+        ax.util:PrintError("[Networking] No handler for '" .. name .. "'")
         return
     end
 

@@ -91,7 +91,7 @@ end
 function ax.config:SetDefault(key, value)
     local stored = self.stored[key]
     if ( !istable(stored) ) then
-        ErrorNoHalt("Configuration \"" .. key .. "\" does not exist!\n")
+        ax.util:PrintError("Configuration \"" .. key .. "\" does not exist!")
         return false
     end
 
