@@ -28,7 +28,7 @@ end
 
 function GM:Initialize()
     ax.module:LoadFolder("parallax/modules")
-    ax.item:LoadFolder("parallax/core/items")
+    ax.item:LoadFolder("parallax/gamemode/items")
     ax.schema:Initialize()
 
     hook.Run("LoadFonts")
@@ -36,7 +36,7 @@ end
 
 function GM:OnReloaded()
     ax.module:LoadFolder("parallax/modules")
-    ax.item:LoadFolder("parallax/core/items")
+    ax.item:LoadFolder("parallax/gamemode/items")
     ax.schema:Initialize()
     ax.option:Load()
 
@@ -722,6 +722,10 @@ function GM:PopulateTabButtons(buttons)
 end
 
 function GM:PopulateHelpCategories(categories)
+    categories["test"] = function(container)
+        local filler = container:Add("DPanel")
+        filler:Dock(FILL)
+    end
     categories["flags"] = function(container)
         local scroller = container:Add("DScrollPanel")
         scroller:Dock(FILL)

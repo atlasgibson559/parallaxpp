@@ -7,22 +7,12 @@ ax.item.meta = ax.item.meta or {}
 ax.item.stored = ax.item.stored or {}
 ax.item.instances = ax.item.instances or {}
 
-function ax.item:LoadFolder(path)
+function ax.item:Load(path)
     if ( !path or !isstring(path) ) then return end
-
-    local files, folders = file.Find(path .. "/*", "LUA")
-    if ( !files or #files == 0 ) then return end
-
-    -- If there is a base folder, we need to load it first so we can inherit from it later.
-    if ( table.HasValue(folders, "base") ) then
-        self:LoadFolder(path .. "/base")
-    end
-
-    -- Now we can load the rest of the folders and files.
-    for _, v in ipairs(folders) do
-        if ( v == "base" ) then continue end
-
-        self:LoadFolder(path .. "/" .. v)
+    local files, _ = file.Find(path .. "/*.lua", "LUA")
+    if ( !files or #files == 0 ) then
+        ax.util:PrintError("No items found in path: " .. path)
+        return
     end
 
     for _, v in ipairs(files) do
@@ -144,6 +134,24 @@ function ax.item:LoadFolder(path)
 
         hook.Run("PostItemRegistered", ITEM.UniqueID, ITEM)
         ITEM = nil
+    end
+end
+
+function ax.item:LoadFolder(path)
+    if ( !path or !isstring(path) ) then return end
+
+    local _, folders = file.Find(path .. "/*", "LUA")
+
+    -- If there is a base folder, we need to load it first so we can inherit from it later.
+    if ( table.HasValue(folders, "base") ) then
+        self:Load(path .. "/base")
+    end
+
+    -- Now we can load the rest of the folders and files.
+    for _, v in ipairs(folders) do
+        if ( v == "base" ) then continue end
+
+        self:Load(path .. "/" .. v)
     end
 end
 
