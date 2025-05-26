@@ -1,4 +1,8 @@
-require("mysqloo")
+local success, mysqloo = pcall(require, "mysqloo")
+if ( !success ) then
+    ax.util:PrintError("MySQLOO module not found. MySQL functionality will be disabled.")
+    return
+end
 
 --- Parallax MySQLOO Database Wrapper
 -- Provides a wrapper around the mysqloo module for async MySQL access
