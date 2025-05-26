@@ -1,6 +1,7 @@
-local success, mysqloo = pcall(require, "mysqloo")
-if ( !success ) then
-    ax.util:PrintError("MySQLOO module not found. MySQL functionality will be disabled.")
+local success = pcall(require, "mysqloo")
+if ( !success or !mysqloo ) then
+    ax.util:PrintError("MySQLOO module not found. Disabling ax.sqloo.")
+    ax.sqloo = nil
     return
 end
 
