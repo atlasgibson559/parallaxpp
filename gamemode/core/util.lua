@@ -434,48 +434,63 @@ function ax.util:GetHeadingFromAngle(ang)
     return "N" -- Default to North if no match is found
 end
 
-local basePathFix = SoundDuration("npc/metropolice/pain1.wav") > 0 and "" or "../../hl2/sound/"
+ax.util.activeSoundQueues = ax.util.activeSoundQueues or {}
 
---- Queues and plays multiple sounds from an entity with spacing and optional offsets.
--- @param ent Entity Entity to emit sounds from.
--- @param sounds table List of sound paths or tables: { "sound.wav", preDelay, postDelay }.
--- @param startDelay number Optional delay before first sound (default 0).
--- @param gap number Delay between each sound (default 0.1).
--- @param volume number Sound volume (default 75).
--- @param pitch number Sound pitch (default 100).
--- @return number Total time taken for the entire sequence.
--- @usage ax.util:QueueSounds(ply, { "sound1.wav", { "sound2.wav", 0.1, 0.2 } }, 0.5, 0.2)
-function ax.util:QueueSounds(ent, sounds, startDelay, gap, volume, pitch)
-    if ( !IsValid(ent) or !istable(sounds) ) then return 0 end
+--- Queues and plays a sound sequence with controlled pacing.
+-- Uses a polling step interval instead of chained timers.
+-- @param ent Entity Entity to emit from.
+-- @param queue table Table of sounds or {path, preDelay, postDelay}
+-- @param volume number Volume to play at.
+-- @param pitch number Pitch to play at.
+function ax.util:QueueSounds(ent, queue, volume, pitch)
+    if ( !IsValid(ent) or !istable(queue) or #queue == 0 ) then return end
 
-    local currentDelay = startDelay or 0
-    local spacing = gap or 0.1
-    local vol = volume or 75
-    local pit = pitch or 100
+    local data = {
+        entity = ent,
+        sounds = queue,
+        volume = volume or 75,
+        pitch = pitch or 100,
+        current = 1,
+        nextTime = CurTime()
+    }
 
-    for _, soundData in ipairs(sounds) do
-        local path, preDelay, postDelay = soundData, 0, 0
+    local id = tostring(ent) .. "_" .. CurTime()
+    ax.util.activeSoundQueues[id] = data
 
-        if ( istable(soundData) ) then
-            path = soundData[1]
-            preDelay = soundData[2] or 0
-            postDelay = soundData[3] or 0
+    timer.Create("ax.sound.queue." .. id, 0.1, 0, function()
+        if ( !IsValid(data.entity) or !data.sounds[data.current] ) then
+            timer.Remove("ax.sound.queue." .. id)
+            ax.util.activeSoundQueues[id] = nil
+            return
         end
 
-        local length = SoundDuration(basePathFix .. path)
+        if ( CurTime() < data.nextTime ) then return end
 
-        currentDelay = currentDelay + preDelay
+        local soundEntry = data.sounds[data.current]
+        local path, pre, post
 
-        timer.Simple(currentDelay, function()
-            if ( IsValid(ent) ) then
-                ent:EmitSound(path, vol, pit)
+        if ( isstring(soundEntry) ) then
+            path, pre, post = soundEntry, 0, 0
+        else
+            path = soundEntry[1]
+            pre  = soundEntry[2] or 0
+            post = soundEntry[3] or 0
+        end
+
+        -- apply pre-delay only before playback
+        data.nextTime = CurTime() + pre
+
+        -- emit sound after pre-delay expires
+        timer.Simple(pre, function()
+            if ( IsValid(data.entity) ) then
+                data.entity:EmitSound(path, data.volume, data.pitch)
             end
         end)
 
-        currentDelay = currentDelay + length + postDelay + spacing
-    end
-
-    return currentDelay
+        local dur = SoundDuration(path) or 1.0
+        data.nextTime = data.nextTime + dur + post
+        data.current = data.current + 1
+    end)
 end
 
 --- Includes Lua files for a defined entity folder path.
