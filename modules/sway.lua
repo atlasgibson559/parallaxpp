@@ -47,6 +47,66 @@ ax.option:Register("sway.multiplier.sprint", {
     Category = "category.sway"
 })
 
+ax.option:Register("camera.max.roll", {
+    Name = "Camera Max Roll",
+    Type = ax.types.number,
+    Default = 10,
+    Min = 0,
+    Max = 45,
+    Decimals = 1,
+    Description = "Maximum roll angle for the camera.",
+    NoNetworking = true,
+    Category = "category.sway"
+})
+
+ax.option:Register("camera.max.tilt", {
+    Name = "Camera Max Tilt",
+    Type = ax.types.number,
+    Default = 10,
+    Min = 0,
+    Max = 45,
+    Decimals = 1,
+    Description = "Maximum tilt angle for the camera.",
+    NoNetworking = true,
+    Category = "category.sway"
+})
+
+ax.option:Register("camera.roll.speed", {
+    Name = "Camera Roll Speed",
+    Type = ax.types.number,
+    Default = 5,
+    Min = 0,
+    Max = 20,
+    Decimals = 1,
+    Description = "Speed at which the camera roll adjusts to mouse movement.",
+    NoNetworking = true,
+    Category = "category.sway"
+})
+
+ax.option:Register("camera.pitch.speed", {
+    Name = "Camera Pitch Speed",
+    Type = ax.types.number,
+    Default = 5,
+    Min = 0,
+    Max = 20,
+    Decimals = 1,
+    Description = "Speed at which the camera pitch adjusts to mouse movement.",
+    NoNetworking = true,
+    Category = "category.sway"
+})
+
+ax.option:Register("camera.intensity", {
+    Name = "Camera Intensity",
+    Type = ax.types.number,
+    Default = 1,
+    Min = 0,
+    Max = 5,
+    Decimals = 1,
+    Description = "Intensity of the camera offset effect.",
+    NoNetworking = true,
+    Category = "category.sway"
+})
+
 if ( !CLIENT ) then return end
 
 local SideMove = 0
@@ -149,13 +209,150 @@ local function GetViewModelBob(pos, ang)
     return pos, ang
 end
 
-DEFINE_BASECLASS("sway")
-function MODULE:CalcViewModelView(wep, vm, oldPos, oldAng, pos, ang)
-    if ( !IsValid(wep) or !IsValid(vm) ) then return end
+local horizontalRoll = 0
+local targetHorizontalRoll = 0
+local sensitivityX = 0.1
+
+local verticalTilt = 0
+local targetVerticalTilt = 0
+local sensitivityY = 0.1
+function MODULE:CreateMove(cmd)
+    local maxRoll = ax.option:Get("camera.max.roll", 10)
+    local maxTilt = ax.option:Get("camera.max.tilt", 10)
+    local mouseX = cmd:GetMouseX()
+    local mouseY = cmd:GetMouseY()
+
+    targetHorizontalRoll = math.Clamp(mouseX * sensitivityX, -maxRoll, maxRoll)
+    targetVerticalTilt = math.Clamp(mouseY * sensitivityY, -maxTilt, maxTilt)
+end
+
+local lerpMultiplier = 0
+local lerpRoll = 0
+local lerpYaw = 0
+local lerpPitch = 0
+local lerpFOV = 75
+local currentStep = 0
+function MODULE:HandlePlayerStep(client, side)
+    if ( !IsValid(client) or client:InObserver() ) then return end
+
+    local velocity = client:GetVelocity()
+    local speed = velocity:Length()
+    if ( speed > 0 and client:OnGround() ) then
+        currentStep = ( currentStep + 1 ) % 2
+    else
+        currentStep = 0
+    end
+end
+
+function MODULE:CalcView(client, origin, angles, fov, znear, zfar)
+    if ( !IsValid(client) or client:InObserver() ) then return end
+
+    local view = {
+        origin = origin,
+        angles = angles,
+        fov = fov,
+        znear = znear or 1,
+        zfar = zfar or 10000
+    }
+
+    local newOrigin = origin
+    local newAngles = angles
+
+    local velocity = client:GetVelocity()
+    local speed = velocity:Length()
+    local multiplier = 0.5 + ( speed / 100 )
+
+    local ft = FrameTime()
+    local time = ft * 2
+
+    lerpMultiplier = Lerp(time, lerpMultiplier, multiplier)
+    lerpRoll = Lerp(time, lerpRoll, velocity:Dot(newAngles:Right()) * 0.05 + ( currentStep == 1 and 0.5 or -0.5 ) * math.max(0, lerpMultiplier - 0.5))
+    lerpYaw = Lerp(time, lerpYaw, velocity:Dot(newAngles:Right()) * 0.01 + ( currentStep == 1 and 0.125 or -0.125 ) * math.max(0, lerpMultiplier - 0.5))
+    lerpPitch = Lerp(time, lerpPitch, ( velocity:Dot(newAngles:Up()) * 0.05 + ( speed / 64 ) ) / 2)
+    lerpFOV = Lerp(time, lerpFOV, fov + ( speed / 64 ))
+
+    -- Side roll when moving left or right
+    newAngles.roll = newAngles.roll + ( ( math.cos( CurTime() * 1.35 ) / 2 * lerpMultiplier ) + lerpRoll )
+
+    -- Side to side pitch when moving left or right
+    newAngles.yaw = newAngles.yaw + ( ( math.sin( CurTime() ) / 6 * lerpMultiplier ) + lerpYaw )
+
+    -- Up and down pitch when moving forward or backward
+    newAngles.pitch = newAngles.pitch + ( ( math.sin( CurTime() ) / 6 * lerpMultiplier ) + lerpPitch )
+
+    local rollSpeed = ax.option:Get("camera.roll.speed", 5)
+    local pitchSpeed = ax.option:Get("camera.pitch.speed", 5)
+
+    -- Smoothly interpolate the current values toward the target values.
+    horizontalRoll = Lerp(FrameTime() * rollSpeed, horizontalRoll, targetHorizontalRoll)
+    verticalTilt = Lerp(FrameTime() * pitchSpeed, verticalTilt, targetVerticalTilt)
+
+    -- Apclient the horizontal roll effect.
+    newAngles.r = newAngles.r + horizontalRoll
+    -- Apclient the vertical tilt offset to the pitch (in addition to the player’s actual pitch).
+    newAngles.p = newAngles.p + verticalTilt
+
+    --- Implementation of Camera bone if it exists
+    local viewModel = client:GetViewModel()
+    if ( IsValid(viewModel) ) then
+        local cameraAttachmentIndex = viewModel:LookupAttachment("camera")
+        if ( cameraAttachmentIndex > 0 ) then
+            local cameraAttachment = viewModel:GetAttachment(cameraAttachmentIndex)
+            if ( cameraAttachment ) then
+                local rootAttachmentIndex = viewModel:LookupAttachment("camera_root")
+                if ( rootAttachmentIndex == 0 ) then
+                    rootAttachmentIndex = viewModel:LookupAttachment("camera")
+                end
+
+                local rootAttachment = rootAttachmentIndex > 0 and viewModel:GetAttachment(rootAttachmentIndex) or {
+                    Pos = cameraAttachment.Pos,
+                    Ang = Angle(0, 0, 0)
+                }
+
+                local offsetAngles = cameraAttachment.Ang - rootAttachment.Ang
+                local intensity = ax.option:Get("camera.intensity", 1)
+
+                newAngles = newAngles + offsetAngles * intensity
+            end
+        end
+    end
+
+    view.origin = newOrigin
+    view.angles = newAngles + client:GetViewPunchAngles() -- Double the view punch angles to make it more pronounced
+    view.fov = lerpFOV
+
+    return view
+end
+
+local lerpViewMultiplier = 0
+local lerpViewYaw = 0
+local lerpViewPitch = 0
+function MODULE:CalcViewModelView(weapon, viewModel, oldEyePos, oldEyeAng, eyePos, eyeAng)
+    if ( !IsValid(weapon) or !IsValid(viewModel) ) then return end
     if ( ax.client:InObserver() ) then return end
 
-    pos, ang = GAMEMODE.BaseClass:CalcViewModelView(wep, vm, oldPos, oldAng, pos, ang)
-    pos, ang = GetViewModelBob(pos, ang)
+    local newOrigin, newAngles = GAMEMODE.BaseClass:CalcViewModelView(weapon, viewModel, oldEyePos, oldEyeAng, eyePos, eyeAng)
+    newOrigin, newAngles = GetViewModelBob(newOrigin, newAngles)
 
-    return pos, ang
+    local velocity = ax.client:GetVelocity()
+    local speed = velocity:Length()
+    local multiplier = 0.5 + ( speed / 100 )
+
+    local ft = FrameTime()
+    local time = ft * 5
+
+    lerpViewMultiplier = Lerp(time, lerpViewMultiplier, multiplier)
+    lerpViewPitch = Lerp(time, lerpViewPitch, ( ( math.cos( CurTime() * 1.75 ) / 4 * lerpViewMultiplier ) + ( velocity:Dot(newAngles:Up()) * 0.05 + ( speed / 50 ) ) ) * lerpViewMultiplier / 2)
+    lerpViewYaw = Lerp(time, lerpViewYaw, ( ( math.sin( CurTime() ) * lerpViewMultiplier ) + ( velocity:Dot(newAngles:Right()) * 0.05 ) ) * lerpViewMultiplier / 4)
+
+    newAngles.pitch = newAngles.pitch + lerpViewPitch
+    newAngles.yaw = newAngles.yaw + lerpViewYaw
+
+    -- Animate the weapon more, so it looks like a breathing effect
+    local bIron = weapon.GetIronSights and weapon:GetIronSights()
+    local breathScale = bIron and 0.125 or 1
+    newOrigin.z = newOrigin.z + math.sin(CurTime() * 2) * 0.25 * breathScale
+    newOrigin.x = newOrigin.x + math.cos(CurTime() * 2) * 0.25 * breathScale
+
+    return newOrigin, newAngles
 end
