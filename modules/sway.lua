@@ -144,7 +144,7 @@ local function GetViewModelBob(pos, ang)
     local steprate = Lerp(d, 1, 2.75)
     steprate = Lerp(ViewModelNotOnGround, steprate, 0.75)
 
-    BobCT = BobCT + ( ft / 2 * steprate )
+    BobCT = ( BobCT + ( ft / 2 * steprate ) ) % ( math.pi * 2 )
 
     return pos, ang
 end
