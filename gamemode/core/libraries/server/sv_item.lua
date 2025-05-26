@@ -1,9 +1,27 @@
 -- server-side item logic
 -- @module ax.item
 
+--- Adds a new item to a character's inventory.
+-- This function handles inventory lookup, database insertion, instance creation, and syncing.
+-- @tparam number characterID ID of the character receiving the item
+-- @tparam[opt] number inventoryID Optional specific inventory ID
+-- @tparam string uniqueID The registered unique ID of the item
+-- @tparam[opt] table data Optional custom item data
+-- @tparam[opt] function callback Optional callback called with (itemID, data)
+-- @within ax.item
 function ax.item:Add(characterID, inventoryID, uniqueID, data, callback)
     if ( !characterID or !uniqueID or !self.stored[uniqueID] ) then
         ax.util:PrintError("Invalid parameters for item addition: characterID=" .. tostring(characterID) .. ", uniqueID=" .. tostring(uniqueID))
+        return
+    end
+
+    local character = ax.character:Get(characterID)
+    if ( character and !inventoryID ) then
+        inventoryID = character:GetInventory()
+    end
+
+    local inventory = ax.inventory:Get(inventoryID)
+    if ( inventory and !inventory:HasSpaceFor(self.stored[uniqueID].Weight) ) then
         return
     end
 
@@ -15,14 +33,9 @@ function ax.item:Add(characterID, inventoryID, uniqueID, data, callback)
         unique_id = uniqueID,
         data = util.TableToJSON(data)
     }, function(result)
-        if ( !result ) then
-            ax.util:PrintError("Failed to insert item into database for character ID " .. characterID .. " and unique ID " .. uniqueID)
-            return
-        end
-
         local itemID = tonumber(result)
         if ( !itemID ) then
-            ax.util:PrintError("Failed to convert item ID from database result: " .. tostring(result))
+            ax.util:PrintError("Failed to create item in database: " .. tostring(result))
             return
         end
 
@@ -35,13 +48,12 @@ function ax.item:Add(characterID, inventoryID, uniqueID, data, callback)
         })
 
         if ( !item ) then
-            ax.util:PrintError("Failed to create item object for item ID " .. itemID .. " and unique ID " .. uniqueID)
+            ax.util:PrintError("Failed to create item object for item ID " .. itemID)
             return
         end
 
         self.instances[itemID] = item
 
-        local inventory = ax.inventory:Get(inventoryID)
         if ( inventory ) then
             local items = inventory:GetItems()
             if ( !table.HasValue(items, itemID) ) then
@@ -233,6 +245,46 @@ function ax.item:Cache(characterID, callback)
     end)
 end
 
+--- Completely removes an item from the inventory system.
+-- Deletes the item from the database, removes it from inventory, and clears it from memory.
+-- @param itemID The item ID to remove.
+-- @param callback Optional function to call after removal.
+function ax.item:Remove(itemID, callback)
+    local item = self.instances[itemID]
+    if ( !item ) then
+        ax.util:PrintError("Invalid item ID for removal: " .. tostring(itemID))
+        return false
+    end
+
+    local inventoryID = item:GetInventory()
+    local inventory = ax.inventory:Get(inventoryID)
+
+    -- Remove from inventory object
+    if ( inventory ) then
+        ax.inventory:RemoveItem(inventoryID, itemID)
+    end
+
+    -- Delete from database
+    ax.database:Delete("ax_items", "id = " .. itemID)
+
+    -- Notify client
+    local client = ax.character:GetPlayerByCharacter(item:GetOwner())
+    if ( IsValid(client) ) then
+        ax.net:Start(client, "inventory.item.remove", inventoryID, itemID)
+    end
+
+    -- Remove from memory
+    self.instances[itemID] = nil
+
+    hook.Run("OnItemRemovedPermanently", itemID)
+
+    if ( callback ) then
+        callback(itemID)
+    end
+
+    return true
+end
+
 function ax.item:Spawn(itemID, uniqueID, position, angles, callback, data)
     if ( !uniqueID or !position or !self.stored[uniqueID] ) then
         ax.util:PrintError("Invalid parameters for item spawn.")
@@ -242,6 +294,14 @@ function ax.item:Spawn(itemID, uniqueID, position, angles, callback, data)
     local entity = ents.Create("ax_item")
     if ( !IsValid(entity) ) then
         ax.util:PrintError("Failed to create item entity for unique ID '" .. uniqueID .. "'.")
+        return nil
+    end
+
+    if ( IsValid(position) and position:IsPlayer() ) then
+        position = position:GetDropPosition()
+        angles = position:GetAngles()
+    elseif ( !isvector(position) ) then
+        ax.util:PrintError("Invalid position provided for item spawn: " .. tostring(position))
         return nil
     end
 

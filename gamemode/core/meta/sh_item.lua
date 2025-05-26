@@ -165,4 +165,16 @@ function ITEM:Hook(name, func)
     table.insert(self.Hooks[name], func)
 end
 
+function ITEM:Remove()
+    if ( self.Entity and IsValid(self.Entity) ) then
+        self.Entity:Remove()
+    end
+
+    if ( self.OnRemoved ) then
+        self:OnRemoved()
+    end
+
+    ax.item:Remove(self:GetID(), callback)
+end
+
 ax.item.meta = ITEM

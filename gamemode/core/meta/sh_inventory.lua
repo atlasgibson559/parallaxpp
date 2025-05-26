@@ -49,6 +49,7 @@ function INV:GetWeight()
 
     return weight
 end
+
 function INV:HasSpaceFor(weight)
     return (self:GetWeight() + weight) <= self:GetMaxWeight()
 end
