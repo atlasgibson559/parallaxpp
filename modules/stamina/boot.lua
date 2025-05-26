@@ -128,6 +128,19 @@ if ( SERVER ) then
         return st and st.current >= amount
     end
 
+    --- Adds stamina to a player
+    -- @param client Player
+    -- @param amount number
+    -- @return boolean
+    function ax.stamina:Add(client, amount)
+        local st = client:GetRelay("stamina")
+        if ( !istable(st) ) then return false end
+
+        st.current = math.Clamp(st.current + amount, 0, st.max)
+        client:SetRelay("stamina", st)
+        return true
+    end
+
     --- Gets current stamina
     -- @param client Player
     -- @return number
