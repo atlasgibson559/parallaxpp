@@ -62,7 +62,7 @@ function MODULE:PlayerSpawnedProp(client, model, entity)
     self:Send(self:Format(client) .. " spawned a prop (" .. self:Format(entity) .. ")")
 end
 
-function MODULE:PlayerSpawnedSENT(client, model, entity)
+function MODULE:PlayerSpawnedSENT(client, entity)
     self:Send(self:Format(client) .. " spawned a SENT (" .. self:Format(entity) .. ")")
 end
 
@@ -70,7 +70,7 @@ function MODULE:PlayerSpawnedRagdoll(client, model, entity)
     self:Send(self:Format(client) .. " spawned a ragdoll (" .. self:Format(entity) .. ")")
 end
 
-function MODULE:PlayerSpawnedVehicle(client, model, entity)
+function MODULE:PlayerSpawnedVehicle(client, entity)
     self:Send(self:Format(client) .. " spawned a vehicle (" .. self:Format(entity) .. ")")
 end
 
@@ -78,11 +78,11 @@ function MODULE:PlayerSpawnedEffect(client, model, entity)
     self:Send(self:Format(client) .. " spawned an effect (" .. self:Format(entity) .. ")")
 end
 
-function MODULE:PlayerSpawnedNPC(client, model, entity)
+function MODULE:PlayerSpawnedNPC(client, entity)
     self:Send(self:Format(client) .. " spawned an NPC (" .. self:Format(entity) .. ")")
 end
 
-function MODULE:PlayerSpawnedSWEP(client, model, entity)
+function MODULE:PlayerSpawnedSWEP(client, entity)
     self:Send(self:Format(client) .. " spawned a SWEP (" .. self:Format(entity) .. ")")
 end
 
