@@ -47,6 +47,8 @@ SWEP.IronSightsToggle = false
 SWEP.IronSightsDelay = 0.25
 
 SWEP.Reloading = {
+    Sequence = ACT_VM_RELOAD,
+    SequenceEmpty = ACT_VM_RELOAD_EMPTY,
     PlaybackRate = 1,
     Sound = Sound("Weapon_Pistol.Reload"),
     SoundEmpty = Sound("Weapon_Pistol.ReloadEmpty")
@@ -93,6 +95,8 @@ function SWEP:GetIronSights()
     if ( owner:KeyDown(IN_ATTACK2) ) then
         return true
     end
+
+    return false
 end
 
 function SWEP:IsEmpty()
@@ -117,33 +121,44 @@ function SWEP:CanPrimaryAttack()
 end
 
 function SWEP:PrimaryAttack()
+    if ( CurTime() < self:GetNextPrimaryFire() ) then return end
+
     local owner = self:GetOwner()
     if ( !IsValid(owner) ) then return end
 
-    if ( self:CanPrimaryAttack() ) then
-        local delay = self.Primary.Delay
-        if ( self.Primary.RPM ) then
-            delay = 60 / self.Primary.RPM
-        end
+    if ( !self:CanPrimaryAttack() ) then return end
 
-        self:SetNextPrimaryFire(CurTime() + delay)
-
-        self:PlayAnimation(self.Primary.Sequence, self.Primary.PlaybackRate)
-
-        self:EmitSound(self.Primary.Sound)
-
-        if ( self.FireMode == "projectile" and self.ProjectileClass ) then
-            self:LaunchProjectile(self.ProjectileClass)
-        elseif ( self.FireMode == "grenade" ) then
-            self:ThrowGrenade()
-        else
-            self:ShootBullet(self.Primary.Damage, self.Primary.NumShots, self.Primary.Cone)
-        end
-
-        self:TakePrimaryAmmo(1)
-        owner:SetAnimation(PLAYER_ATTACK1)
-        owner:MuzzleFlash()
+    local delay = self.Primary.Delay
+    if ( self.Primary.RPM ) then
+        delay = 60 / self.Primary.RPM
     end
+
+    self:SetNextPrimaryFire(CurTime() + delay)
+
+    -- Client-side: visuals and effects
+    if ( CLIENT and IsFirstTimePredicted() ) then
+        self:EmitSound(self.Primary.Sound)
+        owner:MuzzleFlash()
+        owner:ViewPunch(Angle(
+            -self.Primary.Recoil,
+            math.Rand(-self.Primary.Recoil, self.Primary.Recoil),
+            math.Rand(-self.Primary.Recoil, self.Primary.Recoil)
+        ))
+    end
+
+    -- Shared or server-side: shooting logic
+    if ( self.FireMode == "projectile" and self.ProjectileClass ) then
+        self:LaunchProjectile(self.ProjectileClass)
+    elseif ( self.FireMode == "grenade" ) then
+        self:ThrowGrenade()
+    else
+        self:ShootBullet(self.Primary.Damage, self.Primary.NumShots, self.Primary.Cone)
+    end
+
+    self:TakePrimaryAmmo(1)
+    owner:SetAnimation(PLAYER_ATTACK1)
+
+    self:PlayAnimation(self.Primary.Sequence, self.Primary.PlaybackRate)
 end
 
 function SWEP:SecondaryAttack()

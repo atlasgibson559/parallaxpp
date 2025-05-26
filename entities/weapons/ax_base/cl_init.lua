@@ -7,7 +7,7 @@ function SWEP:Think()
     if ( owner != ax.client ) then return end
 
     local aim = self:GetIronSights()
-    self.IronSightsProgress = math.Approach(self.IronSightsProgress, aim and 1 or 0, FrameTime() * 4)
+    self.IronSightsProgress = Lerp(FrameTime() * 10, self.IronSightsProgress, aim and 1 or 0)
 end
 
 function SWEP:TranslateFOV(fov)
