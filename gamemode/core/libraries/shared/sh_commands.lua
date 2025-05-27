@@ -15,7 +15,7 @@ ax.command.stored = {}
 -- @field bool SuperAdminOnly Whether the command is super admin only.
 -- @field string UniqueID The unique identifier of the command.
 -- @usage ax.command:Register({
---     Name = "example",
+--     Description = "An example command.",
 --     Callback = function(info, client, arguments)
 --         print("Example command executed!")
 --     end,
@@ -94,4 +94,11 @@ function ax.command:Get(identifier)
     end
 
     return false
+end
+
+--- Returns all registered commands.
+-- @realm shared
+-- @return table A table containing all registered commands.
+function ax.command:GetAll()
+    return self.stored
 end
