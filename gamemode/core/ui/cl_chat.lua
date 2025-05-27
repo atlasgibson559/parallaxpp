@@ -80,13 +80,6 @@ function PANEL:Init()
 
             self:PopulateRecommendations(command)
         else
-            -- This is a regular chat message, so we set the chat type to IC
-            local data = ax.command:Get("ic")
-            if ( data ) then
-                chatType = string.upper(data.UniqueID)
-            end
-
-            -- Clear recommendations if any
             self:PopulateRecommendations()
         end
 
@@ -275,7 +268,10 @@ function PANEL:SetVisible(visible)
         self:SetMouseInputEnabled(false)
         self:SetKeyboardInputEnabled(false)
         self.entry:SetText("")
+        self.entry:SetCaretPos(0)
         self.entry:SetVisible(false)
+        self.chatType:SetText("IC", true, true)
+        self.chatType:RestartTyping()
     end
 
     self:PopulateRecommendations()
