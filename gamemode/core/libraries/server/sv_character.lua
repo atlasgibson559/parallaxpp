@@ -69,12 +69,11 @@ function ax.character:Load(client, characterID)
     local currentCharacter = client:GetCharacter()
     if ( currentCharacter ) then
         currentCharacter.Player = NULL
-        --currentCharacter:Save()
 
-        -- if ( currentCharacter:GetID() == characterID ) then
-        --     client:Notify("You are already using this character!")
-        --     return false
-        -- end
+        if ( currentCharacter:GetID() == characterID ) then
+            client:Notify("You are already using this character!")
+            return false
+        end
     end
 
     local steamID = client:SteamID64()
@@ -87,8 +86,6 @@ function ax.character:Load(client, characterID)
                 client:Notify("Failed to load character!")
                 return
             end
-
-            print(character)
 
             self.stored[characterID] = character
 
