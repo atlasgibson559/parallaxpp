@@ -19,9 +19,9 @@ local DEFAULT_MODELS = {
     "models/player/group01/male_09.mdl"
 }
 
-ax.faction = {}
-ax.faction.stored = ax.faction.stored or {}
-ax.faction.instances = ax.faction.instances or {}
+ax.faction = ax.faction or {}
+ax.faction.stored = {}
+ax.faction.instances = {}
 
 ax.faction.meta = {
     GetName = function(self)
