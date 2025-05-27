@@ -26,11 +26,15 @@ function PANEL:Init()
     bottom:Dock(BOTTOM)
     bottom:DockMargin(8, 8, 8, 8)
 
-    self.chatType = bottom:Add("ax.text")
+    self.chatType = bottom:Add("ax.text.typewriter")
     self.chatType:Dock(LEFT)
     self.chatType:SetTextInset(8, -2)
     self.chatType:SetFont("parallax.small")
-    self.chatType:SetText("IC", true)
+    self.chatType:SetText("IC", true, true)
+    self.chatType:SetTypingSpeed(0.05)
+    self.chatType.PostThink = function(this)
+        this:SetWide(ax.util:GetTextWidth(this:GetFont(), this:GetText()) + 16)
+    end
     self.chatType.Paint = function(this, width, height)
         surface.SetDrawColor(ax.color:Get("background.transparent"))
         surface.DrawRect(0, 0, width, height)
@@ -42,6 +46,7 @@ function PANEL:Init()
     self.entry:SetPlaceholderText("Say something...")
     self.entry:SetTextColor(color_white)
     self.entry:SetDrawLanguageID(false)
+    self.entry:SetTabbingDisabled(true)
 
     bottom:SizeToChildren(false, true)
 
@@ -56,12 +61,13 @@ function PANEL:Init()
     end
 
     self.entry.OnTextChanged = function(this)
+        local chatType = "IC"
         local text = this:GetValue()
         if ( string.sub(text, 1, 3) == ".//" ) then
             -- Check if it's a way of using local out of character chat using .// prefix
             local data = ax.command:Get("looc")
             if ( data ) then
-                self.chatType:SetText("LOOC", true)
+                chatType = string.upper(data.UniqueID)
             end
         elseif ( string.sub(text, 1, 1) == "/" ) then
             -- This is a command, so we need to parse it
@@ -69,27 +75,57 @@ function PANEL:Init()
             local command = arguments[1]
             local data = ax.command:Get(command)
             if ( data ) then
-                self.chatType:SetText(string.upper(data.UniqueID), true)
-            else
-                -- Just revert back to IC if the command doesn't exist
-                self.chatType:SetText("IC", true)
+                chatType = string.upper(data.UniqueID)
             end
+
+            self:PopulateRecommendations(command)
         else
-            -- Everything else is a normal chat message
-            self.chatType:SetText("IC", true)
+            -- This is a regular chat message, so we set the chat type to IC
+            local data = ax.command:Get("ic")
+            if ( data ) then
+                chatType = string.upper(data.UniqueID)
+            end
+
+            -- Clear recommendations if any
+            self:PopulateRecommendations()
         end
+
+        -- Prevent the chat type from being set to the same value
+        if ( self.chatType:GetText() == chatType ) then
+            return
+        end
+
+        self.chatType:SetText(chatType, true, true)
+        self.chatType:RestartTyping()
     end
 
-    self.entry.OnLoseFocus = function(this)
-        if ( this:GetText() == "" ) then
-            self:SetVisible(false)
+    self.entry.OnKeyCode = function(this, key)
+        if ( key == KEY_TAB ) then
+            self:CycleRecommendations()
+            return true
         end
     end
 
     self.history = self:Add("DScrollPanel")
-    self.history:SetPos(8, label:GetTall() + 8)
     self.history:SetSize(self:GetWide() - 16, self:GetTall() - 16 - label:GetTall() - self.entry:GetTall())
+    self.history:SetPos(8, label:GetTall() + 8)
     self.history:GetVBar():SetWide(0)
+
+    self.recommendations = self:Add("DScrollPanel")
+    self.recommendations:SetSize(self.history:GetWide(), self.history:GetTall() - 8)
+    self.recommendations:SetPos(8, self.history:GetY() + self.history:GetTall() - self.recommendations:GetTall() - 8)
+    self.recommendations:SetAlpha(0)
+    self.recommendations:GetVBar():SetWide(0)
+    self.recommendations.list = {}
+    self.recommendations.panels = {}
+    self.recommendations.indexSelect = 1
+    self.recommendations.maxSelection = 1
+    self.recommendations.Paint = function(this, width, height)
+        ax.util:DrawBlur(this)
+
+        surface.SetDrawColor(ax.color:Get("background.transparent"))
+        surface.DrawRect(0, 0, width, height)
+    end
 
     self:SetVisible(false)
 
@@ -100,6 +136,128 @@ function PANEL:Init()
     chat.GetChatBoxSize = function()
         return self:GetSize()
     end
+end
+
+function PANEL:PopulateRecommendations(text)
+    if ( !text ) then
+        if ( self.recommendations:GetAlpha() > 0 ) then
+            self.recommendations:AlphaTo(0, 0.2, 0, function()
+                self.recommendations:Clear()
+            end)
+
+            self.recommendations.list = {}
+            self.recommendations.panels = {}
+            self.recommendations.indexSelect = 1
+            self.recommendations.maxSelection = 1
+        end
+
+        return
+    end
+
+    for key, command in SortedPairsByMemberValue(ax.command:GetAll(), "UniqueID") do
+        if ( ax.util:FindString(command.UniqueID, text, true) or ( command.Prefixes and ax.util:FindInTable(command.Prefixes, text, true) ) ) then
+            table.insert(self.recommendations.list, command)
+        end
+    end
+
+    if ( #self.recommendations.list > 0 ) then
+        self.recommendations:Clear()
+        self.recommendations:AlphaTo(255, 0.2, 0)
+
+        self.recommendations.panels = {}
+        self.recommendations.maxSelection = #self.recommendations.list
+        if ( self.recommendations.indexSelect > self.recommendations.maxSelection ) then
+            self.recommendations.indexSelect = 1
+        end
+
+        for index, command in ipairs(self.recommendations.list) do
+            local rec = self.recommendations:Add("DPanel")
+            rec:Dock(TOP)
+            rec:DockMargin(4, 4, 4, 0)
+            rec.index = index
+            rec.Paint = function(_, width, height)
+                surface.SetDrawColor(ax.color:Get("background.transparent"))
+                surface.DrawRect(0, 0, width, height)
+
+                if ( self.recommendations.indexSelect == index ) then
+                    surface.SetDrawColor(ax.config:Get("color.schema"))
+                    surface.DrawRect(0, 0, width, height)
+                end
+            end
+
+            local height = 0
+
+            local title = rec:Add("ax.text")
+            title:Dock(TOP)
+            title:DockMargin(8, 0, 8, 0)
+            title:SetFont("parallax.small")
+            title:SetText(command.UniqueID, true)
+            height = height + title:GetTall()
+
+            local descriptionWrapped = command.Description
+            if ( !descriptionWrapped or descriptionWrapped == "" ) then
+                descriptionWrapped = "No description provided."
+            end
+
+            descriptionWrapped = ax.util:GetWrappedText(descriptionWrapped, "parallax.tiny", self.recommendations:GetWide() - 16)
+            for k, v in ipairs(descriptionWrapped) do
+                local descLine = rec:Add("ax.text")
+                descLine:Dock(TOP)
+                descLine:DockMargin(8, -2, 8, 0)
+                descLine:SetFont("parallax.tiny")
+                descLine:SetText(v, true)
+                descLine:SetTextColor(ax.color:Get("text"))
+                height = height + descLine:GetTall()
+            end
+
+            rec:SetTall(height)
+
+            self.recommendations.panels[index] = rec
+        end
+    else
+        self.recommendations:AlphaTo(0, 0.2, 0, function()
+            self.recommendations:Clear()
+        end)
+    end
+end
+
+function PANEL:CycleRecommendations()
+    if ( self.recommendations:GetAlpha() < 0 and self.recommendations.maxSelection < 0 ) then
+        return
+    end
+
+    local recommendations = self.recommendations.list
+    if ( #recommendations < 1 ) then
+        return
+    end
+
+    local index = self.recommendations.indexSelect
+    index = index + 1
+
+    if ( index > self.recommendations.maxSelection ) then
+        index = 1
+    end
+
+    self.recommendations.indexSelect = index
+
+    for _, panel in ipairs(self.recommendations.panels) do
+        panel.index = panel.index or 1
+        if ( panel.index == index ) then
+            self.recommendations:ScrollToChild(panel)
+        end
+    end
+
+    local data = recommendations[index]
+    if ( !data ) then
+        return
+    end
+
+    self.entry:SetText("/" .. data.UniqueID)
+    self.entry:RequestFocus()
+    self.entry:SetCaretPos(2 + #data.UniqueID)
+
+    self.chatType:SetText(data.UniqueID, true, true)
+    self.chatType:RestartTyping()
 end
 
 function PANEL:SetVisible(visible)
@@ -117,12 +275,24 @@ function PANEL:SetVisible(visible)
         self.entry:SetText("")
         self.entry:SetVisible(false)
     end
+
+    self:PopulateRecommendations()
 end
 
 function PANEL:Think()
     if ( input.IsKeyDown(KEY_ESCAPE) and self:IsVisible() ) then
         self:SetVisible(false)
     end
+end
+
+function PANEL:OnKeyCodePressed(key)
+    if ( !self:IsVisible() ) then return end
+
+    if ( key != KEY_TAB ) then
+        return
+    end
+
+    self:CycleRecommendations()
 end
 
 function PANEL:Paint(width, height)
