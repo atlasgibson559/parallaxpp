@@ -71,6 +71,9 @@ function GM:PlayerLoadout(client)
     if ( hook.Run("PlayerGetToolgun", client) ) then client:Give("gmod_tool") end
     if ( hook.Run("PlayerGetPhysgun", client) ) then client:Give("weapon_physgun") end
 
+    client:StripAmmo()
+    client:StripWeapons()
+
     client:Give("ax_hands")
     client:SelectWeapon("ax_hands")
 
@@ -90,6 +93,8 @@ function GM:PlayerLoadout(client)
 
             client:SetBodygroup(id, value)
         end
+
+        client:SetHealth(character:GetData("health", 100))
     end
 
     hook.Run("PostPlayerLoadout", client)
