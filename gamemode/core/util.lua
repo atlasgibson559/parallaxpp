@@ -271,6 +271,25 @@ function ax.util:FindText(txt, find)
     return false
 end
 
+--- Searches for a string in a table.
+-- @realm shared
+-- @param tbl table The table to search in.
+-- @param find string The string to search for.
+function ax.util:FindInTable(tbl, find)
+    if ( !istable(tbl) or !isstring(find) ) then
+        ax.util:PrintError("Attempted to find a string in a table with no value to find for! (" .. tostring(tbl) .. ", " .. tostring(find) .. ")")
+        return false
+    end
+
+    for k, v in pairs(tbl) do
+        if ( self:FindString(v, find) ) then
+            return true
+        end
+    end
+
+    return false
+end
+
 --- Searches for a player based on the given identifier.
 -- @realm shared
 -- @param identifier any The identifier to search for.
