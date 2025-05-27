@@ -105,6 +105,22 @@ end
 function GM:PostPlayerLoadout(client)
 end
 
+function GM:PrePlayerLoadedCharacter(client, character, previousCharacter)
+    if ( !client:Alive() or !previousCharacter ) then return end
+
+    previousCharacter:SetData("health", client:Health())
+
+    local groups = {}
+    for i = 0, client:GetNumBodyGroups() - 1 do
+        local name = client:GetBodygroupName(i)
+        if ( name and name != "" ) then
+            groups[name] = client:GetBodygroup(i)
+        end
+    end
+
+    previousCharacter:SetData("groups", groups)
+end
+
 function GM:PlayerDeathThink(client)
     -- TODO: uh, some happy day this should be replaced
     if ( client:KeyPressed(IN_ATTACK) or client:KeyPressed(IN_ATTACK2) or client:KeyPressed(IN_JUMP) or client:IsBot() ) then
