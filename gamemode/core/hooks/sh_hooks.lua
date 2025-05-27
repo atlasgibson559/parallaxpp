@@ -121,3 +121,49 @@ end
 function GM:GetGameDescription()
     return "Parallax: " .. (SCHEMA and SCHEMA.Name or "Unknown")
 end
+
+function GM:CanTool(client, trace, toolname, tool, button)
+    if ( !hook.Run("PlayerGetToolgun", client) ) then
+        return false
+    end
+end
+
+function GM:PhysgunPickup(client, ent)
+    if ( !hook.Run("PlayerGetPhysgun", client) ) then
+        return false
+    end
+
+    if ( CAMI.PlayerHasAccess(client, "Parallax - Physgun Players", nil) and ent:IsPlayer() ) then
+        if ( ent == client ) then
+            return false
+        end
+
+        if ( ent:Team() == TEAM_SPECTATOR or ent:Team() == TEAM_UNASSIGNED ) then
+            return false
+        end
+
+        ent:SetMoveType(MOVETYPE_NOCLIP)
+
+        return true
+    end
+
+    return IsValid(ent) and ent:EntIndex() > 0 and IsValid(ent:GetPhysicsObject()) and ent:GetPhysicsObject():IsMoveable()
+end
+
+function GM:PhysgunDrop(client, ent)
+    if ( !hook.Run("PlayerGetPhysgun", client) ) then
+        return false
+    end
+
+    if ( ent:IsPlayer() ) then
+        ent:SetMoveType(MOVETYPE_WALK)
+        return true
+    end
+
+    if ( IsValid(ent) and ent:GetPhysicsObject():IsMoveable() ) then
+        ent:GetPhysicsObject():EnableMotion(true)
+        return true
+    end
+
+    return false
+end

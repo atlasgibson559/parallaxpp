@@ -14,6 +14,11 @@ CAMI.RegisterPrivilege({
 })
 
 CAMI.RegisterPrivilege({
+    Name = "Parallax - Physgun Players",
+    MinAccess = "admin"
+})
+
+CAMI.RegisterPrivilege({
     Name = "Parallax - Manage Flags",
     MinAccess = "admin"
 })
