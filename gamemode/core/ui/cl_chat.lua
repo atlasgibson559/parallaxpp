@@ -91,7 +91,7 @@ function PANEL:Init()
         end
 
         -- Prevent the chat type from being set to the same value
-        if ( self.chatType:GetText() == chatType ) then
+        if ( ax.util:FindString(self.chatType:GetText(), chatType) ) then
             return
         end
 
@@ -258,6 +258,8 @@ function PANEL:CycleRecommendations()
 
     self.chatType:SetText(data.UniqueID, true, true)
     self.chatType:RestartTyping()
+
+    surface.PlaySound("ax.button.enter")
 end
 
 function PANEL:SetVisible(visible)
