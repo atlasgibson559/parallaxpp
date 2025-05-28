@@ -33,13 +33,12 @@ end
 -- @return The color.
 function ax.color:Get(name)
     local storedColor = self.stored[name]
-    -- Copy ONLY if you intend to modify the color
     if ( IsColor(storedColor) ) then
         return setmetatable({r = storedColor.r, g = storedColor.g, b = storedColor.b, a = storedColor.a}, colorObject)
     end
 
     ax.util:PrintError("Attempted to get an invalid color!")
-    return false
+    return nil
 end
 
 --- Dims a color by a specified fraction.
