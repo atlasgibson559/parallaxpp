@@ -133,15 +133,15 @@ function ax.faction:Get(identifier)
         end
 
         return self.instances[identifier]
-    end
+    elseif ( isstring(identifier) ) then
+        if ( self.stored[identifier] ) then
+            return self.stored[identifier]
+        end
 
-    if ( self.stored[identifier] ) then
-        return self.stored[identifier]
-    end
-
-    for k, v in ipairs(self.instances) do
-        if ( ax.util:FindString(v.Name, identifier) or ax.util:FindString(v.UniqueID, identifier) ) then
-            return v
+        for k, v in ipairs(self.instances) do
+            if ( ax.util:FindString(v.Name, identifier) or ax.util:FindString(v.UniqueID, identifier) ) then
+                return v
+            end
         end
     end
 
