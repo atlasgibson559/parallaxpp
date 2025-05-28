@@ -29,7 +29,6 @@ end
 --- Gets a color by its name.
 -- @realm shared
 -- @param name The name of the color.
--- @param copy boolean Whether to return a copy of the color (default: false).
 -- @return The color.
 function ax.color:Get(name)
     local storedColor = self.stored[name]
