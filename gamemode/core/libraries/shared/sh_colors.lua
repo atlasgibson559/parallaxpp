@@ -3,6 +3,7 @@
 
 ax.color = {}
 ax.color.stored = {}
+local colorObject = FindMetaTable("Color")
 
 --- Registers a new color.
 -- @realm shared
@@ -30,13 +31,11 @@ end
 -- @param name The name of the color.
 -- @param copy boolean Whether to return a copy of the color (default: false).
 -- @return The color.
-function ax.color:Get(name, copy)
-    if ( copy == nil ) then copy = false end
-
+function ax.color:Get(name)
     local storedColor = self.stored[name]
     -- Copy ONLY if you intend to modify the color
     if ( IsColor(storedColor) ) then
-        return copy and Color(storedColor.r, storedColor.g, storedColor.b, storedColor.a) or storedColor
+        return setmetatable({r = storedColor.r, g = storedColor.g, b = storedColor.b, a = storedColor.a}, colorObject)
     end
 
     ax.util:PrintError("Attempted to get an invalid color!")
@@ -48,7 +47,6 @@ end
 -- @param col Color The color to dim.
 -- @param frac number The fraction to dim the color by.
 -- @return Color The dimmed color.
-local colorObject = FindMetaTable("Color")
 function ax.color:Dim(col, frac)
     return setmetatable({r = col.r * frac, g = col.g * frac, b = col.b * frac, a = col.a}, colorObject)
 end
