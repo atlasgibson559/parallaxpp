@@ -48,8 +48,9 @@ end
 -- @param col Color The color to dim.
 -- @param frac number The fraction to dim the color by.
 -- @return Color The dimmed color.
+local colorObject = FindMetaTable("Color")
 function ax.color:Dim(col, frac)
-    return Color(col.r * frac, col.g * frac, col.b * frac, col.a)
+    return setmetatable({r = col.r * frac, g = col.g * frac, b = col.b * frac, a = col.a}, colorObject)
 end
 
 if ( CLIENT ) then
