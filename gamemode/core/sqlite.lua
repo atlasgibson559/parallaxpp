@@ -4,7 +4,7 @@
 -- @module ax.sqlite
 
 ax.sqlite = ax.sqlite or {}
-ax.sqlite.tables = {}
+ax.sqlite.tables = ax.sqlite.tables or {}
 
 --- Registers a variable for a table to be included in table creation and loading.
 -- It will also automatically add the column to the table in the database if it doesn't exist.
