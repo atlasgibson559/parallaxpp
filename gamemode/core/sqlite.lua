@@ -69,7 +69,7 @@ end
 -- @tparam table[opt] extraSchema Extra schema definitions (e.g. primary key)
 function ax.sqlite:InitializeTable(query, extraSchema)
     local schema = {
-        steamid = "TEXT PRIMARY KEY"
+        id = "INTEGER PRIMARY KEY AUTOINCREMENT"
     }
 
     for k, v in pairs(self.tables[query] or {}) do
@@ -261,7 +261,7 @@ function ax.sqlite:Select(query, columns, condition, callback)
 
     local result = sql.Query(insertQuery)
     if ( result == false ) then
-        ax.util:PrintError("Database Failed to select rows: ", insertQuery, sql.LastError())
+        ax.util:PrintError("Database Failed to select rows: ", insertQuery, " ", sql.LastError())
         return nil
     end
 

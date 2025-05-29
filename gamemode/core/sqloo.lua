@@ -186,9 +186,9 @@ function ax.sqloo:InitializeTable(tableName, extraSchema)
         end
     end
 
-    -- Only default to steamid primary key if not explicitly defined
+    -- Only default to id primary key if not explicitly defined
     if ( !hasPrimaryKey ) then
-        schema.steamid = "VARCHAR(32) PRIMARY KEY"
+        schema.id = "VARCHAR(32) PRIMARY KEY"
     end
 
     -- Merge registered vars
