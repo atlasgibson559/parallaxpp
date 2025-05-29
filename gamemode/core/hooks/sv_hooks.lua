@@ -191,7 +191,7 @@ function GM:Initialize()
 end
 
 local _reloaded = false
-function GM:OnReloaded()
+function GM:OnReloaded()    
     if ( _reloaded ) then return end
     _reloaded = true
 
@@ -199,11 +199,11 @@ function GM:OnReloaded()
         ax.database:Initialize()
     end
 
-    ax.config:Synchronize()
-
     ax.module:LoadFolder("parallax/modules")
     ax.item:LoadFolder("parallax/gamemode/items")
     ax.schema:Initialize()
+
+    ax.config:Synchronize()
 end
 
 function GM:DatabaseConnected()
