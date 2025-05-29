@@ -191,7 +191,7 @@ function GM:Initialize()
 end
 
 local _reloaded = false
-function GM:OnReloaded()    
+function GM:OnReloaded()
     if ( _reloaded ) then return end
     _reloaded = true
 
