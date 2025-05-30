@@ -41,11 +41,11 @@ ax.character:RegisterVariable("name", {
             return false, "Name must be at most 32 characters long!"
         end
 
-        if ( string.find(name, "[^%a%d%s]") and factionData.AllowNonAscii == false ) then
+        if ( string.find(name, "[^%a%d%s]") and factionData.AllowNonAscii != true ) then
             return false, "Name can only contain letters, numbers and spaces!"
         end
 
-        if ( string.find(name, "%s%s") and factionData.AllowMultipleSpaces == false ) then
+        if ( string.find(name, "%s%s") and factionData.AllowMultipleSpaces != true ) then
             return false, "Name cannot contain multiple spaces in a row!"
         end
 
