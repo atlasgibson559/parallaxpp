@@ -152,11 +152,9 @@ function ax.util:PrintError(...)
     end
 
     local line = ""
-    if ( info[2] and info[2].currentline > 0 ) then
-        local secondInfo = debug.getinfo(3, "Sl")
-        if ( secondInfo and secondInfo.short_src and secondInfo.currentline > 0 ) then
-            line = secondInfo.short_src .. ":" .. secondInfo.currentline
-        end
+    local quickInfo = info[3]
+    if ( quickInfo and quickInfo.short_src and quickInfo.currentline > 0 ) then
+        line = quickInfo.short_src .. ":" .. quickInfo.currentline
     end
 
     if ( line != "" ) then
@@ -177,7 +175,7 @@ function ax.util:PrintError(...)
 
     if ( ax.config and ax.config.Get and ax.config:Get("debug.developer") ) then
         local log = {}
-        for i = 2, 10 do
+        for i = 1, 10 do
             local traceInfo = info[i]
             if ( !traceInfo ) then break end
 
