@@ -148,3 +148,23 @@ function PLAYER:IsFemale()
 
     return false
 end
+
+function PLAYER:GetFactionData()
+    local character = self:GetCharacter()
+    if ( !character ) then return end
+
+    local faction = character:GetFactionData()
+    if ( !faction ) then return end
+
+    return faction
+end
+
+function PLAYER:GetClassData()
+    local character = self:GetCharacter()
+    if ( !character ) then return end
+
+    local class = character:GetClassData()
+    if ( !class ) then return end
+
+    return class
+end
