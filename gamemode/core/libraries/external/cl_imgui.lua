@@ -183,15 +183,19 @@ function imgui.Start3D2D(pos, angles, scale, distanceHide, distanceFadeStart)
 				gState.mx = x
 				gState.my = y
 			end
+
+			gState.hitPos = hitPos
 		else
 			gState.mx = nil
 			gState.my = nil
+			gState.hitPos = nil
 
 			if _devMode then gState._devInputBlocker = "not looking at plane" end
 		end
 	else
 		gState.mx = nil
 		gState.my = nil
+		gState.hitPos = nil
 
 		if _devMode then gState._devInputBlocker = "not hovering world" end
 	end
@@ -380,6 +384,14 @@ function imgui.CursorPos()
 	return mx, my
 end
 
+function imgui.HitPos()
+	local hitPos = gState.hitPos
+	if not hitPos then return nil end
+
+	-- return a copy of the hitpos so we don't accidentally modify it
+	return Vector(hitPos.x, hitPos.y, hitPos.z)
+end
+
 function imgui.IsHovering(x, y, w, h)
 	local mx, my = gState.mx, gState.my
 	return mx and my and mx >= x and mx <= (x + w) and my >= y and my <= (y + h)
@@ -431,7 +443,7 @@ function imgui.xFont(font, defaultSize)
 	return font
 end
 
-function imgui.xCursor(x, y, w, h)
+function imgui.Cursor(x, y, w, h, paint)
 	local fgColor = imgui.IsPressing() and imgui.skin.foregroundPress or imgui.skin.foreground
 	local mx, my = gState.mx, gState.my
 
@@ -440,10 +452,17 @@ function imgui.xCursor(x, y, w, h)
 	if x and w and (mx < x or mx > x + w) then return end
 	if y and h and (my < y or my > y + h) then return end
 
+	if paint then
+		paint(mx, my, imgui.IsPressing())
+		return
+	end
+
 	local cursorSize = math.ceil(0.3 / gState.scale)
 	surface.SetDrawColor(fgColor)
 	surface.DrawLine(mx - cursorSize, my, mx + cursorSize, my)
 	surface.DrawLine(mx, my - cursorSize, mx, my + cursorSize)
+
+	return mx, my
 end
 
 local pressStored = {}
