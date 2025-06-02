@@ -5,58 +5,10 @@ ax.class = {}
 ax.class.stored = {}
 ax.class.instances = {}
 
-ax.class.meta = {
-    GetName = function(self)
-        return self.Name or "Unknown Class"
-    end,
-    GetDescription = function(self)
-        return self.Description or "No description available."
-    end,
-    GetID = function(self)
-        return self.ID or 0
-    end,
-    GetUniqueID = function(self)
-        return self.UniqueID or "unknown_class"
-    end,
-    GetIsDefault = function(self)
-        return self.IsDefault or false
-    end,
-    GetFaction = function(self)
-        return self.Faction or 0
-    end,
-
-    __tostring = function(self)
-        return "class[" .. self:GetUniqueID() .. "][" .. self:GetID() .. "]"
-    end,
-    __eq = function(self, other)
-        if ( isstring(other) ) then
-            return self:GetUniqueID() == other
-        end
-
-        if ( isnumber(other) ) then
-            return self:GetID() == other
-        end
-
-        if ( type(other) == "Player" ) then
-            return self:GetID() == other:GetID()
-        end
-
-        return false
-    end,
-}
-
-ax.class.meta.__index = ax.class.meta
-
-local default = {
-    Name = "Unknown",
-    Description = "No description available.",
-    IsDefault = false,
-    CanSwitchTo = nil,
-    OnSwitch = nil
-}
+ax.class.meta = ax.class.meta or {}
 
 function ax.class:Register(classData)
-    local CLASS = setmetatable(classData, { __index = ax.class.meta })
+    local CLASS = setmetatable(classData, self.meta)
     if ( !isnumber(CLASS.Faction) ) then
         ax.util:PrintError("Attempted to register a class without a valid faction!")
         return false
@@ -66,12 +18,6 @@ function ax.class:Register(classData)
     if ( faction == nil or !istable(faction) ) then
         ax.util:PrintError("Attempted to register a class for an invalid faction!")
         return false
-    end
-
-    for k, v in pairs(default) do
-        if ( CLASS[k] == nil ) then
-            CLASS[k] = v
-        end
     end
 
     local bResult = hook.Run("PreClassRegistered", CLASS)
@@ -96,8 +42,9 @@ function ax.class:Register(classData)
         end
     end
 
+    CLASS.ID = #self.instances + 1
+
     table.insert(self.instances, CLASS)
-    CLASS.ID = table.Count(self.instances)
     self.stored[CLASS.UniqueID] = CLASS
 
     hook.Run("PostClassRegistered", CLASS)
