@@ -138,6 +138,9 @@ function PLAYER:IsDeveloper()
     return hook.Run("IsPlayerDeveloper", self) or developers[self:SteamID64()] or false
 end
 
+--- Checks if the player's model is female.
+-- @realm shared
+-- @return boolean Returns true if the player's model has "female", "alyx", or "mossman" in its name (animations module: if "citizen_female" is used for the model).
 function PLAYER:IsFemale()
     local model = string.lower(self:GetModel())
     if ( !isstring(model) or model == "" ) then return false end
@@ -154,7 +157,7 @@ function PLAYER:GetFactionData()
     if ( !character ) then return end
 
     local faction = character:GetFactionData()
-    if ( !faction ) then return end
+    if ( !istable(faction) ) then return end
 
     return faction
 end
@@ -164,7 +167,7 @@ function PLAYER:GetClassData()
     if ( !character ) then return end
 
     local class = character:GetClassData()
-    if ( !class ) then return end
+    if ( !istable(class) ) then return end
 
     return class
 end

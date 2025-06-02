@@ -2,19 +2,27 @@ local time = CurTime()
 function GM:PlayerInitialSpawn(client)
     time = CurTime()
     ax.util:Print("Starting to load player " .. client:SteamName() .. " (" .. client:SteamID64() .. ")")
-
-    client:SetTeam(0)
-    client:SetModel("models/player/kleiner.mdl")
-
-    client:KillSilent()
 end
 
 function GM:PlayerReady(client)
     if ( !IsValid(client) or client:IsBot() ) then return end
 
+    client:SetTeam(0)
+    client:SetModel("models/player/kleiner.mdl")
+
+    client:KillSilent()
+
+    local activeGamemode = engine.ActiveGamemode()
+    if ( activeGamemode == "parallax" ) then
+        -- Sometimes people might forget to actually set their startup gamemode to their schema rather than the actual framework... so we check for that
+        ax.util:PrintError("You are running Parallax without a schema! Please set your startup gamemode to your schema (e.g. 'parallax-skeleton' instead of 'parallax').")
+        ax.net:Start(client, "splash")
+        return
+    end
+
     ax.character:CacheAll(client, function()
         ax.util:SendChatText(nil, Color(25, 75, 150), client:SteamName() .. " has joined the server.")
-        ax.net:Start(client, "mainmenu")
+        ax.net:Start(client, "splash")
 
         client:SetNoDraw(true)
         client:SetNotSolid(true)
@@ -342,11 +350,28 @@ local drownSounds = {
 }
 
 function GM:GetPlayerPainSound(client, attacker, healthRemaining, damageTaken)
+    local character = client:GetCharacter()
+    if ( !character ) then return end
+
     if ( client:Health() <= 0 ) then return end
 
-    local factionData = client:GetFactionData()
+    local factionData = character:GetFactionData()
+    if ( client:IsOnFire() ) then
+        if ( factionData and factionData.FirePainSounds and #factionData.FirePainSounds > 0 ) then
+            local sound = factionData.FirePainSounds[math.random(#factionData.FirePainSounds)]
+            if ( sound and sound != "" ) then
+                return sound
+            end
+        end
+
+        return Sound("ambient/fire/fire_small1.wav")
+    end
 
     if ( client:WaterLevel() >= 3 ) then
+        if ( client:IsOnFire() ) then
+            client:Extinguish()
+        end
+
         if ( factionData and factionData.DrownSounds and #factionData.DrownSounds > 0 ) then
             local sound = factionData.DrownSounds[math.random(#factionData.DrownSounds)]
             if ( sound and sound != "" ) then
@@ -425,6 +450,9 @@ function GM:PostPlayerTakeItem(client, item, entity)
     if ( !item or !IsValid(entity) ) then return end
 
     entity:EmitSound("physics/body/body_medium_impact_soft" .. math.random(5, 7) .. ".wav", 75, math.random(90, 110), 1, CHAN_ITEM)
+end
+
+function GM:PrePlayerConfigChanged(client, key, value, oldValue)
 end
 
 local function IsAdmin(_, client)

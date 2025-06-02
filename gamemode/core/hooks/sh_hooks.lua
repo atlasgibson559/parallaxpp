@@ -14,17 +14,14 @@ function GM:PrePlayerHandsPush(client, ent)
     return true
 end
 
-function GM:GetMainMenuMusic()
-    return ax.config:Get("mainmenu.music", "music/hl2_song20_submix0.mp3")
-end
-
 function GM:PlayerGetToolgun(client)
     local character = client:GetCharacter()
     return CAMI.PlayerHasAccess(client, "Parallax - Toolgun", nil) or character and character:HasFlag("t")
 end
 
 function GM:PlayerGetPhysgun(client)
-    return CAMI.PlayerHasAccess(client, "Parallax - Physgun", nil)
+    local character = client:GetCharacter()
+    return CAMI.PlayerHasAccess(client, "Parallax - Physgun", nil) or character and character:HasFlag("p")
 end
 
 function GM:PlayerCanCreateCharacter(client, character)
@@ -60,17 +57,22 @@ function GM:PostOptionChanged(client, key, value)
 end
 
 function GM:PlayerCanHearChat(client, listener, uniqueID, text)
-    local canHear = ax.chat:Get(uniqueID).CanHear
+    local chatData = ax.chat:Get(uniqueID)
+    if ( !istable(chatData) ) then return false end
+
+    local canHear = chatData.CanHear
     if ( isbool(canHear) ) then
         return canHear
+    elseif ( isnumber(canHear) ) then
+        return client:GetPos():DistToSqr(listener:GetPos()) <= canHear ^ 2
     elseif ( isfunction(canHear) ) then
-        return ax.chat:Get(uniqueID):CanHear(client, listener, text)
+        return canHear(chatData, client, listener, text)
     end
 
     return true
 end
 
-function GM:PreConfigChanged(key, value, oldValue, client)
+function GM:PreConfigChanged(key, value, oldValue)
 end
 
 function GM:PostConfigChanged(key, value, oldValue, client)
