@@ -126,6 +126,8 @@ function GM:CanTool(client, trace, toolname, tool, button)
     if ( !hook.Run("PlayerGetToolgun", client) ) then
         return false
     end
+
+    return true
 end
 
 function GM:PhysgunPickup(client, ent)
