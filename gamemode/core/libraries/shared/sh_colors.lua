@@ -3,7 +3,6 @@
 
 ax.color = {}
 ax.color.stored = {}
-local colorObject = FindMetaTable("Color")
 
 --- Registers a new color.
 -- @realm shared
@@ -14,7 +13,7 @@ function ax.color:Register(name, color)
         return false
     end
 
-    if ( !IsColor(color) ) then
+    if ( !ax.util:CoerceType(ax.types.color, color) ) then
         ax.util:PrintError("Attempted to register a color without a color!")
         return false
     end
@@ -32,12 +31,12 @@ end
 -- @return The color.
 function ax.color:Get(name)
     local storedColor = self.stored[name]
-    if ( IsColor(storedColor) ) then
-        return setmetatable({r = storedColor.r, g = storedColor.g, b = storedColor.b, a = storedColor.a}, colorObject)
+    if ( ax.util:CoerceType(ax.types.color, storedColor) ) then
+        return Color(storedColor.r, storedColor.g, storedColor.b, storedColor.a or 255)
     end
 
     ax.util:PrintError("Attempted to get an invalid color!")
-    return nil
+    return color_white
 end
 
 --- Dims a color by a specified fraction.
@@ -46,13 +45,30 @@ end
 -- @param frac number The fraction to dim the color by.
 -- @return Color The dimmed color.
 function ax.color:Dim(col, frac)
-    return setmetatable({r = col.r * frac, g = col.g * frac, b = col.b * frac, a = col.a}, colorObject)
+    return Color(col.r * frac, col.g * frac, col.b * frac, col.a)
+end
+
+--- Returns whether or not a color is dark.
+-- @realm shared
+-- @param col Color The color to check.
+-- @return boolean True if the color is dark, false otherwise.
+-- @note A color is considered dark if its luminance is less than 0.5.
+function ax.color:IsDark(col)
+    if ( !ax.util:CoerceType(ax.types.color, col) ) then
+        ax.util:PrintError("Attempted to check if a color is dark without a valid color!")
+        return false
+    end
+
+    local r, g, b = col.r / 255, col.g / 255, col.b / 255
+
+    local luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b
+    return luminance < 0.5
 end
 
 if ( CLIENT ) then
     concommand.Add("ax_list_colors", function(client, cmd, arguments)
         for k, v in pairs(ax.color.stored) do
-            ax.util:Print("Color: " .. k .. " >> ", ax.color:Get("cyan"), v, " Color Sample")
+            ax.util:Print("Color: " .. k .. " >> ", ax.color:Get("cyan"), v, " Sample")
         end
     end)
 end
