@@ -396,9 +396,15 @@ function imgui.IsHovering(x, y, w, h)
 	local mx, my = gState.mx, gState.my
 	return mx and my and mx >= x and mx <= (x + w) and my >= y and my <= (y + h)
 end
+
+function imgui.ShouldAcceptInput()
+	return shouldAcceptInput()
+end
+
 function imgui.IsPressing()
 	return shouldAcceptInput() and gState.pressing
 end
+
 function imgui.IsPressed()
 	return shouldAcceptInput() and gState.pressed
 end
