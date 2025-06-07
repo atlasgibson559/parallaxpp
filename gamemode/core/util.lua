@@ -90,7 +90,7 @@ function ax.util:SendChatText(client, ...)
     end
 end
 
---- Prepares a package for printing to either the chat or console. This is useful for chat messages that need to be colored.
+--- Prepares a package of arguments for printing.
 -- @realm shared
 -- @param ... any The package to prepare.
 -- @return any The prepared package.
@@ -99,9 +99,12 @@ function ax.util:PreparePackage(...)
     local package = {}
 
     for k, v in ipairs(arguments) do
-        if ( type(v) == "Player" ) then
-            table.insert(package, team.GetColor(v:Team()))
-            table.insert(package, v:Name())
+        if ( type(v) == "Entity" or type(v) == "Player" ) then
+            table.insert(package, tostring(v))
+
+            if ( type(v) == "Player" ) then
+                table.insert(package, "[" .. v:SteamID64() .. "]")
+            end
         else
             table.insert(package, v)
         end
