@@ -1,5 +1,6 @@
 local localization = {}
 
+
 localization["back"] = "Back"
 localization["category"] = "Category"
 localization["category.chat"] = "Chat"
@@ -87,6 +88,8 @@ localization["config.speed.run"] = "Run Speed"
 localization["config.speed.run.help"] = "The speed at which the player runs."
 localization["config.speed.walk"] = "Walk Speed"
 localization["config.speed.walk.help"] = "The speed at which the player walks."
+localization["config.time.respawn"] = "Respawn Time"
+localization["config.time.respawn.help"] = "The time it takes for a player to respawn after death."
 localization["config.voice"] = "Voice"
 localization["config.voice.distance"] = "Voice Distance"
 localization["config.voice.distance.help"] = "The distance at which players can hear each other."
