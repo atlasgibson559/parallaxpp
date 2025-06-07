@@ -22,7 +22,7 @@ function ax.chat:Register(uniqueID, chatData)
         end
     end
 
-    if ( chatData.Prefixes and #chatData.Prefixes > 0 ) then
+    if ( chatData.Prefixes and chatData.Prefixes[1] != nil ) then
         ax.command:Register(uniqueID, {
             Description = chatData.Description or "",
             Prefixes = chatData.Prefixes,

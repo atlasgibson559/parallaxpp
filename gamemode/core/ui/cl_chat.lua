@@ -160,7 +160,7 @@ function PANEL:PopulateRecommendations(text)
         end
     end
 
-    if ( #self.recommendations.list > 0 ) then
+    if ( self.recommendations.list[1] != nil ) then
         self.recommendations:Clear()
         self.recommendations:AlphaTo(255, 0.2, 0)
 

@@ -392,7 +392,7 @@ function GM:GetPlayerPainSound(client, attacker, healthRemaining, damageTaken)
 
     local factionData = character:GetFactionData()
     if ( client:IsOnFire() ) then
-        if ( factionData and factionData.FirePainSounds and #factionData.FirePainSounds > 0 ) then
+        if ( factionData and factionData.FirePainSounds and factionData.FirePainSounds[1] != nil ) then
             local sound = factionData.FirePainSounds[math.random(#factionData.FirePainSounds)]
             if ( sound and sound != "" ) then
                 return sound
@@ -407,7 +407,7 @@ function GM:GetPlayerPainSound(client, attacker, healthRemaining, damageTaken)
             client:Extinguish()
         end
 
-        if ( factionData and factionData.DrownSounds and #factionData.DrownSounds > 0 ) then
+        if ( factionData and factionData.DrownSounds and factionData.DrownSounds[1] != nil ) then
             local sound = factionData.DrownSounds[math.random(#factionData.DrownSounds)]
             if ( sound and sound != "" ) then
                 return sound
@@ -418,7 +418,7 @@ function GM:GetPlayerPainSound(client, attacker, healthRemaining, damageTaken)
     end
 
     if ( damageTaken > 0 ) then
-        if ( factionData and factionData.PainSounds and #factionData.PainSounds > 0 ) then
+        if ( factionData and factionData.PainSounds and factionData.PainSounds[1] != nil ) then
             local sound = factionData.PainSounds[math.random(#factionData.PainSounds)]
             if ( sound and sound != "" ) then
                 return sound
@@ -467,7 +467,7 @@ local deathSounds = {
 
 function GM:GetPlayerDeathSound(client, inflictor, attacker)
     local factionData = client:GetFactionData()
-    if ( factionData and factionData.DeathSounds and #factionData.DeathSounds > 0 ) then
+    if ( factionData and factionData.DeathSounds and factionData.DeathSounds[1] != nil ) then
         local sound = factionData.DeathSounds[math.random(#factionData.DeathSounds)]
         if ( sound and sound != "" ) then
             return sound

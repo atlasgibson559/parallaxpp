@@ -170,7 +170,7 @@ function PANEL:PopulateCreateCharacter()
     -- If we have no faction select the 1st one available
     if ( !self.currentCreatePayload.faction or self.currentCreatePayload.faction == 0 ) then
         local factions = ax.faction:GetAll()
-        if ( #factions > 0 ) then
+        if ( factions[1] != nil ) then
             self.currentCreatePayload.faction = factions[1]:GetID()
         else
             ax.util:PrintError("No factions available for character creation!")
