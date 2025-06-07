@@ -98,10 +98,10 @@ function ax.character:Load(client, characterID)
             clientTable.axCharacters[characterID] = character
             clientTable.axCharacter = character
 
-            client:SetModel(character:GetModel())
             client:SetTeam(character:GetFaction())
-            client:Spawn()
+            client:SetModel(character:GetModel())
             client:SetSkin(character:GetSkin())
+            client:Spawn()
 
             ax.inventory:CacheAll(characterID, function(inventory)
                 ax.item:Cache(characterID)
