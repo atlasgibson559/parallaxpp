@@ -5,7 +5,23 @@ function GM:PlayerInitialSpawn(client)
 end
 
 function GM:PlayerReady(client)
-    if ( !IsValid(client) or client:IsBot() ) then return end
+    if ( client:IsBot() ) then
+        local factionBot = math.random(#ax.faction.instances)
+
+        local models = {}
+        for k, v in ipairs(ax.faction:Get(factionBot):GetModels()) do
+            if ( istable(v) ) then
+                table.insert(models, v[1])
+            else
+                table.insert(models, v)
+            end
+        end
+
+        client:SetModel(models[math.random(#models)])
+        client:SetTeam(factionBot)
+
+        return
+    end
 
     client:SetTeam(0)
     client:SetModel("models/player/kleiner.mdl")
@@ -151,11 +167,6 @@ function GM:PostPlayerLoadedCharacter(client, character, previousCharacter)
     character:SetData("last_pos", nil)
     character:SetData("last_ang", nil)
     character:SetData("health", nil)
-
-    local skin = character:GetSkin()
-    if ( isnumber(skin) and skin > 0 ) then
-        client:SetSkin(skin)
-    end
 
     -- Restore the bodygroups of the character
     local groups = character:GetData("groups", {})
