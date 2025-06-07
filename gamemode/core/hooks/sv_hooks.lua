@@ -152,7 +152,19 @@ function GM:PostPlayerLoadedCharacter(client, character, previousCharacter)
     character:SetData("last_ang", nil)
     character:SetData("health", nil)
 
-    hook.Run("PostPlayerLoadedCharacter", client, character, previousCharacter)
+    local skin = character:GetSkin()
+    if ( isnumber(skin) and skin > 0 ) then
+        client:SetSkin(skin)
+    end
+
+    -- Restore the bodygroups of the character
+    local groups = character:GetData("groups", {})
+    for name, value in pairs(groups) do
+        local id = client:FindBodygroupByName(name)
+        if ( id == -1 ) then continue end
+
+        client:SetBodygroup(id, value)
+    end
 end
 
 function GM:PlayerDeathThink(client)
@@ -281,22 +293,6 @@ function GM:GetFallDamage(client, speed)
     end
 
     return speed / 8
-end
-
-function GM:PostPlayerLoadedCharacter(client, character, previousCharacter)
-    -- Restore the bodygroups of the character
-    local groups = character:GetData("groups", {})
-    for name, value in pairs(groups) do
-        local id = client:FindBodygroupByName(name)
-        if ( id == -1 ) then continue end
-
-        client:SetBodygroup(id, value)
-    end
-
-    local skin = character:GetSkin()
-    if ( isnumber(skin) and skin > 0 ) then
-        client:SetSkin(skin)
-    end
 end
 
 local nextThink = CurTime() + 1
