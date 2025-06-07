@@ -20,7 +20,7 @@ function chat.AddText(...)
     local markupStr = ""
 
     for _, v in ipairs(arguments) do
-        if ( IsColor(v) ) then
+        if ( ax.util:CoerceType(ax.types.color, v) ) then
             currentColor = v
         elseif ( istable(v) and v.r and v.g and v.b ) then
             currentColor = Color(v.r, v.g, v.b)
