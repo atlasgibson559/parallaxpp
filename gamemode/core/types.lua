@@ -16,8 +16,8 @@
 -- @field color RGBA Color
 -- @field player A player entity or reference
 -- @field character A player’s character object
--- @field steamid A Steam64 ID string (17 digits)
--- @field optional Flag that makes a type optional
+-- @field steamid A Steam ID string
+-- @field steamid64 A Steam ID 64-bit integer
 -- @field array Flag that represents an array of values
 -- @usage if ( ax.types[number] ) then ... end
 
@@ -32,6 +32,8 @@ ax.types = ax.types or {
     [128]   = "player",
     [256]   = "character",
     [512]   = "steamid",
+    [1024]  = "steamid64",
+    [2048]  = "array",
 
     string     = 1,
     text       = 2,
@@ -43,7 +45,6 @@ ax.types = ax.types or {
     player     = 128,
     character  = 256,
     steamid    = 512,
-
-    optional   = 1024,
-    array      = 2048
+    steamid64  = 1024,
+    array   = 2048,
 }
