@@ -21,7 +21,7 @@ function ax.item:Load(path)
 
         -- Check if we are in the /base/ folder, if so, we need to set the base table
         -- to the ITEM table so we can use it in the item.
-        if ( string.find(path, "/base") ) then
+        if ( string.find(filePath, "/base/") ) then
             ITEM.IsBase = true
             self.base[ITEM.UniqueID] = ITEM
         end
@@ -29,7 +29,7 @@ function ax.item:Load(path)
         -- If we are inside of a folder that is in the ax.item.base table, we need to set the base of the item to the base of the folder.
         -- This allows us to inherit from the base item.
         for k, _ in pairs(self.base) do
-            if ( string.find(path, "/" .. k) ) then
+            if ( string.find(path, "/" .. k) and !ITEM.Base and !ITEM.IsBase ) then
                 ITEM.Base = k
                 break
             end
