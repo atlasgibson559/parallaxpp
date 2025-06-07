@@ -101,6 +101,7 @@ function ax.character:Load(client, characterID)
             client:SetModel(character:GetModel())
             client:SetTeam(character:GetFaction())
             client:Spawn()
+            client:SetSkin(character:GetSkin())
 
             ax.inventory:CacheAll(characterID, function(inventory)
                 ax.item:Cache(characterID)
