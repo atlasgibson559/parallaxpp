@@ -136,6 +136,12 @@ ax.character:RegisterVariable("model", {
     end
 })
 
+ax.character:RegisterVariable("skin", {
+    Type = ax.types.number,
+    Field = "skin",
+    Default = 0
+})
+
 ax.character:RegisterVariable("money", {
     Type = ax.types.number,
     Field = "money",

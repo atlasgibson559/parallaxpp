@@ -292,6 +292,11 @@ function GM:PostPlayerLoadedCharacter(client, character, previousCharacter)
 
         client:SetBodygroup(id, value)
     end
+
+    local skin = character:GetSkin()
+    if ( isnumber(skin) and skin > 0 ) then
+        client:SetSkin(skin)
+    end
 end
 
 local nextThink = CurTime() + 1
