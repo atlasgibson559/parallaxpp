@@ -116,8 +116,8 @@ function GM:ScoreboardHide()
 end
 
 function GM:Initialize()
-    ax.module:LoadFolder("parallax/modules")
     ax.item:LoadFolder("parallax/gamemode/items")
+    ax.module:LoadFolder("parallax/modules")
     ax.schema:Initialize()
 
     hook.Run("LoadFonts")
@@ -133,8 +133,8 @@ function GM:OnReloaded()
         currentStation = nil
     end
 
-    ax.module:LoadFolder("parallax/modules")
     ax.item:LoadFolder("parallax/gamemode/items")
+    ax.module:LoadFolder("parallax/modules")
     ax.schema:Initialize()
     ax.option:Load()
 

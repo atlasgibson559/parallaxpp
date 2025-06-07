@@ -214,8 +214,8 @@ function GM:Initialize()
         ax.database:Initialize()
     end
 
-    ax.module:LoadFolder("parallax/modules")
     ax.item:LoadFolder("parallax/gamemode/items")
+    ax.module:LoadFolder("parallax/modules")
     ax.schema:Initialize()
 
     if ( game.IsDedicated() ) then
@@ -256,8 +256,8 @@ function GM:OnReloaded()
         ax.database:Initialize()
     end
 
-    ax.module:LoadFolder("parallax/modules")
     ax.item:LoadFolder("parallax/gamemode/items")
+    ax.module:LoadFolder("parallax/modules")
     ax.schema:Initialize()
 
     ax.config:Synchronize()
