@@ -128,14 +128,16 @@ local successColor = Color(120, 255, 120)
 function ax.util:Print(...)
     local arguments = self:PreparePackage(...)
 
-    local tagColor = ax.config:Get("color.framework", frameworkColor)
-    local serverColor = ax.config:Get("color.server.message", serverMessageColor)
-    local clientColor = ax.config:Get("color.client.message", clientMessageColor)
+    local bConfigInit = istable(ax.config) and isfunction(ax.config.Get)
+
+    local tagColor = bConfigInit and ax.config:Get("color.framework", frameworkColor) or frameworkColor
+    local serverColor = bConfigInit and ax.config:Get("color.server.message", serverMessageColor) or serverMessageColor
+    local clientColor = bConfigInit and ax.config:Get("color.client.message", clientMessageColor) or clientMessageColor
 
     local realmColor = SERVER and serverColor or clientColor
     MsgC(tagColor, "[Parallax] ", realmColor, unpack(arguments))
 
-    if ( CLIENT and ax.config and ax.config.Get and ax.config:Get("debug.developer") ) then
+    if ( CLIENT and bConfigInit and ax.config:Get("debug.developer") ) then
         chat.AddText(tagColor, "[Parallax] ", realmColor, unpack(arguments))
     end
 
@@ -175,16 +177,18 @@ function ax.util:PrintError(...)
         table.insert(arguments, "\n")
     end
 
-    local tagColor = ax.config:Get("color.framework", violetColor)
-    local batchColor = ax.config:Get("color.error", errorColor)
+    local bConfigInit = istable(ax.config) and isfunction(ax.config.Get)
 
-    MsgC(tagColor, "[Parallax] ", colorError, "[Error] ", unpack(arguments))
+    local tagColor = bConfigInit and ax.config:Get("color.framework", violetColor) or violetColor
+    local batchColor = bConfigInit and ax.config:Get("color.error", errorColor) or errorColor
 
-    if ( CLIENT and ax.config and ax.config.Get and ax.config:Get("debug.developer") ) then
+    MsgC(tagColor, "[Parallax] ", batchColor, "[Error] ", unpack(arguments))
+
+    if ( CLIENT and bConfigInit and ax.config:Get("debug.developer") ) then
         chat.AddText(tagColor, "[Parallax] ", batchColor, "[Error] ", unpack(arguments))
     end
 
-    if ( ax.config and ax.config.Get and ax.config:Get("debug.developer") ) then
+    if ( bConfigInit and ax.config:Get("debug.developer") ) then
         local log = {}
         for i = 1, 10 do
             local traceInfo = info[i]
@@ -208,12 +212,14 @@ end
 function ax.util:PrintWarning(...)
     local arguments = self:PreparePackage(...)
 
-    local tagColor = ax.config:Get("color.framework", violetColor)
-    local batchColor = ax.config:Get("color.warning", warningColor)
+    local bConfigInit = istable(ax.config) and isfunction(ax.config.Get)
+
+    local tagColor = bConfigInit and ax.config:Get("color.framework", violetColor) or violetColor
+    local batchColor = bConfigInit and ax.config:Get("color.warning", warningColor) or warningColor
 
     MsgC(tagColor, "[Parallax] ", batchColor, "[Warning] ", unpack(arguments))
 
-    if ( CLIENT and ax.config and ax.config.Get and ax.config:Get("debug.developer") ) then
+    if ( CLIENT and bConfigInit and ax.config:Get("debug.developer") ) then
         chat.AddText(tagColor, "[Parallax] ", batchColor, "[Warning] ", unpack(arguments))
     end
 
@@ -226,12 +232,14 @@ end
 function ax.util:PrintSuccess(...)
     local arguments = self:PreparePackage(...)
 
-    local tagColor = ax.config:Get("color.framework", violetColor)
-    local batchColor = ax.config:Get("color.success", successColor)
+    local bConfigInit = istable(ax.config) and isfunction(ax.config.Get)
+
+    local tagColor = bConfigInit and ax.config:Get("color.framework", violetColor) or violetColor
+    local batchColor = bConfigInit and ax.config:Get("color.success", successColor) or successColor
 
     MsgC(tagColor, "[Parallax] ", batchColor, "[Success] ", unpack(arguments))
 
-    if ( CLIENT and ax.config:Get("debug.developer") ) then
+    if ( CLIENT and bConfigInit and ax.config:Get("debug.developer") ) then
         chat.AddText(tagColor, "[Parallax] ", batchColor, "[Success] ", unpack(arguments))
     end
 
