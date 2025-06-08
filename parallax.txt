@@ -2,5 +2,5 @@
 {
     "base"              "sandbox"
     "title"             "Parallax"
-    "author"            "Riggs"
+    "author"            "Riggs & bloodycop6385"
 }
