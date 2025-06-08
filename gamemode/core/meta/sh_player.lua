@@ -131,7 +131,8 @@ if ( CLIENT ) then
 end
 
 local developers = {
-    ["76561197963057641"] = true
+    ["76561197963057641"] = true,
+    ["76561198373309941"] = true,
 }
 
 function PLAYER:IsDeveloper()
