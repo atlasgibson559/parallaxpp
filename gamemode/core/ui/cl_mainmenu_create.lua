@@ -106,6 +106,8 @@ function PANEL:PopulateFactionSelect()
 
         local name = (v.Name and string.upper(v.Name)) or "UNKNOWN FACTION"
         local description = (v.Description and string.upper(v.Description)) or "UNKNOWN FACTION DESCRIPTION"
+        description = ax.util:CapTextWord(description, factionList:GetTall() / 4) -- Unreliable, but it works for now
+
         local descriptionWrapped = ax.util:GetWrappedText(description, "parallax.button.small", factionList:GetTall() * 1.5)
 
         local factionButton = factionList:Add("ax.button.small")

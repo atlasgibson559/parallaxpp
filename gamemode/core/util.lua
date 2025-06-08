@@ -842,6 +842,57 @@ function ax.util:ZeroNumber(number, digits)
 	return string.rep("0", digits - #str) .. str
 end
 
+--- Caps a given text to a maximum length, adding ellipsis if needed.
+-- @realm shared
+-- @param text string The text to cap.
+-- @param maxLength number The maximum length of the text.
+-- @return string The capped text.
+function ax.util:CapText(text, maxLength)
+	if ( !isstring(text) or !isnumber(maxLength) or maxLength <= 0 ) then
+		ax.util:PrintError("Attempted to cap text with invalid parameters", text, maxLength)
+		return ""
+	end
+
+	if ( #text <= maxLength ) then
+		return text
+	end
+
+	return string.sub(text, 1, maxLength - 3) .. "..."
+end
+
+--- Caps a given text to a maximum length, adding ellipsis if needed, but only caps at word boundaries.
+-- @realm shared
+-- @param text string The text to cap.
+-- @param maxLength number The maximum length of the text.
+-- @return string The capped text.
+function ax.util:CapTextWord(text, maxLength)
+	if ( !isstring(text) or !isnumber(maxLength) or maxLength <= 0 ) then
+		ax.util:PrintError("Attempted to cap text with invalid parameters", text, maxLength)
+		return ""
+	end
+
+	if ( #text <= maxLength ) then
+		return text
+	end
+
+	local words = string.Explode(" ", text)
+	local cappedText = ""
+
+	for _, word in ipairs(words) do
+		if ( #cappedText + #word + 1 > maxLength ) then
+			break
+		end
+
+		if ( cappedText != "" ) then
+			cappedText = cappedText .. " "
+		end
+
+		cappedText = cappedText .. word
+	end
+
+	return cappedText .. "..."
+end
+
 if ( CLIENT ) then
 	--- Returns the given text's width.
 	-- @realm client
