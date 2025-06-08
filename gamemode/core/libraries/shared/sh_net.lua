@@ -4,6 +4,7 @@
 
 ax.net = ax.net or {}
 ax.net.stored = ax.net.stored or {}
+ax.net.cooldown = ax.net.cooldown or {}
 
 if ( SERVER ) then
     util.AddNetworkString("ax.net.msg")
@@ -72,6 +73,22 @@ end
 
 net.Receive("ax.net.msg", function(len, ply)
     local name = net.ReadString()
+
+    local configCooldown = ax.config:Get("networking.cooldown", 0.1)
+    if ( isnumber(configCooldown) and configCooldown > 0 ) then
+        local coolDown = ax.net.cooldown[name]
+        if ( isnumber(coolDown) and coolDown > CurTime() ) then
+            if ( ax.config:Get("debug.networking") ) then
+                ax.util:Print("[Networking] '" .. name .. "' is on cooldown for " .. math.ceil(coolDown - CurTime()) .. " seconds")
+            end
+
+            return
+        end
+
+        ax.net.cooldown[name] = CurTime() + (configCooldown or 0.1)
+    end
+
+
     local raw = net.ReadData(len / 8)
 
     local ok, decoded = pcall(sfs.decode, raw)

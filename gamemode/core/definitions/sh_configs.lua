@@ -392,6 +392,17 @@ ax.config:Register("debug.networking", {
     Default = false
 })
 
+ax.config:Register("networking.cooldown", {
+    Name = "config.networking.cooldown",
+    Description = "config.networking.cooldown.help",
+    SubCategory = "category.networking",
+    Type = ax.types.number,
+    Default = 0.1,
+    Min = 0,
+    Max = 60,
+    Decimals = 1
+})
+
 ax.config:Register("debug.developer", {
     Name = "config.debug.developer",
     Description = "config.debug.developer.help",

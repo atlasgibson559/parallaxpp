@@ -1,6 +1,5 @@
 local localization = {}
 
-
 localization["back"] = "Back"
 localization["category"] = "Category"
 localization["category.chat"] = "Chat"
@@ -10,6 +9,7 @@ localization["category.debug"] = "Debug"
 localization["category.hands"] = "Hands"
 localization["category.inventory"] = "Inventory"
 localization["category.mainmenu"] = "Main Menu"
+localization["category.networking"] = "Networking"
 localization["category.performance"] = "Performance"
 localization["category.player"] = "Players"
 localization["category.weapon"] = "Weapons"
@@ -82,6 +82,8 @@ localization["config.mainmenu.music"] = "Main Menu Music"
 localization["config.mainmenu.music.help"] = "The music that plays in the main menu."
 localization["config.mainmenu.pos"] = "Main Menu Position"
 localization["config.mainmenu.pos.help"] = "The position of the main menu camera."
+localization["config.networking.cooldown"] = "Networking Cooldown"
+localization["config.networking.cooldown.help"] = "The cooldown for networking messages."
 localization["config.save.interval"] = "Save Interval"
 localization["config.save.interval.help"] = "The interval at which the framework saves."
 localization["config.speed.run"] = "Run Speed"
