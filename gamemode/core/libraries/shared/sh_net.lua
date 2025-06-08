@@ -71,7 +71,7 @@ else
     end
 end
 
-net.Receive("ax.net.msg", function(len, ply)
+net.Receive("ax.net.msg", function(len, client)
     local name = net.ReadString()
     local raw = net.ReadData(len / 8)
 
@@ -93,7 +93,7 @@ net.Receive("ax.net.msg", function(len, ply)
             local coolDown = ax.net.cooldown[name]
             if ( isnumber(coolDown) and coolDown > CurTime() ) then
                 if ( ax.config:Get("debug.networking") ) then
-                    ax.util:Print("[Networking] '" .. name .. "' is on cooldown for " .. math.ceil(coolDown - CurTime()) .. " seconds")
+                    ax.util:Print("[Networking] '" .. name .. "' is on cooldown for " .. math.ceil(coolDown - CurTime()) .. " seconds, ignoring request from " .. (tostring(client) or "unknown"))
                 end
 
                 return
@@ -102,13 +102,13 @@ net.Receive("ax.net.msg", function(len, ply)
             ax.net.cooldown[name] = CurTime() + (configCooldown or 0.1)
         end
 
-        callback(ply, unpack(decoded))
+        callback(client, unpack(decoded))
     else
         callback(unpack(decoded))
     end
 
     if ( ax.config:Get("debug.networking") ) then
-        ax.util:Print("[Networking] Received '" .. name .. "' from " .. (SERVER and ply:Nick() or "server"))
+        ax.util:Print("[Networking] Received '" .. name .. "' from " .. (SERVER and client:Nick() or "server"))
     end
 end)
 
