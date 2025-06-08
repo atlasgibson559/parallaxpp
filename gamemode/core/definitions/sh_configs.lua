@@ -70,6 +70,14 @@ ax.config:Register("color.success", {
     Default = Color(120, 255, 120)
 })
 
+ax.config:Register("color.info", {
+    Name = "config.color.info",
+    Description = "config.color.info.help",
+    SubCategory = "category.color",
+    Type = ax.types.color,
+    Default = Color(75, 165, 255)
+})
+
 ax.config:Register("voice", {
     Name = "config.voice",
     Description = "config.voice.help",

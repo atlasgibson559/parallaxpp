@@ -102,13 +102,13 @@ end
 notification.AddLegacy = function(text, type, length)
     local color
     if ( type == NOTIFY_ERROR ) then
-        color = ax.color:Get("error")
+        color = ax.config:Get("color.error")
         ax.client:EmitSound("ax.notification.error")
     elseif ( type == NOTIFY_HINT ) then
-        color = ax.color:Get("success")
+        color = ax.config:Get("color.success")
         ax.client:EmitSound("ax.notification.hint")
     else
-        color = ax.color:Get("info")
+        color = ax.config:Get("color.info")
         ax.client:EmitSound("ax.notification.generic")
     end
 

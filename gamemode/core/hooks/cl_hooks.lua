@@ -837,7 +837,7 @@ function GM:PopulateHelpCategories(categories)
             button:SetText("")
             button:SetBackgroundAlphaHovered(1)
             button:SetBackgroundAlphaUnHovered(0.5)
-            button:SetBackgroundColor(hasFlag and ax.color:Get("success") or ax.color:Get("error"))
+            button:SetBackgroundColor(hasFlag and ax.config:Get("color.success") or ax.config:Get("color.error"))
 
             local key = button:Add("ax.text")
             key:Dock(LEFT)

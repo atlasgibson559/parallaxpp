@@ -74,7 +74,7 @@ ax.net:Hook("character.delete", function(characterID)
         ax.gui.mainmenu:Populate()
     end
 
-    ax.notification:Add("Character " .. characterID .. " deleted!", 5, ax.color:Get("success"))
+    ax.notification:Add("Character " .. characterID .. " deleted!", 5, ax.config:Get("color.success"))
 end)
 
 ax.net:Hook("character.load.failed", function(reason)

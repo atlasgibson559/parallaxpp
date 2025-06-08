@@ -34,8 +34,3 @@ ax.color:Register("foreground.transparent", Color(50, 50, 50, 255 / 2))
 ax.color:Register("settings.shadow", Color(0, 0, 0, 150))
 ax.color:Register("text", Color(200, 200, 200, 255))
 ax.color:Register("text.light", color_white)
-
-ax.color:Register("error", Color(255, 75, 75))
-ax.color:Register("info", Color(75, 165, 255))
-ax.color:Register("success", Color(50, 255, 120))
-ax.color:Register("warning", Color(255, 215, 60))

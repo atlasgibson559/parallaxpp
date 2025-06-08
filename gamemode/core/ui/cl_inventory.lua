@@ -281,9 +281,9 @@ function PANEL:SetItem(id)
     if ( item.Actions.Equip or item.Actions.EquipUn ) then
         local equipped = item:GetData("equipped")
         if ( equipped ) then
-            self:SetBackgroundColor(ax.color:Get("success"))
+            self:SetBackgroundColor(ax.config:Get("color.success"))
         else
-            self:SetBackgroundColor(ax.color:Get("warning"))
+            self:SetBackgroundColor(ax.config:Get("color.warning"))
         end
     end
 end
