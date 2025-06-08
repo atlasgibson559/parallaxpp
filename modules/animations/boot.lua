@@ -371,11 +371,11 @@ if ( SERVER ) then
 
         ax.net:Start(nil, "sequence.reset", self)
 
-        self:SetDataVariable("sequence.callback", nil)
-        self:SetDataVariable("sequence.forced", nil)
+        self:SetRelay("sequence.callback", nil)
+        self:SetRelay("sequence.forced", nil)
         self:SetMoveType(MOVETYPE_WALK)
 
-        local callback = self:GetDataVariable("sequence.callback")
+        local callback = self:GetRelay("sequence.callback")
         if ( isfunction(callback) ) then
             callback(self)
         end
@@ -402,8 +402,8 @@ if ( SERVER ) then
 
         self:SetCycle(0)
         self:SetPlaybackRate(1)
-        self:SetDataVariable("sequence.forced", sequenceID)
-        self:SetDataVariable("sequence.callback", callback or nil)
+        self:SetRelay("sequence.forced", sequenceID)
+        self:SetRelay("sequence.callback", callback or nil)
 
         if ( !noFreeze ) then
             self:SetMoveType(MOVETYPE_NONE)

@@ -107,7 +107,7 @@ function ENTITY:IsLocked()
             return self:GetInternalVariable("m_bLocked")
         end
     else
-        return self:GetDataVariable("locked", false)
+        return self:GetRelay("locked", false)
     end
 
     return false
@@ -115,44 +115,6 @@ end
 
 function ENTITY:GetSpawnEffect()
     return self:GetTable()["ax.m_bSpawnEffect"] or false
-end
-
-function ENTITY:GetDataVariable(key, defaultValue)
-    local selfTable = self:GetTable()
-    key = "ax." .. key
-
-    local value = selfTable[key]
-    if ( value != nil ) then
-        return value
-    end
-
-    return defaultValue
-end
-
-if ( SERVER ) then
-    function ENTITY:SetDataVariable(key, value, recipients, NoNetworking)
-        local selfTable = self:GetTable()
-        key = "ax." .. key
-
-        selfTable[key] = value
-
-        if ( !NoNetworking ) then
-            local recpFilter = RecipientFilter()
-            if ( recipients == nil ) then
-                recpFilter:AddAllPlayers()
-            elseif ( istable(recipients) ) then
-                for _, v in ipairs(recipients) do
-                    if ( IsValid(v) ) then
-                        recpFilter:AddPlayer(v)
-                    end
-                end
-            elseif ( IsValid(recipients) ) then
-                recpFilter:AddPlayer(recipients)
-            end
-
-            ax.net:Start(recpFilter, "entity.setDataVariable", self, key, value)
-        end
-    end
 end
 
 ENTITY.SetModelInternal = ENTITY.SetModelInternal or ENTITY.SetModel

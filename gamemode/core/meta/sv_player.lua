@@ -133,8 +133,8 @@ function PLAYER:SetRagdolled(bState)
     if ( bState == nil ) then bState = false end
 
     if ( !bState ) then
-        SafeRemoveEntity(self:GetDataVariable("ragdoll", nil))
-        self:SetDataVariable("ragdoll", nil)
+        SafeRemoveEntity(self:GetRelay("ragdoll", nil))
+        self:SetRelay("ragdoll", nil)
         return
     end
 
@@ -151,16 +151,16 @@ function PLAYER:SetRagdolled(bState)
         end
     end
 
-    self:SetDataVariable("ragdollArsenal", arsenalTable)
-    self:SetDataVariable("ragdollAmmo", self:GetAmmo())
+    self:SetRelay("ragdollArsenal", arsenalTable)
+    self:SetRelay("ragdollAmmo", self:GetAmmo())
 
     self:RemoveAllItems()
 
     local ragdoll = self:CreateServerRagdoll()
     timer.Simple(0.1, function()
         if ( IsValid(ragdoll) ) then
-            ragdoll:SetDataVariable("owner", self)
-            self:SetDataVariable("ragdoll", ragdoll)
+            ragdoll:SetRelay("owner", self)
+            self:SetRelay("ragdoll", ragdoll)
 
             local timerID = "ax.client." .. self:SteamID64() .. ".ragdollRestore"
             timer.Create(timerID, 0.1, 0, function()
@@ -181,12 +181,12 @@ function PLAYER:SetRagdolled(bState)
                 self:SetRelay("bCanShoot", true)
                 self:SetRelay("bWeaponRaised", true)
 
-                local ragdollArsenal = self:GetDataVariable("ragdollArsenal", {})
+                local ragdollArsenal = self:GetRelay("ragdollArsenal", {})
                 for _, weapon in ipairs(ragdollArsenal) do
                     self:Give(weapon)
                 end
 
-                local ragdollAmmo = self:GetDataVariable("ragdollAmmo", {})
+                local ragdollAmmo = self:GetRelay("ragdollAmmo", {})
                 for ammoType in pairs(ragdollAmmo) do
                     local ammoCount = ragdollAmmo[ammoType]
                     if ( isnumber(ammoType) and isstring(game.GetAmmoName(ammoType)) and isnumber(ammoCount) ) then
@@ -194,7 +194,7 @@ function PLAYER:SetRagdolled(bState)
                     end
                 end
 
-                self:SetDataVariable("ragdoll", nil)
+                self:SetRelay("ragdoll", nil)
             end)
         end
     end)

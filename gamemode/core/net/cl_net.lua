@@ -294,12 +294,6 @@ ax.net:Hook("database.save", function(data)
     ax.client:GetTable().axDatabase = data
 end)
 
-ax.net:Hook("entity.setDataVariable", function(entity, key, value)
-    if ( !IsValid(entity) ) then return end
-
-    entity:GetTable()[key] = value
-end)
-
 ax.net:Hook("gesture.play", function(client, name)
     if ( !IsValid(client) ) then return end
 

@@ -172,7 +172,7 @@ function GM:CalcView(client, pos, angles, fov)
         }
     end
 
-    local ragdoll = !ax.client:Alive() and ax.client:GetRagdollEntity() or ax.client:GetDataVariable("ragdoll", nil)
+    local ragdoll = !ax.client:Alive() and ax.client:GetRagdollEntity() or ax.client:GetRelay("ragdoll", nil)
     if ( IsValid(ragdoll) ) then
         local eyePos
         local eyeAng
