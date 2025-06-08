@@ -3,6 +3,15 @@ local MODULE = MODULE
 function MODULE:PostPlayerReady(client)
     if ( !IsValid(client) or client:IsBot() ) then return end
 
+    if ( !game.IsDedicated() and client == Player(1) ) then
+        client:SetDBVar("usergroup", "superadmin") -- Default usergroup
+        client:SaveDB()
+        client:SetUserGroup("superadmin")
+        ax.util:Print(tostring(client) .. " is assigned to usergroup '" .. usergroup .. "'.")
+
+        return
+    end
+
     local usergroup = client:GetDBVar("usergroup", "user")
     if ( !CAMI.GetUsergroup(usergroup) ) then
         usergroup = "user" -- Fallback to default user group if not found
