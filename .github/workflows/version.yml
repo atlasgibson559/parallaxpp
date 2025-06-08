@@ -1,4 +1,4 @@
-name: Generate Version JSON
+name: Generate Version JSON (Filtered, Main Branch)
 
 on:
   push:
@@ -8,25 +8,25 @@ permissions:
   contents: write
 
 jobs:
-  generate-version:
+  update-version:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v4
         with:
-          persist-credentials: true
           fetch-depth: 0
+          persist-credentials: true
 
-      - name: Skip if commit is a version bump
-        if: contains(github.event.head_commit.message, '[ci version bump]')
+      - name: Skip if version bump
+        if: startsWith(github.event.head_commit.message, '[skip]')
         run: |
-          echo "Skipping workflow due to [ci version bump] commit"
+          echo "Skipping version bump commit"
           exit 0
 
-      - name: Generate parallax-version.json
+      - name: Generate version JSON
         run: |
-          COUNT=$(git rev-list --count $GITHUB_SHA)
+          COUNT=$(git log --no-merges --pretty=oneline --invert-grep --author="github-actions" | wc -l)
           MAJOR=$((COUNT / 1000))
           MINOR=$(((COUNT % 1000) / 100))
           PATCH=$((COUNT % 100))
@@ -36,7 +36,7 @@ jobs:
           echo "  \"version\": \"$VERSION\"," >> parallax-version.json
           echo "  \"commitCount\": $COUNT," >> parallax-version.json
           echo "  \"commitHash\": \"$(git rev-parse --short HEAD)\"," >> parallax-version.json
-          echo "  \"branch\": \"$(git rev-parse --abbrev-ref HEAD)\"" >> parallax-version.json
+          echo "  \"branch\": \"main\"" >> parallax-version.json
           echo "}" >> parallax-version.json
 
       - name: Configure Git
@@ -44,7 +44,7 @@ jobs:
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
 
-      - name: Commit and push version file (if changed)
+      - name: Commit and push version file
         run: |
           git add -f parallax-version.json
 
