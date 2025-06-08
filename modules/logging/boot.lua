@@ -35,7 +35,7 @@ function MODULE:Format(ent)
         tag = name
     end
 
-    if ( tag == "" ) then
+    if ( !isstring(tag) ) then
         tag = "unknown"
     end
 
