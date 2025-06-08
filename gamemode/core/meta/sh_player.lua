@@ -91,7 +91,7 @@ function PLAYER:HasWhitelist(identifier)
     return whitelist != nil and whitelist != false
 end
 
-function PLAYER:Notify(text, iType, length)
+function PLAYER:Notify(text, iType, duration)
     if ( !text or text == "" ) then return end
 
     if ( !iType and string.EndsWith(text, "!") ) then
@@ -104,7 +104,7 @@ function PLAYER:Notify(text, iType, length)
 
     duration = duration or 3
 
-    ax.notification:Send(self, text, iType, length)
+    ax.notification:Send(self, text, iType, duration)
 end
 
 ax.alwaysRaised = ax.alwaysRaised or {}

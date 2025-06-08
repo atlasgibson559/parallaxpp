@@ -8,7 +8,7 @@ properties.Add("ax.admin.sethealth", {
 		if ( !IsValid(ent) or !ent:IsPlayer() ) then return false end
 		if ( !hook.Run( "CanProperty", client, "ax.admin.sethealth", ent) ) then return false end
 
-		return MODULE:HasPermission(client, "Parllax - Manage Health", nil)
+		return MODULE:HasPermission(client, "Parallax - Manage Health", nil)
 	end,
 	Receive = function(self, length, client)
 		local target = net.ReadPlayer()
