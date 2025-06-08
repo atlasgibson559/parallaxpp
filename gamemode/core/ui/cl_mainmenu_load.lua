@@ -79,7 +79,7 @@ function PANEL:Populate()
         image.Paint = function(this, width, height)
             surface.SetDrawColor(ax.color:Get("white"))
             surface.SetMaterial(banner)
-            surface.DrawTexturedRect(0, 0, width, imageHeight)
+            surface.DrawTexturedRect(0, 0, width, height)
         end
 
         local deleteButton = button:Add("ax.button.small")
