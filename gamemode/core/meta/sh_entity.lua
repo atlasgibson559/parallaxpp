@@ -30,7 +30,7 @@ end
 function ENTITY:IsDoor()
     local class = self:GetClass()
 
-    return (class and class:find("door") != nil)
+    return (class and string.match(class, "door") != nil)
 end
 
 -- Inherits the bodygroups of the given entity.
