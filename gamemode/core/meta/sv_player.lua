@@ -141,7 +141,7 @@ function PLAYER:SetRagdolled(bState)
     self:SetNoDraw(true)
     self:SetNotSolid(true)
     self:SetRelay("ragdolled", true)
-    self:SetRelay("bCanShoot", false)
+    self:SetRelay("canShoot", false)
     self:SetRelay("bWeaponRaised", false)
 
     local arsenalTable = {}
@@ -178,7 +178,7 @@ function PLAYER:SetRagdolled(bState)
                 self:SetNoDraw(false)
                 self:SetNotSolid(false)
                 self:SetRelay("ragdolled", false)
-                self:SetRelay("bCanShoot", true)
+                self:SetRelay("canShoot", true)
                 self:SetRelay("bWeaponRaised", true)
 
                 local ragdollArsenal = self:GetRelay("ragdollArsenal", {})
@@ -204,7 +204,6 @@ function PLAYER:SetWeaponRaised(bRaised)
     if ( bRaised == nil ) then bRaised = true end
 
     self:SetRelay("bWeaponRaised", bRaised)
-    self:SetRelay("bCanShoot", bRaised)
 
     local weapon = self:GetActiveWeapon()
     if ( IsValid(weapon) and weapon:IsWeapon() and isfunction(weapon.SetWeaponRaised) ) then
