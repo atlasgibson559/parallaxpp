@@ -242,7 +242,7 @@ if ( CLIENT ) then
     local lerpFOV = 75
     function MODULE:CalcView(client, origin, angles, fov, znear, zfar)
         if ( !ax.option:Get("view") ) then return end
-        if ( !IsValid(client) or client:InObserver() ) then return end
+        if ( !IsValid(client) or client:InObserver() or !client:Alive() ) then return end
 
         local view = {
             origin = origin,
