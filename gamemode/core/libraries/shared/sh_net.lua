@@ -90,7 +90,6 @@ net.Receive("ax.net.msg", function(len, client)
     if ( SERVER ) then
         local configCooldown = ax.config:Get("networking.cooldown", 0.1)
         if ( isnumber(configCooldown) and configCooldown > 0 ) then
-
             if ( !istable(ax.net.cooldown[client]) ) then ax.net.cooldown[client] = {} end
             if ( !isnumber(ax.net.cooldown[client][name]) ) then ax.net.cooldown[client][name] = 0 end
 
