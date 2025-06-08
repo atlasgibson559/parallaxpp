@@ -138,11 +138,64 @@ function PLAYER:SetRagdolled(bState)
         return
     end
 
+    self:SetNoDraw(true)
+    self:SetNotSolid(true)
+    self:SetRelay("ragdolled", true)
+    self:SetRelay("bCanShoot", false)
+    self:SetRelay("bWeaponRaised", false)
+
+    local arsenalTable = {}
+    for k, v in ipairs(self:GetWeapons()) do
+        if ( IsValid(v) and v:IsWeapon() ) then
+            arsenalTable[k] = v:GetClass()
+        end
+    end
+
+    self:SetDataVariable("ragdollArsenal", arsenalTable)
+    self:SetDataVariable("ragdollAmmo", self:GetAmmo())
+
+    self:RemoveAllItems()
+
     local ragdoll = self:CreateServerRagdoll()
     timer.Simple(0.1, function()
         if ( IsValid(ragdoll) ) then
             ragdoll:SetDataVariable("owner", self)
             self:SetDataVariable("ragdoll", ragdoll)
+
+            local timerID = "ax.client." .. self:SteamID64() .. ".ragdollRestore"
+            timer.Create(timerID, 0.1, 0, function()
+                if ( !IsValid(self) or !IsValid(ragdoll) ) then timer.Remove(timerID) return end
+
+                self:SetPos(ragdoll:GetPos())
+                self:SetVelocity(ragdoll:GetVelocity())
+            end)
+
+            ragdoll:CallOnRemove("ax.client.restore" .. self:SteamID64(), function(this)
+                timer.Remove(timerID)
+
+                if ( !IsValid(self) ) then return end
+
+                self:SetNoDraw(false)
+                self:SetNotSolid(false)
+                self:SetRelay("ragdolled", false)
+                self:SetRelay("bCanShoot", true)
+                self:SetRelay("bWeaponRaised", true)
+
+                local ragdollArsenal = self:GetDataVariable("ragdollArsenal", {})
+                for _, weapon in ipairs(ragdollArsenal) do
+                    self:Give(weapon)
+                end
+
+                local ragdollAmmo = self:GetDataVariable("ragdollAmmo", {})
+                for ammoType in pairs(ragdollAmmo) do
+                    local ammoCount = ragdollAmmo[ammoType]
+                    if ( isnumber(ammoType) and isstring(game.GetAmmoName(ammoType)) and isnumber(ammoCount) ) then
+                        self:SetAmmo(ammoCount, ammoType)
+                    end
+                end
+
+                self:SetDataVariable("ragdoll", nil)
+            end)
         end
     end)
 end
