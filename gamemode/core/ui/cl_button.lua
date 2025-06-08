@@ -97,6 +97,10 @@ function PANEL:Think()
     self:SetTall(self.height)
     self:SetTextColor(self.textColor)
     self:SetTextInset(self.textInset[1], self.textInset[2])
+
+    if ( self.OnThink ) then
+        self:OnThink()
+    end
 end
 
 function PANEL:OnCursorEntered()
@@ -196,6 +200,10 @@ function PANEL:Think()
     end
 
     self:SetTextColor(self.textColor)
+
+    if ( self.OnThink ) then
+        self:OnThink()
+    end
 end
 
 function PANEL:OnCursorEntered()
