@@ -24,7 +24,7 @@ function ax.class:Register(classData)
     if ( bResult == false ) then return false end
 
     local uniqueID = string.lower(string.gsub(CLASS.Name, "%s+", "_")) .. "_" .. CLASS.Faction
-    for k, v in pairs(self.instances) do
+    for k, v in ipairs(self.instances) do
         if ( v.UniqueID == uniqueID ) then
             ax.util:PrintError("Attempted to register a class that already exists!")
             return false, "Attempted to register a class that already exists!"
@@ -58,16 +58,8 @@ function ax.class:Get(identifier)
         return false
     end
 
-    if ( tonumber(identifier) ) then
-        identifier = tonumber(identifier)
-
-        for k, v in ipairs(self.instances) do
-            if ( v:GetID() == identifier ) then
-                return v
-            end
-        end
-
-        return nil
+    if ( isnumber(identifier) ) then
+        return self.instances[identifier]
     end
 
     if ( self.stored[identifier] ) then
@@ -105,11 +97,19 @@ function ax.class:OnSwitch(client, classID)
     local class = self:Get(classID)
     if ( !class ) then return false end
 
+    local character = client:GetCharacter()
+    if ( !character ) then
+        ax.util:PrintError("Attempted to switch class for a player without a character!")
+        return false
+    end
+
     local hookRun = hook.Run("CanPlayerJoinClass", client, classID)
     if ( hookRun != nil and hookRun == false ) then return false end
 
-    if ( isfunction(class.OnSwitch) ) then
-        class:OnSwitch(client)
+    character:SetClass(classID)
+
+    if ( isfunction(class.OnBecome) ) then
+        class:OnBecome(client)
     end
 
     return true
