@@ -86,7 +86,16 @@ if ( CLIENT ) then
             return fallback
         end
 
-        return optionData.Value == nil and optionData.Default or optionData.Value
+        if ( optionData.Value == nil ) then
+            if ( optionData.Default == nil ) then
+                ax.util:PrintError("Option \"" .. key .. "\" has no value or default set!")
+                return fallback
+            end
+
+            return optionData.Default
+        end
+
+        return optionData.Value
     end
 
     function ax.option:GetDefault(key)
