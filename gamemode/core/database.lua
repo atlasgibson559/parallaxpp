@@ -9,7 +9,7 @@ ax.database.backend = ax.sqlite -- Default to SQLite if MySQL is not available
 -- @tparam table[opt] config MySQL connection config
 -- @usage ax.database:Initialize({ host = "localhost", username = "root", password = "", database = "gmod", port = 3306 })
 function ax.database:Initialize(config)
-    if ( ax.sqloo ) then
+    if ( ax.util:HasMysqlooBinary() and ax.sqloo ) then
         if ( config ) then
             self.backend = ax.sqloo
             ax.sqloo:Initialize(config)
