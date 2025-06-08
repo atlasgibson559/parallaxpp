@@ -11,7 +11,7 @@ ax.config.instances = ax.config.instances or {}
 -- @usage ax.config:Load()
 -- @internal
 function ax.config:Load()
-    local config = ax.data:Get("config", {}, true, false)
+    local config = ax.data:Get("config", {}, false, false)
 
     for k, v in pairs(config) do
         local storedData = self.stored[k]
@@ -67,7 +67,7 @@ function ax.config:Save()
 
     local values = self:GetSaveData()
 
-    ax.data:Set("config", values, true, false)
+    ax.data:Set("config", values, false, false)
 
     hook.Run("PostConfigSave", values)
     ax.util:Print("Configuration saved.")

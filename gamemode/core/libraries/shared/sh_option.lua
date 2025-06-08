@@ -24,7 +24,7 @@ if ( CLIENT ) then
     function ax.option:Load()
         hook.Run("PreOptionsLoad")
 
-        for k, v in pairs(ax.data:Get("options", {}, true, false)) do
+        for k, v in pairs(ax.data:Get("options", {}, false, false)) do
             if ( istable(self.stored[k]) ) then
                 self.stored[k].Value = v
             end
@@ -72,7 +72,7 @@ if ( CLIENT ) then
             stored:OnChange(value, oldValue, client)
         end
 
-        ax.data:Set("options", self:GetSaveData(), true, false)
+        ax.data:Set("options", self:GetSaveData(), false, false)
 
         hook.Run("PostOptionChanged", client, key, value, oldValue)
 
@@ -121,7 +121,7 @@ if ( CLIENT ) then
             v.Value = nil
         end
 
-        ax.data:Set("options", {}, true, false)
+        ax.data:Set("options", {}, false, false)
         ax.net:Start("option.sync", {})
     end
 end
