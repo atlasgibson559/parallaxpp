@@ -468,11 +468,18 @@ end
 -- @realm shared
 -- @param startpos Vector The starting position of the box.
 -- @param endpos Vector The ending position of the box.
--- @return Vector The center of the box.
+-- @return Vector center The center point of the box.
+-- @return Vector min The minimum corner of the box.
+-- @return Vector max The maximum corner of the box.
 function ax.util:GetBounds(startpos, endpos)
-	local center = LerpVector(0.5, startpos, endpos)
-	local min = WorldToLocal(startpos, angle_zero, center, angle_zero)
-	local max = WorldToLocal(endpos, angle_zero, center, angle_zero)
+	if ( !isvector(startpos) or !isvector(endpos) ) then
+		ax.util:PrintError("Attempted to get bounds with invalid positions", startpos, endpos)
+		return vector_origin, vector_origin, vector_origin
+	end
+
+	local min = Vector(math.min(startpos.x, endpos.x), math.min(startpos.y, endpos.y), math.min(startpos.z, endpos.z))
+	local max = Vector(math.max(startpos.x, endpos.x), math.max(startpos.y, endpos.y), math.max(startpos.z, endpos.z))
+	local center = (min + max) / 2
 
 	return center, min, max
 end
