@@ -7,7 +7,7 @@ function MODULE:PostPlayerReady(client)
         client:SetDBVar("usergroup", "superadmin") -- Default usergroup
         client:SaveDB()
         client:SetUserGroup("superadmin")
-        ax.util:Print(tostring(client) .. " is assigned to usergroup '" .. usergroup .. "'.")
+        ax.util:Print(tostring(client) .. " is assigned to usergroup '" .. client:GetUserGroup() .. "'.")
 
         return
     end
