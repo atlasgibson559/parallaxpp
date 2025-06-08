@@ -7,11 +7,6 @@ function ax.flag:Register(flag, description, callback)
         return false
     end
 
-    if ( self.stored[flag] ) then
-        ax.util:PrintError("Attempted to register a flag that already exists!")
-        return false
-    end
-
     self.stored[flag] = {
         description = description or "No description provided",
         callback = callback or nil
