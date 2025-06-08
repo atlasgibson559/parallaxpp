@@ -15,7 +15,6 @@ function MODULE:HUDPaint()
     local playerCount = 0
     local admins = 0
     for k, v in player.Iterator() do
-        if ( !IsValid(v) ) then continue end
         playerCount = playerCount + 1
 
         if ( v:IsAdmin() ) then
@@ -47,7 +46,7 @@ function MODULE:HUDPaint()
         _, h = draw.SimpleText(healthText, "DermaDefault", screenPos.x, y, ax.color:Get("text"))
         y = y + h + 2
 
-        local faction = ax.faction:Get(v:Team())
+        local faction = v:GetFactionData()
         if ( faction ) then
             _, h = draw.SimpleText(faction.Name, "DermaDefault", screenPos.x, y, faction.Color)
             y = y + h + 2
