@@ -92,9 +92,7 @@ net.Receive("ax.net.msg", function(len, client)
         if ( isnumber(configCooldown) and configCooldown > 0 ) then
             local coolDown = ax.net.cooldown[name]
             if ( isnumber(coolDown) and coolDown > CurTime() ) then
-                if ( ax.config:Get("debug.networking") ) then
-                    ax.util:PrintWarning("[Networking] '" .. name .. "' is on cooldown for " .. math.ceil(coolDown - CurTime()) .. " seconds, ignoring request from " .. (tostring(client) or "unknown"))
-                end
+                ax.util:PrintWarning("[Networking] '" .. name .. "' is on cooldown for " .. math.ceil(coolDown - CurTime()) .. " seconds, ignoring request from " .. (tostring(client) or "unknown"))
 
                 return
             end
