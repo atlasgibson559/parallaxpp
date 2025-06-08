@@ -201,8 +201,10 @@ end)
 -----------------------------------------------------------------------------]]--
 
 ax.net:Hook("client.ready", function(client)
-    if ( !IsValid(client) ) then return end
+    local clientTable = client:GetTable()
+    if ( clientTable.axReady ) then return end
 
+    clientTable.axReady = true
     hook.Run("PlayerReady", client)
 end)
 
