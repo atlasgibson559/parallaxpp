@@ -366,7 +366,7 @@ local PlayerPassiveTranslator = {
 
 function MODULE:TranslateActivity(client, act)
     local clientTable = client:GetTable()
-    local oldAct = client.axLastAct or -1
+    local oldAct = clientTable.axLastAct or -1
 
     local newAct = client:TranslateWeaponActivity(act)
     if ( act == newAct ) then

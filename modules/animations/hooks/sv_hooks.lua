@@ -17,12 +17,12 @@ function MODULE:PostEntitySetModel(ent, model)
 
     local animTable = ax.animations.stored[ax.animations:GetModelClass(model)]
     if ( animTable and animTable[holdType] ) then
-        client.axAnimations = animTable[holdType]
+        clientTable.axAnimations = animTable[holdType]
     else
-        client.axAnimations = {}
+        clientTable.axAnimations = {}
     end
 
-    ax.net:Start(nil, "animations.update", client, client.axAnimations, holdType)
+    ax.net:Start(nil, "animations.update", client, clientTable.axAnimations, holdType)
 end
 
 function MODULE:PlayerSpawn(client)
@@ -34,16 +34,18 @@ function MODULE:PlayerSpawn(client)
     local holdType = weapon:GetHoldType()
     if ( !holdType ) then return end
 
+    local clientTable = client:GetTable()
+
     holdType = HOLDTYPE_TRANSLATOR[holdType] or holdType
 
     local animTable = ax.animations.stored[ax.animations:GetModelClass(client:GetModel())]
     if ( animTable and animTable[holdType] ) then
-        client.axAnimations = animTable[holdType]
+        clientTable.axAnimations = animTable[holdType]
     else
-        client.axAnimations = {}
+        clientTable.axAnimations = {}
     end
 
-    ax.net:Start(nil, "animations.update", client, client.axAnimations, holdType)
+    ax.net:Start(nil, "animations.update", client, clientTable.axAnimations, holdType)
 end
 
 function MODULE:PlayerSwitchWeapon(client, oldWeapon, newWeapon)
@@ -53,14 +55,16 @@ function MODULE:PlayerSwitchWeapon(client, oldWeapon, newWeapon)
     local holdType = newWeapon:GetHoldType()
     if ( !holdType ) then return end
 
+    local clientTable = client:GetTable()
+
     holdType = HOLDTYPE_TRANSLATOR[holdType] or holdType
 
     local animTable = ax.animations.stored[ax.animations:GetModelClass(client:GetModel())]
     if ( animTable and animTable[holdType] ) then
-        client.axAnimations = animTable[holdType]
+        clientTable.axAnimations = animTable[holdType]
     else
-        client.axAnimations = {}
+        clientTable.axAnimations = {}
     end
 
-    ax.net:Start(nil, "animations.update", client, client.axAnimations, holdType)
+    ax.net:Start(nil, "animations.update", client, clientTable.axAnimations, holdType)
 end
