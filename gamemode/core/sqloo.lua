@@ -13,6 +13,10 @@ local function hasMysqlooBinary()
     return file.Exists("lua/bin/" .. binaryName, "GAME")
 end
 
+function ax.util:HasMysqlooBinary()
+    return hasMysqlooBinary()
+end
+
 if ( !hasMysqlooBinary() ) then
     ax.util:PrintWarning("MySQLOO binary not found in lua/bin/. ax.sqloo disabled.")
     return
