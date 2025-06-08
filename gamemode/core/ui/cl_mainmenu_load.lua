@@ -67,11 +67,16 @@ function PANEL:Populate()
             ax.net:Start("character.load", v:GetID())
         end
 
+        local banner = hook.Run("GetCharacterBanner", v:GetID()) or "gamepadui/hl2/chapter14"
+        if ( type(banner) == "string" ) then
+            banner = ax.util:GetMaterial(banner)
+        end
+
         local image = button:Add("DImage")
         image:Dock(LEFT)
         image:DockMargin(0, 0, tinyPadding, 0)
         image:SetSize(button:GetTall() * 1.75, button:GetTall())
-        image:SetImage(v.Image or "gamepadui/hl2/chapter14")
+        image:SetImage(banner)
 
         local deleteButton = button:Add("ax.button.small")
         deleteButton:Dock(RIGHT)

@@ -124,7 +124,7 @@ function PANEL:PopulateFactionSelect()
             self:PopulateCreateCharacter()
         end
 
-        local banner = v.Image or "gamepadui/hl2/chapter14"
+        local banner = v.Image or hook.Run("GetFactionBanner", v:GetID()) or "gamepadui/hl2/chapter14"
         if ( type(banner) == "string" ) then
             banner = ax.util:GetMaterial(banner)
         end
