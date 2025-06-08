@@ -86,7 +86,7 @@ function GM:StartCommand(client, cmd)
     local weapon = client:GetActiveWeapon()
     if ( !IsValid(weapon) or !weapon:IsWeapon() ) then return end
 
-    if ( !weapon.FireWhenLowered and !client:IsWeaponRaised() ) then
+    if ( !client:GetRelay("bCanShoot", true) or !weapon.FireWhenLowered and !client:IsWeaponRaised() ) then
         cmd:RemoveKey(KEY_SHOOT)
     end
 end
