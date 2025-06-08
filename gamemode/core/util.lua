@@ -484,15 +484,25 @@ function ax.util:GetBounds(startpos, endpos)
 	return center, min, max
 end
 
-function ax.util:GetCharacters()
-	local characters = {}
-	for k, v in player.Iterator() do
-		if ( v:GetCharacter() ) then
-			table.insert(characters, v:GetCharacter())
-		end
+do
+	local i
+	local value
+	local character
+
+	local function iterator(clientTable)
+		repeat
+			i = i + 1
+			value = clientTable[i]
+			character = value and value:GetCharacter()
+		until character or value == nil
+
+		return value, character
 	end
 
-	return characters
+	function ax.util:GetCharacters()
+		i = 0
+		return iterator, select(2, player.Iterator())
+	end
 end
 
 function ax.util:IsPlayerReceiver(obj)
