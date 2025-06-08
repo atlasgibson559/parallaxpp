@@ -89,7 +89,7 @@ function PANEL:Populate()
         deleteButton:SetSize(0, button:GetTall())
         deleteButton:SetContentAlignment(5)
         deleteButton.baseTextColor = ax.config:Get("color.error")
-        deleteButton.baseTextColorTarget = ax.color:Get("color.black")
+        deleteButton.baseTextColorTarget = ax.color:Get("black")
         deleteButton.backgroundColor = ax.config:Get("color.error")
         deleteButton.width = 0
         deleteButton.DoClick = function()
