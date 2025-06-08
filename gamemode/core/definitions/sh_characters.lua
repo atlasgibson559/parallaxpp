@@ -121,7 +121,7 @@ ax.character:RegisterVariable("model", {
                 icon:SetSize(64, 128)
                 icon:SetTooltip(v)
                 icon.DoClick = function()
-                    ax.client:Notify("You have selected " .. v .. " as your model!")
+                    ax.client:Notify("You have selected " .. v .. " as your model!", NOTIFY_HINT)
                     payload.model = v
                 end
             end
