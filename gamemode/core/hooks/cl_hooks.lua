@@ -446,11 +446,7 @@ local elements = {
 }
 
 function GM:HUDShouldDraw(name)
-    if ( elements[name] ) then
-        return false
-    end
-
-    return true
+    return !elements[name]
 end
 
 function GM:LoadFonts()
