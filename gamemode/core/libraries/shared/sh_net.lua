@@ -73,7 +73,6 @@ end
 
 net.Receive("ax.net.msg", function(len, ply)
     local name = net.ReadString()
-
     local raw = net.ReadData(len / 8)
 
     local ok, decoded = pcall(sfs.decode, raw)
