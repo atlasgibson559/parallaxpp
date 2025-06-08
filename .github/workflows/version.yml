@@ -1,4 +1,4 @@
-name: Generate Version JSON (Filtered, Main Branch)
+name: Generate Version JSON (Manual Commit Filter)
 
 on:
   push:
@@ -26,15 +26,25 @@ jobs:
 
       - name: Generate version JSON
         run: |
-          COUNT=$(git log --no-merges --pretty=oneline --invert-grep --author="github-actions" | wc -l)
-          MAJOR=$((COUNT / 1000))
-          MINOR=$(((COUNT % 1000) / 100))
-          PATCH=$((COUNT % 100))
+          VALID_COUNT=0
+          for COMMIT in $(git rev-list --reverse HEAD); do
+              AUTHOR=$(git show -s --format='%ae' $COMMIT)
+              PARENTS=$(git rev-list --parents -n 1 $COMMIT | wc -w)
+
+              # PARENTS = 2+ means a merge commit
+              if [[ "$AUTHOR" != "github-actions@github.com" && "$PARENTS" -lt 3 ]]; then
+                  VALID_COUNT=$((VALID_COUNT + 1))
+              fi
+          done
+
+          MAJOR=$((VALID_COUNT / 1000))
+          MINOR=$(((VALID_COUNT % 1000) / 100))
+          PATCH=$((VALID_COUNT % 100))
           VERSION="$MAJOR.$MINOR.$PATCH"
 
           echo "{" > parallax-version.json
           echo "  \"version\": \"$VERSION\"," >> parallax-version.json
-          echo "  \"commitCount\": $COUNT," >> parallax-version.json
+          echo "  \"commitCount\": $VALID_COUNT," >> parallax-version.json
           echo "  \"commitHash\": \"$(git rev-parse --short HEAD)\"," >> parallax-version.json
           echo "  \"branch\": \"main\"" >> parallax-version.json
           echo "}" >> parallax-version.json
