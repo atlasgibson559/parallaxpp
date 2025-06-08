@@ -189,7 +189,9 @@ function ax.item:CreateObject(data)
 
     local item = setmetatable({}, self.meta)
 
-    table.Merge(item, base)
+    for k, v in pairs(base) do
+        item[k] = v
+    end
 
     item.ID = id
     item.UniqueID = uniqueID
