@@ -72,11 +72,15 @@ function PANEL:Populate()
             banner = ax.util:GetMaterial(banner)
         end
 
-        local image = button:Add("DImage")
+        local image = button:Add("DPanel")
         image:Dock(LEFT)
         image:DockMargin(0, 0, tinyPadding, 0)
         image:SetSize(button:GetTall() * 1.75, button:GetTall())
-        image:SetImage(banner)
+        image.Paint = function(this, width, height)
+            surface.SetDrawColor(ax.color:Get("white"))
+            surface.SetMaterial(banner)
+            surface.DrawTexturedRect(0, 0, width, imageHeight)
+        end
 
         local deleteButton = button:Add("ax.button.small")
         deleteButton:Dock(RIGHT)
