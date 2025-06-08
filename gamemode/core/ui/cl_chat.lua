@@ -135,6 +135,10 @@ function PANEL:Init()
     end
 end
 
+function PANEL:GetChatType()
+    return self.chatType.fullText or "IC"
+end
+
 function PANEL:PopulateRecommendations(text)
     if ( !text ) then
         if ( self.recommendations:GetAlpha() > 0 ) then
