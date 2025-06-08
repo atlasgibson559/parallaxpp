@@ -85,15 +85,43 @@ function PANEL:Populate()
         local deleteButton = button:Add("ax.button.small")
         deleteButton:Dock(RIGHT)
         deleteButton:DockMargin(tinyPadding, 0, 0, 0)
+        deleteButton:SetText("X")
+        deleteButton:SetSize(0, button:GetTall())
+        deleteButton:SetContentAlignment(5)
         deleteButton.baseTextColor = ax.color:Get("error")
         deleteButton.baseTextColorTarget = ax.color:Get("black")
         deleteButton.backgroundColor = ax.color:Get("error")
-        deleteButton:SetText("X")
-        deleteButton:SetWide(button:GetTall())
-        deleteButton:SetTall(button:GetTall())
-        deleteButton:SetContentAlignment(5)
+        deleteButton.width = 0
         deleteButton.DoClick = function()
             self:PopulateDelete(v:GetID())
+        end
+
+        -- Sorry for this pyramid of code, but eon wanted me to make the delete button extend when hovered over the character button.
+        local isDeleteButtonExtended = false
+        button.OnThink = function()
+            if ( button:IsHovered() or deleteButton:IsHovered() ) then
+                if ( !isDeleteButtonExtended ) then
+                    isDeleteButtonExtended = true
+                    deleteButton:Animate(0.2, {
+                        Target = {width = button:GetTall()},
+                        Easing = "OutQuad",
+                        Think = function(this)
+                            deleteButton:SetWide(this.width)
+                        end
+                    })
+                end
+            else
+                if ( isDeleteButtonExtended ) then
+                    isDeleteButtonExtended = false
+                    deleteButton:Animate(0.2, {
+                        Target = {width = 0},
+                        Easing = "OutQuad",
+                        Think = function(this)
+                            deleteButton:SetWide(this.width)
+                        end
+                    })
+                end
+            end
         end
 
         local name = button:Add("ax.text")
