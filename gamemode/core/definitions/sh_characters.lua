@@ -36,9 +36,9 @@ ax.character:RegisterVariable("name", {
         local lengthMin = factionData.NameLengthMin or 3
         local lengthMax = factionData.NameLengthMax or 32
         if ( string.len(name) < lengthMin ) then
-            return false, "Name must be at least 3 characters long!"
+            return false, "Name must be at least " .. lengthMin .. " characters long!"
         elseif ( string.len(name) > lengthMax ) then
-            return false, "Name must be at most 32 characters long!"
+            return false, "Name must be at most " .. lengthMax .. " characters long!"
         end
 
         if ( string.find(name, "[^%a%d%s]") and factionData.AllowNonAscii != true ) then
