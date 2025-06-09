@@ -134,7 +134,7 @@ function PLAYER:CreateServerRagdoll()
     return ragdoll
 end
 
-function PLAYER:SetRagdolled(bState)
+function PLAYER:SetRagdolled(bState, duration)
     if ( bState == nil ) then bState = false end
 
     if ( !bState ) then
@@ -201,6 +201,16 @@ function PLAYER:SetRagdolled(bState)
 
                 self:SetRelay("ragdoll", nil)
             end)
+
+            if ( isnumber(duration) and duration > 0 ) then
+                timer.Simple(duration, function()
+                    if ( IsValid(self) and IsValid(ragdoll) ) then
+                        self:SetRagdolled(false)
+                    end
+                end)
+            end
+
+            hook.Run("OnPlayerRagdolled", self, ragdoll, duration)
         end
     end)
 end
