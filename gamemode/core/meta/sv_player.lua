@@ -109,6 +109,11 @@ function PLAYER:CreateServerRagdoll()
     ragdoll:SetCollisionGroup(COLLISION_GROUP_DEBRIS_TRIGGER)
     ragdoll:Activate()
 
+    local flameEntity = self:GetInternalVariable("m_hEffectEntity")
+    if ( IsValid(flameEntity) and flameEntity:GetClass() == "entityflame" ) then
+        ragdoll:Ignite(flameEntity:GetInternalVariable("m_flLifetime") - CurTime(), 0)
+    end
+
     local velocity = self:GetVelocity()
     for i = 0, ragdoll:GetPhysicsObjectCount() - 1 do
         local phys = ragdoll:GetPhysicsObjectNum(i)
