@@ -1,0 +1,10 @@
+# Source: https://github.com/FPtje/GLuaFixer
+
+name: Glua Linter
+
+on:
+  pull_request:
+
+jobs:
+  glua-linter:
+    uses: FPtje/GLuaFixer/.github/workflows/glualint.yml@master
