@@ -17,11 +17,11 @@ function ax.util:CoerceType(typeID, value)
 	elseif ( typeID == ax.types.bool ) then
 		return tobool(value)
 	elseif ( typeID == ax.types.vector ) then
-		return isvector(value) and value or vector_origin
+		return isvector(value) and value
 	elseif ( typeID == ax.types.angle ) then
-		return isangle(value) and value or angle_zero
+		return isangle(value) and value
 	elseif ( typeID == ax.types.color ) then
-		return ( IsColor(value) or ( istable(value) and isnumber(value.r) and isnumber(value.g) and isnumber(value.b) and isnumber(value.a) ) ) and value or color_white
+		return ( IsColor(value) or ( istable(value) and isnumber(value.r) and isnumber(value.g) and isnumber(value.b) and isnumber(value.a) ) ) and value
 	elseif ( typeID == ax.types.player ) then
 		if ( isstring(value) ) then
 			return ax.util:FindPlayer(value)
