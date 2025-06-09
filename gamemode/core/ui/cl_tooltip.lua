@@ -58,7 +58,7 @@ function PANEL:SizeToContents()
         height = height + ax.util:GetTextHeight("parallax")
     end
 
-    self:SetSize(width + 32, height)
+    self:SetSize(width + 32, height + 8)
 end
 
 function PANEL:Think()
