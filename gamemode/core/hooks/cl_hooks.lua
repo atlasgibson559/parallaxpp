@@ -347,26 +347,6 @@ function GM:HUDPaint()
         draw.SimpleText("This is not the final product.", "parallax.developer", x, y + 16 * 2, red, TEXT_ALIGN_LEFT)
     end
 
-    shouldDraw = hook.Run("ShouldDrawCrosshair")
-    if ( shouldDraw != false ) then
-        x, y = ScrW() / 2, ScrH() / 2
-        local size = 3
-
-        if ( ax.module:Get("thirdperson") and ax.option:Get("thirdperson", false) ) then
-            local trace = util.TraceLine({
-                start = client:GetShootPos(),
-                endpos = client:GetShootPos() + client:GetAimVector() * 8192,
-                filter = client,
-                mask = MASK_SHOT
-            })
-
-            local screen = trace.HitPos:ToScreen()
-            x, y = screen.x, screen.y
-        end
-
-        -- TODO: Add crosshair
-    end
-
     shouldDraw = hook.Run("ShouldDrawAmmoBox")
     if ( shouldDraw != nil and shouldDraw != false ) then
         local activeWeapon = client:GetActiveWeapon()
