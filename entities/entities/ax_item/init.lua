@@ -3,14 +3,6 @@ AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("shared.lua")
 include("shared.lua")
 
-function ENT:Initialize()
-    self:SetModel("models/props_junk/watermelon01.mdl")
-    self:SetSolid(SOLID_VPHYSICS)
-    self:PhysicsInit(SOLID_VPHYSICS)
-    self:SetUseType(SIMPLE_USE)
-    self:PhysWake()
-end
-
 function ENT:SetItem(itemID, uniqueID)
     local itemDef = ax.item:Get(uniqueID)
     if ( !istable(itemDef) ) then
