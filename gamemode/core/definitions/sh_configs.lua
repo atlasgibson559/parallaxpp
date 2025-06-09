@@ -435,3 +435,11 @@ ax.config:Register("time.respawn", {
     Min = 0,
     Max = 300,
 })
+
+ax.config:Register("restorepos", {
+    Name = "config.restorepos",
+    Description = "config.restorepos.help",
+    Type = ax.types.bool,
+    Default = true,
+    Category = "category.characters"
+})
