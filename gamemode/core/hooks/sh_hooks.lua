@@ -192,7 +192,7 @@ function GM:ShouldCollide(ent1, ent2)
         end
 
         if ( itemDef.ShouldEntityCollide ) then
-            return itemDef:ShouldEntityCollide(ent1)
+            return itemDef:ShouldEntityCollide(ent1, ent2)
         end
 
         return true
