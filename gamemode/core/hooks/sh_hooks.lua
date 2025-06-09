@@ -188,7 +188,7 @@ function GM:ShouldCollide(ent1, ent2)
         if ( !itemDef ) then return end
 
         if ( ent2:GetClass() == "ax_item" and itemDef.bNoItemsCollision ) then
-            return  false
+            return false
         end
 
         if ( itemDef.ShouldEntityCollide ) then
