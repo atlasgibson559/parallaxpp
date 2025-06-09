@@ -198,24 +198,3 @@ function PLAYER:GetInventoryByID(id)
 
     return character:GetInventoryByID(id)
 end
-
-function PLAYER:SetCooldown(action, cooldown)
-    if ( !isstring(action) or !isnumber(cooldown) ) then return end
-
-    local selfTable = self:GetTable()
-    selfTable["ax.cooldown." .. action] = CurTime() + cooldown
-end
-
-function PLAYER:OnCooldown(action)
-    if ( !isstring(action) ) then return false end
-
-    local selfTable = self:GetTable()
-    local cooldown = selfTable["ax.cooldown." .. action]
-
-    if ( !isnumber(cooldown) or cooldown <= CurTime() ) then
-        selfTable["ax.cooldown." .. action] = nil
-        return false
-    end
-
-    return true
-end

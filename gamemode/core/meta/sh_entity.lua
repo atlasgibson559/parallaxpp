@@ -100,7 +100,7 @@ end
 -- @treturn bool Whether or not this entity is locked; `false` if this entity cannot be locked at all
 -- (e.g not a button or door)
 function ENTITY:IsLocked()
-    if (SERVER) then
+    if ( SERVER ) then
         if ( self:IsVehicle() ) then
             return self:GetInternalVariable("VehicleLocked")
         else
@@ -127,4 +127,25 @@ function ENTITY:SetModel(model)
     self:SetModelInternal(model)
 
     hook.Run("PostEntitySetModel", self, model)
+end
+
+function ENTITY:SetCooldown(action, cooldown)
+    if ( !isstring(action) or !isnumber(cooldown) ) then return end
+
+    local selfTable = self:GetTable()
+    selfTable["ax.cooldown." .. action] = CurTime() + cooldown
+end
+
+function ENTITY:OnCooldown(action)
+    if ( !isstring(action) ) then return false end
+
+    local selfTable = self:GetTable()
+    local cooldown = selfTable["ax.cooldown." .. action]
+
+    if ( !isnumber(cooldown) or cooldown <= CurTime() ) then
+        selfTable["ax.cooldown." .. action] = nil
+        return false
+    end
+
+    return true
 end
