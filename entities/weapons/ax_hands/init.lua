@@ -3,8 +3,8 @@ AddCSLuaFile("shared.lua")
 include("shared.lua")
 
 ax.net:Hook("hands.reset", function(client)
-    if ( client.axHandsReset and client.axHandsReset > CurTime() ) then return end
-    client.axHandsReset = CurTime() + 0.5
+    if ( client:OnCooldown("hands") ) then return end
+    client:SetCooldown("hands", 0.5)
 
     if ( !IsValid(client) ) then return end
 
