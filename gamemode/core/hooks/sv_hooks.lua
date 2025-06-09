@@ -312,9 +312,7 @@ end
 
 function GM:GetFallDamage(client, speed)
     if ( speed > 100 ) then
-        ax.util:Print("I would ragdoll the player... but missing function!")
-        -- TODO: Implement this in the future
-        -- client:Ragdoll()
+        client:SetRagdolled(true, 5)
     end
 
     return speed / 8

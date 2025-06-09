@@ -199,6 +199,8 @@ function PLAYER:SetRagdolled(bState, duration)
                     end
                 end
 
+
+                self:SelectWeapon("ax_hands")
                 self:SetRelay("ragdoll", nil)
             end)
 
