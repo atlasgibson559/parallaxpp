@@ -208,11 +208,8 @@ function PANEL:AddSetting(settingData)
             this:SetText(tostring(slider:GetValue()), true, true)
         end
 
-        slider.OnValueSet = function(this, _)
-            ax.option:Set(settingData.UniqueID, this:GetValue())
-        end
-
         slider.OnValueChanged = function(this, _)
+            ax.option:Set(settingData.UniqueID, this:GetValue())
             ax.client:EmitSound("ui/buttonrollover.wav", 100, 100, 1, CHAN_STATIC)
         end
 
