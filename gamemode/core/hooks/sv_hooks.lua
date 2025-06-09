@@ -385,21 +385,6 @@ function GM:PlayerHurt(client, attacker, healthRemaining, damageTaken)
     end
 end
 
-local painSounds = {
-    Sound("vo/npc/male01/pain01.wav"),
-    Sound("vo/npc/male01/pain02.wav"),
-    Sound("vo/npc/male01/pain03.wav"),
-    Sound("vo/npc/male01/pain04.wav"),
-    Sound("vo/npc/male01/pain05.wav"),
-    Sound("vo/npc/male01/pain06.wav")
-}
-
-local drownSounds = {
-    Sound("player/pl_drown1.wav"),
-    Sound("player/pl_drown2.wav"),
-    Sound("player/pl_drown3.wav"),
-}
-
 function GM:GetPlayerPainSound(client, attacker, healthRemaining, damageTaken)
     local character = client:GetCharacter()
     if ( !character ) then return end
@@ -407,6 +392,12 @@ function GM:GetPlayerPainSound(client, attacker, healthRemaining, damageTaken)
     if ( client:Health() <= 0 ) then return end
 
     local factionData = character:GetFactionData()
+    if ( client:IsOnFire() and factionData and factionData.FirePainSounds and factionData.FirePainSounds[1] != nil  ) then
+        local sound = factionData.FirePainSounds[math.random(#factionData.FirePainSounds)]
+        if ( sound and sound != "" ) then
+            return sound
+        end
+    end
 
     if ( client:WaterLevel() >= 3 ) then
         if ( client:IsOnFire() ) then
@@ -419,19 +410,13 @@ function GM:GetPlayerPainSound(client, attacker, healthRemaining, damageTaken)
                 return sound
             end
         end
-
-        return drownSounds[math.random(#drownSounds)]
     end
 
-    if ( damageTaken > 0 ) then
-        if ( factionData and factionData.PainSounds and factionData.PainSounds[1] != nil ) then
-            local sound = factionData.PainSounds[math.random(#factionData.PainSounds)]
-            if ( sound and sound != "" ) then
-                return sound
-            end
+    if ( damageTaken > 0 and factionData and factionData.PainSounds and factionData.PainSounds[1] != nil ) then
+        local sound = factionData.PainSounds[math.random(#factionData.PainSounds)]
+        if ( sound and sound != "" ) then
+            return sound
         end
-
-        return painSounds[math.random(#painSounds)]
     end
 end
 
