@@ -10,7 +10,7 @@ ENT.Spawnable = false
 ENT.AdminOnly = false
 
 function ENT:Initialize()
-    self:SetModel("models/props_junk/watermelon01.mdl")
+    self:SetModel(Model("models/props_junk/watermelon01.mdl"))
     self:SetSolid(SOLID_VPHYSICS)
     self:PhysicsInit(SOLID_VPHYSICS)
     self:SetCustomCollisionCheck(true)
