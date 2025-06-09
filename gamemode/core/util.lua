@@ -1018,25 +1018,28 @@ function ax.util:VerifyVersion()
 		return
 	end
 
-	http.Fetch("https://raw.githubusercontent.com/Parallax-Framework/parallax/main/parallax-version.json", function(body)
-		local data = util.JSONToTable(body)
-		if ( istable(data) ) then
-			local commitCount = data.commitCount or 0
+	-- Call in the next tick because ISteamHTTP may not be available at the moment
+	timer.Simple(0, function()
+		http.Fetch("https://raw.githubusercontent.com/Parallax-Framework/parallax/main/parallax-version.json", function(body)
+			local data = util.JSONToTable(body)
+			if ( istable(data) ) then
+				local commitCount = data.commitCount or 0
 
-			-- Compare with local (assume your local commit count and hash are loaded from a file)
-			local localCommit = version.commitCount or 0
-			local localVersion = self:CalculateVersion(localCommit)
-			local remoteVersion = self:CalculateVersion(commitCount)
+				-- Compare with local (assume your local commit count and hash are loaded from a file)
+				local localCommit = version.commitCount or 0
+				local localVersion = self:CalculateVersion(localCommit)
+				local remoteVersion = self:CalculateVersion(commitCount)
 
-			if ( commitCount > localCommit ) then
-				self:PrintWarning("Parallax is out of date! Local version: " .. localVersion .. ", Remote version: " .. remoteVersion)
-			elseif ( commitCount < localCommit ) then
-				self:PrintSuccess("Parallax is ahead of the remote repository! Local version: " .. localVersion .. ", Remote version: " .. remoteVersion)
-			else
-				self:PrintSuccess("Parallax is up to date! Version: " .. localVersion)
+				if ( commitCount > localCommit ) then
+					self:PrintWarning("Parallax is out of date! Local version: " .. localVersion .. ", Remote version: " .. remoteVersion)
+				elseif ( commitCount < localCommit ) then
+					self:PrintSuccess("Parallax is ahead of the remote repository! Local version: " .. localVersion .. ", Remote version: " .. remoteVersion)
+				else
+					self:PrintSuccess("Parallax is up to date! Version: " .. localVersion)
+				end
+
+				GAMEMODE.Version = localVersion
 			end
-
-			GAMEMODE.Version = localVersion
-		end
+		end)
 	end)
 end
