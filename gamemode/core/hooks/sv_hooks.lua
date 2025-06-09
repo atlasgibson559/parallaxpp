@@ -407,16 +407,6 @@ function GM:GetPlayerPainSound(client, attacker, healthRemaining, damageTaken)
     if ( client:Health() <= 0 ) then return end
 
     local factionData = character:GetFactionData()
-    if ( client:IsOnFire() ) then
-        if ( factionData and factionData.FirePainSounds and factionData.FirePainSounds[1] != nil ) then
-            local sound = factionData.FirePainSounds[math.random(#factionData.FirePainSounds)]
-            if ( sound and sound != "" ) then
-                return sound
-            end
-        end
-
-        return Sound("ambient/fire/fire_small1.wav")
-    end
 
     if ( client:WaterLevel() >= 3 ) then
         if ( client:IsOnFire() ) then
