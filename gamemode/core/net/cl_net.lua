@@ -98,6 +98,7 @@ ax.net:Hook("character.load", function(characterID)
         return
     end
 
+    local currentCharacter = client:GetCharacter()
     local clientTable = client:GetTable()
 
     ax.character.stored = ax.character.stored or {}
@@ -106,6 +107,8 @@ ax.net:Hook("character.load", function(characterID)
     clientTable.axCharacters = clientTable.axCharacters or {}
     clientTable.axCharacters[characterID] = character
     clientTable.axCharacter = character
+
+    hook.Run("PlayerLoadedCharacter", character, currentCharacter)
 end)
 
 ax.net:Hook("character.variable.set", function(characterID, key, value)
