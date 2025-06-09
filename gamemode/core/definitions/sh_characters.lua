@@ -106,23 +106,39 @@ ax.character:RegisterVariable("model", {
         label:SetText(self.Name or k)
 
         local scroller = parent:Add("ax.scroller.vertical")
-        scroller:Dock(TOP)
-        scroller:DockMargin(0, 0, 0, ScreenScale(16))
-        scroller:SetTall(256)
+        scroller:Dock(FILL)
 
         local layout = scroller:Add("DIconLayout")
         layout:Dock(FILL)
+        layout.Paint = function(this, width, height)
+            ax.util:DrawBlur(this)
+        end
 
         local faction = ax.faction:Get(payload.faction)
-        if ( faction and faction.Models ) then
-            for _, v in SortedPairs(faction.Models) do
+        if ( istable(faction) ) then
+            for _, v in SortedPairs(faction:GetModels()) do
+                local model = v
+                if ( istable(v) ) then model = v[1] end
+
                 local icon = layout:Add("SpawnIcon")
-                icon:SetModel(v)
+                if ( istable(v) ) then
+                    icon:SetModel(model, v[2], v[3])
+                else
+                    icon:SetModel(model)
+                end
+
                 icon:SetSize(64, 128)
-                icon:SetTooltip(v)
+                icon:SetTooltip(model)
                 icon.DoClick = function()
-                    ax.client:Notify("You have selected " .. v .. " as your model!", NOTIFY_HINT)
-                    payload.model = v
+                    ax.client:Notify("You have selected " .. model .. " as your model!", NOTIFY_HINT)
+                    payload.model = model
+                    layout.selected = icon
+                end
+                icon.Paint = function(this, w, h)
+                    if ( ispanel(layout.selected) and this == layout.selected ) then
+                        surface.SetDrawColor(ax.color:Get("white"))
+                        surface.DrawRect(0, 0, w, h)
+                    end
                 end
             end
         end
