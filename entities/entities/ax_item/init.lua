@@ -103,7 +103,7 @@ function ENT:Use(client)
     itemInst:SetEntity(self)
     itemInst:SetOwner(client:GetCharacterID())
 
-    self.axPickingUp = CurTime() + 1
+    self:SetCooldown("take", 0.5)
     ax.item:PerformAction(itemInst:GetID(), "Take")
 end
 
@@ -140,8 +140,8 @@ function ENT:OnTakeDamage(dmg)
 end
 
 function ENT:OnRemove()
-    if ( self.axPickingUp and self.axPickingUp > CurTime() ) then return end
     if ( ax.shutDown ) then return end
+    if ( self:OnCooldown("take") ) then return end
 
     local item = ax.item:Get(self:GetItemID())
     if ( item and item.OnRemoved ) then

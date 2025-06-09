@@ -1,10 +1,11 @@
 include("shared.lua")
 
 function SWEP:CheckYaw()
-    local playerPitch = self:GetOwner():EyeAngles().p
+    local client = self:GetOwner()
+    local playerPitch = client:EyeAngles().p
     if ( playerPitch < -20 ) then
-        if ( self.axHandsReset and self.axHandsReset > CurTime() ) then return end
-        self.axHandsReset = CurTime() + 0.5
+        if ( client:OnCooldown("hands") ) then return end
+        client:SetCooldown("hands", 0.5)
 
         ax.net:Start("hands.reset")
     end

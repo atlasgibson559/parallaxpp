@@ -61,12 +61,14 @@ concommand.Add("ax_command_run", function(client, cmd, arguments)
         return
     end
 
+    if ( client:OnCooldown("command") ) then return end
+
     local command = arguments[1]
     table.remove(arguments, 1)
 
     ax.command:Run(client, command, arguments)
 
-    client.axNextCommand = CurTime() + 1
+    client:SetCooldown("command", 1)
 end)
 
 concommand.Add("ax_command", function(client, cmd, arguments)
@@ -75,10 +77,7 @@ concommand.Add("ax_command", function(client, cmd, arguments)
         return
     end
 
-    local clientTable = client:GetTable()
-    if ( clientTable.axNextCommand and clientTable.axNextCommand > CurTime() ) then
-        return
-    end
+    if ( client:OnCooldown("command") ) then return end
 
     ax.util:Print("Commands:")
 
@@ -90,7 +89,7 @@ concommand.Add("ax_command", function(client, cmd, arguments)
         ax.util:Print("/" .. v.Name .. (v.Description and " - " .. v.Description or ""))
     end
 
-    clientTable.axNextCommand = CurTime() + 1
+    client:SetCooldown("command", 1)
 end--[[, function(cmd, argStr, arguments)
     local commands = {}
 

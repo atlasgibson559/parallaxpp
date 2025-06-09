@@ -302,7 +302,7 @@ function SWEP:SecondaryAttack()
         elseif ( !entity:IsPlayer() and !entity:IsNPC() ) then
             self:DoPickup()
         elseif entity:IsPlayer() and entity:Alive() then
-            if ( ( self.axNextPush or 0 ) > CurTime() ) then return end
+            if ( self:OnCooldown("push") ) then return end
             if ( entity:GetPos():DistToSqr(owner:GetPos()) > 2000 ) then return end
 
             timer.Simple (0.25, function()
@@ -314,7 +314,7 @@ function SWEP:SecondaryAttack()
                 entity:EmitSound("physics/flesh/flesh_impact_hard" .. math.random(2, 5) .. ".wav", 60)
             end)
 
-            self.axNextPush = CurTime() + 2
+            self:SetCooldown("push", 0.5)
         elseif ( IsValid(self.axHeldEntity) and !self.axHeldEntity:IsPlayerHolding() ) then
             self.axHeldEntity = nil
         end
