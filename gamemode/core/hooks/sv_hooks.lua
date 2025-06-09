@@ -163,7 +163,7 @@ function GM:PostPlayerLoadedCharacter(client, character, previousCharacter)
     -- Restore character state
     local lastPos = character:GetData("last_pos")
     local lastAng = character:GetData("last_ang")
-    if ( lastPos and lastAng ) then
+    if ( isvector(lastPos) and isangle(lastAng) ) then
         client:SetPos(lastPos)
         client:SetAngles(lastAng)
     end
