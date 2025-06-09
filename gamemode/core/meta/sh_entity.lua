@@ -119,8 +119,6 @@ end
 
 ENTITY.SetModelInternal = ENTITY.SetModelInternal or ENTITY.SetModel
 function ENTITY:SetModel(model)
-    if ( !model or model == "" ) then return end
-
     local canSet = hook.Run("PreEntitySetModel", self, model)
     if ( canSet == false ) then return end
 
