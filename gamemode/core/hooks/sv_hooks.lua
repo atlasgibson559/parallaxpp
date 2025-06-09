@@ -381,11 +381,6 @@ end
 function GM:PlayerHurt(client, attacker, healthRemaining, damageTaken)
     local painSound = hook.Run("GetPlayerPainSound", client, attacker, healthRemaining, damageTaken)
     if ( painSound and painSound != "" and !client:InObserver() ) then
-        if ( !file.Exists("sound/" .. painSound, "GAME") ) then
-            ax.util:PrintWarning("PlayerPainSound: Sound file does not exist! " .. painSound)
-            return false
-        end
-
         client:EmitSound(painSound, 75, 100, 1, CHAN_VOICE)
     end
 end
