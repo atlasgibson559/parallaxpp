@@ -14,26 +14,27 @@ function MODULE:Think()
             if ( client:Team() == 0 ) then continue end
 
             local st = client:GetRelay("stamina")
-            if ( istable(st) ) then
-                local isSprinting = client:KeyDown(IN_SPEED) and client:KeyDown(IN_FORWARD) and client:OnGround()
-                if ( isSprinting and client:GetVelocity():Length2DSqr() > 1 ) then
-                    if ( ax.stamina:Consume(client, drain) ) then
-                        st.depleted = false
-                        st.regenBlockedUntil = CurTime() + 2
-                    else
-                        if ( !st.depleted ) then
-                            st.depleted = true
-                            st.regenBlockedUntil = CurTime() + 10
-                        end
-                    end
+            if ( !istable(st) ) then
+                ax.stamina:Initialize(client)
+
+                continue
+            end
+
+            local isSprinting = client:KeyDown(IN_SPEED) and client:KeyDown(IN_FORWARD) and client:OnGround()
+            if ( isSprinting and client:GetVelocity():Length2DSqr() > 1 ) then
+                if ( ax.stamina:Consume(client, drain) ) then
+                    st.depleted = false
+                    st.regenBlockedUntil = CurTime() + 2
                 else
-                    if ( st.regenBlockedUntil and CurTime() >= st.regenBlockedUntil ) then
-                        ax.stamina:Set(client, math.min(st.current + regen, st.max))
+                    if ( !st.depleted ) then
+                        st.depleted = true
+                        st.regenBlockedUntil = CurTime() + 10
                     end
                 end
             else
-                -- Initialize stamina if it doesn't exist
-                ax.stamina:Initialize(client)
+                if ( st.regenBlockedUntil and CurTime() >= st.regenBlockedUntil ) then
+                    ax.stamina:Set(client, math.min(st.current + regen, st.max))
+                end
             end
         end
     end

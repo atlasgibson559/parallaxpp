@@ -39,9 +39,9 @@ ax.net:Hook("character.create", function(client, payload)
         end
 
         if ( isfunction(v.OnValidate) ) then
-            local validate, reason = v:OnValidate(nil, payload, client)
+            local validate, reasonString = v:OnValidate(nil, payload, client)
             if ( !validate ) then
-                ax.net:Start(client, "character.create.failed", reason or "Failed to validate character!")
+                ax.net:Start(client, "character.create.failed", reasonString or "Failed to validate character!")
                 return
             end
         end

@@ -128,15 +128,15 @@ function ax.inventory:Cache(client, inventoryID, callback)
 
         self.stored[inventoryID] = inventory
 
-        self:AssignToCharacter(inventory:GetOwner(), inventoryID, function(inventoryID)
-            if ( !inventoryID ) then
-                ax.util:PrintError("Failed to assign inventory " .. inventoryID .. " to character " .. inventory:GetOwner())
+        self:AssignToCharacter(inventory:GetOwner(), inventoryID, function(invID)
+            if ( !invID ) then
+                ax.util:PrintError("Failed to assign inventory " .. invID .. " to character " .. inventory:GetOwner())
                 return
             end
 
             ax.item:Cache(inventory:GetOwner(), function(items)
                 if ( !items ) then
-                    ax.util:PrintError("Failed to cache items for inventory " .. inventoryID)
+                    ax.util:PrintError("Failed to cache items for inventory " .. invID)
                     return
                 end
 

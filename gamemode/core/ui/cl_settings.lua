@@ -249,20 +249,21 @@ function PANEL:AddSetting(settingData)
             end):SetIcon("icon16/arrow_refresh.png")
             menu:AddSpacer()
             menu:AddOption(ax.localization:GetPhrase("set", settingData.Name), function()
-                local newValue = Derma_StringRequest(
+                Derma_StringRequest(
                     ax.localization:GetPhrase("set", settingData.Name),
                     ax.localization:GetPhrase("set.description.options", settingData.Name),
                     value,
                     function(text)
-                        if ( text and text != "" ) then
-                            local num = tonumber(text)
-                            if ( num ) then
-                                ax.option:Set(settingData.UniqueID, num)
-                                value = num
+                        if ( text == "" ) then return  end
 
-                                slider:SetValue(value, true)
-                                label:SetText(value, true, true, true)
-                            end
+                        local num = tonumber(text)
+
+                        if ( num ) then
+                            ax.option:Set(settingData.UniqueID, num)
+                            value = num
+
+                            slider:SetValue(value, true)
+                            label:SetText(value, true, true, true)
                         end
                     end
                 )
@@ -422,16 +423,16 @@ function PANEL:AddSetting(settingData)
             end):SetIcon("icon16/arrow_refresh.png")
             menu:AddSpacer()
             menu:AddOption(ax.localization:GetPhrase("set", settingData.Name), function()
-                local newValue = Derma_StringRequest(
+                Derma_StringRequest(
                     ax.localization:GetPhrase("set", settingData.Name),
                     ax.localization:GetPhrase("set.description.options", settingData.Name),
                     value,
-                    function(text)
-                        if ( text and text != "" ) then
-                            ax.option:Set(settingData.UniqueID, text)
-                            value = text
+                    function(textString)
+                        if ( textString != "" ) then
+                            ax.option:Set(settingData.UniqueID, textString)
+                            value = textString
 
-                            text:SetText(value)
+                            text:SetText(textString)
                         end
                     end
                 )
