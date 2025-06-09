@@ -427,12 +427,12 @@ function PANEL:AddConfig(configData)
                     ax.localization:GetPhrase("set", configData.Name),
                     ax.localization:GetPhrase("set.description.config", configData.Name),
                     value,
-                    function(text)
-                        if ( text == "" ) then return end
+                    function(textString)
+                        if ( textString == "" ) then return end
 
-                        ax.net:Start("config.set", configData.UniqueID, text)
+                        ax.net:Start("config.set", configData.UniqueID, textString)
 
-                        value = text
+                        value = textString
                         text:SetText(value)
                     end
                 )
