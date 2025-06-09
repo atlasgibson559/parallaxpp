@@ -1,7 +1,7 @@
 local tween = {
-  _VERSION     = 'tween 2.1.1',
-  _DESCRIPTION = 'tweening for lua',
-  _URL         = 'https://github.com/kikito/tween.lua',
+  _VERSION     = "tween 2.1.1",
+  _DESCRIPTION = "tweening for lua",
+  _URL         = "https://github.com/kikito/tween.lua",
   _LICENSE     = [[
     MIT LICENSE
 
@@ -146,7 +146,7 @@ end
 local function calculatePAS(p,a,c,d)
   p, a = p or d * 0.3, a or 0
   if a < abs(c) then return p, c, p / 4 end -- p, a, s
-  return p, a, p / (2 * pi) * asin(c/a) -- p,a,s
+  return p, a, p / (2 * pi) * asin(c / a) -- p,a,s
 end
 local function inElastic(t, b, c, d, a, p)
   local s
@@ -252,7 +252,7 @@ local function copyTables(destination, keysTable, valuesTable)
     setmetatable(destination, mt)
   end
   for k,v in pairs(keysTable) do
-    if type(v) == 'table' then
+    if type(v) == "table" then
       destination[k] = copyTables({}, v, valuesTable[k])
     else
       destination[k] = valuesTable[k]

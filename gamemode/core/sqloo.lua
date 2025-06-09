@@ -58,10 +58,10 @@ function ax.sqloo:Initialize(config)
         hook.Run("DatabaseConnected")
     end
 
-    db.onConnectionFailed = function(_, err)
-        ax.util:PrintError("MySQL connection failed: " .. err .. "\n")
+    db.onConnectionFailed = function(_, errString)
+        ax.util:PrintError("MySQL connection failed: " .. errString .. "\n")
 
-        hook.Run("DatabaseConnectionFailed", err)
+        hook.Run("DatabaseConnectionFailed", errString)
     end
 
     db:connect()
@@ -302,12 +302,12 @@ function ax.sqloo:Query(query, onSuccess, onError)
         end
     end
 
-    q.onError = function(_, err)
-        ax.util:PrintError("Query failed: " .. err)
+    q.onError = function(_, errString)
+        ax.util:PrintError("Query failed: " .. errString)
         ax.util:PrintError("Query: " .. query)
 
         if ( onError ) then
-            onError(err)
+            onError(errString)
         end
     end
 
