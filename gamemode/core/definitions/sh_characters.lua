@@ -111,7 +111,8 @@ ax.character:RegisterVariable("model", {
         local layout = scroller:Add("DIconLayout")
         layout:Dock(FILL)
         layout.Paint = function(this, width, height)
-            ax.util:DrawBlur(this)
+            surface.SetDrawColor(ax.color:Get("background.transparent"))
+            surface.DrawRect(0, 0, width, height)
         end
 
         local faction = ax.faction:Get(payload.faction)
