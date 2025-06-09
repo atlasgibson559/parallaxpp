@@ -180,3 +180,21 @@ function GM:PhysgunDrop(client, ent)
 
     return false
 end
+
+function GM:ShouldCollide(ent1, ent2)
+    if ( ent1:GetClass() == "ax_item" ) then
+        local itemDef = ax.item:Get(ent1:GetUniqueID())
+
+        if ( !itemDef ) then return end
+
+        if ( ent2:GetClass() == "ax_item" and itemDef.bNoItemsCollision ) then
+            return  false
+        end
+
+        if ( itemDef.ShouldEntityCollide ) then
+            return itemDef:ShouldEntityCollide(ent1)
+        end
+
+        return true
+    end
+end

@@ -9,6 +9,19 @@ ENT.Category         = "Parallax"
 ENT.Spawnable = false
 ENT.AdminOnly = false
 
+function ENT:Initialize()
+    self:SetModel("models/props_junk/watermelon01.mdl")
+    self:SetSolid(SOLID_VPHYSICS)
+    self:PhysicsInit(SOLID_VPHYSICS)
+    self:SetCustomCollisionCheck(true)
+    self:CollisionRulesChanged()
+    self:PhysWake()
+
+    if (SERVER) then
+        self:SetUseType(SIMPLE_USE)
+    end
+end
+
 function ENT:SetupDataTables()
     self:NetworkVar("String", 0, "UniqueID")
     self:NetworkVar("Int", 0, "ItemID")
