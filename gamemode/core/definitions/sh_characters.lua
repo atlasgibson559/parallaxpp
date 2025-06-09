@@ -82,10 +82,12 @@ ax.character:RegisterVariable("model", {
 
     OnValidate = function(self, parent, payload, client)
         local faction = ax.faction:Get(payload.faction)
-        if ( faction and faction.Models ) then
+        if ( istable(faction) ) then
             local found = false
-            for _, v in SortedPairs(faction.Models) do
-                if ( v == payload.model ) then
+            for _, v in SortedPairs(faction:GetModels()) do
+                local model = istable(v) and v[1] or v
+
+                if ( model == payload.model ) then
                     found = true
                     break
                 end
@@ -118,8 +120,7 @@ ax.character:RegisterVariable("model", {
         local faction = ax.faction:Get(payload.faction)
         if ( istable(faction) ) then
             for _, v in SortedPairs(faction:GetModels()) do
-                local model = v
-                if ( istable(v) ) then model = v[1] end
+                local model = istable(v) and v[1] or v
 
                 local icon = layout:Add("SpawnIcon")
                 if ( istable(v) ) then
