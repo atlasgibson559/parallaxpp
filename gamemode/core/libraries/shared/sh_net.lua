@@ -13,8 +13,8 @@ end
 --- Hooks a network message.
 -- @string name Unique identifier.
 -- @func callback Callback with player, unpacked arguments.
-function ax.net:Hook(name, callback)
-    self.stored[name] = callback
+function ax.net:Hook(name, callback, bNoDelay)
+    self.stored[name] = {callback, bNoDelay or false}
 end
 
 --- Starts a stream.
@@ -81,7 +81,13 @@ net.Receive("ax.net.msg", function(len, client)
         return
     end
 
-    local callback = ax.net.stored[name]
+    local stored = ax.net.stored[name]
+    if ( !istable(stored) or #stored < 1 ) then
+        ax.util:PrintError("[Networking] No handler for '" .. name .. "'")
+        return
+    end
+
+    local callback = stored[1]
     if ( !isfunction(callback) ) then
         ax.util:PrintError("[Networking] No handler for '" .. name .. "'")
         return
@@ -89,7 +95,7 @@ net.Receive("ax.net.msg", function(len, client)
 
     if ( SERVER ) then
         local configCooldown = ax.config:Get("networking.cooldown", 0.1)
-        if ( isnumber(configCooldown) and configCooldown > 0 ) then
+        if ( !stored[2] and isnumber(configCooldown) and configCooldown > 0 ) then
             local steam64 = client:SteamID64()
             if ( !istable(ax.net.cooldown[steam64]) ) then ax.net.cooldown[steam64] = {} end
             if ( !isnumber(ax.net.cooldown[steam64][name]) ) then ax.net.cooldown[steam64][name] = 0 end

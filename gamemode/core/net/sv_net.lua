@@ -220,7 +220,7 @@ ax.net:Hook("client.chatbox.text.changed", function(client, text)
     if ( !IsValid(client) or !text ) then return end
 
     hook.Run("PlayerChatTextChanged", client, text)
-end)
+end, true)
 
 ax.net:Hook("client.chatbox.type.changed", function(client, newType, oldType)
     if ( !IsValid(client) or !newType or !oldType ) then return end
