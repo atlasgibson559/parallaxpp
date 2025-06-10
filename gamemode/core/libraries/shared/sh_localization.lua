@@ -24,7 +24,10 @@ function ax.localization:Register(languageName, data)
         self.stored[languageName] = {}
     end
 
-    self.stored[languageName] = table.Merge(table.Copy(self.stored[languageName]), data)
+    for phrase, translation in pairs(data) do
+        self.stored[languageName][phrase] = translation
+    end
+
     hook.Run("OnLanguageRegistered", languageName, data)
 end
 

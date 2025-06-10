@@ -92,12 +92,13 @@ end
 
 hook.Add("EntityRemoved", "ax.relay.cleanup.entity", function(entity)
     local index = entity:EntIndex()
+    if ( SERVER ) then ax.net:Start(nil, "relay.cleanup", index) end
+
     if ( entity:IsPlayer() ) then
         if ( ax.relay.user[index] ) then
             ax.relay.user[index] = nil
         end
 
-        ax.net:Start(nil, "relay.cleanup", index)
         return
     end
 
