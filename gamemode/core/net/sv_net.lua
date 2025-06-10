@@ -226,4 +226,4 @@ ax.net:Hook("client.chatbox.type.changed", function(client, newType, oldType)
     if ( !IsValid(client) or !newType or !oldType ) then return end
 
     hook.Run("PlayerChatTypeChanged", client, newType, oldType)
-end)
+end, true)
