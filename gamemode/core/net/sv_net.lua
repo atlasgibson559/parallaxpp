@@ -130,7 +130,7 @@ ax.net:Hook("option.sync", function(client, data)
         if ( stored.NoNetworking ) then continue end
 
         if ( data[k] != nil ) then
-            if ( ax.util:DetectType(data[k].Value) != stored.Type ) then
+            if ( ax.util:DetectType(data[k]) != stored.Type ) then
                 ax.util:PrintError("Option \"" .. k .. "\" is not of type \"" .. stored.Type .. "\"!")
                 return
             end

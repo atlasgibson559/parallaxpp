@@ -51,6 +51,25 @@ function GM:GetPlayerDeathSound(client)
 end
 
 function GM:PreOptionChanged(client, key, value)
+    local stored = ax.option.stored[key]
+    if ( ax.util:DetectType(value) != stored.Type ) then
+        ax.util:PrintError("Attempted to set option \"" .. key .. "\" with invalid type!")
+        return false
+    end
+
+    if ( isnumber(value) ) then
+        if ( isnumber(stored.Min) and value < stored.Min ) then
+            ax.util:PrintError("Option \"" .. key .. "\" is below minimum value!")
+            return false
+        end
+
+        if ( isnumber(stored.Max) and value > stored.Max ) then
+            ax.util:PrintError("Option \"" .. key .. "\" is above maximum value!")
+            return false
+        end
+    end
+
+    return true
 end
 
 function GM:PostOptionChanged(client, key, value)

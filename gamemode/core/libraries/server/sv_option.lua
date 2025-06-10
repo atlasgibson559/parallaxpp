@@ -6,7 +6,7 @@ ax.option.stored = ax.option.stored or {}
 ax.option.clients = ax.option.clients or {}
 
 function ax.option:Set(client, key, value, bNoNetworking)
-    local stored = ax.option.stored[key]
+    local stored = self.stored[key]
     if ( !istable(stored) ) then
         ax.util:PrintError("Option \"" .. key .. "\" does not exist!")
         return false
@@ -14,22 +14,8 @@ function ax.option:Set(client, key, value, bNoNetworking)
 
     if ( !IsValid(client) ) then return false end
 
-    if ( ax.util:DetectType(value) != stored.Type ) then
-        ax.util:PrintError("Attempted to set option \"" .. key .. "\" with invalid type!")
-        return false
-    end
-
-    if ( isnumber(value) ) then
-        if ( isnumber(stored.Min) and value < stored.Min ) then
-            ax.util:PrintError("Option \"" .. key .. "\" is below minimum value!")
-            return false
-        end
-
-        if ( isnumber(stored.Max) and value > stored.Max ) then
-            ax.util:PrintError("Option \"" .. key .. "\" is above maximum value!")
-            return false
-        end
-    end
+    local bResult = hook.Run("PreOptionChanged", client, key, value)
+    if ( bResult == false ) then return false end
 
     if ( stored.NoNetworking != true ) then
         if ( !bNoNetworking ) then

@@ -14,32 +14,48 @@ function ax.option:SetDefault(key, default)
     stored.Default = default
 
     if ( SERVER ) then
-        ax.net:Start(nil, "option.sync", self.stored)
+        ax.net:Start(nil, "option.sync", self.instances)
     end
 
     return true
 end
 
 if ( CLIENT ) then
+    ax.option.instances = ax.option.instances or {}
+
     function ax.option:Load()
         hook.Run("PreOptionsLoad")
 
         for k, v in pairs(ax.data:Get("options", {}, false, false)) do
-            if ( istable(self.stored[k]) ) then
-                self.stored[k].Value = v
+            local stored = self.stored[k]
+            if ( !istable(stored) ) then
+                ax.util:PrintError("Option \"" .. k .. "\" does not exist!")
+                continue
+            end
+
+            if ( !istable(self.instances[k]) ) then
+                self.instances[k] = nil
+            end
+
+            if ( v != nil and v != stored.Default ) then
+                if ( ax.util:DetectType(v) != stored.Type ) then
+                    ax.util:PrintError("Option \"" .. k .. "\" is not of type \"" .. stored.Type .. "\"!")
+                    continue
+                end
+
+                self.instances[k] = v
             end
         end
 
-        ax.net:Start("option.sync", self.stored)
-
-        hook.Run("PostOptionsLoad", self.stored)
+        ax.net:Start("option.sync", self.instances)
+        hook.Run("PostOptionsLoad", self.instances)
     end
 
     function ax.option:GetSaveData()
         local data = {}
-        for k, v in pairs(self.stored) do
-            if ( v.Value != nil and v.Value != v.Default ) then
-                data[k] = v.Value
+        for k, v in pairs(self.instances) do
+            if ( v != nil and v != self.stored[k].Default ) then
+                data[k] = v
             end
         end
 
@@ -53,28 +69,29 @@ if ( CLIENT ) then
             return false
         end
 
-        if ( value == nil ) then
-            value = stored.Default
-        end
-
-        local client = ax.client
         local oldValue = stored.Value != nil and stored.Value or stored.Default
-        local bResult = hook.Run("PreOptionChanged", client, key, value, oldValue)
+        local bResult = hook.Run("PreOptionChanged", ax.client, key, value, oldValue)
         if ( bResult == false ) then return false end
 
-        stored.Value = value
+        if ( !istable(self.instances[key]) ) then
+            self.instances[key] = nil
+        end
+
+        if ( value != nil and value != stored.Default ) then
+            self.instances[key] = value
+        end
 
         if ( stored.NoNetworking != true and !bNoNetworking ) then
             ax.net:Start("option.set", key, value)
         end
 
         if ( isfunction(stored.OnChange) ) then
-            stored:OnChange(value, oldValue, client)
+            stored:OnChange(value, oldValue, ax.client)
         end
 
         ax.data:Set("options", self:GetSaveData(), false, false)
 
-        hook.Run("PostOptionChanged", client, key, value, oldValue)
+        hook.Run("PostOptionChanged", ax.client, key, value, oldValue)
 
         return true
     end
@@ -86,7 +103,8 @@ if ( CLIENT ) then
             return fallback
         end
 
-        if ( optionData.Value == nil ) then
+        local instance = self.instances[key]
+        if ( instance == nil ) then
             if ( optionData.Default == nil ) then
                 ax.util:PrintError("Option \"" .. key .. "\" has no value or default set!")
                 return fallback
@@ -95,7 +113,7 @@ if ( CLIENT ) then
             return optionData.Default
         end
 
-        return optionData.Value
+        return instance
     end
 
     function ax.option:GetDefault(key)
@@ -126,9 +144,7 @@ if ( CLIENT ) then
     end
 
     function ax.option:ResetAll()
-        for k, v in pairs(self.stored) do
-            v.Value = nil
-        end
+        self.instances = {}
 
         ax.data:Set("options", {}, false, false)
         ax.net:Start("option.sync", {})
