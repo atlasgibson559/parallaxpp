@@ -22,7 +22,7 @@ function ax.option:Set(client, key, value, bNoNetworking)
             ax.net:Start(client, "option.set", key, value)
         end
 
-        local index = client:EntIndex()
+        local index = client:SteamID64()
         if ( ax.option.clients[index] == nil ) then
             ax.option.clients[index] = {}
         end
@@ -37,7 +37,7 @@ function ax.option:Set(client, key, value, bNoNetworking)
     return true
 end
 
-function ax.option:Get(client, key, default)
+function ax.option:Get(client, key, fallback)
     if ( !IsValid(client) ) then return default end
 
     local stored = ax.option.stored[key]
@@ -48,13 +48,18 @@ function ax.option:Get(client, key, default)
 
     if ( stored.NoNetworking ) then
         ax.util:PrintWarning("Option \"" .. key .. "\" is not networked!")
-        return nil
+        return fallback
     end
 
-    local clientStored = ax.option.clients[client:EntIndex()]
+    local clientStored = ax.option.clients[client:SteamID64()]
     if ( !istable(clientStored) ) then
-        return stored.Value or default
+        return fallback
     end
 
-    return clientStored[key] != nil and clientStored[key] or stored.Value or default
+    local value = clientStored[key]
+    if ( value != nil ) then
+        return value
+    end
+
+    return fallback
 end

@@ -124,7 +124,7 @@ ax.net:Hook("option.sync", function(client, data)
         local stored = ax.option.stored[k]
         if ( !istable(stored) ) then
             ax.util:PrintError("Option \"" .. k .. "\" does not exist!")
-            return
+            continue
         end
 
         if ( stored.NoNetworking ) then continue end
@@ -132,14 +132,15 @@ ax.net:Hook("option.sync", function(client, data)
         if ( data[k] != nil ) then
             if ( ax.util:DetectType(data[k]) != stored.Type ) then
                 ax.util:PrintError("Option \"" .. k .. "\" is not of type \"" .. stored.Type .. "\"!")
-                return
+                continue
             end
 
-            if ( ax.option.clients[client] == nil ) then
-                ax.option.clients[client] = {}
+            local sID64 = client:SteamID64()
+            if ( ax.option.clients[sID64] == nil ) then
+                ax.option.clients[sID64] = {}
             end
 
-            ax.option.clients[client][k] = data[k]
+            ax.option.clients[sID64][k] = data[k]
         end
     end
 end)
