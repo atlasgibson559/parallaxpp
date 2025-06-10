@@ -304,6 +304,9 @@ function SWEP:SecondaryAttack()
         elseif entity:IsPlayer() and entity:Alive() then
             if ( self:OnCooldown("push") ) then return end
             if ( entity:GetPos():DistToSqr(owner:GetPos()) > 2000 ) then return end
+            if ( hook.Run("PlayerCanPush", owner, entity) == false ) then
+                return
+            end
 
             timer.Simple (0.25, function()
                 local vDirection = owner:GetAimVector() * ( 350 + ( 3 * 3 ) )
