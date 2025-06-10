@@ -243,8 +243,6 @@ function GM:Initialize()
 
     if ( game.IsDedicated() ) then
         -- Production (dedicated server)
-        RunConsoleCommand("sv_allowupload", "0")
-        RunConsoleCommand("sv_allowdownload", "0")
         RunConsoleCommand("net_maxfilesize", "64")
         RunConsoleCommand("sv_maxrate", "30000")
         RunConsoleCommand("sv_minrate", "5000")
@@ -254,8 +252,6 @@ function GM:Initialize()
         RunConsoleCommand("sv_allowcslua", "0")
     else
         -- Development (listen server)
-        RunConsoleCommand("sv_allowupload", "0")
-        RunConsoleCommand("sv_allowdownload", "0")
         RunConsoleCommand("net_maxfilesize", "128")
         RunConsoleCommand("sv_maxrate", "60000")
         RunConsoleCommand("sv_minrate", "10000")
