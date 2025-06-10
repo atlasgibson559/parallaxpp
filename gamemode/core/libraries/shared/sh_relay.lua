@@ -92,21 +92,21 @@ end
 
 hook.Add("EntityRemoved", "ax.relay.cleanup.entity", function(entity)
     local index = entity:EntIndex()
+    if ( entity:IsPlayer() ) then
+        if ( ax.relay.user[index] ) then
+            ax.relay.user[index] = nil
+        end
+
+        ax.net:Start(nil, "relay.cleanup.user", index)
+        return
+    end
+
     if ( ax.relay.entity[index] ) then
         ax.relay.entity[index] = nil
     end
 end)
 
 if ( SERVER ) then
-    hook.Add("PlayerDisconnected", "ax.relay.cleanup.user", function(player)
-        local index = player:EntIndex()
-        if ( ax.relay.user[index] ) then
-            ax.relay.user[index] = nil
-        end
-
-        ax.net:Start(nil, "relay.cleanup.user", index)
-    end)
-
     hook.Add("SaveData", "ax.relay.cleanup", function()
         for index, _ in pairs(ax.relay.user) do
             if ( !IsValid(Entity(index)) ) then
