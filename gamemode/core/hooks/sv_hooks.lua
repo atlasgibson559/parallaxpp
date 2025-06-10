@@ -87,6 +87,10 @@ function GM:PlayerDisconnected(client)
             character:SetPlayTime(character:GetPlayTime() + (os.time() - character:GetLastPlayed()))
             character:SetLastPlayed(os.time())
         end
+
+        if ( istable(ax.option.clients[client:EntIndex()]) ) then
+            ax.option.clients[client:EntIndex()] = nil
+        end
     end
 end
 

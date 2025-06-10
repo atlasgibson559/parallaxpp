@@ -135,7 +135,7 @@ ax.net:Hook("option.sync", function(client, data)
                 continue
             end
 
-            local sID64 = client:SteamID64()
+            local sID64 = client:EntIndex()
             if ( ax.option.clients[sID64] == nil ) then
                 ax.option.clients[sID64] = {}
             end

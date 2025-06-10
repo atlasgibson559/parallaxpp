@@ -22,7 +22,7 @@ function ax.option:Set(client, key, value, bNoNetworking)
             ax.net:Start(client, "option.set", key, value)
         end
 
-        local index = client:SteamID64()
+        local index = client:EntIndex()
         if ( ax.option.clients[index] == nil ) then
             ax.option.clients[index] = {}
         end
@@ -51,7 +51,7 @@ function ax.option:Get(client, key, fallback)
         return fallback
     end
 
-    local clientStored = ax.option.clients[client:SteamID64()]
+    local clientStored = ax.option.clients[client:EntIndex()]
     if ( !istable(clientStored) ) then
         return fallback
     end
