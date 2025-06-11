@@ -106,7 +106,7 @@ function ax.util:PreparePackage(...)
 	local package = {}
 
 	for k, v in ipairs(arguments) do
-		if ( type(v) == "Entity" or type(v) == "Player" ) then
+		if ( isentity(v) or type(v) == "Player" ) then
 			table.insert(package, tostring(v))
 
 			if ( type(v) == "Player" ) then
@@ -174,9 +174,11 @@ function ax.util:PrintError(...)
 		line = quickInfo.short_src .. ":" .. quickInfo.currentline
 	end
 
+	local argCount = select("#", ...)
+
 	if ( line != "" ) then
-		if ( arguments[1] != nil and type(arguments[#arguments]) == "string" ) then
-			arguments[#arguments] = string.Trim(arguments[#arguments])
+		if ( argCount > 0 and type(arguments[argCount]) == "string" ) then
+			arguments[argCount] = string.Trim(arguments[argCount])
 		end
 
 		line = string.gsub(line, "gamemodes/", "")
