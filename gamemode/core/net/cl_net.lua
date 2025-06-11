@@ -22,7 +22,7 @@ ax.net:Hook("character.cache.all", function(data)
         clientTable.axCharacters[characterID] = character
     end
 
-    ax.client:Notify("All characters cached!")
+    ax.client:Notify("All characters cached!", NOTIFY_HINT)
 end)
 
 ax.net:Hook("character.cache", function(data)
@@ -41,7 +41,7 @@ ax.net:Hook("character.cache", function(data)
     clientTable.axCharacters[characterID] = character
     clientTable.axCharacter = character
 
-    ax.client:Notify("Character " .. characterID .. " cached!")
+    ax.client:Notify("Character " .. characterID .. " cached!", NOTIFY_HINT)
 end)
 
 ax.net:Hook("character.create.failed", function(reason)
