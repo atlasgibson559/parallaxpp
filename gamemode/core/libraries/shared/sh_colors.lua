@@ -65,6 +65,54 @@ function ax.color:IsDark(col)
     return luminance < 0.5
 end
 
+do
+    local hex_to_dec = {}
+    for code = 48, 57 do hex_to_dec[code] = code - 48 end
+    for code = 65, 70 do hex_to_dec[code] = code - 55 end
+    for code = 97, 102 do hex_to_dec[code] = code - 87 end
+
+    function HexToColor(hex)
+        local idx = string.byte(hex, 1) == 35 and 2 or 1
+        local len = #hex - (idx - 1)
+
+        if len == 3 then
+            local r, g, b = string.byte(hex, idx, idx + 2)
+            r = hex_to_dec[r]
+            g = hex_to_dec[g]
+            b = hex_to_dec[b]
+
+            if ( !r and !g and !b ) then
+                return ax.util:PrintError("invalid hex input: %s", hex)
+            end
+
+            return Color(r * 16 + r, g * 16 + g, b * 16 + b)
+        elseif len == 6 then
+
+            local r1, r2, g1, g2, b1, b2 = string.byte(hex, idx, idx + 5)
+            r1, r2 = hex_to_dec[r1], hex_to_dec[r2]
+            g1, g2 = hex_to_dec[g1], hex_to_dec[g2]
+            b1, b2 = hex_to_dec[b1], hex_to_dec[b2]
+
+            if ( !r1 and !r2 and !g1 and !g2 and !b1 and !b2 ) then
+                return ax.util:PrintError("invalid hex input: " .. hex)
+            end
+
+            return Color(r1 * 16 + r2, g1 * 16 + g2, b1 * 16 + b2)
+        end
+
+        return ax.util:PrintError("invalid hex input: " .. hex)
+    end
+end
+
+function ax.color:ToHex(color)
+    if ( !ax.util:CoerceType(ax.types.color, color) ) then
+        ax.util:PrintError("Attempted to convert a color to hex without a valid color!")
+        return "#FFFFFF"
+    end
+
+    return string.format("#%02x%02x%02x", color.r, color.g, color.b)
+end
+
 if ( CLIENT ) then
     concommand.Add("ax_list_colors", function(client, cmd, arguments)
         for k, v in pairs(ax.color.stored) do
