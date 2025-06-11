@@ -20,7 +20,7 @@ function Derma_DrawBackgroundBlur(panel, starttime)
         for i = 0.33, 1, 0.33 do
             matBlurScreen:SetFloat("$blur", fraction * 5 * i)
             matBlurScreen:Recompute()
-            if ( render ) then render.UpdateScreenEffectTexture() end
+            render.UpdateScreenEffectTexture()
             surface.DrawTexturedRect(x * -1, y * -1, ScrW(), ScrH())
         end
     end
