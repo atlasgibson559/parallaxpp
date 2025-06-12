@@ -88,8 +88,9 @@ function GM:PlayerDisconnected(client)
             character:SetLastPlayed(os.time())
         end
 
-        if ( istable(ax.option.clients[client:EntIndex()]) ) then
-            ax.option.clients[client:EntIndex()] = nil
+        local clientOptions = ax.option.clients[client:EntIndex()]
+        if ( istable(clientOptions) ) then
+            clientOptions = nil
         end
     end
 end
