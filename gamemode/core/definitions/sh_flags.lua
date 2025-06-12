@@ -31,3 +31,4 @@ ax.flag:Register("p", "flag.physgun", function(char, has)
 end)
 
 ax.flag:Register("s", "flag.spawnmenu", nil)
+ax.flag:Register("n", "flag.npc", nil)

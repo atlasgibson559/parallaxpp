@@ -493,7 +493,13 @@ local function IsAdmin(_, client)
 end
 
 GM.PlayerSpawnEffect = IsAdmin
-GM.PlayerSpawnNPC = IsAdmin
+function GM:PlayerSpawnNPC(client, npc_type, weapon)
+    local character = client:GetCharacter()
+    if ( !character ) then return end
+
+    return character:HasFlag("n") or client:IsAdmin()
+end
+
 GM.PlayerSpawnObject = IsAdmin
 GM.PlayerSpawnProp = IsAdmin
 GM.PlayerSpawnRagdoll = IsAdmin

@@ -945,4 +945,6 @@ function GM:SpawnMenuOpen()
     if ( !character:HasFlag("s") ) then
         return false
     end
+
+    return true
 end
