@@ -157,7 +157,7 @@ function GM:PrePlayerLoadedCharacter(client, character, previousCharacter)
     print("Saving bodygroups, position, angles and health for previous character: " .. previousCharacter:GetName())
     previousCharacter:SetData("groups", groups)
     previousCharacter:SetData("last_pos", client:GetPos())
-    previousCharacter:SetData("last_ang", client:GetAngles())
+    previousCharacter:SetData("last_ang", client:EyeAngles())
     previousCharacter:SetPlayTime(previousCharacter:GetPlayTime() + (os.time() - previousCharacter:GetLastPlayed()))
     previousCharacter:SetLastPlayed(os.time())
 end
@@ -170,7 +170,7 @@ function GM:PostPlayerLoadedCharacter(client, character, previousCharacter)
     local lastAng = character:GetData("last_ang")
     if ( isvector(lastPos) and isangle(lastAng) and ax.config:Get("restorepos", true) ) then
         client:SetPos(lastPos)
-        client:SetAngles(lastAng)
+        client:SetEyeAngles(lastAng)
     else
         print("No last position or angle found for character: " .. character:GetName() .. ", using default spawn position.")
         print(lastPos, lastAng)
