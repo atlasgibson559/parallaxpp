@@ -26,7 +26,14 @@ function SWEP:SetWeaponRaised(bRaised)
         self:SetHoldType("normal")
 
         local vm = self:GetOwner():GetViewModel()
-        vm:SendViewModelMatchingSequence(vm:LookupSequence("fists_holster"))
+        local fistsHolster = vm:LookupSequence("fists_holster")
+        vm:SendViewModelMatchingSequence(fistsHolster)
+
+        timer.Simple(vm:SequenceDuration(fistsHolster), function()
+            if ( IsValid(self) and IsValid(self:GetOwner()) and !self:GetOwner():IsWeaponRaised() ) then
+                vm:SendViewModelMatchingSequence(vm:LookupSequence("idle"))
+            end
+        end)
     end
 end
 
