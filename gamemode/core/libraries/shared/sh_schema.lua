@@ -80,6 +80,19 @@ function ax.schema:Initialize()
     -- Load the modules after the schema file is loaded
     ax.module:LoadFolder(folder .. "/modules")
 
+    -- Load the database configuration
+    if ( SERVER ) then
+        local database = folder .. "/schema/database.lua"
+        if ( file.Exists(database, "LUA") ) then
+            ax.util:Print("Loading database config...")
+            ax.util:LoadFile(folder .. "/schema/database.lua", "server")
+            ax.util:Print("Loaded database config.")
+        else
+            ax.util:PrintWarning("Failed to find database config, using SQLite.")
+            ax.database:Initialize()
+        end
+    end
+
     ax.util:Print("Loaded schema " .. SCHEMA.Name)
 
     hook.Run("PostInitializeSchema", SCHEMA, path)

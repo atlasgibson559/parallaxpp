@@ -8,6 +8,9 @@ ax.net:Hook("character.cache.all", function(data)
         return
     end
 
+    print("Received character cache data:")
+    PrintTable(data)
+
     local client = ax.client
     local clientTable = client:GetTable()
 
@@ -20,6 +23,12 @@ ax.net:Hook("character.cache.all", function(data)
 
         clientTable.axCharacters = clientTable.axCharacters or {}
         clientTable.axCharacters[characterID] = character
+    end
+
+    -- Rebuild the main menu
+    if ( IsValid(ax.gui.mainmenu) ) then
+        ax.gui.mainmenu:Remove()
+        ax.gui.mainmenu = vgui.Create("ax.mainmenu")
     end
 
     ax.client:Notify("All characters cached!", NOTIFY_HINT)

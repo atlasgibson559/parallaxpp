@@ -142,7 +142,7 @@ function GM:PostPlayerLoadout(client)
 end
 
 function GM:PrePlayerLoadedCharacter(client, character, previousCharacter)
-    if ( !client:Alive() or !previousCharacter ) then return end
+    if ( !previousCharacter ) then return end
 
     previousCharacter:SetData("health", client:Health())
 
@@ -154,6 +154,7 @@ function GM:PrePlayerLoadedCharacter(client, character, previousCharacter)
         end
     end
 
+    print("Saving bodygroups, position, angles and health for previous character: " .. previousCharacter:GetName())
     previousCharacter:SetData("groups", groups)
     previousCharacter:SetData("last_pos", client:GetPos())
     previousCharacter:SetData("last_ang", client:GetAngles())
@@ -162,7 +163,7 @@ function GM:PrePlayerLoadedCharacter(client, character, previousCharacter)
 end
 
 function GM:PostPlayerLoadedCharacter(client, character, previousCharacter)
-    if ( !client:Alive() or !character ) then return end
+    if ( !character ) then return end
 
     -- Restore character state
     local lastPos = character:GetData("last_pos")
@@ -170,6 +171,9 @@ function GM:PostPlayerLoadedCharacter(client, character, previousCharacter)
     if ( isvector(lastPos) and isangle(lastAng) and ax.config:Get("restorepos", true) ) then
         client:SetPos(lastPos)
         client:SetAngles(lastAng)
+    else
+        print("No last position or angle found for character: " .. character:GetName() .. ", using default spawn position.")
+        print(lastPos, lastAng)
     end
 
     client:SetHealth(character:GetData("health", 100))
@@ -239,8 +243,6 @@ function GM:PlayerUseSpawnSaver(client)
 end
 
 function GM:Initialize()
-    ax.database:Initialize()
-
     ax.item:LoadFolder("parallax/gamemode/items")
     ax.module:LoadFolder("parallax/modules")
     ax.schema:Initialize()
@@ -273,8 +275,6 @@ function GM:OnReloaded()
     if ( _reloaded ) then return end
     _reloaded = true
 
-    ax.database:Initialize()
-
     ax.item:LoadFolder("parallax/gamemode/items")
     ax.module:LoadFolder("parallax/modules")
     ax.schema:Initialize()
@@ -288,9 +288,21 @@ function GM:DatabaseConnected()
     hook.Run("LoadData")
 end
 
+local retryCount = 0
+local maxRetries = 5
+
 function GM:DatabaseConnectionFailed()
-    ax.util:PrintError("Database connection failed, falling back to SQLite.")
-    ax.database:Fallback()
+    if ( retryCount < maxRetries ) then
+        retryCount = retryCount + 1
+        ax.util:PrintWarning("Database connection failed, retrying... (" .. retryCount .. "/" .. maxRetries .. ")")
+
+        timer.Simple(2, function()
+            ax.database:Initialize()
+        end)
+    else
+        ax.util:PrintError("Database connection failed after " .. maxRetries .. " retries, falling back to SQLite.")
+        ax.database:Fallback()
+    end
 end
 
 function GM:DatabaseFallback(reason)

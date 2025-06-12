@@ -64,7 +64,10 @@ function ax.character:SetVariable(id, key, value)
     end
 
     local character = self.stored[id]
-    if ( !character ) then return end
+    if ( !character ) then
+        ax.util:PrintError("Attempted to set a variable for a character that does not exist!")
+        return false, "Attempted to set a variable for a character that does not exist!"
+    end
 
     local data = self.variables[key]
     if ( data.OnSet ) then
@@ -91,7 +94,10 @@ end
 
 function ax.character:GetVariable(id, key)
     local character = self.stored[id]
-    if ( !character ) then return end
+    if ( !character ) then
+        ax.util:PrintError("Attempted to get a variable for a character that does not exist!")
+        return false, "Attempted to get a variable for a character that does not exist!"
+    end
 
     local variable = self.variables[key]
     if ( !variable ) then return end
@@ -105,8 +111,15 @@ function ax.character:GetVariable(id, key)
 end
 
 function ax.character:CreateObject(characterID, data, client)
-    if ( !characterID or !data ) then return false, "Invalid ID or data" end
-    if ( self.stored[characterID] ) then return self.stored[characterID], "Character already exists" end
+    if ( !characterID or !data ) then
+        ax.util:PrintError("Attempted to create a character object with invalid data!")
+        return false, "Invalid data provided"
+    end
+
+    if ( self.stored[characterID] ) then
+        ax.util:PrintWarning("Attempted to create a character object that already exists!")
+        return false, "Character already exists"
+    end
 
     characterID = tonumber(characterID)
 

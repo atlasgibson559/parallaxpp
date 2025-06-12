@@ -3,7 +3,7 @@
 -- @module ax.database
 
 ax.database = ax.database or {}
-ax.database.backend = ax.sqlite -- Default to SQLite if MySQL is not available
+ax.database.backend = ax.database.backend or ax.sqlite -- Default to SQLite if MySQL is not available
 
 --- Initializes the hybrid database system.
 -- @tparam table[opt] config MySQL connection config
@@ -11,16 +11,18 @@ ax.database.backend = ax.sqlite -- Default to SQLite if MySQL is not available
 function ax.database:Initialize(config)
     if ( ax.util:HasMysqlooBinary() and ax.sqloo ) then
         if ( config ) then
-            self.backend = ax.sqloo
-            ax.sqloo:Initialize(config)
+            ax.util:Print("Initializing MySQL connection...")
+            ax.sqloo:Initialize(config, function()
+                ax.util:PrintSuccess("MySQL connection established.")
+                self.backend = ax.sqloo
+                self:LoadTables()
 
-            timer.Simple(1, function()
-                if ( ax.sqloo:Status() == mysqloo.DATABASE_CONNECTED ) then
-                    ax.util:PrintSuccess("MySQL connection established")
-                    self:LoadTables()
-                else
-                    self:Fallback("MySQL connection failed")
-                end
+                hook.Run("DatabaseConnected")
+            end, function(err)
+                ax.util:PrintError("MySQL connection failed: " .. err)
+                self:Fallback(err)
+
+                hook.Run("DatabaseConnectionFailed", err)
             end)
         else
             self:Fallback("MySQL config not provided")
@@ -82,8 +84,6 @@ for _, fn in ipairs({
 end
 
 function ax.database:LoadTables()
-    ax.util:Print("Loading database tables...")
-
     hook.Run("PreDatabaseTablesLoaded")
 
     self:RegisterVar("ax_players", "name", "")
@@ -125,16 +125,18 @@ function ax.database:LoadTables()
     })
 
     hook.Run("PostDatabaseTablesLoaded")
-
-    ax.util:PrintSuccess("Database tables loaded.")
 end
 
-local folder = engine.ActiveGamemode()
-local database = folder .. "/schema/database.lua"
-if ( file.Exists(database, "LUA") ) then
-    ax.util:Print("Loading database config...")
-    ax.util:LoadFile(folder .. "/schema/database.lua", "server")
-    ax.util:Print("Loaded database config.")
-else
-    ax.util:PrintWarning("Failed to find database config, using SQLite.")
+--- Prints which database backend is currently in use. Used for debugging purposes.
+-- @usage ax.database:PrintBackend()
+-- @return "Using MySQL backend." or "Using SQLite backend."
+function ax.database:PrintBackend()
+    if ( self.backend == ax.sqloo ) then
+        ax.util:Print("Using MySQL backend.")
+    elseif ( self.backend == ax.sqlite ) then
+        ax.util:Print("Using SQLite backend.")
+    else
+        -- Quite unlikely, but just in case
+        ax.util:PrintError("Unknown database backend in use!")
+    end
 end

@@ -39,9 +39,9 @@ ax.sqloo.db = nil
 ax.sqloo.tables = ax.sqloo.tables or {}
 
 --- Initializes the SQL database connection or environment.
--- @realm shared
+-- @realm server
 -- @usage ax.sqloo:Initialize
-function ax.sqloo:Initialize(config)
+function ax.sqloo:Initialize(config, callback, fallback)
     self.config = config
 
     local db = mysqloo.connect(
@@ -53,24 +53,25 @@ function ax.sqloo:Initialize(config)
     )
 
     db.onConnected = function()
-        ax.util:PrintSuccess("Connected to MySQL server.")
-
-        hook.Run("DatabaseConnected")
+        if ( callback ) then
+            callback(db)
+        end
     end
 
     db.onConnectionFailed = function(_, errString)
-        ax.util:PrintError("MySQL connection failed: " .. errString .. "\n")
-
-        hook.Run("DatabaseConnectionFailed", errString)
+        if ( fallback ) then
+            fallback(errString)
+        end
     end
 
     db:connect()
+    db:wait()
 
     self.db = db
 end
 
 --- Registers a variable/column for the specified table and sets its default value.
--- @realm shared
+-- @realm server
 -- @usage ax.sqloo:RegisterVar
 function ax.sqloo:RegisterVar(tableName, key, default)
     self.tables[tableName] = self.tables[tableName] or {}
@@ -85,7 +86,7 @@ function ax.sqloo:RegisterVar(tableName, key, default)
 end
 
 --- Creates a SQL table with the registered and extra schema fields.
--- @realm shared
+-- @realm server
 -- @usage ax.sqloo:InitializeTable
 function ax.sqloo:InitializeTable(tableName, extraSchema)
     local schema = {}
@@ -132,7 +133,7 @@ function ax.sqloo:InitializeTable(tableName, extraSchema)
 end
 
 --- Adds a column to a table if it doesn't exist already.
--- @realm shared
+-- @realm server
 -- @usage ax.sqloo:AddColumn
 function ax.sqloo:AddColumn(tableName, columnName, columnType, defaultValue)
     local query = string.format("SHOW COLUMNS FROM `%s` LIKE %s;", tableName, sql.SQLStr(columnName))
@@ -159,7 +160,7 @@ function ax.sqloo:AddColumn(tableName, columnName, columnType, defaultValue)
 end
 
 --- Returns a default row populated with the registered default values.
--- @realm shared
+-- @realm server
 -- @usage ax.sqloo:GetDefaultRow
 function ax.sqloo:GetDefaultRow(tableName, override)
     local data = table.Copy(self.tables[tableName] or {})
@@ -171,7 +172,7 @@ function ax.sqloo:GetDefaultRow(tableName, override)
 end
 
 --- Loads a row based on a key/value match or inserts a default if not found.
--- @realm shared
+-- @realm server
 -- @usage ax.sqloo:LoadRow
 function ax.sqloo:LoadRow(tableName, key, value, callback)
     local condition = string.format("`%s` = %s", key, self:Escape(value))
@@ -208,7 +209,7 @@ function ax.sqloo:LoadRow(tableName, key, value, callback)
 end
 
 --- Saves a row of data into the table using the given key.
--- @realm shared
+-- @realm server
 -- @usage ax.sqloo:SaveRow
 function ax.sqloo:SaveRow(tableName, data, key, callback)
     local condition = string.format("`%s` = %s", key, self:Escape(data[key]))
@@ -216,7 +217,7 @@ function ax.sqloo:SaveRow(tableName, data, key, callback)
 end
 
 --- Inserts a new row of data into the table.
--- @realm shared
+-- @realm server
 -- @usage ax.sqloo:Insert
 function ax.sqloo:Insert(tableName, data, callback)
     local keys, values = {}, {}
@@ -238,7 +239,7 @@ function ax.sqloo:Insert(tableName, data, callback)
 end
 
 --- Updates existing data in the table matching a given condition.
--- @realm shared
+-- @realm server
 -- @usage ax.sqloo:Update
 function ax.sqloo:Update(tableName, data, condition, callback)
     local updates = {}
@@ -261,7 +262,7 @@ function ax.sqloo:Update(tableName, data, condition, callback)
 end
 
 --- Deletes rows from the table based on a condition.
--- @realm shared
+-- @realm server
 -- @usage ax.sqloo:Delete
 function ax.sqloo:Delete(tableName, condition, callback)
     local query = string.format("DELETE FROM `%s` WHERE %s;", tableName, condition)
@@ -273,7 +274,7 @@ function ax.sqloo:Delete(tableName, condition, callback)
 end
 
 --- Selects rows from the table matching the optional condition.
--- @realm shared
+-- @realm server
 -- @usage ax.sqloo:Select
 function ax.sqloo:Select(tableName, columns, condition, callback)
     local cols = columns and table.concat(columns, ", ") or "*"
@@ -286,12 +287,12 @@ function ax.sqloo:Select(tableName, columns, condition, callback)
     self:Query(query, callback)
 end
 
---- Query
--- @realm shared
+--- Executes a SQL query asynchronously, queuing it if the database is not connected.
+-- This method allows you to run any SQL query and handle success or error callbacks.
+-- @realm server
 -- @usage ax.sqloo:Query
 function ax.sqloo:Query(query, onSuccess, onError)
     if ( !self.db or self.db:status() != mysqloo.DATABASE_CONNECTED ) then
-        ax.util:PrintError("Database not connected.")
         return
     end
 
@@ -311,43 +312,54 @@ function ax.sqloo:Query(query, onSuccess, onError)
         end
     end
 
+    q.onAbort = function(_, errString)
+        ax.util:PrintError("Query aborted: " .. errString)
+        ax.util:PrintError("Query: " .. query)
+    end
+
+    q.onData = function(_, data)
+        ax.util:Print("Query data received: " .. #data .. " rows")
+    end
+
     q:start()
 
     return q
 end
 
 --- Escape
--- @realm shared
+-- @realm server
 -- @usage ax.sqloo:Escape
 function ax.sqloo:Escape(str)
     return self.db and self.db:escape(str) or str
 end
 
 --- GetDB
--- @realm shared
+-- @realm server
 -- @usage ax.sqloo:GetDB
 function ax.sqloo:GetDB()
     return self.db
 end
 
 --- Status
--- @realm shared
+-- @realm server
 -- @usage ax.sqloo:Status
 function ax.sqloo:Status()
     return self.db and self.db:status() or mysqloo.DATABASE_NOT_CONNECTED
 end
 
 --- Reconnect
--- @realm shared
+-- @realm server
 -- @usage ax.sqloo:Reconnect
 function ax.sqloo:Reconnect()
-    if ( self.config ) then
-        self:Initialize(self.config)
+    if ( self.db and self.db:status() == mysqloo.DATABASE_NOT_CONNECTED ) then
+        self.db:connect()
+    else
+        ax.util:PrintWarning("Database is already connected or not initialized.")
     end
 end
 
 --- Counts the number of rows in a table.
--- @realm shared
+-- @realm server
 -- @usage ax.sqloo:Count
 -- @tparam string tableName Table name
 -- @tparam string condition Optional WHERE clause
@@ -364,4 +376,31 @@ function ax.sqloo:Count(tableName, condition, callback)
             callback(count)
         end
     end)
+end
+
+--- Prints the current database status in a human-readable format.
+-- @realm server
+-- @usage ax.sqloo:PrintStatus
+function ax.sqloo:PrintStatus()
+    local status = self:Status()
+    local statusText = "Unknown"
+
+    if ( status == mysqloo.DATABASE_NOT_CONNECTED ) then
+        statusText = "Not connected"
+    elseif ( status == mysqloo.DATABASE_CONNECTED ) then
+        statusText = "Connected"
+    elseif ( status == mysqloo.DATABASE_CONNECTING ) then
+        statusText = "Connecting"
+    elseif ( status == mysqloo.DATABASE_FAILED ) then
+        statusText = "Connection failed"
+    end
+
+    ax.util:Print("MySQL Status: " .. statusText)
+end
+
+--- Cheks if the database is connected.
+-- @realm server
+-- @usage ax.sqloo:IsConnected
+function ax.sqloo:IsConnected()
+    return self.db and self.db:status() == mysqloo.DATABASE_CONNECTED
 end
