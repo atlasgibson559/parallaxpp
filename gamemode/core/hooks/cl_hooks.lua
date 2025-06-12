@@ -937,3 +937,12 @@ function GM:OnScreenSizeChanged(oldWidth, oldHeight, newWidth, newHeight)
 
     hook.Run("LoadFonts")
 end
+
+function GM:SpawnMenuOpen()
+    local character = ax.client:GetCharacter()
+    if ( !character ) then return end
+
+    if ( !character:HasFlag("s") ) then
+        return false
+    end
+end

@@ -29,3 +29,5 @@ ax.flag:Register("p", "flag.physgun", function(char, has)
         client:StripWeapon("weapon_physgun")
     end
 end)
+
+ax.flag:Register("s", "flag.spawnmenu", nil)

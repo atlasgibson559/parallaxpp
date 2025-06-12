@@ -166,8 +166,8 @@ if ( SERVER ) then
         self:SetFlags(flags)
 
         local flagInfo = ax.flag:Get(flag)
-        if ( flagInfo and flagInfo.callback ) then
-            flagInfo.callback(self, true)
+        if ( istable(flagInfo) and isfunction(flagInfo.callback) ) then
+            flagInfo:callback(true)
         end
     end
 
@@ -185,8 +185,8 @@ if ( SERVER ) then
         self:SetFlags(flags)
 
         local flagInfo = ax.flag:Get(flag)
-        if ( flagInfo and flagInfo.callback ) then
-            flagInfo.callback(self, false)
+        if ( istable(flagInfo) and isfunction(flagInfo.callback) ) then
+            flagInfo:callback(false)
         end
     end
 end
