@@ -118,7 +118,7 @@ function ax.character:CreateObject(characterID, data, client)
 
     if ( self.stored[characterID] ) then
         ax.util:PrintWarning("Attempted to create a character object that already exists!")
-        return false, "Character already exists"
+        return self.stored[characterID], "Character already exists"
     end
 
     characterID = tonumber(characterID)
