@@ -152,7 +152,7 @@ end
 
 function ax.character:GetPlayerByCharacter(id)
     for _, client in player.Iterator() do
-        if ( client:GetCharacterID() == id ) then
+        if ( client:GetCharacterID() == tonumber(id) ) then
             return client
         end
     end
