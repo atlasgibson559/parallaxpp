@@ -38,7 +38,7 @@ function SWEP:CalcLerpSpeed(eHoldingEntity)
     return 8
 end
 
-local entDiff = vector_origin
+local entDiff = Vector(0, 0, 0)
 local entDiffTime = CurTime()
 local standTime = 0
 function SWEP:Think()

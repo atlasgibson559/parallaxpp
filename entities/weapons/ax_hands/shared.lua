@@ -487,7 +487,7 @@ function SWEP:DoPunch()
     owner:LagCompensation(false)
 end
 
-local down = -vector_up
+local down = Vector(0, 0, -1)
 function SWEP:AllowEntityDrop()
     local owner = self:GetOwner()
     local ent = self.axCarry
