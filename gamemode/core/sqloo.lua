@@ -54,7 +54,7 @@ function ax.sqloo:Initialize(config, callback, fallback)
 
     db.onConnected = function()
         if ( callback ) then
-            callback(db)
+            callback()
         end
     end
 
@@ -293,10 +293,55 @@ end
 -- @usage ax.sqloo:Query
 function ax.sqloo:Query(query, onSuccess, onError)
     if ( !self.db or self.db:status() != mysqloo.DATABASE_CONNECTED ) then
+        local uniqueID = util.CRC(query .. tostring(onSuccess) .. tostring(onError))
+        ax.util:PrintWarning("Database not connected, queuing query. (" .. uniqueID .. ")")
+
+        self.queryQueue = self.queryQueue or {}
+        table.insert(self.queryQueue, {query = query, onSuccess = onSuccess, onError = onError})
+
+        if ( !self.queryTimerStarted ) then
+            self.queryTimerStarted = true
+
+            local startTime = SysTime()
+            timer.Create("ax.sqloo.wait", 0.1, 0, function()
+                if ( self.db and self.db:status() == mysqloo.DATABASE_CONNECTED ) then
+                    timer.Remove("ax.sqloo.wait")
+                    self.queryTimerStarted = false
+
+                    for _, queuedQuery in ipairs(self.queryQueue) do
+                        self:Query(queuedQuery.query, queuedQuery.onSuccess, queuedQuery.onError)
+
+                        uniqueID = util.CRC(queuedQuery.query .. tostring(queuedQuery.onSuccess) .. tostring(queuedQuery.onError))
+                        ax.util:PrintSuccess("Executing queued query: " .. uniqueID)
+                    end
+
+                    self.queryQueue = {}
+                elseif ( SysTime() - startTime > 5 ) then
+                    timer.Remove("ax.sqloo.wait")
+                    self.queryTimerStarted = false
+
+                    ax.util:PrintError("Database connection failed after 5 seconds. Aborting queued queries.")
+                    self.queryQueue = {}
+                else
+                    ax.util:PrintWarning("Waiting for database connection...")
+                end
+            end)
+        end
+
         return
     end
 
     local q = self.db:query(query)
+    if ( !q ) then
+        ax.util:PrintError("Failed to create query for: " .. query)
+
+        if ( onError ) then
+            onError("Failed to create query")
+        end
+
+        return
+    end
+
     q.onSuccess = function(_, data)
         if ( onSuccess ) then
             onSuccess(data)
@@ -313,6 +358,7 @@ function ax.sqloo:Query(query, onSuccess, onError)
     end
 
     q:start()
+    q:wait()
 
     return q
 end
