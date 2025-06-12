@@ -35,8 +35,8 @@ function ax.color:Get(name)
         return Color(storedColor.r, storedColor.g, storedColor.b, storedColor.a or 255)
     end
 
-    ax.util:PrintError("Attempted to get an invalid color!")
-    return color_white
+    ax.util:PrintError("Attempted to get a color that does not exist: " .. tostring(name))
+    return Color(255, 255, 255, 255)
 end
 
 --- Dims a color by a specified fraction.
