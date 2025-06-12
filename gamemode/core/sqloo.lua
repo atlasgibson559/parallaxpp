@@ -312,15 +312,6 @@ function ax.sqloo:Query(query, onSuccess, onError)
         end
     end
 
-    q.onAbort = function(_, errString)
-        ax.util:PrintError("Query aborted: " .. errString)
-        ax.util:PrintError("Query: " .. query)
-    end
-
-    q.onData = function(_, data)
-        ax.util:Print("Query data received: " .. #data .. " rows")
-    end
-
     q:start()
 
     return q

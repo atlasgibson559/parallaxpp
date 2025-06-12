@@ -220,7 +220,6 @@ function ax.character:CacheAll(client, callback)
 
     local condition = string.format("steamid = %s", sql.SQLStr(client:SteamID64()))
     ax.database:Select("ax_characters", nil, condition, function(result)
-        print("Loading characters for player " .. tostring(client) .. " with condition: " .. condition)
         if ( result ) then
             for _, row in ipairs(result) do
                 local id = tonumber(row.id)
@@ -231,7 +230,6 @@ function ax.character:CacheAll(client, callback)
 
                 -- Make sure we are not loading a character from a different schema
                 if ( row.schema != SCHEMA.Folder ) then
-                    print(row.schema, SCHEMA.Folder)
                     ax.util:PrintWarning("Character with ID " .. id .. " does not belong to the current schema (" .. SCHEMA.Folder .. ") for player " .. tostring(client))
                     continue
                 end
