@@ -139,12 +139,14 @@ if ( SERVER ) then
     function CHAR:SetData(key, value)
         if ( !isstring(key) or key == "" ) then return end
 
-        local data = self:GetDataInternal()
+        local data = self:GetDataInternal() or "[]"
         if ( !istable(data) ) then
-            data = {}
+            data = util.JSONToTable(data) or {}
         end
 
         data[key] = value
+
+        data = util.TableToJSON(data)
         self:SetDataInternal(data)
     end
 
