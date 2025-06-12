@@ -14,33 +14,42 @@ function ax.motion:Animate(panel, duration, data)
 
     local easing = data.Easing or "OutQuad"
     local delay = data.Delay or 0
-    local startTime = SysTime()
+    local now = SysTime()
+    local origin = {}
+    local current = {}
 
-    for key, targetValue in pairs(data.Target) do
-        local current = panel[key] or 0
+    -- capture starting values, cancel overlapping anims
+    for key, target in pairs(data.Target) do
+        origin[key] = panel[key] or 0
+        current[key] = origin[key]
+    end
 
-        for i = #self.active, 1, -1 do
-            local anim = self.active[i]
-            if ( anim.panel == panel and anim.key == key and anim.current ) then
-                current = anim.current
-                table.remove(self.active, i)
+    -- remove any existing anims on this panel that share any key
+    for i = #self.active, 1, -1 do
+        local a = self.active[i]
+        if ( a.panel == panel ) then
+            for key in pairs(data.Target) do
+                if ( a.target[key] ) then
+                    table.remove(self.active, i)
+                    break
+                end
             end
         end
-
-        table.insert(self.active, {
-            panel = panel,
-            key = key,
-            duration = duration,
-            delay = delay,
-            start = startTime,
-            origin = current,
-            target = targetValue,
-            current = current,
-            easing = easing,
-            think = isfunction(data.Think) and data.Think or nil,
-            onComplete = isfunction(data.OnComplete) and data.OnComplete or nil
-        })
     end
+
+    -- push new grouped animation
+    table.insert(self.active, {
+        panel = panel,
+        duration = duration,
+        delay = delay,
+        start = now,
+        origin = origin,
+        target = data.Target,
+        current = current,
+        easing = easing,
+        think = type(data.Think) == "function" and data.Think or nil,
+        onComplete = type(data.OnComplete) == "function" and data.OnComplete or nil,
+    })
 end
 
 --- Cancels a specific animation on a panel.
@@ -48,9 +57,15 @@ end
 -- @tparam string key The custom property key to cancel.
 function ax.motion:Cancel(panel, key)
     for i = #self.active, 1, -1 do
-        local anim = self.active[i]
-        if ( anim.panel == panel and anim.key == key ) then
-            table.remove(self.active, i)
+        local a = self.active[i]
+        if ( a.panel == panel and a.target[key] ) then
+            a.target[key] = nil
+            a.origin[key] = nil
+            a.current[key] = nil
+
+            if ( !next(a.target) ) then
+                table.remove(self.active, i)
+            end
         end
     end
 end
@@ -65,42 +80,49 @@ function ax.motion:CancelAll(panel)
     end
 end
 
---- Think hook to update active animations.
 hook.Add("Think", "ax.motion.Update", function()
     local now = SysTime()
 
     for i = #ax.motion.active, 1, -1 do
-        local anim = ax.motion.active[i]
-
-        if ( !IsValid(anim.panel) ) then
+        local a = ax.motion.active[i]
+        if ( !IsValid(a.panel) ) then
             table.remove(ax.motion.active, i)
-            continue
-        end
-
-        if ( now < anim.start + anim.delay ) then
-            continue
-        end
-
-        local t = (now - anim.start - anim.delay) / anim.duration
-        local done = (t >= 1)
-
-        anim.current = ax.ease:Lerp(anim.easing, t, anim.origin, anim.target)
-
-        if ( anim.think ) then
-            anim.think({[anim.key] = anim.current})
+        elseif ( now < a.start + a.delay)  then
+            -- not yet started
         else
-            anim.panel[anim.key] = anim.current
-        end
-
-        if ( done ) then
-            -- Ensure final value is written back
-            anim.panel[anim.key] = anim.target
-
-            if ( anim.onComplete ) then
-                anim.onComplete(anim.panel)
+            local t = (now - a.start - a.delay) / a.duration
+            if ( t < 0 ) then
+                t = 0
+            elseif ( t > 1 ) then
+                t = 1
             end
 
-            table.remove(ax.motion.active, i)
+            -- update every key
+            for key, target in pairs(a.target) do
+                local o = a.origin[key]
+                local v = ax.ease:Lerp(a.easing, t, o, target)
+                a.current[key] = v
+                a.panel[key]   = v
+            end
+
+            -- frame callback
+            if ( a.think ) then
+                a.think(a.current)
+            end
+
+            -- completion
+            if ( t >= 1 ) then
+                -- ensure final values
+                for key, target in pairs(a.target) do
+                    a.panel[key] = target
+                end
+
+                if ( a.onComplete ) then
+                    a.onComplete(a.panel)
+                end
+
+                table.remove(ax.motion.active, i)
+            end
         end
     end
 end)
