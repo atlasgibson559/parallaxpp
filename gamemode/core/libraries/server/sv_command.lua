@@ -48,6 +48,21 @@ function ax.command:Run(client, command, arguments)
         return false
     end
 
+    if ( info.Arguments ) then
+        for k, v in ipairs(info.Arguments) do
+            local value = ax.util:CoerceType(v.Type, arguments[k])
+            if ( value != nil ) then
+                arguments[k] = value
+
+                continue
+            end
+
+            client:Notify(v.ErrorMsg)
+
+            return
+        end
+    end
+
     info:Callback(client, arguments)
 
     hook.Run("PostPlayerCommandRun", client, command, arguments)
