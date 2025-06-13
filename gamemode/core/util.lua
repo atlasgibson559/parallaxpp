@@ -380,9 +380,9 @@ function ax.util:FindPlayer(identifier)
     end
 
     if ( isstring(identifier) ) then
-        if (string.find(identifier, "STEAM_(%d+):(%d+):(%d+)")) then
+        if ( ax.util:CoerceType(ax.types.steamid, identifier) ) then
             return player.GetBySteamID(identifier)
-        elseif (string.find(identifier, "7656119%d+")) then
+        elseif ( ax.util:CoerceType(ax.types.steamid64, identifier) ) then
             return player.GetBySteamID64(identifier)
         end
 
