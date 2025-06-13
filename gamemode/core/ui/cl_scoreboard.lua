@@ -168,7 +168,7 @@ function PANEL:OnMousePressed(keyCode)
     if ( keyCode == MOUSE_LEFT ) then
         gui.OpenURL("http://steamcommunity.com/profiles/" .. self.player:SteamID64())
     elseif ( keyCode == MOUSE_RIGHT ) then
-        local result = hook.Run("ShouldPopulateScoreboardPlayerCard", self.player)
+        local result = hook.Run("PrePopulateScoreboardPlayerCard", self.player)
         if ( result == false ) then return end
 
         local dermaMenu = DermaMenu(false, self)
@@ -183,7 +183,7 @@ function PANEL:OnMousePressed(keyCode)
         end):SetIcon("icon16/world.png")
 
         dermaMenu:AddSpacer()
-        hook.Run("PopulateScoreboardPlayerCard", dermaMenu, self.player)
+        hook.Run("PostPopulateScoreboardPlayerCard", dermaMenu, self.player)
     end
 end
 
