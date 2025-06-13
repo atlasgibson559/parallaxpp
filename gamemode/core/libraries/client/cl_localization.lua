@@ -56,12 +56,12 @@ function ax.localization:GetPhrase(key, ...)
 
     local data = self:Get(languageName)
     if ( !istable(data) ) then
-        return nil
+        return key
     end
 
     local value = data[key]
     if ( !isstring(value) ) then
-        return nil
+        return key
     end
 
     -- If we got additional arguments, format the string, and also try to translate them.
