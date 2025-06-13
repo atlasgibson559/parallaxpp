@@ -3,8 +3,13 @@ local MODULE = MODULE
 ax.command:Register("ChangeVoiceMode", {
     Description = "Change your voice chat mode.",
     AdminOnly = false,
+    Arguments = {
+        {
+            Type = ax.types.number,
+            ErrorMsg = "You must provide a valid player to take a flag from!"
+        }
+    },
     Callback = function(info, client, arguments)
-        local mode = arguments[1]
         local char = client:GetCharacter()
 
         if ( !char ) then
@@ -17,6 +22,7 @@ ax.command:Register("ChangeVoiceMode", {
             hashMap[v] = true
         end
 
+        local mode = arguments[1]
         if ( hashMap[mode] ) then
             client:SetRelay("voiceMode", table.KeyFromValue(MODULE.Modes, mode))
         else
