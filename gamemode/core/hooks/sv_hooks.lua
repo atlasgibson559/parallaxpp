@@ -2,9 +2,7 @@ local time = CurTime()
 function GM:PlayerInitialSpawn(client)
     time = CurTime()
     ax.util:Print("Starting to load player " .. client:SteamName() .. " (" .. client:SteamID64() .. ")")
-end
 
-function GM:PlayerReady(client)
     if ( client:IsBot() ) then
         local factionBot = math.random(#ax.faction.instances)
 
@@ -19,10 +17,10 @@ function GM:PlayerReady(client)
 
         client:SetModel(models[math.random(#models)])
         client:SetTeam(factionBot)
-
-        return
     end
+end
 
+function GM:PlayerReady(client)
     client:SetTeam(0)
     client:SetModel("models/player/kleiner.mdl")
 
