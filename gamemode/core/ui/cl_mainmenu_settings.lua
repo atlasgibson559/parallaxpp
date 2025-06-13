@@ -26,7 +26,7 @@ function PANEL:Populate()
     title:Dock(TOP)
     title:DockMargin(padding, padding, 0, 0)
     title:SetFont("parallax.title")
-    title:SetText("SETTINGS")
+    title:SetText("settings")
 
     local navigation = self:Add("EditablePanel")
     navigation:Dock(BOTTOM)
@@ -35,7 +35,7 @@ function PANEL:Populate()
 
     local backButton = navigation:Add("ax.button.small")
     backButton:Dock(LEFT)
-    backButton:SetText("BACK")
+    backButton:SetText("back")
     backButton.DoClick = function()
         self.currentCreatePage = 0
         self.currentCreatePayload = {}

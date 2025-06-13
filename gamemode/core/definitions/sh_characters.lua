@@ -25,7 +25,7 @@ ax.character:RegisterVariable("name", {
 
     Editable = true,
     ZPos = -3,
-    Name = "Name",
+    Name = "character.create.name",
 
     AllowNonAscii = false,
     Numeric = false,
@@ -60,7 +60,7 @@ ax.character:RegisterVariable("description", {
 
     Editable = true,
     ZPos = 0,
-    Name = "Description",
+    Name = "character.create.description",
 
     OnValidate = function(self, parent, payload, client)
         if ( string.len(payload.description) < 10 ) then
@@ -78,7 +78,7 @@ ax.character:RegisterVariable("model", {
 
     Editable = true,
     ZPos = 0,
-    Name = "Model",
+    Name = "character.create.model",
 
     OnValidate = function(self, parent, payload, client)
         local faction = ax.faction:Get(payload.faction)
@@ -105,7 +105,11 @@ ax.character:RegisterVariable("model", {
         local label = parent:Add("ax.text")
         label:Dock(TOP)
         label:SetFont("parallax.button")
-        label:SetText(self.Name or k)
+
+        local translation = ax.localization:GetPhrase(self.Name)
+        local bTranslated = translation != self.Name
+
+        label:SetText(bTranslated and translation or self.Name or k)
 
         local scroller = parent:Add("ax.scroller.vertical")
         scroller:Dock(FILL)

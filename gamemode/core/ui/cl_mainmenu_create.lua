@@ -69,7 +69,7 @@ function PANEL:PopulateFactionSelect()
 
     local backButton = navigation:Add("ax.button.small")
     backButton:Dock(LEFT)
-    backButton:SetText("BACK")
+    backButton:SetText("back")
     backButton.DoClick = function()
         self.currentCreatePage = 0
         self:ResetPayload()
@@ -204,7 +204,7 @@ function PANEL:PopulateCreateCharacter()
 
     local backButton = navigation:Add("ax.button.small")
     backButton:Dock(LEFT)
-    backButton:SetText("BACK")
+    backButton:SetText("back")
 
     backButton.DoClick = function()
         if ( self.currentCreatePage == 0 ) then
@@ -231,7 +231,7 @@ function PANEL:PopulateCreateCharacter()
 
     local nextButton = navigation:Add("ax.button.small")
     nextButton:Dock(RIGHT)
-    nextButton:SetText("NEXT")
+    nextButton:SetText("next")
 
     nextButton.DoClick = function()
         local isNextEmpty = true
@@ -297,13 +297,17 @@ function PANEL:PopulateCreateCharacterForm()
             continue
         end
 
+        local translation = ax.localization:GetPhrase(v.Name)
+        local bTranslated = translation != v.Name
+
         if ( v.Type == ax.types.string ) then
             zPos = zPos + 1 + v.ZPos
 
             local label = self.characterCreateForm:Add("ax.text")
             label:Dock(TOP)
             label:SetFont("parallax.button")
-            label:SetText(v.Name or k)
+
+            label:SetText(bTranslated and translation or v.Name or k)
 
             zPos = zPos - 1
             label:SetZPos(zPos)
@@ -334,7 +338,7 @@ function PANEL:PopulateCreateCharacterForm()
 
             local label = self.characterCreateForm:Add("ax.text")
             label:Dock(TOP)
-            label:SetText(v.Name or k)
+            label:SetText(bTranslated and translation or v.Name or k)
             label:SetFont("parallax.button")
             label:SizeToContents()
 

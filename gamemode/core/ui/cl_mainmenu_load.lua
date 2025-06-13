@@ -41,7 +41,7 @@ function PANEL:Populate()
 
     local backButton = navigation:Add("ax.button.small")
     backButton:Dock(LEFT)
-    backButton:SetText("BACK")
+    backButton:SetText("back")
     backButton.DoClick = function()
         self:Clear()
         self:SetVisible(false)
