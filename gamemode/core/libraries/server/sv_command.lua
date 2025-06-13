@@ -54,7 +54,7 @@ function ax.command:Run(client, command, arguments)
             if ( ax.util:DetectType(value) != v.Type ) then
                 client:Notify(v.ErrorMsg)
 
-                return
+                return false
             end
 
             arguments[k] = value
