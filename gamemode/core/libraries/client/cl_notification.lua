@@ -20,6 +20,10 @@ function ax.notification:Add(text, duration, bgColor)
 
     -- Prepare wrapped lines
     local maxTextWidth = PANEL_WIDTH - PANEL_MARGIN * 2
+
+    local phrase = ax.localization:GetPhrase(text)
+    if ( isstring(phrase) ) then text = phrase end
+
     local lines = ax.util:GetWrappedText(text, FONT_NAME, maxTextWidth)
     surface.SetFont(FONT_NAME)
     local _, lineHeight = surface.GetTextSize("Ay")

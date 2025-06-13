@@ -57,12 +57,12 @@ if ( CLIENT ) then
 
         local data = self:Get(languageName)
         if ( !istable(data) ) then
-            return key
+            return nil
         end
 
         local value = data[key]
         if ( !isstring(value) ) then
-            return key
+            return nil
         end
 
         -- If we got additional arguments, format the string, and also try to translate them.
@@ -83,7 +83,6 @@ if ( CLIENT ) then
 
         -- Remove any leading or trailing whitespace.
         value = string.Trim(value)
-
         return value
     end
 end
