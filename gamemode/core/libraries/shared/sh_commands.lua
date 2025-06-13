@@ -81,9 +81,7 @@ function ax.command:Get(identifier)
         if ( string.lower(k) == string.lower(identifier) ) then
             return v
         end
-    end
 
-    for _, v in pairs(self.stored) do
         if ( !istable(v.Prefixes) ) then continue end
 
         for _, v2 in ipairs(v.Prefixes) do
