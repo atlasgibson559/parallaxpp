@@ -20,7 +20,7 @@ function ax.localization:Register(languageName, data)
     end
 
     local stored = self.stored[languageName]
-    if ( stored == nil ) then
+    if ( !istable(stored) ) then
         self.stored[languageName] = {}
     end
 
