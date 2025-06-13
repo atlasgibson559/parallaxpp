@@ -194,7 +194,7 @@ function PANEL:Populate()
     disconnectButton:SetTextColorProperty(ax.color:Get("maroon"))
 
     disconnectButton.DoClick = function()
-        Derma_Query("Are you sure you want to disconnect?", "Disconnect", "Yes", function()
+        Derma_Query(ax.localization:GetPhrase("mainmenu.disconnect.confirmation"), "Disconnect", "Yes", function()
             RunConsoleCommand("disconnect")
         end, "No")
     end
