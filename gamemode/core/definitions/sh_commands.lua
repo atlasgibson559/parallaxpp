@@ -1,12 +1,14 @@
 ax.command:Register("PlyRespawn", {
     Description = "Respawn a player.",
     AdminOnly = true,
+    Arguments = {
+        {
+            Type = ax.types.player,
+            ErrorMsg = "You must provide a valid player to respawn!"
+        }
+    },
     Callback = function(info, client, arguments)
-        local target = ax.util:FindPlayer(arguments[1])
-        if ( !IsValid(target) ) then
-            client:Notify("You must provide a valid player to respawn!")
-            return
-        end
+        local target = arguments[1]
 
         if ( target:GetCharacter() == nil ) then
             client:Notify("The targeted player does not have a character!")
@@ -23,20 +25,20 @@ ax.command:Register("PlyRespawn", {
 ax.command:Register("PlyWhitelist", {
     Description = "Whitelist a player to a faction.",
     AdminOnly = true,
+    Arguments = {
+        {
+            Type = ax.types.player,
+            ErrorMsg = "You must provide a valid player to whitelist!"
+        },
+        {
+            Type = ax.types.string,
+            ErrorMsg = "You must provide a valid faction to whitelist the player to!"
+        }
+    },
     Callback = function(info, client, arguments)
-        local target = ax.util:FindPlayer(arguments[1])
-        if ( !IsValid(target) ) then
-            client:Notify("You must provide a valid player to whitelist!")
-            return
-        end
+        local target = arguments[1]
 
-        local identifier = arguments[2]
-        if ( !isstring(identifier) or #identifier == 0 ) then
-            client:Notify("You must provide a valid faction to whitelist the player to!")
-            return
-        end
-
-        local faction = ax.faction:Get(identifier)
+        local faction = ax.faction:Get(arguments[2])
         if ( !faction ) then
             client:Notify("You must provide a valid faction to whitelist the player to!")
             return
@@ -51,20 +53,20 @@ ax.command:Register("PlyWhitelist", {
 ax.command:Register("PlyUnWhitelist", {
     Description = "Unwhitelist a player from a faction.",
     AdminOnly = true,
+    Arguments = {
+        {
+            Type = ax.types.player,
+            ErrorMsg = "You must provide a valid player to unwhitelist!"
+        },
+        {
+            Type = ax.types.string,
+            ErrorMsg = "You must provide a valid faction to unwhitelist the player from!"
+        }
+    },
     Callback = function(info, client, arguments)
-        local target = ax.util:FindPlayer(arguments[1])
-        if ( !IsValid(target) ) then
-            client:Notify("You must provide a valid player to unwhitelist!")
-            return
-        end
+        local target = arguments[1]
 
-        local identifier = arguments[2]
-        if ( !isstring(identifier) or #identifier == 0 ) then
-            client:Notify("You must provide a valid faction to unwhitelist the player from!")
-            return
-        end
-
-        local faction = ax.faction:Get(identifier)
+        local faction = ax.faction:Get(arguments[2])
         if ( !faction ) then
             client:Notify("You must provide a valid faction to unwhitelist the player from!")
             return
@@ -79,12 +81,18 @@ ax.command:Register("PlyUnWhitelist", {
 ax.command:Register("CharSetModel", {
     Description = "Set the model of a character.",
     AdminOnly = true,
+    Arguments = {
+        {
+            Type = ax.types.player,
+            ErrorMsg = "You must provide a valid player to set the model of!"
+        },
+        {
+            Type = ax.types.string,
+            ErrorMsg = "You must provide a valid model!"
+        }
+    },
     Callback = function(info, client, arguments)
-        local target = ax.util:FindPlayer(arguments[1])
-        if ( !IsValid(target) ) then
-            client:Notify("You must provide a valid player to set the model of!")
-            return
-        end
+        local target = arguments[1]
 
         local character = target:GetCharacter()
         if ( !character ) then
@@ -107,24 +115,24 @@ ax.command:Register("CharSetModel", {
 ax.command:Register("CharSetFaction", {
     Description = "Set the faction of a character.",
     AdminOnly = true,
+    Arguments = {
+        {
+            Type = ax.types.player,
+            ErrorMsg = "You must provide a valid player to set the faction of!"
+        },
+        {
+            Type = ax.types.string,
+            ErrorMsg = "You must provide a valid faction to set!"
+        }
+    },
     Callback = function(info, client, arguments)
-        local target = ax.util:FindPlayer(arguments[1])
-        if ( !IsValid(target) ) then
-            client:Notify("You must provide a valid player to set the faction of!")
-            return
-        end
-
-        local identifier = arguments[2]
-        if ( !isstring(identifier) or #identifier == 0 ) then
-            client:Notify("You must provide a valid faction to set!")
-            return
-        end
-
-        local faction = ax.faction:Get(identifier)
+        local faction = ax.faction:Get(arguments[2])
         if ( !faction ) then
             client:Notify("You must provide a valid faction to set!")
             return
         end
+
+        local target = arguments[1]
 
         local character = target:GetCharacter()
         if ( !character ) then
@@ -142,24 +150,26 @@ ax.command:Register("CharSetFaction", {
 ax.command:Register("CharGiveFlags", {
     Description = "Give a character a flag.",
     AdminOnly = true,
+    Arguments = {
+        {
+            Type = ax.types.player,
+            ErrorMsg = "You must provide a valid player to give a flag to!"
+        },
+        {
+            Type = ax.types.string,
+            ErrorMsg = "You must provide either single flag or a set of flags!"
+        }
+    },
     Callback = function(info, client, arguments)
-        local target = ax.util:FindPlayer(arguments[1])
-        if ( !IsValid(target) ) then
-            client:Notify("You must provide a valid player to give a flag to!")
-            return
-        end
-
-        local flags = arguments[2]
-        if ( !isstring(flags) or #flags == 0 ) then
-            client:Notify("You must provide either single flag or a set of flags!")
-            return
-        end
+        local target = arguments[1]
 
         local character = target:GetCharacter()
         if ( !character ) then
             client:Notify("The targeted player does not have a character!")
             return
         end
+
+        local flags = arguments[2]
 
         local given = {}
         for i = 1, #flags do
@@ -209,12 +219,18 @@ ax.command:Register("CharGiveFlags", {
 ax.command:Register("CharTakeFlags", {
     Description = "Take a flag from a character.",
     AdminOnly = true,
+    Arguments = {
+        {
+            Type = ax.types.player,
+            ErrorMsg = "You must provide a valid player to take a flag from!"
+        },
+        {
+            Type = ax.types.string,
+            ErrorMsg = "You must provide either single flag or a set of flags!"
+        }
+    },
     Callback = function(info, client, arguments)
-        local target = ax.util:FindPlayer(arguments[1])
-        if ( !IsValid(target) ) then
-            client:Notify("You must provide a valid player to take a flag from!")
-            return
-        end
+        local target = arguments[1]
 
         local character = target:GetCharacter()
         if ( !character ) then
@@ -223,10 +239,6 @@ ax.command:Register("CharTakeFlags", {
         end
 
         local flags = arguments[2]
-        if ( !isstring(flags) or #flags == 0 ) then
-            client:Notify("You must provide either single flag or a set of flags!")
-            return
-        end
 
         local taken = {}
         for i = 1, #flags do
