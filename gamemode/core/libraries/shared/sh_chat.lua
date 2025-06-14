@@ -26,6 +26,7 @@ function ax.chat:Register(uniqueID, chatData)
         ax.command:Register(uniqueID, {
             Description = chatData.Description or "",
             Prefixes = chatData.Prefixes,
+            ChatType = uniqueID,
             OnTextChanged = chatData.OnTextChanged,
             OnChatTypeChanged = chatData.OnChatTypeChanged,
             Callback = function(info, client, arguments)
