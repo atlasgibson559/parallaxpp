@@ -49,7 +49,8 @@ function ax.utf8:RegisterUTF8(data)
     return true
 end
 
--- Source: Unicode Character Database
+-- Source: https://www.unicode.org/Public/UCD/latest/ucd/UnicodeData.txt
+-- Automatically generated using Python script.
 
 -- ADLAM characters
 ax.utf8:RegisterUTF8({
