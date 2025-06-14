@@ -51,7 +51,7 @@ function ax.command:Run(client, command, arguments)
     if ( info.Arguments ) then
         for k, v in ipairs(info.Arguments) do
             local value = ax.util:CoerceType(v.Type, arguments[k])
-            if ( ax.util:DetectType(value) != v.Type ) then
+            if ( ax.util:DetectType(value) != v.Type and !v.Optional ) then
                 client:Notify(v.ErrorMsg)
 
                 return false

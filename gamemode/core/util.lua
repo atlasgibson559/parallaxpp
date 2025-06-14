@@ -10,6 +10,11 @@ ax.util = ax.util or {}
 -- @return any A validated and converted result
 -- @usage ax.util:CoerceType(ax.types.number, "123") -- returns 123
 function ax.util:CoerceType(typeID, value)
+    if ( typeID == nil or value == nil ) then
+        ax.util:PrintError("Attempted to coerce a type with no type ID or value! (" .. tostring(typeID) .. ", " .. tostring(value) .. ")")
+        return nil
+    end
+
     if ( typeID == ax.types.string or typeID == ax.types.text ) then
         return tostring(value)
     elseif ( typeID == ax.types.number ) then
