@@ -800,6 +800,7 @@ function GM:PopulateHelpCategories(categories)
         local filler = container:Add("DPanel")
         filler:Dock(FILL)
     end
+
     categories["flags"] = function(container)
         local scroller = container:Add("ax.scroller.vertical")
         scroller:Dock(FILL)
@@ -842,6 +843,82 @@ function GM:PopulateHelpCategories(categories)
             key.Think = Think
             seperator.Think = Think
             description.Think = Think
+        end
+    end
+
+    categories["commands"] = function(container)
+        local scroller = container:Add("ax.scroller.vertical")
+        scroller:Dock(FILL)
+        scroller:GetVBar():SetWide(0)
+        scroller.Paint = nil
+
+        for commandName, commandInfo in SortedPairs(ax.command:GetAll()) do
+            if ( !istable(commandInfo) ) then
+                ax.util:PrintError("Command '" .. commandName .. "' is not a valid table.")
+                continue
+            end
+
+            if ( commandInfo.ChatType and ax.chat:Get(commandInfo.ChatType) ) then
+                continue -- Skip commands that are chat types
+            end
+
+            local panel = scroller:Add("DPanel")
+            panel:Dock(TOP)
+            panel:DockMargin(0, 0, 0, 8)
+            panel.Paint = function(this, width, height)
+                surface.SetDrawColor(30, 30, 30, 200)
+                surface.DrawRect(0, 0, width, height)
+            end
+
+            local nameLabel = panel:Add("ax.text")
+            nameLabel:SetFont("parallax.bold")
+            nameLabel:SetText(commandName, true)
+            nameLabel:Dock(TOP)
+            nameLabel:DockMargin(8, 0, 8, 0)
+
+            local description = commandInfo.Description
+            if ( !description or description == "" ) then
+                description = "No description provided."
+            end
+
+            local descriptionLabel = panel:Add("ax.text")
+            descriptionLabel:SetFont("parallax.small")
+            descriptionLabel:SetText(description, true)
+            descriptionLabel:Dock(TOP)
+            descriptionLabel:DockMargin(8, -4, 8, 0)
+
+            if ( commandInfo.Arguments ) then
+                local argumentsLabel = panel:Add("ax.text")
+                argumentsLabel:SetFont("parallax.small")
+                argumentsLabel:SetText("Useable Arguments:", true)
+                argumentsLabel:Dock(TOP)
+                argumentsLabel:DockMargin(8, -4, 8, 0)
+
+                for index, data in ipairs(commandInfo.Arguments) do
+                    if ( !istable(data) ) then
+                        ax.util:PrintError("Command argument at index " .. index .. " from command '" .. commandName .. "' is not a table. Expected a table with 'Type' and 'ErrorMsg' fields.")
+                        data = { Type = "Unknown", ErrorMsg = "No error message provided." }
+                    end
+
+                    local argLabel = panel:Add("ax.text")
+                    argLabel:SetFont("parallax.small")
+                    argLabel:SetText(index .. ": " .. ax.util:FormatType(data.Type) .. " - " .. (data.ErrorMsg or "No error message provided."), true)
+                    if ( data.Optional ) then
+                        argLabel:SetText(argLabel:GetText() .. " (Optional)", true)
+                    end
+                    argLabel:Dock(TOP)
+                    argLabel:DockMargin(16, -4, 8, 0)
+                end
+            end
+
+            local height = 0
+            for k, v in pairs(panel:GetChildren()) do
+                if ( v:IsValid() and v:IsVisible() ) then
+                    height = height + v:GetTall() + select(2, v:GetDockMargin())
+                end
+            end
+
+            panel:SetTall(height + 8) -- Add some padding
         end
     end
 end
