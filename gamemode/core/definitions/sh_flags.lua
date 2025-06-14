@@ -1,4 +1,4 @@
-ax.flag:Register("t", "flag.toolgun", function(char, has)
+ax.flag:Register("t", "flag.toolgun", function(info, char, has)
     local client = char:GetPlayer()
     if ( !IsValid(client) ) then return end
 
@@ -14,7 +14,7 @@ ax.flag:Register("t", "flag.toolgun", function(char, has)
     end
 end)
 
-ax.flag:Register("p", "flag.physgun", function(char, has)
+ax.flag:Register("p", "flag.physgun", function(info, char, has)
     local client = char:GetPlayer()
     if ( !IsValid(client) ) then return end
 
