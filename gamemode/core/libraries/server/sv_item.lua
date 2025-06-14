@@ -334,6 +334,7 @@ function ax.item:Spawn(itemID, uniqueID, position, angles, callback, data)
     entity:SetAngles(angles or angle_zero)
     entity:Spawn()
     entity:Activate()
+
     entity:SetItem(itemID, uniqueID)
     entity:SetData(data or {})
 

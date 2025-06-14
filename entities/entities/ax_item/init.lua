@@ -44,6 +44,7 @@ function ENT:SetItem(itemID, uniqueID)
         -- Register world item instance
         ax.item:Add(0, 0, uniqueID, {}, function(newID)
             self:SetItemID(newID)
+
             local item = ax.item:Get(newID)
             if ( item ) then
                 item:SetEntity(self)
@@ -55,6 +56,7 @@ function ENT:SetItem(itemID, uniqueID)
         end)
     else
         self:SetItemID(itemID)
+
         local item = ax.item:Get(itemID)
         if ( item ) then
             item:SetEntity(self)
@@ -62,14 +64,6 @@ function ENT:SetItem(itemID, uniqueID)
         end
 
         ax.net:Start(nil, "item.entity", self, newID)
-    end
-
-    local item = ax.item:Get(itemID)
-    if ( item ) then
-        item:SetEntity(self)
-        self:SetData(item:GetData() or {})
-    else
-        self:SetData({})
     end
 
     ax.net:Start(nil, "item.entity", self, newID)
