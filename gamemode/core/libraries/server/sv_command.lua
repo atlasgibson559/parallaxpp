@@ -34,7 +34,9 @@ function ax.command:Run(client, command, arguments)
             return false
         end
     else
-        if ( !CAMI.PlayerHasAccess(client, "Parallax - Commands - " .. info.UniqueID) ) then
+        local permission = info.Permission or "Parallax - Commands - " .. info.UniqueID
+        if ( !CAMI.PlayerHasAccess(client, permission) ) then
+            client:Notify("You do not have permission to run this command!")
             return false
         end
     end
