@@ -8,8 +8,10 @@ ax.net:Hook("character.cache.all", function(data)
         return
     end
 
-    print("Received character cache data:")
-    PrintTable(data)
+    if ( ax.config:Get("debug.developer", false) ) then
+        print("Received character cache data:")
+        PrintTable(data)
+    end
 
     local client = ax.client
     local clientTable = client:GetTable()
