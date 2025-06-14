@@ -100,3 +100,18 @@ end
 function ax.command:GetAll()
     return self.stored
 end
+
+if ( CLIENT ) then
+    --- Runs a command through the client.
+    -- @realm client
+    -- @string command The command to run.
+    -- @param ... The arguments of the command.
+    function ax.command:Run(command, ...)
+        local arguments = {...}
+        ax.net:Start("command.run", command, arguments)
+    end
+else
+    ax.net:Hook("command.run", function(client, command, arguments)
+        ax.command:Run(client, command, arguments)
+    end)
+end
