@@ -157,7 +157,7 @@ ax.command:Register("CharGiveFlags", {
         },
         {
             Type = ax.types.string,
-            ErrorMsg = "You must provide either single flag or a set of flags!"
+            Optional = true
         }
     },
     Callback = function(info, client, arguments)
@@ -170,6 +170,18 @@ ax.command:Register("CharGiveFlags", {
         end
 
         local flags = arguments[2]
+        if ( flags == nil or flags == "" ) then
+            local hasFlags = {}
+            for k, v in pairs(ax.flag:GetAll()) do
+                if ( character:HasFlag(k) ) then
+                    hasFlags[k] = true
+                end
+            end
+
+            ax.net:Start(client, "flag.list", target, hasFlags)
+
+            return
+        end
 
         local given = {}
         for i = 1, #flags do

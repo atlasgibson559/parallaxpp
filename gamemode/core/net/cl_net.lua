@@ -327,3 +327,34 @@ ax.net:Hook("notification.send", function(text, type, duration)
 
     notification.AddLegacy(text, type, duration)
 end)
+
+ax.net:Hook("flag.list", function(target, hasFlags)
+    if ( !IsValid(target) or !target:IsPlayer() ) then return end
+
+    local query = {}
+    table.insert(query, "Select which flag you want to give to " .. target:Name() .. ".")
+    table.insert(query, "Flag List")
+
+    local flags = ax.flag:GetAll()
+    local availableFlags = {}
+    for key, data in pairs(flags) do
+        if ( !isstring(key) or #key != 1 ) then continue end
+        if ( hasFlags[key] ) then continue end
+
+        table.insert(query, key)
+        table.insert(query, function()
+            ax.command:Run("CharGiveFlags", target, key)
+        end)
+
+        table.insert(availableFlags, key)
+    end
+
+    if ( #availableFlags == 0 ) then
+        ax.client:Notify("The target player already has all flags, so you cannot give them any more!")
+        return
+    end
+
+    table.insert(query, "Cancel")
+
+    Derma_Query(unpack(query))
+end)
