@@ -87,9 +87,7 @@ hook.Add("Think", "ax.motion.Update", function()
         local a = ax.motion.active[i]
         if ( !IsValid(a.panel) ) then
             table.remove(ax.motion.active, i)
-        elseif ( now < a.start + a.delay)  then
-            -- not yet started
-        else
+        elseif ( now >= a.start + a.delay ) then
             local t = (now - a.start - a.delay) / a.duration
             if ( t < 0 ) then
                 t = 0
