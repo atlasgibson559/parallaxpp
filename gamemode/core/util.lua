@@ -90,6 +90,33 @@ function ax.util:DetectType(value)
     end
 end
 
+local typeNames = {
+    [ax.types.string] = "String",
+    [ax.types.number] = "Number",
+    [ax.types.bool] = "Boolean",
+    [ax.types.vector] = "Vector",
+    [ax.types.angle] = "Angle",
+    [ax.types.color] = "Color",
+    [ax.types.player] = "Player",
+    [ax.types.character] = "Character",
+    [ax.types.steamid] = "SteamID",
+    [ax.types.steamid64] = "SteamID64",
+    [ax.types.array] = "Array"
+}
+
+--- Formats a type ID into a human-readable string.
+-- @param typeID number The type ID to format.
+-- @return string The formatted type name.
+-- @usage local typeName = ax.util:FormatType(ax.types.color) -- returns "Color"
+function ax.util:FormatType(typeID)
+    if ( typeID == nil ) then
+        ax.util:PrintError("Attempted to format a type with no type ID!", typeID)
+        return "Unknown"
+    end
+
+    return typeNames[typeID] or "Unknown"
+end
+
 --- Sends a chat message to the player.
 -- @realm shared
 -- @param client Player The player to send the message to.
