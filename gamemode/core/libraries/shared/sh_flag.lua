@@ -18,3 +18,7 @@ end
 function ax.flag:Get(flag)
     return self.stored[flag]
 end
+
+function ax.flag:GetAll()
+    return self.stored
+end
