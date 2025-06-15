@@ -48,7 +48,8 @@ jobs:
               PATCH=$((VALID_COUNT % 100))
           fi
 
-          VERSION="$MAJOR.$MINOR.$PATCH"
+          PATCH_PADDED=$(printf "%02d" $PATCH)
+          VERSION="$MAJOR.$MINOR.$PATCH_PADDED"
 
           echo "{" > parallax-version.json
           echo "  \"version\": \"$VERSION\"," >> parallax-version.json
