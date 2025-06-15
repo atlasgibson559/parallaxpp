@@ -1,34 +1,34 @@
 # Parallax Framework
 
-**Parallax** is a lightweight, modular roleplay framework built for Garry's Mod. It is designed from the ground up to give serious roleplay communities the tools they need to build stable, flexible, and immersive experiences. Parallax focuses on performance, clean structure, and full control for developers who want to avoid the clutter and legacy issues of older frameworks.
+**Parallax** is a light-weight, modular roleplay framework for Garry's Mod. It's built from the ground up to give roleplay servers the capabilities to create stable, dynamic, and immersive experiences. Parallax prioritizes performance, organization, and total control for developers who wish to avoid both the bloat and legacy issues of other existing frameworks.
 
-Whether you're creating a Half-Life universe roleplay, a military server, a modern city setting, or something completely original, Parallax gives you the foundation to bring your ideas to life.
+No matter if it's a Half-Life universe roleplay, a military server, a city set in the present time, or something else, Parallax offers you the foundation on which to make your vision a reality.
 
 ---
 
 ## Features
 
-Parallax comes with a wide range of features that are useful for developers and server owners:
+Parallax has a wide array of useful features for developers and server owners alike:
 
-* **Modular Architecture**
+- **Modular Architecture**
   Code is separated into small, independent modules that make it easier to maintain, update, and debug. Each system only does one job, making it easier to extend or replace.
 
-* **Custom UI System**
+- **Custom UI System**
   A fully customizable user interface system inspired by Valve's Gamepad UI design, allowing developers to build immersive menus and HUDs that match the tone of their server.
 
-* **Inventory System**
+- **Inventory System**
   Items are stored based on weight rather than slots. This system allows more realism, as players need to consider the size and weight of what they carry rather than just a fixed number of items.
 
-* **Database Support**
+- **Database Support**
   Built-in support for both SQLite and MySQL. This makes it possible to run development tests offline with SQLite and switch to MySQL for live servers.
 
-* **Secure Networking**
+- **Secure Networking**
   Parallax includes a custom networking layer that compresses and encrypts data, reducing lag and preventing client-side exploits or sniffing.
 
-* **Schema System**
+- **Schema System**
   Items, factions, classes, and more can be defined through simple Lua files inside your schema. This makes it easy to separate content from the framework and keep things organized.
 
-* **Enforced Code Standards**
+- **Enforced Code Standards**
   All code is written using K\&R Lua formatting and documented with LDoc, making it easy to read and modify even after a long time.
 
 ---
@@ -60,8 +60,8 @@ This setup keeps the framework and your custom content fully separate, making up
 
 Parallax is split across different repositories to keep things clean and organized:
 
-* [`parallax`](https://github.com/Parallax-Framework/parallax): The core of the framework. All essential features and base systems live here.
-* [`parallax-skeleton`](https://github.com/Parallax-Framework/parallax-skeleton): A blank schema template for developers to use as a starting point.
+- [`parallax`](https://github.com/Parallax-Framework/parallax): The core of the framework. All essential features and base systems live here.
+- [`parallax-skeleton`](https://github.com/Parallax-Framework/parallax-skeleton): A blank schema template for developers to use as a starting point.
 
 > Some repositories may remain private while development continues. Public releases will be announced when ready.
 
@@ -69,19 +69,19 @@ Parallax is split across different repositories to keep things clean and organiz
 
 ## Who Is This For?
 
-Parallax was made for those who want full control of their server code without dealing with bloated frameworks or outdated systems. This includes:
+Parallax is for developers who require absolute control of server code without the clutter of bloated frameworks and legacy systems. They feature:
 
-* Server owners who want to create immersive and serious RP environments.
-* Developers looking for a clean and organized codebase to build on.
-* Communities that care about long-term support, updates, and readable code.
+- Server owners who want to create immersive and serious RP environments.
+- Developers looking for a clean and organized codebase to build on.
+- Communities that care about long-term support, updates, and readable code.
 
-Whether you're a solo developer or part of a larger team, Parallax gives you a modern foundation with room to grow.
+Regardless of whether you're a solo developer or a team of developers, Parallax offers a solid foundation for your next project.
 
 ---
 
 ## Contributing
 
-We welcome contributions from the community. If you want to help improve Parallax, here's how to get started:
+We welcome community contributions. If you want to help improve Parallax, here's how to begin:
 
 1. Fork the repository and make your changes in a separate branch.
 2. Follow the [Parallax style guide](STYLE.md) for formatting and structure.
@@ -89,29 +89,29 @@ We welcome contributions from the community. If you want to help improve Paralla
 4. Add LDoc comments for new functions, modules, or systems.
 5. Open a pull request and describe your changes clearly.
 
-We aim to keep the framework clean and stable, so code quality matters. Take your time and double-check your work before submitting.
+We ensure we keep the structure tidy and solid, so quality of code matters. Be patient and read it twice before pushing.
 
 ---
 
 ## Framework Integrity
 
-If you notice code that looks copied from another framework or too similar to outside projects, please report it. We take originality seriously and want to avoid reusing or borrowing from other work without proper permission.
+In case you identify code which seems to have been copied from another framework or is too similar to other works elsewhere, please inform us. We are committed to originality and would rather not reproduce or borrow other works without proper clearance.
 
-Creating something from scratch means a lot to us, and we want to make sure everything included in Parallax is either original or clearly credited.
+It's crucial for us to create something from scratch, and we'd like everything we employ within Parallax to either be original or properly attributed.
 
 ---
 
 ## License & Credit Requirements
 
-Parallax is released under the [MIT License](LICENSE). This means it is free to use, modify, and distribute — but with conditions.
+Parallax is available under [MIT License](LICENSE). It can be modified, used, and distributed freely — subject to certain conditions.
 
-**You must provide proper credit** when using any part of this framework. This includes:
+**You must give proper credit** if you utilize any part of this framework. This entails:
 
-* Keeping the license header at the top of all original files.
-* Clearly mentioning that your work is based on the Parallax Framework in your own README or documentation.
-* Not claiming the framework or its features as your own.
+- Keeping the license header at the beginning of each original file.
+- Including an explicit declaration within your own README or documentation telling users your project is based on the Parallax Framework.
+- Avoid presenting another person's framework and how it works as your own.
 
-Ignoring these rules is a violation of the license and may result in further action.
+Overlooking such rules is a violation of license and may result in action against it.
 
 ---
 
@@ -119,5 +119,5 @@ Ignoring these rules is a violation of the license and may result in further act
 
 For questions, help, or to stay updated on development:
 
-* Open an issue or pull request on the GitHub repository
-* Join the [community Discord server](https://discord.gg/yekEvSszW3)
+- Open an issue or pull request on the GitHub repository
+- Join the [community Discord server](https://discord.gg/yekEvSszW3)
