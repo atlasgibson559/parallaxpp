@@ -12,10 +12,9 @@
 --- Class library
 -- @module ax.class
 
-ax.class = {}
+ax.class = ax.class or {}
 ax.class.stored = {}
 ax.class.instances = {}
-
 ax.class.meta = ax.class.meta or {}
 
 function ax.class:Register(classData)
@@ -32,12 +31,14 @@ function ax.class:Register(classData)
     end
 
     local bResult = hook.Run("PreClassRegistered", CLASS)
-    if ( bResult == false ) then return false end
+    if ( bResult == false ) then
+        ax.util:PrintError("Attempted to register a class that was blocked by a hook!")
+        return false, "Attempted to register a class that was blocked by a hook!"
+    end
 
     local uniqueID = string.lower(string.gsub(CLASS.Name, "%s+", "_")) .. "_" .. CLASS.Faction
     for k, v in ipairs(self.instances) do
         if ( v.UniqueID == uniqueID ) then
-            ax.util:PrintError("Attempted to register a class that already exists!")
             return false, "Attempted to register a class that already exists!"
         end
     end
