@@ -125,11 +125,33 @@ function PANEL:SetInventory(id)
         return false
     end)
 
-    for _, itemData in pairs(sortedItems) do
-        local itemPanel = self.container:Add("ax.item")
-        itemPanel:SetItem(itemData)
-        itemPanel:Dock(TOP)
-        itemPanel:DockMargin(0, 0, ScreenScale(8), 0)
+    local groups = {}
+    for _, itemID in ipairs(sortedItems) do
+        local item = ax.item:Get(itemID)
+        if ( item ) then
+            local uid = item:GetUniqueID()
+            local def = ax.item.stored[uid] or {}
+            local stackable = ( !def.noStack )
+            local dataKey = stackable and util.TableToJSON(item:GetData() or {}) or tostring(itemID)
+            local key = util.CRC(uid .. dataKey)
+
+            if ( !groups[key] ) then
+                groups[key] = {
+                    firstID = itemID,
+                    count = 0
+                }
+            end
+
+            groups[key].count = groups[key].count + 1
+        end
+    end
+
+    for _, group in pairs(groups) do
+        local pnl = self.container:Add("ax.item")
+        pnl:Dock(TOP)
+        pnl:DockMargin(0, 0, ScreenScale(8), 0)
+        pnl:SetItem(group.firstID)
+        pnl:SetCount(group.count)
     end
 
     if ( ax.gui.inventoryItemIDLast and self:IsValidItemID(ax.gui.inventoryItemIDLast) ) then
@@ -257,12 +279,22 @@ function PANEL:Init()
     self.weight:SetMouseInputEnabled(false)
 end
 
+function PANEL:SetCount(count)
+    if ( count and count > 1 ) then
+        self.name:SetText(self.item:GetName() .. " (" .. count .. "x)", true)
+    else
+        self.name:SetText(self.item:GetName(), true)
+    end
+end
+
 function PANEL:SetItem(id)
     if ( !id ) then return end
     self:SetID(id)
 
     local item = ax.item:Get(id)
     if ( !item ) then return end
+
+    self.item = item
 
     self.icon:SetModel(item:GetModel())
     self.icon:SetSkin(item:GetSkin())
