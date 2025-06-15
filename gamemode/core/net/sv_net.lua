@@ -239,3 +239,7 @@ ax.net:Hook("client.chatbox.type.changed", function(client, newType, oldType)
 
     hook.Run("PlayerChatTypeChanged", client, newType, oldType)
 end, true)
+
+ax.net:Hook("command.run", function(client, command, arguments)
+    ax.command:Run(client, command, arguments)
+end)
