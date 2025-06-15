@@ -1029,14 +1029,6 @@ if ( CLIENT ) then
     end
 end
 
-function ax.util:CalculateVersion(commitCount)
-    local major = math.floor(commitCount / 1000)
-    local minor = math.floor((commitCount % 1000) / 100)
-    local patch = commitCount % 100
-
-    return string.format("%d.%d.%d", major, minor, patch)
-end
-
 function ax.util:VerifyVersion()
     local version = file.Read("parallax/parallax-version.json", "LUA")
     if ( !version or version == "" ) then
@@ -1059,8 +1051,8 @@ function ax.util:VerifyVersion()
 
                 -- Compare with local (assume your local commit count and hash are loaded from a file)
                 local localCommit = version.commitCount or 0
-                local localVersion = self:CalculateVersion(localCommit)
-                local remoteVersion = self:CalculateVersion(commitCount)
+                local localVersion = version.version or "unknown"
+                local remoteVersion = data.version or "unknown"
 
                 if ( commitCount > localCommit ) then
                     self:PrintWarning("Parallax is out of date! Local version: " .. localVersion .. ", Remote version: " .. remoteVersion)
