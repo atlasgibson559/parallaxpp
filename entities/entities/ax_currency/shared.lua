@@ -1,13 +1,20 @@
-ENT.Base            = "base_gmodentity"
-ENT.Type            = "anim"
-ENT.PrintName        = "Currency"
-ENT.Author            = "Parallax Developers"
-ENT.Purpose            = "Moneyyyyy."
-ENT.Instructions    = "Use to get money."
-ENT.Category         = "Parallax"
+--[[
+    Parallax Framework
+    Copyright (c) 2025 Parallax Framework Contributors
 
-ENT.Spawnable = true
-ENT.AdminOnly = true
+    This file is part of the Parallax Framework and is licensed under the MIT License.
+    You may use, copy, modify, merge, publish, distribute, and sublicense this file
+    under the terms of the LICENSE file included with this project.
+
+    Attribution is required. If you use or modify this file, you must retain this notice.
+]]
+
+ENT.Type = "anim"
+ENT.PrintName = "Currency"
+ENT.Category = "Parallax"
+ENT.Author = "Riggs"
+ENT.Spawnable = false
+ENT.AdminOnly = false
 
 function ENT:SetupDataTables()
     self:NetworkVar("Float", 0, "Amount")

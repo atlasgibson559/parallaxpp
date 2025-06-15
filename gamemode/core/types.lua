@@ -1,3 +1,14 @@
+--[[
+    Parallax Framework
+    Copyright (c) 2025 Parallax Framework Contributors
+
+    This file is part of the Parallax Framework and is licensed under the MIT License.
+    You may use, copy, modify, merge, publish, distribute, and sublicense this file
+    under the terms of the LICENSE file included with this project.
+
+    Attribution is required. If you use or modify this file, you must retain this notice.
+]]
+
 --- A list of framework value types used for validation, conversion, and type safety.
 -- Types are represented by constant flags for efficient comparison and expansion.
 -- You should **only use the named keys**, never rely on the numeric values directly.
