@@ -1074,6 +1074,13 @@ function ax.util:VerifyVersion()
                 end
 
                 GAMEMODE.Version = localVersion
+
+                ax.relay:SetRelay("version", {
+                    localVersion = localVersion,
+                    remoteVersion = remoteVersion,
+                    commitCount = localCommit,
+                    remoteCommitCount = commitCount
+                })
             end
         end)
     end)
