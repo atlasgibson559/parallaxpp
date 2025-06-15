@@ -84,7 +84,7 @@ Whether you're a solo developer or part of a larger team, Parallax gives you a m
 We welcome contributions from the community. If you want to help improve Parallax, here's how to get started:
 
 1. Fork the repository and make your changes in a separate branch.
-2. Follow the [Parallax style guide](https://github.com/Parallax-Framework/.github/blob/main/STYLE.md) for formatting and structure.
+2. Follow the [Parallax style guide](STYLE.md) for formatting and structure.
 3. Test your changes in both singleplayer and multiplayer where possible.
 4. Add LDoc comments for new functions, modules, or systems.
 5. Open a pull request and describe your changes clearly.
