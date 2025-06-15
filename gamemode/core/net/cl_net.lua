@@ -359,6 +359,10 @@ ax.net:Hook("flag.list", function(target, hasFlags)
     Derma_Query(unpack(query))
 end)
 
+ax.net:Hook("command.run", function(client, command, arguments)
+    ax.command:Run(client, command, arguments)
+end)
+
 -- TODO: This is a temporary solution, should be replaced with a more robust caption library.
 local function GetCaptionDuration(...)
     local duration = 0

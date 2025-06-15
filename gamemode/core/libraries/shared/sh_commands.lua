@@ -110,8 +110,4 @@ if ( CLIENT ) then
         local arguments = {...}
         ax.net:Start("command.run", command, arguments)
     end
-else
-    ax.net:Hook("command.run", function(client, command, arguments)
-        ax.command:Run(client, command, arguments)
-    end)
 end
