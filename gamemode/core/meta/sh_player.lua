@@ -58,6 +58,14 @@ end
 
 PLAYER.ChatPrint = PLAYER.ChatText
 
+function PLAYER:Caption(arguments)
+    if ( SERVER ) then
+        ax.net:Start(self, "caption", arguments)
+    else
+        gui.AddCaption(arguments)
+    end
+end
+
 --- Plays a gesture animation on the player.
 -- @realm shared
 -- @string name The name of the gesture to play

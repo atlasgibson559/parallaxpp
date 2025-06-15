@@ -358,3 +358,109 @@ ax.net:Hook("flag.list", function(target, hasFlags)
 
     Derma_Query(unpack(query))
 end)
+
+-- TODO: This is a temporary solution, should be replaced with a more robust caption library.
+local function GetCaptionDuration(...)
+    local duration = 0
+    for _, v in ipairs({...}) do
+        if ( isstring(v) ) then
+            for _ in string.gmatch(v, "%S+") do
+                duration = duration + 0.5
+            end
+        end
+    end
+
+    return duration
+end
+
+local function ConvertCaptionToChatArguments(caption)
+    local segments = {}
+    local pos = 1
+
+    while true do
+        local len_s, raw, delay_s, next_pos = caption:match(
+            "<len:([%d%.]+)>(.-)<delay:([%d%.]+)>()",
+            pos
+        )
+        if ( !len_s ) then break end
+
+        local r, g, b = raw:match("<clr:(%d+),(%d+),(%d+)>")
+        local R = r and tonumber(r) or 255
+        local G = g and tonumber(g) or 255
+        local B = b and tonumber(b) or 255
+
+        local text = raw
+            :gsub("<clr:%d+,%d+,%d+>", "")
+            :gsub("<I>", "")
+            :gsub("<cr>", "\n")
+            :match("^%s*(.-)%s*$")
+
+        table.insert(segments, {
+            len   = tonumber(len_s),
+            color = Color(R, G, B),
+            text  = text,
+            delay = tonumber(delay_s),
+        })
+
+        pos = next_pos
+    end
+
+    local rem = caption:sub(pos)
+    local len_s, raw = rem:match("<len:([%d%.]+)>(.*)")
+    if ( len_s and raw:match("%S") ) then
+        local r, g, b = raw:match("<clr:(%d+),(%d+),(%d+)>")
+        local R = r and tonumber(r) or 255
+        local G = g and tonumber(g) or 255
+        local B = b and tonumber(b) or 255
+
+        local text = raw
+            :gsub("<clr:%d+,%d+,%d+>", "")
+            :gsub("<I>", "")
+            :gsub("<cr>", "\n")
+            :match("^%s*(.-)%s*$")
+
+        table.insert(segments, {
+            len   = tonumber(len_s),
+            color = Color(R, G, B),
+            text  = text,
+            delay = nil,
+        })
+    end
+
+    return segments
+end
+
+local function PrintQueue(data, idx)
+    local segments, i
+
+    if ( type(data) == "string" ) then
+        segments = ConvertCaptionToChatArguments(data)
+        i = 1
+    else
+        segments = data
+        i = idx
+    end
+
+    local seg = segments[i]
+    if ( !seg ) then return end
+
+    chat.AddText(seg.color, seg.text)
+
+    if ( seg.delay ) then
+        timer.Simple(seg.delay, function()
+            PrintQueue(segments, i + 1)
+        end)
+    end
+end
+
+-- hook becomes trivial:
+ax.net:Hook("caption", function(arguments)
+    if ( !isstring(arguments) or arguments == "" ) then
+        ax.util:PrintError("Invalid arguments for caption!")
+        return
+    end
+
+    PrintQueue(arguments)
+
+    gui.AddCaption(arguments, CAPTION_DURATION or GetCaptionDuration(arguments))
+end)
