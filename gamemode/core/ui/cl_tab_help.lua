@@ -1,5 +1,3 @@
-local padding = ScreenScale(32)
-
 DEFINE_BASECLASS("EditablePanel")
 
 local PANEL = {}
@@ -15,8 +13,8 @@ function PANEL:Init()
 
     self.buttons = self:Add("ax.scroller.horizontal")
     self.buttons:Dock(TOP)
-    self.buttons:DockMargin(0, padding / 8, 0, 0)
-    self.buttons:SetTall(ScreenScale(24))
+    self.buttons:DockMargin(0, ScreenScaleH(4), 0, 0)
+    self.buttons:SetTall(ScreenScaleH(24))
     self.buttons.Paint = nil
 
     self.buttons.btnLeft:SetAlpha(0)

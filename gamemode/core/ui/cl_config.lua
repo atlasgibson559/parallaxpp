@@ -8,7 +8,7 @@ function PANEL:Init()
     self.buttons = self:Add("ax.scroller.horizontal")
     self.buttons:Dock(TOP)
     self.buttons:DockMargin(0, ScreenScaleH(4), 0, 0)
-    self.buttons:SetTall(ScreenScale(24))
+    self.buttons:SetTall(ScreenScaleH(24))
     self.buttons.Paint = nil
 
     self.buttons.btnLeft:SetAlpha(0)
