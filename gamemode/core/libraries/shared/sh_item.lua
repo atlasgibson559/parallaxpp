@@ -52,9 +52,11 @@ function ax.item:Load(path)
         ITEM.Weight = ITEM.Weight or 0
         ITEM.Category = ITEM.Category or "Miscellaneous"
 
-        ITEM.Actions = ITEM.Actions or {}
-        ITEM.Actions.Drop = ITEM.Actions.Drop or {
+        ITEM:AddAction({
             Name = "Drop",
+            OnCanRun = function(this, item, client)
+                return !IsValid(item:GetEntity())
+            end,
             OnRun = function(this, item, client)
                 if ( !IsValid(client) ) then return end
 
@@ -71,14 +73,14 @@ function ax.item:Load(path)
                         end, item:GetData())
                     end
                 end)
-            end,
-            OnCanRun = function(this, item, client)
-                return !IsValid(item:GetEntity())
             end
-        }
+        })
 
-        ITEM.Actions.Take = ITEM.Actions.Take or {
+        ITEM:AddAction({
             Name = "Take",
+            OnCanRun = function(this, item, client)
+                return IsValid(item:GetEntity())
+            end,
             OnRun = function(this, item, client)
                 if ( !IsValid(client) ) then return end
 
@@ -110,11 +112,8 @@ function ax.item:Load(path)
                         client:Notify("Failed to transfer item to inventory.")
                     end
                 end)
-            end,
-            OnCanRun = function(this, item, client)
-                return IsValid(item:GetEntity())
             end
-        }
+        })
 
         -- Inherit the info from the base and add it to the item table.
         if ( ITEM.Base ) then

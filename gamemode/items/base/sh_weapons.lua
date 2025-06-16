@@ -18,9 +18,12 @@ ITEM.Weight = 5
 
 ITEM.WeaponClass = "weapon_base"
 
-ITEM.Actions.Equip = {
+ITEM:AddAction({
     Name = "Equip",
-    Description = "Equip the pistol.",
+    OnCanRun = function(this, item, client)
+        local axWeapons = client:GetRelay("weapons", {})
+        return !axWeapons[item.WeaponClass] and !client:HasWeapon(item.WeaponClass)
+    end,
     OnRun = function(this, item, client)
         local weapon = client:Give(item.WeaponClass)
         if ( !IsValid(weapon) ) then return end
@@ -32,16 +35,16 @@ ITEM.Actions.Equip = {
         client:SelectWeapon(item.WeaponClass)
 
         item:SetData("equipped", true)
-    end,
+    end
+})
+
+ITEM:AddAction({
+    Name = "Unequip",
     OnCanRun = function(this, item, client)
         local axWeapons = client:GetRelay("weapons", {})
-        return !axWeapons[item.WeaponClass] and !client:HasWeapon(item.WeaponClass)
-    end
-}
-
-ITEM.Actions.EquipUn = {
-    Name = "Unequip",
-    Description = "Unequip the pistol.",
+        local axWeaponID = axWeapons[item.WeaponClass]
+        return tobool(axWeaponID and client:HasWeapon(item.WeaponClass) and axWeaponID == item:GetID())
+    end,
     OnRun = function(this, item, client)
         client:StripWeapon(item.WeaponClass)
         client:SelectWeapon("ax_hands")
@@ -51,13 +54,8 @@ ITEM.Actions.EquipUn = {
         client:SetRelay("weapons", axWeapons)
 
         item:SetData("equipped", false)
-    end,
-    OnCanRun = function(this, item, client)
-        local axWeapons = client:GetRelay("weapons", {})
-        local axWeaponID = axWeapons[item.WeaponClass]
-        return tobool(axWeaponID and client:HasWeapon(item.WeaponClass) and axWeaponID == item:GetID())
     end
-}
+})
 
 ITEM:Hook("Drop", function(item, client)
     local axWeapons = client:GetRelay("weapons", {})

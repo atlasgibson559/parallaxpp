@@ -10,9 +10,23 @@
 ]]
 
 local ITEM = ax.item.meta or {}
-ITEM.Name = "Undefined"
+ITEM.Actions = ITEM.Actions or {}
+ITEM.Base = ITEM.Base or "base"
+ITEM.Category = ITEM.Category or "Miscellaneous"
+ITEM.CharacterID = ITEM.CharacterID or 0
+ITEM.Data = ITEM.Data or {}
 ITEM.Description = ITEM.Description or "An item that is undefined."
+ITEM.Entity = ITEM.Entity or nil
+ITEM.Hooks = ITEM.Hooks or {}
 ITEM.ID = ITEM.ID or 0
+ITEM.InventoryID = ITEM.InventoryID or 0
+ITEM.IsBase = ITEM.IsBase or false
+ITEM.Material = ITEM.Material or ""
+ITEM.Model = ITEM.Model or "models/props_c17/oildrum001.mdl"
+ITEM.Name = "Undefined"
+ITEM.Skin = ITEM.Skin or 0
+ITEM.UniqueID = ITEM.UniqueID or "undefined"
+ITEM.Weight = ITEM.Weight or 0
 
 ITEM.__index = ITEM
 
@@ -183,6 +197,20 @@ function ITEM:Remove()
     end
 
     ax.item:Remove(self:GetID(), callback)
+end
+
+--- Registers a new action for this item.
+-- @tparam table def
+--  Name string the name of the action
+--  Description string optional description
+--  OnRun function(self, item, client)   run callback
+--  OnCanRun function(self, item, client)?: optional can-run callback
+-- @realm shared
+function ITEM:AddAction(def)
+    self.Actions = self.Actions or {}
+    assert(def.Name and type(def.OnRun) == "function", "ITEM:AddAction requires def.Name (string) and def.OnRun (function)")
+    local id = def.ID or def.id or def.Name:gsub("%s+", "")
+    self.Actions[id] = def
 end
 
 ax.item.meta = ITEM
