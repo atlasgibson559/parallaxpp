@@ -9,18 +9,14 @@
     Attribution is required. If you use or modify this file, you must retain this notice.
 ]]
 
---[[--
-Physical representation of connected player.
-
-`Player`s are a type of `Entity`. They are a physical representation of a `Character` - and can possess at most one `Character`
-object at a time that you can interface with.
-
-See the [Garry's Mod Wiki](https://wiki.garrysmod.com/page/Category:Player) for all other methods that the `Player` class has.
-]]
--- @classmod Player
-
 local PLAYER = FindMetaTable("Player")
 
+PLAYER.StripWeaponInternal = PLAYER.StripWeaponInternal or PLAYER.StripWeapon
+
+--- Sets a database variable for the player.
+-- @realm server
+-- @tparam string key The key of the variable to set.
+-- @param value The value to set for the key.
 function PLAYER:SetDBVar(key, value)
     local clientTable = self:GetTable()
     if ( !clientTable.axDatabase ) then
@@ -30,6 +26,11 @@ function PLAYER:SetDBVar(key, value)
     clientTable.axDatabase[key] = value
 end
 
+--- Gets a database variable for the player.
+-- @realm server
+-- @tparam string key The key of the variable to retrieve.
+-- @param default The default value to return if the key does not exist.
+-- @return The value associated with the key, or the default value.
 function PLAYER:GetDBVar(key, default)
     local clientTable = self:GetTable()
     if ( clientTable.axDatabase ) then
@@ -39,6 +40,9 @@ function PLAYER:GetDBVar(key, default)
     return default
 end
 
+--- Saves the player's database to persistent storage.
+-- @realm server
+-- @tparam[opt] function callback A callback function to execute after saving.
 function PLAYER:SaveDB(callback)
     local clientTable = self:GetTable()
 
@@ -59,6 +63,11 @@ function PLAYER:SaveDB(callback)
     end
 end
 
+--- Gets a specific data value associated with the player.
+-- @realm server
+-- @tparam string key The key of the data to retrieve.
+-- @param default The default value to return if the key does not exist.
+-- @return The value associated with the key, or the default value.
 function PLAYER:GetData(key, default)
     local clientTable = self:GetTable()
     if ( !clientTable.axDatabase ) then
@@ -76,6 +85,10 @@ function PLAYER:GetData(key, default)
     return data[key] or default
 end
 
+--- Sets a specific data value for the player.
+-- @realm server
+-- @tparam string key The key of the data to set.
+-- @param value The value to set for the key.
 function PLAYER:SetData(key, value)
     local clientTable = self:GetTable()
     local data = clientTable.axDatabase.data or {}
@@ -90,6 +103,10 @@ function PLAYER:SetData(key, value)
     clientTable.axDatabase.data = util.TableToJSON(data)
 end
 
+--- Sets the whitelist status for a specific faction.
+-- @realm server
+-- @tparam string factionID The ID of the faction.
+-- @tparam[opt=true] boolean bWhitelisted Whether the player is whitelisted for the faction.
 function PLAYER:SetWhitelisted(factionID, bWhitelisted)
     local key = "whitelists_" .. SCHEMA.Folder
     local whitelists = self:GetData(key, {}) or {}
@@ -102,6 +119,9 @@ function PLAYER:SetWhitelisted(factionID, bWhitelisted)
     self:SaveDB()
 end
 
+--- Creates a server-side ragdoll for the player.
+-- @realm server
+-- @treturn Entity|nil The created ragdoll entity, or nil if creation failed.
 function PLAYER:CreateServerRagdoll()
     if ( !self:GetCharacter() ) then return end
 
@@ -145,6 +165,10 @@ function PLAYER:CreateServerRagdoll()
     return ragdoll
 end
 
+--- Sets the player's ragdoll state.
+-- @realm server
+-- @tparam[opt=false] boolean bState Whether the player should be ragdolled.
+-- @tparam[opt] number duration The duration of the ragdoll state in seconds.
 function PLAYER:SetRagdolled(bState, duration)
     if ( bState == nil ) then bState = false end
 
@@ -228,6 +252,9 @@ function PLAYER:SetRagdolled(bState, duration)
     end)
 end
 
+--- Sets whether the player's weapon is raised.
+-- @realm server
+-- @tparam[opt=true] boolean bRaised Whether the weapon should be raised.
 function PLAYER:SetWeaponRaised(bRaised)
     if ( bRaised == nil ) then bRaised = true end
 
@@ -241,12 +268,17 @@ function PLAYER:SetWeaponRaised(bRaised)
     hook.Run("PlayerWeaponRaised", self, bRaised)
 end
 
+--- Toggles the player's weapon raise state.
+-- @realm server
 function PLAYER:ToggleWeaponRaise()
     local bRaised = self:GetRelay("bWeaponRaised", false)
     self:SetWeaponRaised(!bRaised)
 end
 
-PLAYER.StripWeaponInternal = PLAYER.StripWeaponInternal or PLAYER.StripWeapon
+--- Strips a specific weapon from the player.
+-- @realm server
+-- @tparam string weaponClass The class of the weapon to strip.
+-- @return The result of the internal weapon strip function.
 function PLAYER:StripWeapon(weaponClass)
     local axWeapons = self:GetRelay("weapons", {})
     if ( axWeapons[weaponClass] ) then

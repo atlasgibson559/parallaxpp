@@ -9,51 +9,42 @@
     Attribution is required. If you use or modify this file, you must retain this notice.
 ]]
 
---[[--
-Physical object in the game world.
-
-Entities are physical representations of objects in the game world. Parallax extends the functionality of entities to interface
-between Parallax's own classes, and to reduce boilerplate code.
-
-See the [Garry's Mod Wiki](https://wiki.garrysmod.com/page/Category:Entity) for all other methods that the `Player` class has.
-]]
--- @classmod Entity
-
 local ENTITY = FindMetaTable("Entity")
 
 local CHAIR_CACHE = {}
 for _, v in ipairs(list.Get("Vehicles")) do
-    if (v.Category == "Chairs") then
+    if ( v.Category == "Chairs" ) then
         CHAIR_CACHE[v.Model] = true
     end
 end
 
 --- Returns `true` if this entity is a chair.
 -- @realm shared
--- @treturn bool Whether or not this entity is a chair
+-- @treturn bool Whether or not this entity is a chair.
 function ENTITY:IsChair()
     return CHAIR_CACHE[self:GetModel()]
 end
 
 --- Returns `true` if this entity is a door. Internally, this checks to see if the entity's class has `door` in its name.
 -- @realm shared
--- @treturn bool Whether or not the entity is a door
+-- @treturn bool Whether or not the entity is a door.
 function ENTITY:IsDoor()
     local class = self:GetClass()
-
     return (class and string.match(class, "door") != nil)
 end
 
--- Inherits the bodygroups of the given entity.
+--- Inherits the bodygroups of the given entity.
 -- @realm shared
+-- @tparam Entity entity The entity to inherit bodygroups from.
 function ENTITY:InheritBodygroups(entity)
     for i = 0, (entity:GetNumBodyGroups() - 1) do
         self:SetBodygroup(i, entity:GetBodygroup(i))
     end
 end
 
--- Inherits the materials of the given entity.
+--- Inherits the materials of the given entity.
 -- @realm shared
+-- @tparam Entity entity The entity to inherit materials from.
 function ENTITY:InheritMaterials(entity)
     self:SetMaterial(entity:GetMaterial())
 
@@ -62,7 +53,7 @@ function ENTITY:InheritMaterials(entity)
     end
 end
 
---- Resets all bodygroups this player's model has to their defaults (`0`).
+--- Resets all bodygroups this entity's model has to their defaults (`0`).
 -- @realm shared
 function ENTITY:ResetBodygroups()
     for i = 0, (self:GetNumBodyGroups() - 1) do
@@ -70,7 +61,7 @@ function ENTITY:ResetBodygroups()
     end
 end
 
---- Resets all bone manipulations this player's model has to their defaults.
+--- Resets all bone manipulations this entity's model has to their defaults.
 -- @realm shared
 function ENTITY:ResetBoneMatrix()
     for i = 0, self:GetBoneCount() - 1 do
@@ -80,11 +71,10 @@ function ENTITY:ResetBoneMatrix()
     end
 end
 
---- Sets the bodygroup of this player's model by its name.
+--- Sets the bodygroup of this entity's model by its name.
 -- @realm shared
--- @string name Name of the bodygroup
--- @number value Value to set the bodygroup to
--- @usage client:SetBodygroupName("head", 1)
+-- @string name Name of the bodygroup.
+-- @number value Value to set the bodygroup to.
 function ENTITY:SetBodygroupName(name, value)
     local index = self:FindBodygroupByName(name)
     if ( index > -1 ) then
@@ -92,11 +82,10 @@ function ENTITY:SetBodygroupName(name, value)
     end
 end
 
---- Returns the bodygroup value of this player's model by its name.
+--- Returns the bodygroup value of this entity's model by its name.
 -- @realm shared
--- @string name Name of the bodygroup
--- @treturn number Value of the bodygroup
--- @usage local headGroup = client:GetBodygroupByName("head")
+-- @string name Name of the bodygroup.
+-- @treturn number Value of the bodygroup.
 function ENTITY:GetBodygroupByName(name)
     local index = self:FindBodygroupByName(name)
     if ( index > -1 ) then
@@ -108,8 +97,7 @@ end
 
 --- Returns `true` if the given entity is a button or door and is locked.
 -- @realm shared
--- @treturn bool Whether or not this entity is locked; `false` if this entity cannot be locked at all
--- (e.g not a button or door)
+-- @treturn bool Whether or not this entity is locked; `false` if this entity cannot be locked at all.
 function ENTITY:IsLocked()
     if ( SERVER ) then
         if ( self:IsVehicle() ) then
@@ -124,11 +112,16 @@ function ENTITY:IsLocked()
     return false
 end
 
+--- Gets whether the entity has a spawn effect.
+-- @realm shared
+-- @treturn bool Whether the entity has a spawn effect.
 function ENTITY:GetSpawnEffect()
     return self:GetTable()["ax.m_bSpawnEffect"] or false
 end
 
-ENTITY.SetModelInternal = ENTITY.SetModelInternal or ENTITY.SetModel
+--- Sets the model of the entity, with hooks for pre- and post-model setting.
+-- @realm shared
+-- @string model The model to set for the entity.
 function ENTITY:SetModel(model)
     local canSet = hook.Run("PreEntitySetModel", self, model)
     if ( canSet == false ) then return end
@@ -138,6 +131,10 @@ function ENTITY:SetModel(model)
     hook.Run("PostEntitySetModel", self, model)
 end
 
+--- Sets a cooldown for a specific action on the entity.
+-- @realm shared
+-- @string action The action to set the cooldown for.
+-- @number cooldown The cooldown duration in seconds.
 function ENTITY:SetCooldown(action, cooldown)
     if ( !isstring(action) or !isnumber(cooldown) ) then return end
 
@@ -145,6 +142,10 @@ function ENTITY:SetCooldown(action, cooldown)
     selfTable["ax.cooldown." .. action] = CurTime() + cooldown
 end
 
+--- Checks if a specific action is on cooldown for the entity.
+-- @realm shared
+-- @string action The action to check.
+-- @treturn bool Whether the action is on cooldown.
 function ENTITY:OnCooldown(action)
     if ( !isstring(action) ) then return false end
 

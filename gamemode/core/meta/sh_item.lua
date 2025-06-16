@@ -30,10 +30,15 @@ ITEM.Weight = ITEM.Weight or 0
 
 ITEM.__index = ITEM
 
+--- Converts the item to a string representation.
+-- @treturn string The string representation of the item.
 function ITEM:__tostring()
     return "item[" .. self:GetUniqueID() .. "][" .. self:GetID() .. "]"
 end
 
+--- Compares the item with another value.
+-- @param other The value to compare with (string or number).
+-- @treturn boolean Whether the item matches the given value.
 function ITEM:__eq(other)
     if ( isstring(other) ) then
         return self.Name == other
@@ -44,50 +49,74 @@ function ITEM:__eq(other)
     return false
 end
 
+--- Gets the item's ID.
+-- @treturn number The item's ID.
 function ITEM:GetID()
     return tonumber(self.ID) or 0
 end
 
+--- Gets the item's unique ID.
+-- @treturn string The item's unique ID.
 function ITEM:GetUniqueID()
     return self.UniqueID or "undefined"
 end
 
+--- Gets the item's name.
+-- @treturn string The item's name.
 function ITEM:GetName()
     return self.Name or "Undefined"
 end
 
+--- Gets the item's description.
+-- @treturn string The item's description.
 function ITEM:GetDescription()
     return self.Description or "An item that is undefined."
 end
 
+--- Gets the item's weight.
+-- @treturn number The item's weight.
 function ITEM:GetWeight()
     return tonumber(self.Weight) or 0
 end
 
+--- Gets the item's category.
+-- @treturn string The item's category.
 function ITEM:GetCategory()
     return self.Category or "Miscellaneous"
 end
 
+--- Gets the item's model.
+-- @treturn string The item's model path.
 function ITEM:GetModel()
     return self.Model or "models/props_c17/oildrum001.mdl"
 end
 
+--- Gets the item's material.
+-- @treturn string The item's material.
 function ITEM:GetMaterial()
     return self.Material or ""
 end
 
+--- Gets the item's skin.
+-- @treturn number The item's skin index.
 function ITEM:GetSkin()
     return tonumber(self.Skin) or 0
 end
 
+--- Gets the item's inventory ID.
+-- @treturn number The inventory ID.
 function ITEM:GetInventory()
     return tonumber(self.InventoryID) or 0
 end
 
+--- Gets the item's owner (character ID).
+-- @treturn number The character ID of the owner.
 function ITEM:GetOwner()
     return tonumber(self.CharacterID) or 0
 end
 
+--- Sets the item's owner (character ID).
+-- @tparam number characterID The character ID to set as the owner.
 function ITEM:SetOwner(characterID)
     characterID = tonumber(characterID) or 0
 
@@ -96,6 +125,10 @@ function ITEM:SetOwner(characterID)
     self.CharacterID = characterID
 end
 
+--- Gets a specific data value from the item.
+-- @tparam string key The key of the data to retrieve.
+-- @param default The default value to return if the key does not exist.
+-- @return The value associated with the key, or the default value.
 function ITEM:GetData(key, default)
     if ( !key ) then return end
 
@@ -106,6 +139,9 @@ function ITEM:GetData(key, default)
     return default or nil
 end
 
+--- Sets a specific data value for the item.
+-- @tparam string key The key of the data to set.
+-- @param value The value to set for the key.
 function ITEM:SetData(key, value)
     if ( !key ) then return end
 
@@ -125,6 +161,9 @@ function ITEM:SetData(key, value)
 end
 
 if ( SERVER ) then
+    --- Sends data to the client.
+    -- @tparam string key The key of the data to send.
+    -- @param value The value of the data to send.
     function ITEM:SendData(key, value)
         local client = ax.character:GetPlayerByCharacter(self:GetOwner())
         if ( !IsValid(client) ) then return end
@@ -133,22 +172,31 @@ if ( SERVER ) then
     end
 end
 
+--- Sets the item's inventory ID.
+-- @tparam number id The inventory ID to set.
 function ITEM:SetInventory(id)
     if ( !id ) then return end
 
     self.InventoryID = id
 end
 
+--- Gets the item's associated entity.
+-- @treturn Entity The entity associated with the item.
 function ITEM:GetEntity()
     return self.Entity or nil
 end
 
+--- Sets the item's associated entity.
+-- @tparam Entity entity The entity to associate with the item.
 function ITEM:SetEntity(entity)
     if ( !entity ) then return end
 
     self.Entity = entity
 end
 
+--- Spawns the item in the world.
+-- @tparam Vector position The position to spawn the item at.
+-- @tparam Angle angles The angles to spawn the item with.
 function ITEM:Spawn(position, angles)
     local client = ax.character:GetPlayerByCharacter(self:GetOwner())
     if ( !IsValid(client) ) then return end
@@ -173,6 +221,9 @@ function ITEM:Spawn(position, angles)
     end)
 end
 
+--- Adds a hook to the item.
+-- @tparam string name The name of the hook.
+-- @tparam function func The function to run when the hook is triggered.
 function ITEM:Hook(name, func)
     if ( !name or !func ) then return end
 
@@ -187,6 +238,7 @@ function ITEM:Hook(name, func)
     table.insert(self.Hooks[name], func)
 end
 
+--- Removes the item.
 function ITEM:Remove()
     if ( self.Entity and IsValid(self.Entity) ) then
         self.Entity:Remove()
@@ -200,12 +252,11 @@ function ITEM:Remove()
 end
 
 --- Registers a new action for this item.
--- @tparam table def
---  Name string the name of the action
---  Description string optional description
---  OnRun function(self, item, client)   run callback
---  OnCanRun function(self, item, client)?: optional can-run callback
--- @realm shared
+-- @tparam table def The action definition.
+--  - Name (string): The name of the action.
+--  - Description (string): Optional description of the action.
+--  - OnRun (function): The function to run when the action is executed.
+--  - OnCanRun (function): Optional function to check if the action can run.
 function ITEM:AddAction(def)
     self.Actions = self.Actions or {}
     assert(def.Name and type(def.OnRun) == "function", "ITEM:AddAction requires def.Name (string) and def.OnRun (function)")

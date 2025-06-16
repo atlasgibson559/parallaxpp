@@ -9,18 +9,13 @@
     Attribution is required. If you use or modify this file, you must retain this notice.
 ]]
 
---[[--
-Physical representation of connected player.
-
-`Player`s are a type of `Entity`. They are a physical representation of a `Character` - and can possess at most one `Character`
-object at a time that you can interface with.
-
-See the [Garry's Mod Wiki](https://wiki.garrysmod.com/page/Category:Player) for all other methods that the `Player` class has.
-]]
--- @classmod Player
-
 local PLAYER = FindMetaTable("Player")
 
+--- Gets a specific data value associated with the player.
+-- @realm client
+-- @tparam string key The key of the data to retrieve.
+-- @param default The default value to return if the key does not exist.
+-- @return The value associated with the key, or the default value.
 function PLAYER:GetData(key, default)
     local tbl = self:GetTable()
     local axDatabase = tbl.axDatabase
@@ -36,5 +31,5 @@ function PLAYER:GetData(key, default)
         data = data or {}
     end
 
-    return data[key] or default
+    return data[key] != nil and data[key] or default
 end

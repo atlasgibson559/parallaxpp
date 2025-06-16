@@ -13,12 +13,6 @@ local FACTION = ax.faction.meta or {}
 FACTION.__index = FACTION
 
 local defaultModels = {
-    Model("models/player/group01/female_01.mdl"),
-    Model("models/player/group01/female_02.mdl"),
-    Model("models/player/group01/female_03.mdl"),
-    Model("models/player/group01/female_04.mdl"),
-    Model("models/player/group01/female_05.mdl"),
-    Model("models/player/group01/female_06.mdl"),
     Model("models/player/group01/male_01.mdl"),
     Model("models/player/group01/male_02.mdl"),
     Model("models/player/group01/male_03.mdl"),
@@ -27,7 +21,13 @@ local defaultModels = {
     Model("models/player/group01/male_06.mdl"),
     Model("models/player/group01/male_07.mdl"),
     Model("models/player/group01/male_08.mdl"),
-    Model("models/player/group01/male_09.mdl")
+    Model("models/player/group01/male_09.mdl"),
+    Model("models/player/group01/female_01.mdl"),
+    Model("models/player/group01/female_02.mdl"),
+    Model("models/player/group01/female_03.mdl"),
+    Model("models/player/group01/female_04.mdl"),
+    Model("models/player/group01/female_05.mdl"),
+    Model("models/player/group01/female_06.mdl")
 }
 
 FACTION.Name = "Unknown Faction"
@@ -37,42 +37,63 @@ FACTION.Color = color_white
 FACTION.Models = defaultModels
 FACTION.Classes = {}
 
+--- Converts the faction to a string representation.
+-- @treturn string The string representation of the faction.
 function FACTION:__tostring()
     return "faction[" .. self:GetID() .. "][" .. self:GetUniqueID() .. "]"
 end
 
+--- Compares the faction with another faction.
+-- @param other The other faction to compare with.
+-- @treturn boolean Whether the factions are equal.
 function FACTION:__eq(other)
     return self.ID == other.ID
 end
 
+--- Gets the faction's ID.
+-- @treturn number The faction's ID.
 function FACTION:GetID()
     return self.ID
 end
 
+--- Gets the players in the faction.
+-- @treturn table A table of players in the faction.
 function FACTION:GetPlayer()
     return team.GetPlayers(self:GetID())
 end
 
+--- Gets the faction's name.
+-- @treturn string The faction's name.
 function FACTION:GetName()
     return self.Name or "Unknown Faction"
 end
 
+--- Gets the faction's unique ID.
+-- @treturn string The faction's unique ID.
 function FACTION:GetUniqueID()
     return self.UniqueID or "unknown_faction"
 end
 
+--- Gets the faction's description.
+-- @treturn string The faction's description.
 function FACTION:GetDescription()
     return self.Description or "No description available."
 end
 
+--- Gets the faction's color.
+-- @treturn table The faction's color as a color table.
 function FACTION:GetColor()
     return self.Color or ax.color:Get("white")
 end
 
+--- Gets the faction's models.
+-- @treturn table A table of model paths for the faction.
 function FACTION:GetModels()
     return self.Models or defaultModels
 end
 
+--- Gets the classes associated with the faction.
+-- @treturn table A table of class instances associated with the faction.
 function FACTION:GetClasses()
     local classes = {}
     for k, v in ipairs(ax.class.instances) do

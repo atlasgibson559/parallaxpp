@@ -14,26 +14,39 @@ CHAR.__index = CHAR
 CHAR.ID = 0
 CHAR.Variables = {}
 
+--- Converts the character to a string representation.
+-- @treturn string The string representation of the character.
 function CHAR:__tostring()
     return "character[" .. self:GetID() .. "]"
 end
 
+--- Compares the character with another character.
+-- @param other The other character to compare with.
+-- @treturn boolean Whether the characters are equal.
 function CHAR:__eq(other)
     return self.ID == other.ID
 end
 
+--- Gets the character's ID.
+-- @treturn number The character's ID.
 function CHAR:GetID()
     return self.ID
 end
 
+--- Gets the character's Steam ID.
+-- @treturn string The character's Steam ID.
 function CHAR:GetSteamID()
     return self.SteamID
 end
 
+--- Gets the player associated with the character.
+-- @treturn Player The player associated with the character.
 function CHAR:GetPlayer()
     return self.Player
 end
 
+--- Gets the inventories associated with the character.
+-- @treturn table A table of inventory data.
 function CHAR:GetInventories()
     local parsed = {}
 
@@ -47,10 +60,15 @@ function CHAR:GetInventories()
     return parsed
 end
 
+--- Sets the inventories associated with the character.
+-- @tparam table inventories The inventories to set.
 function CHAR:SetInventories(inventories)
     self.Inventories = inventories
 end
 
+--- Gets a specific inventory by name.
+-- @tparam string name The name of the inventory (default: "Main").
+-- @treturn table|nil The inventory if found, or nil if not found.
 function CHAR:GetInventory(name)
     name = name or "Main"
 
@@ -66,6 +84,9 @@ function CHAR:GetInventory(name)
     return nil
 end
 
+--- Gets a specific inventory by ID.
+-- @tparam number id The ID of the inventory.
+-- @treturn table|nil The inventory if found, or nil if not found.
 function CHAR:GetInventoryByID(id)
     local inventories = ax.inventory:GetByCharacterID(self:GetID())
     if ( !inventories or #inventories == 0 ) then return end
@@ -79,6 +100,8 @@ function CHAR:GetInventoryByID(id)
     return nil
 end
 
+--- Gives money to the character.
+-- @tparam number amount The amount of money to give.
 function CHAR:GiveMoney(amount)
     if ( amount < 0 ) then
         amount = math.abs(amount)
@@ -89,6 +112,8 @@ function CHAR:GiveMoney(amount)
     hook.Run("OnCharacterGiveMoney", self, amount)
 end
 
+--- Takes money from the character.
+-- @tparam number amount The amount of money to take.
 function CHAR:TakeMoney(amount)
     if ( amount < 0 ) then
         amount = math.abs(amount)
@@ -99,6 +124,9 @@ function CHAR:TakeMoney(amount)
     hook.Run("OnCharacterTakeMoney", self, amount)
 end
 
+--- Checks if the character has a specific flag.
+-- @tparam string flag The flag to check for.
+-- @treturn boolean Whether the character has the flag.
 function CHAR:HasFlag(flag)
     if ( !ax.flag:Get(flag) ) then return false end
 
@@ -110,6 +138,8 @@ function CHAR:HasFlag(flag)
     return false
 end
 
+--- Gets the faction data associated with the character.
+-- @treturn table|nil The faction data if found, or nil if not found.
 function CHAR:GetFactionData()
     local faction = self:GetFaction()
     if ( !faction ) then return end
@@ -120,6 +150,8 @@ function CHAR:GetFactionData()
     return factionData
 end
 
+--- Gets the class data associated with the character.
+-- @treturn table|nil The class data if found, or nil if not found.
 function CHAR:GetClassData()
     local class = self:GetClass()
     if ( !class ) then return end
@@ -130,6 +162,10 @@ function CHAR:GetClassData()
     return classData
 end
 
+--- Gets a specific data value associated with the character.
+-- @tparam string key The key of the data to retrieve.
+-- @param default The default value to return if the key does not exist.
+-- @return The value associated with the key, or the default value.
 function CHAR:GetData(key, default)
     if ( !isstring(key) or key == "" ) then return default end
 
@@ -147,6 +183,9 @@ function CHAR:GetData(key, default)
 end
 
 if ( SERVER ) then
+    --- Sets a specific data value for the character.
+    -- @tparam string key The key of the data to set.
+    -- @param value The value to set for the key.
     function CHAR:SetData(key, value)
         if ( !isstring(key) or key == "" ) then return end
 
@@ -161,6 +200,8 @@ if ( SERVER ) then
         self:SetDataInternal(data)
     end
 
+    --- Gives a specific flag to the character.
+    -- @tparam string flag The flag to give.
     function CHAR:GiveFlag(flag)
         if ( !ax.flag:Get(flag) ) then return end
 
@@ -182,6 +223,8 @@ if ( SERVER ) then
         end
     end
 
+    --- Removes a specific flag from the character.
+    -- @tparam string flag The flag to remove.
     function CHAR:TakeFlag(flag)
         if ( !ax.flag:Get(flag) ) then return end
 
