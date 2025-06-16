@@ -1,7 +1,7 @@
 
 # Parallax Lua Formatting & Documentation Style (OLDS)
 
-A strict Lua coding and documentation standard tailored for Garry’s Mod and the Parallax framework. It merges **K&R-style formatting**, **colon-method notation**, and **LDOC-compliant documentation** with additional conventions to promote readability, maintainability, and consistency.
+A strict Lua coding and documentation standard tailored for Garry's Mod and the Parallax framework. It merges **K&R-style formatting**, **colon-method notation**, and **LDOC-compliant documentation** with additional conventions to promote readability, maintainability, and consistency.
 
 ---
 

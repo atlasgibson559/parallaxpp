@@ -26,7 +26,7 @@
 -- @field angle Angle structure
 -- @field color RGBA Color
 -- @field player A player entity or reference
--- @field character A player’s character object
+-- @field character A player's character object
 -- @field steamid A Steam ID string
 -- @field steamid64 A Steam ID 64-bit integer
 -- @field array Flag that represents an array of values

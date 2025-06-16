@@ -970,7 +970,7 @@ if ( CLIENT ) then
     local blurMaterial = ax.util:GetMaterial("pp/blurscreen")
     local scrW, scrH = ScrW(), ScrH()
 
-    --- Draws a blur within a panel’s bounds. Falls back to a dim overlay if blur is disabled.
+    --- Draws a blur within a panel's bounds. Falls back to a dim overlay if blur is disabled.
     -- @param panel Panel Panel to apply blur to.
     -- @param intensity number Blur strength (0–10 suggested).
     -- @param steps number Blur quality/steps. Defaults to 0.2.

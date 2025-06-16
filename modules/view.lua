@@ -317,7 +317,7 @@ if ( CLIENT ) then
 
         -- Apclient the horizontal roll effect.
         newAngles.r = newAngles.r + horizontalRoll
-        -- Apclient the vertical tilt offset to the pitch (in addition to the player’s actual pitch).
+        -- Apclient the vertical tilt offset to the pitch (in addition to the player's actual pitch).
         newAngles.p = newAngles.p + verticalTilt
 
         --- Implementation of Camera bone if it exists

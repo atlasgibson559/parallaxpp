@@ -1,6 +1,6 @@
 # ax.sqlite
 
-`ax.sqlite` is a utility library for managing structured SQLite tables in Garry’s Mod. It allows dynamic variable registration, automatic schema creation, and safe row load/save operations.
+`ax.sqlite` is a utility library for managing structured SQLite tables in Garry's Mod. It allows dynamic variable registration, automatic schema creation, and safe row load/save operations.
 
 ---
 
