@@ -49,9 +49,6 @@ function ax.item:Load(path)
         local bResult = hook.Run("PreItemRegistered", ITEM.UniqueID, ITEM)
         if ( bResult == false ) then continue end
 
-        ITEM.Weight = ITEM.Weight or 0
-        ITEM.Category = ITEM.Category or "Miscellaneous"
-
         ITEM:AddAction({
             Name = "Drop",
             OnCanRun = function(this, item, client)
