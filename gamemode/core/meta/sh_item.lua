@@ -52,7 +52,7 @@ end
 --- Gets the item's ID.
 -- @treturn number The item's ID.
 function ITEM:GetID()
-    return tonumber(self.ID) or 0
+    return self.ID or 0
 end
 
 --- Gets the item's unique ID.
@@ -76,7 +76,7 @@ end
 --- Gets the item's weight.
 -- @treturn number The item's weight.
 function ITEM:GetWeight()
-    return tonumber(self.Weight) or 0
+    return self.Weight or 0
 end
 
 --- Gets the item's category.
