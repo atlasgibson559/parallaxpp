@@ -1085,3 +1085,19 @@ function ax.util:VerifyVersion()
         end)
     end)
 end
+
+function ax.util:IsFaction(object)
+    return getmetatable(object) == ax.faction.meta
+end
+
+function ax.util:IsCharacter(object)
+    return getmetatable(object) == ax.character.meta
+end
+
+function ax.util:IsClass(object)
+    return getmetatable(object) == ax.class.meta
+end
+
+function ax.util:IsItem(object)
+    return getmetatable(object) == ax.item.meta
+end
