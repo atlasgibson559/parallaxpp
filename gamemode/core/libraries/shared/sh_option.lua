@@ -100,7 +100,7 @@ if ( CLIENT ) then
             stored:OnChange(value, oldValue, ax.client)
         end
 
-        ax.data:Set("options", self:GetSaveData(), false, false)
+        ax.data:Set("options", self:GetSaveData(), true, true)
 
         hook.Run("PostOptionChanged", ax.client, key, value, oldValue)
 
@@ -157,7 +157,7 @@ if ( CLIENT ) then
     function ax.option:ResetAll()
         self.instances = {}
 
-        ax.data:Set("options", {}, false, false)
+        ax.data:Set("options", {}, true, true)
         ax.net:Start("option.sync", {})
     end
 end
