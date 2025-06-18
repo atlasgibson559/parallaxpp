@@ -145,7 +145,7 @@ end
 function ITEM:SetData(key, value)
     if ( !key ) then return end
 
-    if ( !self.Data ) then
+    if ( !istable(self.Data) ) then
         self.Data = {}
     end
 
@@ -155,8 +155,14 @@ function ITEM:SetData(key, value)
         self.Data[key] = value
     end
 
+    self.Data[key] = value
+
     if ( SERVER ) then
         self:SendData(key, value)
+    end
+
+    if ( isfunction(self.OnDataChanged) ) then
+        self:OnDataChanged(key, value)
     end
 end
 
@@ -189,7 +195,7 @@ end
 --- Sets the item's associated entity.
 -- @tparam Entity entity The entity to associate with the item.
 function ITEM:SetEntity(entity)
-    if ( !entity ) then return end
+    if ( !isentity(entity) ) then return end
 
     self.Entity = entity
 end
@@ -213,7 +219,7 @@ function ITEM:Spawn(position, angles)
         item:SetData(self:GetData())
         item:SetEntity(self:GetEntity())
 
-        if ( self.OnSpawned ) then
+        if ( isfunction(self.OnSpawned) ) then
             self:OnSpawned(item)
         end
 
@@ -225,13 +231,13 @@ end
 -- @tparam string name The name of the hook.
 -- @tparam function func The function to run when the hook is triggered.
 function ITEM:Hook(name, func)
-    if ( !name or !func ) then return end
+    if ( !isstring(name) or !isfunction(func) ) then return end
 
-    if ( !self.Hooks ) then
+    if ( !istable(self.Hooks) ) then
         self.Hooks = {}
     end
 
-    if ( !self.Hooks[name] ) then
+    if ( !istable(self.Hooks[name]) ) then
         self.Hooks[name] = {}
     end
 
@@ -240,11 +246,9 @@ end
 
 --- Removes the item.
 function ITEM:Remove()
-    if ( self.Entity and IsValid(self.Entity) ) then
-        self.Entity:Remove()
-    end
+    SafeRemoveEntity(self.Entity)
 
-    if ( self.OnRemoved ) then
+    if ( isfunction(self.OnRemoved) ) then
         self:OnRemoved()
     end
 
@@ -259,7 +263,8 @@ end
 --  - OnCanRun (function): Optional function to check if the action can run.
 function ITEM:AddAction(def)
     self.Actions = self.Actions or {}
-    assert(def.Name and type(def.OnRun) == "function", "ITEM:AddAction requires def.Name (string) and def.OnRun (function)")
+    assert(isstring(def.Name) and isfunction(def.OnRun), "ITEM:AddAction requires def.Name (string) and def.OnRun (function)")
+
     local id = def.ID or def.id or def.Name:gsub("%s+", "")
     self.Actions[id] = def
 end

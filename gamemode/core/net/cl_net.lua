@@ -360,7 +360,7 @@ ax.net:Hook("flag.list", function(target, hasFlags)
         table.insert(availableFlags, key)
     end
 
-    if ( #availableFlags == 0 ) then
+    if ( availableFlags[1] == nil ) then
         ax.client:Notify("The target player already has all flags, so you cannot give them any more!")
         return
     end
@@ -389,22 +389,22 @@ local function ConvertCaptionToChatArguments(caption)
     local pos = 1
 
     while true do
-        local len_s, raw, delay_s, next_pos = caption:match(
+        local len_s, raw, delay_s, next_pos = string.match(caption,
             "<len:([%d%.]+)>(.-)<delay:([%d%.]+)>()",
             pos
         )
         if ( !len_s ) then break end
 
-        local r, g, b = raw:match("<clr:(%d+),(%d+),(%d+)>")
+        local r, g, b = string.match(raw, "<clr:(%d+),(%d+),(%d+)>")
         local R = r and tonumber(r) or 255
         local G = g and tonumber(g) or 255
         local B = b and tonumber(b) or 255
 
         local text = raw
-            :gsub("<clr:%d+,%d+,%d+>", "")
-            :gsub("<I>", "")
-            :gsub("<cr>", "\n")
-            :match("^%s*(.-)%s*$")
+        text = string.gsub(text, "<clr:%d+,%d+,%d+>", "")
+        text = string.gsub(text, "<I>", "")
+        text = string.gsub(text, "<cr>", "\n")
+        text = string.match(text, "^%s*(.-)%s*$")
 
         table.insert(segments, {
             len   = tonumber(len_s),
@@ -416,10 +416,10 @@ local function ConvertCaptionToChatArguments(caption)
         pos = next_pos
     end
 
-    local rem = caption:sub(pos)
-    local len_s, raw = rem:match("<len:([%d%.]+)>(.*)")
-    if ( len_s and raw:match("%S") ) then
-        local r, g, b = raw:match("<clr:(%d+),(%d+),(%d+)>")
+    local rem = string.sub(caption, pos)
+    local len_s, raw = string.match(rem, "<len:([%d%.]+)>(.*)")
+    if ( len_s and string.match(raw, "%S") ) then
+        local r, g, b = string.match(raw, "<clr:(%d+),(%d+),(%d+)>")
         local R = r and tonumber(r) or 255
         local G = g and tonumber(g) or 255
         local B = b and tonumber(b) or 255
@@ -444,7 +444,7 @@ end
 local function PrintQueue(data, idx)
     local segments, i
 
-    if ( type(data) == "string" ) then
+    if ( isstring(data) ) then
         segments = ConvertCaptionToChatArguments(data)
         i = 1
     else

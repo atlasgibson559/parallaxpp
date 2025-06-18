@@ -19,7 +19,7 @@ PLAYER.StripWeaponInternal = PLAYER.StripWeaponInternal or PLAYER.StripWeapon
 -- @param value The value to set for the key.
 function PLAYER:SetDBVar(key, value)
     local clientTable = self:GetTable()
-    if ( !clientTable.axDatabase ) then
+    if ( !istable(clientTable.axDatabase) ) then
         clientTable.axDatabase = {}
     end
 
@@ -33,7 +33,7 @@ end
 -- @return The value associated with the key, or the default value.
 function PLAYER:GetDBVar(key, default)
     local clientTable = self:GetTable()
-    if ( clientTable.axDatabase ) then
+    if ( istable(clientTable.axDatabase) ) then
         return clientTable.axDatabase[key] or default
     end
 
@@ -46,8 +46,8 @@ end
 function PLAYER:SaveDB(callback)
     local clientTable = self:GetTable()
 
-    if ( clientTable.axDatabase ) then
-        if istable(clientTable.axDatabase.data) then
+    if ( istable(clientTable.axDatabase) ) then
+        if ( istable(clientTable.axDatabase.data) ) then
             clientTable.axDatabase.data = util.TableToJSON(clientTable.axDatabase.data)
         end
 
@@ -70,13 +70,13 @@ end
 -- @return The value associated with the key, or the default value.
 function PLAYER:GetData(key, default)
     local clientTable = self:GetTable()
-    if ( !clientTable.axDatabase ) then
+    if ( !istable(clientTable.axDatabase) ) then
         clientTable.axDatabase = {}
     end
 
     local data = clientTable.axDatabase.data or {}
 
-    if ( type(data) == "string" ) then
+    if ( isstring(data) ) then
         data = util.JSONToTable(data) or {}
     else
         data = data or {}
@@ -123,10 +123,10 @@ end
 -- @realm server
 -- @treturn Entity|nil The created ragdoll entity, or nil if creation failed.
 function PLAYER:CreateServerRagdoll()
-    if ( !self:GetCharacter() ) then return end
+    if ( !self:GetCharacter() ) then return NULL end
 
     local ragdoll = ents.Create("prop_ragdoll")
-    if ( !IsValid(ragdoll) ) then return nil end
+    if ( !IsValid(ragdoll) ) then return NULL end
 
     ragdoll:SetModel(self:GetModel())
     ragdoll:SetSkin(self:GetSkin())

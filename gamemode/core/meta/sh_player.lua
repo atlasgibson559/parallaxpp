@@ -86,7 +86,7 @@ end
 -- @string name The name of the gesture to play.
 function PLAYER:GesturePlay(name)
     if ( SERVER ) then
-        ax.net:Start(self, "gesture.play", name)
+        ax.net:Start(self:GetPos(), "gesture.play", name)
     else
         self:AddVCDSequenceToGestureSlot(GESTURE_SLOT_CUSTOM, self:LookupSequence(name), 0, true)
     end

@@ -146,12 +146,12 @@ ax.net:Hook("option.sync", function(client, data)
                 continue
             end
 
-            local sID64 = client:EntIndex()
-            if ( ax.option.clients[sID64] == nil ) then
-                ax.option.clients[sID64] = {}
+            local cliIndex = client:EntIndex()
+            if ( !istable(ax.option.clients[cliIndex]) ) then
+                ax.option.clients[cliIndex] = {}
             end
 
-            ax.option.clients[sID64][k] = data[k]
+            ax.option.clients[cliIndex][k] = data[k]
         end
     end
 end)
@@ -189,7 +189,7 @@ ax.net:Hook("item.perform", function(client, itemID, actionName)
 end)
 
 ax.net:Hook("item.spawn", function(client, uniqueID)
-    if ( !uniqueID or !ax.item.stored[uniqueID] ) then return end
+    if ( !isstring(uniqueID) or !istable(ax.item.stored[uniqueID]) ) then return end
 
     local pos = client:GetEyeTrace().HitPos + vector_up
 

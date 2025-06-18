@@ -40,8 +40,7 @@ end
 -- print(vec:Round())
 -- > 2 2 4
 function meta:Round(decimals)
-    local x, y, z = self.x, self.y, self.z
-    return Vector(math.Round(x, decimals), math.Round(y, decimals), math.Round(z, decimals))
+    return Vector(math.Round(self.x, decimals), math.Round(self.y, decimals), math.Round(self.z, decimals))
 end
 
 --- Returns the distance between two vectors
@@ -100,7 +99,7 @@ function meta:Up(vUp)
     return vRet
 end
 
-local trace = {collisiongroup = COLLISION_GROUP_WORLD, output = {}}
+local trace = { collisiongroup = COLLISION_GROUP_WORLD, output = {} }
 
 --- Returns whether or not the vector is in the world.
 -- @realm shared

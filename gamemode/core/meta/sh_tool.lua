@@ -127,7 +127,7 @@ end
 
 function TOOL:CheckObjects()
     for _, v in pairs(self.Objects) do
-        if ( !v.Ent:IsWorld() and !v.Ent:IsValid() ) then
+        if ( !v.Ent:IsWorld() and !IsValid(v.Ent) ) then
             self:ClearObjects()
         end
     end

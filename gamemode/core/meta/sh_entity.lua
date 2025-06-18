@@ -122,6 +122,7 @@ end
 --- Sets the model of the entity, with hooks for pre- and post-model setting.
 -- @realm shared
 -- @string model The model to set for the entity.
+ENTITY.SetModelInternal = ENTITY.SetModel
 function ENTITY:SetModel(model)
     local canSet = hook.Run("PreEntitySetModel", self, model)
     if ( canSet == false ) then return end

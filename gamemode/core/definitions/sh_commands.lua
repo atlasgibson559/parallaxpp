@@ -21,7 +21,7 @@ ax.command:Register("PlyRespawn", {
     Callback = function(info, client, arguments)
         local target = arguments[1]
 
-        if ( target:GetCharacter() == nil ) then
+        if ( !target:GetCharacter() ) then
             client:Notify("The targeted player does not have a character!")
             return
         end
