@@ -144,6 +144,7 @@ ax.option:Register("hud.health.bar", {
     Name = "options.hud.health.bar",
     Description = "options.hud.health.bar.help",
     Category = "category.hud",
+    SubCategory = "category.hud.health",
     Type = ax.types.bool,
     Default = true,
     NoNetworking = true
@@ -153,6 +154,7 @@ ax.option:Register("hud.health.bar.always", {
     Name = "options.hud.health.bar.always",
     Description = "options.hud.health.bar.always.help",
     Category = "category.hud",
+    SubCategory = "category.hud.health",
     Type = ax.types.bool,
     Default = false,
     NoNetworking = true
