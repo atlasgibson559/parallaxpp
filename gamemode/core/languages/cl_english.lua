@@ -195,5 +195,6 @@ localization["tab.inventory"] = "Inventory"
 localization["tab.mainmenu"] = "Main Menu"
 localization["tab.scoreboard"] = "Scoreboard"
 localization["tab.settings"] = "Settings"
+localization["category.hud"] = "Heads Up Display"
 
 ax.localization:Register("en", localization)
