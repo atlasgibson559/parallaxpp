@@ -9,10 +9,6 @@
     Attribution is required. If you use or modify this file, you must retain this notice.
 ]]
 
-local padding = ScreenScale(32)
-local smallPadding = ScreenScale(16) -- not used
-local tinyPadding = ScreenScale(8)
-
 DEFINE_BASECLASS("EditablePanel")
 
 local PANEL = {}
@@ -41,14 +37,14 @@ function PANEL:Populate()
 
     local title = self:Add("ax.text")
     title:Dock(TOP)
-    title:DockMargin(padding, padding, 0, 0)
-    title:SetFont("parallax.large.bold")
+    title:DockMargin(ScreenScale(32), ScreenScaleH(32), 0, 0)
+    title:SetFont("parallax.huge.bold")
     title:SetText(string.upper("mainmenu.select.character"))
 
     local navigation = self:Add("EditablePanel")
     navigation:Dock(BOTTOM)
-    navigation:DockMargin(padding, 0, padding, padding)
-    navigation:SetTall(ScreenScale(24))
+    navigation:DockMargin(ScreenScale(32), 0, ScreenScale(32), ScreenScaleH(32))
+    navigation:SetTall(ScreenScaleH(24))
 
     local backButton = navigation:Add("ax.button.flat")
     backButton:Dock(LEFT)
@@ -59,9 +55,11 @@ function PANEL:Populate()
         parent:Populate()
     end
 
+    navigation:SetTall(backButton:GetTall())
+
     local characterList = self:Add("ax.scroller.vertical")
     characterList:Dock(FILL)
-    characterList:DockMargin(padding * 4, padding, padding * 4, padding)
+    characterList:DockMargin(ScreenScale(32) * 4, ScreenScaleH(32), ScreenScale(32) * 4, ScreenScaleH(32))
     characterList:InvalidateParent(true)
     characterList:GetVBar():SetWide(0)
     characterList.Paint = nil
@@ -70,7 +68,7 @@ function PANEL:Populate()
     for k, v in pairs(clientTable.axCharacters) do
         local button = characterList:Add("ax.button.flat")
         button:Dock(TOP)
-        button:DockMargin(0, 0, 0, 16)
+        button:DockMargin(0, 0, 0, ScreenScaleH(4))
         button:SetText("", true, true, true)
         button:SetTall(characterList:GetWide() / 8)
 
@@ -85,7 +83,7 @@ function PANEL:Populate()
 
         local image = button:Add("DPanel")
         image:Dock(LEFT)
-        image:DockMargin(0, 0, tinyPadding, 0)
+        image:DockMargin(0, 0, ScreenScale(8), 0)
         image:SetSize(button:GetTall() * 1.75, button:GetTall())
         image.Paint = function(this, width, height)
             surface.SetDrawColor(ax.color:Get("white"))
@@ -95,7 +93,7 @@ function PANEL:Populate()
 
         local deleteButton = button:Add("ax.button.flat")
         deleteButton:Dock(RIGHT)
-        deleteButton:DockMargin(tinyPadding, 0, 0, 0)
+        deleteButton:DockMargin(ScreenScale(8), 0, 0, 0)
         deleteButton:SetText("X")
         deleteButton:SetTextColorProperty(ax.config:Get("color.error"))
         deleteButton:SetSize(0, button:GetTall())
@@ -137,7 +135,7 @@ function PANEL:Populate()
 
         local name = button:Add("ax.text")
         name:Dock(TOP)
-        name:SetFont("parallax.large.bold")
+        name:SetFont("parallax.huge.bold")
         name:SetText(v:GetName():upper())
         name.Think = function(this)
             this:SetTextColor(button:GetTextColor())
@@ -148,7 +146,7 @@ function PANEL:Populate()
 
         local lastPlayed = button:Add("ax.text")
         lastPlayed:Dock(BOTTOM)
-        lastPlayed:DockMargin(0, 0, 0, tinyPadding)
+        lastPlayed:DockMargin(0, 0, 0, ScreenScaleH(8))
         lastPlayed:SetFont("parallax.large")
         lastPlayed:SetText(lastPlayedDate, true)
         lastPlayed.Think = function(this)
@@ -162,20 +160,19 @@ function PANEL:PopulateDelete(characterID)
 
     local title = self:Add("ax.text")
     title:Dock(TOP)
-    title:DockMargin(padding, padding, 0, 0)
-    title:SetFont("parallax.large.bold")
+    title:DockMargin(ScreenScale(32), ScreenScaleH(32), 0, 0)
+    title:SetFont("parallax.huge.bold")
     title:SetText(string.upper("mainmenu.delete.character"))
 
     local confirmation = self:Add("ax.text")
     confirmation:Dock(TOP)
-    confirmation:DockMargin(padding, smallPadding, 0, 0)
-    confirmation:SetFont("parallax.large.bold")
+    confirmation:DockMargin(ScreenScale(64), ScreenScaleH(16), 0, 0)
+    confirmation:SetFont("parallax.large")
     confirmation:SetText("mainmenu.delete.character.confirm")
 
     local navigation = self:Add("EditablePanel")
     navigation:Dock(BOTTOM)
-    navigation:DockMargin(padding, 0, padding, padding)
-    navigation:SetTall(ScreenScale(24))
+    navigation:DockMargin(ScreenScale(32), 0, ScreenScale(32), ScreenScaleH(32))
 
     local cancelButton = navigation:Add("ax.button.flat")
     cancelButton:Dock(LEFT)
@@ -188,8 +185,17 @@ function PANEL:PopulateDelete(characterID)
     okButton:Dock(RIGHT)
     okButton:SetText("OK")
     okButton.DoClick = function()
-        ax.net:Start("character.delete", characterID)
+        Derma_Query(
+            "Are you REALLY sure you want to delete this character? This action cannot be undone.",
+            "Delete Character",
+            "Yes", function()
+                ax.net:Start("character.delete", characterID)
+            end,
+            "No", function() end
+        )
     end
+
+    navigation:SetTall(math.max(cancelButton:GetTall(), okButton:GetTall()))
 end
 
 vgui.Register("ax.mainmenu.load", PANEL, "EditablePanel")
