@@ -113,7 +113,7 @@ function PANEL:Populate()
             if ( button:IsHovered() or deleteButton:IsHovered() ) then
                 if ( !isDeleteButtonExtended ) then
                     isDeleteButtonExtended = true
-                    deleteButton:Animate(0.2, {
+                    deleteButton:Motion(0.2, {
                         Target = {width = button:GetTall()},
                         Easing = "OutQuad",
                         Think = function(this)
@@ -124,7 +124,7 @@ function PANEL:Populate()
             else
                 if ( isDeleteButtonExtended ) then
                     isDeleteButtonExtended = false
-                    deleteButton:Animate(0.2, {
+                    deleteButton:Motion(0.2, {
                         Target = {width = 0},
                         Easing = "OutQuad",
                         Think = function(this)

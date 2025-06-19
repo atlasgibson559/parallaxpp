@@ -20,7 +20,7 @@ ax.motion.active = ax.motion.active or {}
 -- @tparam Panel panel The target panel.
 -- @tparam number duration Duration in seconds.
 -- @tparam table data Contains Target, Easing, optional Delay, Think, OnComplete.
-function ax.motion:Animate(panel, duration, data)
+function ax.motion:Motion(panel, duration, data)
     if ( !IsValid(panel) or !istable(data) or !istable(data.Target) ) then return end
 
     local easing = data.Easing or "OutQuad"
@@ -143,8 +143,8 @@ do
     --- Animate custom properties with easing.
     -- @tparam number duration Duration in seconds.
     -- @tparam table data Table with Target, Easing, Delay, Think, OnComplete.
-    function PANEL:Animate(duration, data)
-        ax.motion:Animate(self, duration, data)
+    function PANEL:Motion(duration, data)
+        ax.motion:Motion(self, duration, data)
     end
 
     --- Cancel a specific animation on this panel.

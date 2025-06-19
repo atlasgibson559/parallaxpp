@@ -73,7 +73,7 @@ function PANEL:Init()
     self:SetPos(0, 0)
     self:MakePopup()
 
-    self:Animate(ax.option:Get("tab.fade.time", 0.2), {
+    self:Motion(ax.option:Get("tab.fade.time", 0.2), {
         Target = {alpha = 255},
         Easing = "OutQuad",
         Think = function(this)
@@ -90,7 +90,7 @@ function PANEL:Init()
 
     self.buttons.alpha = 0
     self.buttons:SetAlpha(0)
-    self.buttons:Animate(ax.option:Get("tab.fade.time", 0.2), {
+    self.buttons:Motion(ax.option:Get("tab.fade.time", 0.2), {
         Target = {x = paddingTiny, y = paddingSmall, alpha = 255},
         Easing = "OutQuad",
         Think = function(vars)
@@ -110,7 +110,7 @@ function PANEL:Init()
 
     self.container.alpha = 0
     self.container:SetAlpha(0)
-    self.container:Animate(ax.option:Get("tab.fade.time", 0.2), {
+    self.container:Motion(ax.option:Get("tab.fade.time", 0.2), {
         Target = {x = self:GetWide() - self.container:GetWide() - paddingTiny, y = paddingSmall, alpha = 255},
         Easing = "OutQuad",
         Think = function(this)
@@ -207,7 +207,7 @@ function PANEL:Close(callback)
         end
     end)
 
-    self.buttons:Animate(fadeDuration, {
+    self.buttons:Motion(fadeDuration, {
         Target = {x = -self.buttons:GetWide() * 2, y = paddingSmall, alpha = 0},
         Easing = "OutQuad",
         Think = function(this)
@@ -216,7 +216,7 @@ function PANEL:Close(callback)
         end
     })
 
-    self.container:Animate(fadeDuration, {
+    self.container:Motion(fadeDuration, {
         Target = {x = self:GetWide() * 2, y = paddingSmall, alpha = 0},
         Easing = "OutQuad",
         Think = function(this)
@@ -225,7 +225,7 @@ function PANEL:Close(callback)
         end
     })
 
-    self:Animate(fadeDuration, {
+    self:Motion(fadeDuration, {
         Target = {alpha = 0},
         Easing = "OutQuad",
         Think = function(this)
