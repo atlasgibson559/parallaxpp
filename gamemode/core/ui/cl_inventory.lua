@@ -109,6 +109,7 @@ function PANEL:SetInventory(id)
 
         return
     end
+
     local sortedItems = {}
     local itemsCount = #items
 
@@ -145,7 +146,7 @@ function PANEL:SetInventory(id)
         if ( item ) then
             local uid = item:GetUniqueID()
             local def = ax.item.stored[uid] or {}
-            local stackable = ( !def.noStack )
+            local stackable = ( !def.NoStack )
             local dataKey = stackable and util.TableToJSON(item:GetData() or {}) or tostring(itemID)
             local key = util.CRC(uid .. dataKey)
 
