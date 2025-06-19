@@ -163,7 +163,7 @@ function PANEL:PopulateFactionSelect()
 
             local textColor = factionButton:GetTextColor()
 
-            draw.SimpleText(name, factionButton:IsHovered() and "parallax.large.large.hover" or "parallax.large.large", tinyPadding, imageHeight - boxHeight + boxHeightStatic / 2, textColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+            draw.SimpleText(name, factionButton:IsHovered() and "parallax.large.hover" or "parallax.large", tinyPadding, imageHeight - boxHeight + boxHeightStatic / 2, textColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 
             local textHeight = ax.util:GetTextHeight("parallax.bold") - ScreenScale(4)
             for i = 1, #descriptionWrapped do
