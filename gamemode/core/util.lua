@@ -1010,13 +1010,33 @@ if ( CLIENT ) then
         end
     end
 
-    --- Draws a filled circle using cached polygon data.
-    -- @param x number X position of the center.
-    -- @param y number Y position of the center.
-    -- @param radius number Radius of the circle.
-    -- @param segments number Number of segments (more = smoother).
-    -- @param color table Color to fill the circle.
     local circleCache = {}
+    local unitCircleCache = {}
+    local drawVertsCache = {}
+
+    --- Prepare unit-circle vertices (radius = 1) for given segments.
+    -- @param segments number Number of segments to approximate circle.
+    -- @return table List of unit vertices.
+    function ax.util:GetUnitCircle(segments)
+        if ( !unitCircleCache[segments] ) then
+            local verts = { { x = 0, y = 0 } }
+            for i = 0, segments do
+                local a = math.rad((i / segments) * -360)
+                verts[#verts + 1] = { x = math.cos(a), y = math.sin(a) }
+            end
+
+            unitCircleCache[segments] = verts
+        end
+
+        return unitCircleCache[segments]
+    end
+
+    --- Draws a filled circle caching by radius_segments key.
+    -- @param x number Center X.
+    -- @param y number Center Y.
+    -- @param radius number Circle radius.
+    -- @param segments number Number of segments.
+    -- @param color Color Fill color.
     function ax.util:DrawCircle(x, y, radius, segments, color)
         local key = radius .. "_" .. segments
         local shape = circleCache[key]
@@ -1045,8 +1065,39 @@ if ( CLIENT ) then
         surface.DrawPoly(verts)
     end
 
+    --- Draws a filled circle by scaling unit-circle vertices (cache per segments).
+    -- @param x number Center X.
+    -- @param y number Center Y.
+    -- @param radius number Circle radius.
+    -- @param segments number Number of segments.
+    -- @param color Color Fill color.
+    function ax.util:DrawCircleScaled(x, y, radius, segments, color)
+        local unitVerts = self:GetUnitCircle(segments)
+        local verts = drawVertsCache[segments]
+
+        if ( !verts ) then
+            verts = {}
+            for i = 1, #unitVerts do
+                verts[#verts + 1] = { x = 0, y = 0 }
+            end
+
+            drawVertsCache[segments] = verts
+        end
+
+        for i = 1, #unitVerts do
+            local uv = unitVerts[i]
+            verts[i].x = x + uv.x * radius
+            verts[i].y = y + uv.y * radius
+        end
+
+        surface.SetDrawColor(color.r, color.g, color.b, color.a)
+        surface.DrawPoly(verts)
+    end
+
     hook.Add("OnScreenSizeChanged", "ax.util.ClearCircleCache", function()
         circleCache = {}
+        unitCircleCache = {}
+        drawVertsCache = {}
     end)
 end
 
