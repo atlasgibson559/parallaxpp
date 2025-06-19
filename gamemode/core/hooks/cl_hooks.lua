@@ -383,7 +383,7 @@ function GM:HUDPaint()
 
         local size = ScreenScale(8) * crosshairSize
 
-        if ( crosshairType == "default" ) then
+        if ( crosshairType == "default" or crosshairType == "cross" ) then
             surface.SetDrawColor(crosshairColor)
             surface.DrawRect(centerX - size / 2, centerY - crosshairThickness / 2, size, crosshairThickness)
             surface.DrawRect(centerX - crosshairThickness / 2, centerY - size / 2, crosshairThickness, size)
