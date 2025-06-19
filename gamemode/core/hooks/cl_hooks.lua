@@ -369,7 +369,18 @@ function GM:HUDPaint()
         local crosshairThickness = ax.option:Get("hud.crosshair.thickness", 1)
         local crosshairType = ax.option:Get("hud.crosshair.type", "default")
 
-        local centerX, centerY = scrW / 2, scrH / 2
+        local centerX, centerY = ScrW() / 2, ScrH() / 2
+        if ( hook.Run("ShouldDrawLocalPlayer", client) ) then
+            local trace = util.TraceLine({
+                start = client:GetShootPos(),
+                endpos = client:GetShootPos() + client:GetAimVector() * 8192,
+                filter = client,
+                mask = MASK_SHOT
+            })
+
+            centerX, centerY = trace.HitPos:ToScreen().x, trace.HitPos:ToScreen().y
+        end
+
         local size = ScreenScale(8) * crosshairSize
 
         if ( crosshairType == "default" ) then
