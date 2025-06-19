@@ -50,12 +50,12 @@ ax.ease.list = {
     OutSine = math.ease.OutSine
 }
 
---- Lerp a value using an easing function.
+--- Lerp a value, color, vector, or angle using an easing function.
 -- @realm shared
 -- @param easeType The type of easing function to use (e.g., "InOutQuad")
 -- @param time The time value (0 to 1) to interpolate between startValue and endValue.
--- @param startValue The starting value for the interpolation.
--- @param endValue The ending value for the interpolation.
+-- @param startValue The starting value for the interpolation (number, color table, vector, or angle).
+-- @param endValue The ending value for the interpolation (number, color table, vector, or angle).
 -- @return The interpolated value based on the easing function.
 function ax.ease:Lerp(easeType, time, startValue, endValue)
     local easeFunc = ax.ease.list[easeType]
@@ -64,5 +64,23 @@ function ax.ease:Lerp(easeType, time, startValue, endValue)
     end
 
     local easedT = easeFunc(math.Clamp(time, 0, 1))
-    return Lerp(easedT, startValue, endValue)
+
+    if ( istable(startValue) and istable(endValue) ) then
+        -- Handle color lerping
+        return {
+            r = Lerp(easedT, startValue.r, endValue.r),
+            g = Lerp(easedT, startValue.g, endValue.g),
+            b = Lerp(easedT, startValue.b, endValue.b),
+            a = Lerp(easedT, startValue.a or 255, endValue.a or 255)
+        }
+    elseif ( isvector(startValue) and isvector(endValue) ) then
+        -- Handle vector lerping
+        return LerpVector(easedT, startValue, endValue)
+    elseif ( isangle(startValue) and isangle(endValue) ) then
+        -- Handle angle lerping
+        return LerpAngle(easedT, startValue, endValue)
+    else
+        -- Handle numeric lerping
+        return Lerp(easedT, startValue, endValue)
+    end
 end
