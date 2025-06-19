@@ -50,7 +50,7 @@ function TOOL:CreateConVars()
 end
 
 function TOOL:GetServerInfo(property)
-    if ( self.ServerConVars[property] && SERVER ) then
+    if ( self.ServerConVars[property] and SERVER ) then
         return self.ServerConVars[property]:GetString()
     end
 
@@ -58,7 +58,7 @@ function TOOL:GetServerInfo(property)
 end
 
 function TOOL:GetClientInfo(property)
-    if ( self.ClientConVars[property] && CLIENT ) then
+    if ( self.ClientConVars[property] and CLIENT ) then
         return self.ClientConVars[property]:GetString()
     end
 
@@ -66,7 +66,7 @@ function TOOL:GetClientInfo(property)
 end
 
 function TOOL:GetClientNumber(property, default)
-    if ( self.ClientConVars[property] && CLIENT ) then
+    if ( self.ClientConVars[property] and CLIENT ) then
         return self.ClientConVars[property]:GetFloat()
     end
 
@@ -74,7 +74,7 @@ function TOOL:GetClientNumber(property, default)
 end
 
 function TOOL:GetClientBool(property, default)
-    if ( self.ClientConVars[property] && CLIENT ) then
+    if ( self.ClientConVars[property] and CLIENT ) then
         return self.ClientConVars[property]:GetBool()
     end
 
