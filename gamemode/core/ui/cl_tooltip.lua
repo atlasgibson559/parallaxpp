@@ -114,7 +114,7 @@ function PANEL:Paint(width, height)
     local desc = ax.localization:GetPhrase(self.description) or self.description
     local descWrapped = ax.util:GetWrappedText(desc, "parallax", width - 32)
     for i = 1, #descWrapped do
-        draw.SimpleText(descWrapped[i], "parallax", 16, 32 + (i - 1) * ax.util:GetTextHeight("parallax"), ax.color:Get("text"), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+        draw.SimpleText(descWrapped[i], "parallax", 16, 48 + (i - 1) * ax.util:GetTextHeight("parallax"), ax.color:Get("text"), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
     end
 end
 
