@@ -13,29 +13,30 @@ DEFINE_BASECLASS("DButton")
 
 local PANEL = {}
 
+AccessorFunc(PANEL, "baseHeight", "BaseHeight", FORCE_NUMBER)
+AccessorFunc(PANEL, "baseTextColor", "BaseTextColor")
+AccessorFunc(PANEL, "baseTextColorTarget", "BaseTextColorTarget")
+AccessorFunc(PANEL, "height", "Height", FORCE_NUMBER)
 AccessorFunc(PANEL, "inertia", "Inertia", FORCE_NUMBER)
+AccessorFunc(PANEL, "textInsetX", "TextInsetX", FORCE_NUMBER)
+AccessorFunc(PANEL, "textInsetY", "TextInsetY", FORCE_NUMBER)
+AccessorFunc(PANEL, "wasHovered", "WasHovered", FORCE_BOOL)
 
 function PANEL:Init()
     self:SetFont("parallax.button")
     self:SetTextColorProperty(ax.color:Get("white"))
     self:SetContentAlignment(4)
-    self:SetTall(ScreenScaleH(18))
     self:SetTextInset(ScreenScale(2), 0)
-
-    self.inertia = 0
-    self.inertiaTarget = 0
 
     self.baseHeight = self:GetTall()
     self.baseTextColor = self:GetTextColor()
-
+    self.baseTextColorTarget = ax.config:Get("color.schema")
     self.height = self.baseHeight
-    self.heightTarget = self.baseHeight
-
+    self.inertia = 0
     self.textColor = Color(255, 255, 255, 255)
-    self.textColorTarget = ax.color:Get("white")
-
-    self.textInset = {ScreenScale(2), 0}
-    self.textInsetTarget = {ScreenScale(2), 0}
+    self.textInsetX = ScreenScale(2)
+    self.textInsetY = 0
+    self.wasHovered = false
 end
 
 function PANEL:SetText(text, bNoTranslate, bNoSizeToContents, bNoUppercase)
@@ -63,70 +64,108 @@ end
 
 function PANEL:SizeToContents()
     BaseClass.SizeToContents(self)
+    self.baseHeight = self:GetTall()
+    self.height = self.baseHeight
 end
 
 function PANEL:Paint(width, height)
-    local ft = FrameTime()
-    local time = ft * 10
+    local textColor = self.textColor
+    local inertia = self.inertia
 
-    local performanceAnimations = ax.option:Get("performance.animations", true)
-    if ( !performanceAnimations ) then
-        time = 1
-    end
+    local backgroundColor = Color(textColor.r / 8, textColor.g / 8, textColor.b / 8)
+    draw.RoundedBox(0, 0, 0, width, height, ColorAlpha(backgroundColor, 100 * inertia))
 
-    self.inertia = Lerp(time, self.inertia, self.inertiaTarget)
-    self.height = Lerp(time, self.height, self.heightTarget)
-    self.textColor = self.textColor:Lerp(self.textColorTarget, time)
-
-    self.textInset[1] = Lerp(time, self.textInset[1], self.textInsetTarget[1])
-    self.textInset[2] = Lerp(time, self.textInset[2], self.textInsetTarget[2])
-
-    local backgroundColor = Color(self.textColor.r / 8, self.textColor.g / 8, self.textColor.b / 8)
-    draw.RoundedBox(0, 0, 0, width, height, ColorAlpha(backgroundColor, 100 * self.inertia))
-
-    surface.SetDrawColor(self.textColor.r, self.textColor.g, self.textColor.b, 200 * self.inertia)
-    surface.DrawRect(0, 0, ScreenScale(4) * self.inertia, height)
+    surface.SetDrawColor(textColor.r, textColor.g, textColor.b, 200 * inertia)
+    surface.DrawRect(0, 0, ScreenScale(4) * inertia, height)
 
     return false
 end
 
 function PANEL:Think()
-    if ( !self:IsHovered() and ( self.textColorTarget != self.baseTextColor or self.heightTarget != self.baseHeight) ) then
+    local hovering = self:IsHovered()
+    if ( hovering and !self.wasHovered ) then
+        surface.PlaySound("ax.button.enter")
+        self:SetFont("parallax.button.hover")
+        self.wasHovered = true
+
+        self:Motion(0.2, {
+            Target = {height = self.baseHeight * 1.25},
+            Easing = "OutQuad",
+            Think = function(this)
+                self:SetTall(self.height)
+            end
+        })
+
+        self:Motion(0.2, {
+            Target = {textColor = self.baseTextColorTarget},
+            Easing = "OutQuad",
+            Think = function(this)
+                self:SetTextColor(self.textColor)
+            end
+        })
+
+        self:Motion(0.2, {
+            Target = {textInsetX = ScreenScale(8), textInsetY = 0},
+            Easing = "OutQuad",
+            Think = function(this)
+                self:SetTextInset(self.textInsetX, self.textInsetY)
+            end
+        })
+
+        self:Motion(0.2, {
+            Target = {inertia = 1},
+            Easing = "OutQuad",
+            Think = function(this)
+                self:SetInertia(self.inertia)
+            end
+        })
+
+        if ( self.OnHovered ) then
+            self:OnHovered()
+        end
+    elseif ( !hovering and self.wasHovered ) then
         self:SetFont("parallax.button")
+        self.wasHovered = false
 
-        self.heightTarget = self.baseHeight
-        self.textColorTarget = self.baseTextColor or ax.color:Get("white")
-        self.textInsetTarget = {ScreenScale(2), 0}
+        self:Motion(0.2, {
+            Target = {height = self.baseHeight},
+            Easing = "OutQuad",
+            Think = function(this)
+                self:SetTall(self.height)
+            end
+        })
 
-        self.inertiaTarget = 0
+        self:Motion(0.2, {
+            Target = {textColor = self.baseTextColor or ax.color:Get("white")},
+            Easing = "OutQuad",
+            Think = function(this)
+                self:SetTextColor(self.textColor)
+            end
+        })
+
+        self:Motion(0.2, {
+            Target = {textInsetX = ScreenScale(2), textInsetY = 0},
+            Easing = "OutQuad",
+            Think = function(this)
+                self:SetTextInset(self.textInsetX, self.textInsetY)
+            end
+        })
+
+        self:Motion(0.2, {
+            Target = {inertia = 0},
+            Easing = "OutQuad",
+            Think = function(this)
+                self:SetInertia(self.inertia)
+            end
+        })
 
         if ( self.OnUnHovered ) then
             self:OnUnHovered()
         end
     end
 
-    self:SetTall(self.height)
-    self:SetTextColor(self.textColor)
-    self:SetTextInset(self.textInset[1], self.textInset[2])
-
     if ( self.OnThink ) then
         self:OnThink()
-    end
-end
-
-function PANEL:OnCursorEntered()
-    surface.PlaySound("ax.button.enter")
-
-    self:SetFont("parallax.button.hover")
-
-    self.heightTarget = self.baseHeight * 1.25
-    self.textColorTarget = ax.config:Get("color.schema")
-    self.textInsetTarget = {ScreenScale(8), 0}
-
-    self.inertiaTarget = 1
-
-    if ( self.OnHovered ) then
-        self:OnHovered()
     end
 end
 
@@ -161,17 +200,12 @@ function PANEL:Init()
 
     self.backgroundAlphaHovered = 1
     self.backgroundAlphaUnHovered = 0
-
-    self.inertia = 0
-    self.inertiaTarget = 0
-
+    self.backgroundColor = ax.color:Get("white")
     self.baseHeight = self:GetTall()
     self.baseTextColor = self:GetTextColor()
-
     self.baseTextColorTarget = ax.color:Get("black")
-    self.textColorTarget = ax.color:Get("black")
-
-    self.backgroundColor = ax.color:Get("white")
+    self.inertia = 0
+    self.wasHovered = false
 end
 
 function PANEL:SizeToContents()
@@ -189,45 +223,66 @@ function PANEL:Paint(width, height)
         time = 1
     end
 
-    self.inertia = Lerp(time, self.inertia, self.inertiaTarget)
-    self.textColor = self.textColor:Lerp(self.textColorTarget, time)
+    local inertia = self.inertia
 
-    draw.RoundedBox(0, 0, 0, width, height, ColorAlpha(self.backgroundColor, 255 * self.inertia))
+    draw.RoundedBox(0, 0, 0, width, height, ColorAlpha(self.backgroundColor, 255 * inertia))
 
     return false
 end
 
 function PANEL:Think()
-    if ( !self:IsHovered() and ( self.textColorTarget != self.baseTextColor ) ) then
+    local hovering = self:IsHovered()
+    if ( hovering and !self.wasHovered ) then
+        surface.PlaySound("ax.button.enter")
+        self:SetFont("parallax.button.small.hover")
+        self.wasHovered = true
+
+        self:Motion(0.2, {
+            Target = {textColor = self.baseTextColorTarget},
+            Easing = "OutQuad",
+            Think = function(this)
+                self:SetTextColor(self.textColor)
+            end
+        })
+
+        self:Motion(0.2, {
+            Target = {inertia = self.backgroundAlphaHovered or 1},
+            Easing = "OutQuad",
+            Think = function(this)
+                self:SetInertia(self.inertia)
+            end
+        })
+
+        if ( self.OnHovered ) then
+            self:OnHovered()
+        end
+    elseif ( !hovering and self.wasHovered ) then
         self:SetFont("parallax.button.small")
+        self.wasHovered = false
 
-        self.textColorTarget = self.baseTextColor or ax.color:Get("white")
+        self:Motion(0.2, {
+            Target = {textColor = self.baseTextColor or ax.color:Get("white")},
+            Easing = "OutQuad",
+            Think = function(this)
+                self:SetTextColor(self.textColor)
+            end
+        })
 
-        self.inertiaTarget = self.backgroundAlphaUnHovered or 0
+        self:Motion(0.2, {
+            Target = {inertia = self.backgroundAlphaUnHovered or 0},
+            Easing = "OutQuad",
+            Think = function(this)
+                self:SetInertia(self.inertia)
+            end
+        })
 
         if ( self.OnUnHovered ) then
             self:OnUnHovered()
         end
     end
 
-    self:SetTextColor(self.textColor)
-
     if ( self.OnThink ) then
         self:OnThink()
-    end
-end
-
-function PANEL:OnCursorEntered()
-    surface.PlaySound("ax.button.enter")
-
-    self:SetFont("parallax.button.small.hover")
-
-    self.textColorTarget = self.baseTextColorTarget or ax.color:Get("black")
-
-    self.inertiaTarget = self.backgroundAlphaHovered or 1
-
-    if ( self.OnHovered ) then
-        self:OnHovered()
     end
 end
 
