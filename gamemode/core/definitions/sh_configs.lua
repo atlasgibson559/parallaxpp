@@ -452,5 +452,4 @@ ax.config:Register("restorepos", {
     Description = "config.restorepos.help",
     Type = ax.types.bool,
     Default = true,
-    Category = "category.characters"
 })
