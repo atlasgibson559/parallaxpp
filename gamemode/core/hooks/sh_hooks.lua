@@ -63,9 +63,28 @@ end
 
 function GM:PreOptionChanged(client, key, value)
     local stored = ax.option.stored[key]
-    if ( ax.util:DetectType(value) != stored.Type ) then
-        ax.util:PrintError("Attempted to set option \"" .. key .. "\" with invalid type!")
+    if ( !istable(stored) ) then
+        ax.util:PrintError("Attempted to set unknown option \"" .. key .. "\"!")
         return false
+    end
+
+    if ( stored.Type == ax.types.array ) then
+        local populate = stored.Populate
+        if ( isfunction(populate) ) then
+            local options = populate()
+            if ( !istable(options) or !options[value] ) then
+                ax.util:PrintError("Attempted to set option \"" .. key .. "\" with invalid value!")
+                return false
+            end
+        elseif ( !istable(stored.Values) or !stored.Values[value] ) then
+            ax.util:PrintError("Attempted to set option \"" .. key .. "\" with invalid value!")
+            return false
+        end
+    else
+        if ( ax.util:DetectType(value) != stored.Type ) then
+            ax.util:PrintError("Attempted to set option \"" .. key .. "\" with invalid type!")
+            return false
+        end
     end
 
     if ( isnumber(value) ) then
