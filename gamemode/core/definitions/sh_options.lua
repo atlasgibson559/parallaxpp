@@ -76,9 +76,92 @@ ax.option:Register("inventory.sort", {
     end
 })
 
-ax.option:Register("vignette", {
-    Name = "options.vignette",
-    Description = "options.vignette.help",
+ax.option:Register("hud.crosshair", {
+    Name = "options.hud.crosshair",
+    Description = "options.hud.crosshair.help",
+    Category = "category.hud",
+    SubCategory = "category.crosshair",
+    Type = ax.types.bool,
+    Default = true,
+    NoNetworking = true
+})
+
+ax.option:Register("hud.crosshair.color", {
+    Name = "options.hud.crosshair.color",
+    Description = "options.hud.crosshair.color.help",
+    Category = "category.hud",
+    SubCategory = "category.crosshair",
+    Type = ax.types.color,
+    Default = Color(255, 255, 255, 255),
+    NoNetworking = true
+})
+
+ax.option:Register("hud.crosshair.size", {
+    Name = "options.hud.crosshair.size",
+    Description = "options.hud.crosshair.size.help",
+    Category = "category.hud",
+    SubCategory = "category.crosshair",
+    Type = ax.types.number,
+    Default = 1,
+    NoNetworking = true,
+    Min = 0.1,
+    Max = 5,
+    Decimals = 1
+})
+
+ax.option:Register("hud.crosshair.thickness", {
+    Name = "options.hud.crosshair.thickness",
+    Description = "options.hud.crosshair.thickness.help",
+    Category = "category.hud",
+    SubCategory = "category.crosshair",
+    Type = ax.types.number,
+    Default = 1,
+    NoNetworking = true,
+    Min = 1,
+    Max = 5,
+    Decimals = 1
+})
+
+ax.option:Register("hud.crosshair.type", {
+    Name = "options.hud.crosshair.type",
+    Description = "options.hud.crosshair.type.help",
+    Category = "category.hud",
+    SubCategory = "category.crosshair",
+    Type = ax.types.array,
+    Default = "default",
+    NoNetworking = true,
+    Populate = function()
+        return {
+            ["default"] = "Default",
+            ["dot"] = "Dot",
+            ["circle"] = "Circle",
+            ["cross"] = "Cross"
+        }
+    end
+})
+
+ax.option:Register("hud.health.bar", {
+    Name = "options.hud.health.bar",
+    Description = "options.hud.health.bar.help",
+    Category = "category.hud",
+    Type = ax.types.bool,
+    Default = true,
+    NoNetworking = true
+})
+
+ax.option:Register("hud.health.bar.always", {
+    Name = "options.hud.health.bar.always",
+    Description = "options.hud.health.bar.always.help",
+    Category = "category.hud",
+    Type = ax.types.bool,
+    Default = false,
+    NoNetworking = true
+})
+
+ax.option:Register("hud.vignette", {
+    Name = "options.hud.vignette",
+    Description = "options.hud.vignette.help",
+    Category = "category.hud",
     Type = ax.types.bool,
     Default = true,
     NoNetworking = true

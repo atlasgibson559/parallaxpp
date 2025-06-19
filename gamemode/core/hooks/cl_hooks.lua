@@ -362,6 +362,29 @@ function GM:HUDPaint()
         draw.SimpleText("This is not the final product.", "parallax.developer", x, y + 16 * 2, red, TEXT_ALIGN_LEFT)
     end
 
+    shouldDraw = hook.Run("ShouldDrawCrosshair")
+    if ( shouldDraw != false and ax.option:Get("hud.crosshair", true) ) then
+        local crosshairColor = ax.option:Get("hud.crosshair.color", Color(255, 255, 255, 255))
+        local crosshairSize = ax.option:Get("hud.crosshair.size", 1)
+        local crosshairThickness = ax.option:Get("hud.crosshair.thickness", 1)
+        local crosshairType = ax.option:Get("hud.crosshair.type", "default")
+
+        local centerX, centerY = scrW / 2, scrH / 2
+        local size = ScreenScale(8) * crosshairSize
+
+        if ( crosshairType == "default" ) then
+            surface.SetDrawColor(crosshairColor)
+            surface.DrawRect(centerX - size / 2, centerY - crosshairThickness / 2, size, crosshairThickness)
+            surface.DrawRect(centerX - crosshairThickness / 2, centerY - size / 2, crosshairThickness, size)
+        elseif ( crosshairType == "dot" ) then
+            surface.SetDrawColor(crosshairColor)
+            surface.DrawRect(centerX - size / 2, centerY - size / 2, size, size)
+        elseif ( crosshairType == "circle" ) then
+            surface.SetDrawColor(crosshairColor)
+            surface.DrawCircle(centerX, centerY, size / 2)
+        end
+    end
+
     shouldDraw = hook.Run("ShouldDrawAmmoBox")
     if ( shouldDraw != nil and shouldDraw != false ) then
         local activeWeapon = client:GetActiveWeapon()
@@ -379,13 +402,17 @@ function GM:HUDPaint()
         local healthFraction = client:Health() / client:GetMaxHealth()
         healthLerp = Lerp(ft * 5, healthLerp, healthFraction)
 
-        if ( healthLast != healthFraction ) then
-            healthTime = CurTime() + 10
-            healthLast = healthFraction
-        elseif ( healthTime < CurTime() ) then
-            healthAlpha = Lerp(ft * 2, healthAlpha, 0)
-        elseif ( healthAlpha < 255 ) then
-            healthAlpha = Lerp(ft * 8, healthAlpha, 255)
+        if ( ax.option:Get("hud.health.bar.always", false) ) then
+            healthAlpha = 255
+        else
+            if ( healthLast != healthFraction ) then
+                healthTime = CurTime() + 10
+                healthLast = healthFraction
+            elseif ( healthTime < CurTime() ) then
+                healthAlpha = Lerp(ft * 2, healthAlpha, 0)
+            elseif ( healthAlpha < 255 ) then
+                healthAlpha = Lerp(ft * 8, healthAlpha, 255)
+            end
         end
 
         if ( math.Round(healthAlpha) > 0 and healthLerp > 0 ) then
@@ -770,7 +797,7 @@ function GM:ShouldDrawHealthBar()
     local client = ax.client
     if ( !IsValid(client) or !client:Alive() ) then return false end
 
-    return true
+    return ax.option:Get("hud.health.bar", true)
 end
 
 function GM:ShouldDrawDebugHUD()
@@ -791,9 +818,8 @@ end
 
 function GM:ShouldDrawVignette()
     if ( IsValid(ax.gui.mainmenu) ) then return false end
-    if ( !ax.option:Get("vignette", true) ) then return false end
 
-    return true
+    return ax.option:Get("hud.vignette", true)
 end
 
 function GM:ShouldDrawDefaultVignette()
