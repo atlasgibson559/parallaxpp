@@ -289,7 +289,10 @@ end
 
 local padding = 16
 local backgroundColor = Color(10, 10, 10, 220)
-
+local healthLerp = 0
+local healthAlpha = 0
+local healthTime = 0
+local healthLast = 0
 function GM:HUDPaint()
     local client = ax.client
     if ( !IsValid(client) ) then return end
@@ -299,6 +302,8 @@ function GM:HUDPaint()
 
     local x, y = 24, 24
     local scrW, scrH = ScrW(), ScrH()
+    local ft = FrameTime()
+
     shouldDraw = hook.Run("ShouldDrawDebugHUD")
     if ( shouldDraw != false ) then
         local green = ax.config:Get("color.framework")
@@ -322,7 +327,7 @@ function GM:HUDPaint()
         draw.SimpleText("Health: " .. client:Health(), "parallax.developer", x, y + 16 * 3, green, TEXT_ALIGN_LEFT)
         draw.SimpleText("Ping: " .. client:Ping(), "parallax.developer", x, y + 16 * 4, green, TEXT_ALIGN_LEFT)
 
-        local fps = math.floor(1 / FrameTime())
+        local fps = math.floor(1 / ft)
         draw.SimpleText("FPS: " .. fps, "parallax.developer", x, y + 16 * 5, green, TEXT_ALIGN_LEFT)
 
         if ( character ) then
@@ -367,6 +372,38 @@ function GM:HUDPaint()
         local ammoText = clip .. " / " .. ammo
 
         draw.SimpleTextOutlined(ammoText, "parallax.bold", scrW - 16, scrH - 16, ax.color:Get("white"), TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, ax.color:Get("black"))
+    end
+
+    shouldDraw = hook.Run("ShouldDrawHealthBar")
+    if ( shouldDraw != nil and shouldDraw != false ) then
+        local healthFraction = client:Health() / client:GetMaxHealth()
+        healthLerp = Lerp(ft * 5, healthLerp, healthFraction)
+
+        if ( healthLast != healthFraction ) then
+            healthTime = CurTime() + 10
+            healthLast = healthFraction
+        elseif ( healthTime < CurTime() ) then
+            healthAlpha = Lerp(ft * 2, healthAlpha, 0)
+        elseif ( healthAlpha < 255 ) then
+            healthAlpha = Lerp(ft * 8, healthAlpha, 255)
+        end
+
+        if ( math.Round(healthAlpha) > 0 and healthLerp > 0 ) then
+            local barWidth, barHeight = scrW / 6, ScreenScale(4)
+            local barX, barY = scrW / 2 - barWidth / 2, scrH / 1.025 - barHeight / 2
+
+            if ( ax.globals.drawingStamina ) then
+                barY = barY - barHeight - padding
+            end
+
+            ax.util:DrawBlurRect(barX, barY, barWidth, barHeight, 2, nil, healthAlpha)
+
+            surface.SetDrawColor(ColorAlpha(ax.color:Get("background.transparent"), healthAlpha / 2))
+            surface.DrawRect(barX, barY, barWidth, barHeight)
+
+            surface.SetDrawColor(ColorAlpha(ax.color:Get("red.soft"), healthAlpha))
+            surface.DrawRect(barX, barY, barWidth * healthLerp, barHeight)
+        end
     end
 
     hook.Run("PostHUDPaint")
@@ -722,6 +759,16 @@ function GM:ShouldDrawAmmoBox()
     if ( IsValid(viewEntity) and viewEntity != client ) then
         return false
     end
+
+    return true
+end
+
+function GM:ShouldDrawHealthBar()
+    if ( IsValid(ax.gui.mainmenu) ) then return false end
+    if ( IsValid(ax.gui.tab) ) then return false end
+
+    local client = ax.client
+    if ( !IsValid(client) or !client:Alive() ) then return false end
 
     return true
 end
