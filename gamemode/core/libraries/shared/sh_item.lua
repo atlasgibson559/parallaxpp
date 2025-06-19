@@ -66,8 +66,6 @@ function ax.item:Load(path)
 
                 local mergeTable = table.Copy(baseTable)
                 ITEM = table.Merge(mergeTable, ITEM)
-
-                PrintTable(ITEM)
             else
                 ax.util:PrintError("Item base '" .. ITEM.Base .. "' not found for item '" .. ITEM.UniqueID .. "'.")
             end
