@@ -169,7 +169,7 @@ function PANEL:PopulateDelete(characterID)
     local confirmation = self:Add("ax.text")
     confirmation:Dock(TOP)
     confirmation:DockMargin(padding, smallPadding, 0, 0)
-    confirmation:SetFont("parallax.large.hover")
+    confirmation:SetFont("parallax.large.bold")
     confirmation:SetText("mainmenu.delete.character.confirm")
 
     local navigation = self:Add("EditablePanel")
