@@ -31,8 +31,6 @@ AccessorFunc(PANEL, "gradientRightTarget", "GradientRightTarget", FORCE_NUMBER)
 AccessorFunc(PANEL, "gradientTopTarget", "GradientTopTarget", FORCE_NUMBER)
 AccessorFunc(PANEL, "gradientBottomTarget", "GradientBottomTarget", FORCE_NUMBER)
 
-AccessorFunc(PANEL, "fadeStart", "FadeStart", FORCE_NUMBER)
-
 AccessorFunc(PANEL, "anchorTime", "AnchorTime", FORCE_NUMBER)
 AccessorFunc(PANEL, "anchorEnabled", "AnchorEnabled", FORCE_BOOL)
 
@@ -54,6 +52,10 @@ function PANEL:Init()
         system.FlashWindow()
     end
 
+    self.alpha = 0
+    self:SetAlpha(0)
+    self.closing = false
+
     self.gradientLeft = 0
     self.gradientRight = 0
     self.gradientTop = 0
@@ -64,8 +66,6 @@ function PANEL:Init()
     self.gradientTopTarget = 0
     self.gradientBottomTarget = 0
 
-    self.fadeStart = CurTime()
-
     self.anchorTime = CurTime() + ax.option:Get("tab.anchor.time", 0.4)
     self.anchorEnabled = true
 
@@ -73,19 +73,50 @@ function PANEL:Init()
     self:SetPos(0, 0)
     self:MakePopup()
 
+    self:Animate(ax.option:Get("tab.fade.time", 0.2), {
+        Target = {alpha = 255},
+        Easing = "OutQuad",
+        Think = function(this)
+            self:SetAlpha(this.alpha)
+        end
+    })
+
     self.buttons = self:Add("EditablePanel")
     self.buttons:SetSize(ScrW() / 4 - paddingSmall, ScrH() - padding)
     self.buttons:SetPos(-self.buttons:GetWide(), paddingSmall)
-    self.buttons.pos = {self.buttons:GetX(), self.buttons:GetY()}
-    self.buttons.posTarget = {paddingTiny, paddingSmall}
+
+    self.buttons.x = self.buttons:GetX()
+    self.buttons.y = self.buttons:GetY()
+
+    self.buttons.alpha = 0
+    self.buttons:SetAlpha(0)
+    self.buttons:Animate(ax.option:Get("tab.fade.time", 0.2), {
+        Target = {x = paddingTiny, y = paddingSmall, alpha = 255},
+        Easing = "OutQuad",
+        Think = function(vars)
+            self.buttons:SetPos(vars.x, vars.y)
+            self.buttons:SetAlpha(vars.alpha)
+        end
+    })
 
     local buttonSizeable = self.buttons:Add("EditablePanel")
 
     self.container = self:Add("EditablePanel")
     self.container:SetSize(self:GetWide() - self.buttons:GetWide() - padding - paddingSmall, self:GetTall() - padding)
     self.container:SetPos(self:GetWide(), paddingSmall)
-    self.container.pos = {self.container:GetX(), self.container:GetY()}
-    self.container.posTarget = {self:GetWide() - self.container:GetWide() - paddingTiny, paddingSmall}
+
+    self.container.x = self.container:GetX()
+    self.container.y = self.container:GetY()
+
+    self.container.alpha = 0
+    self.container:SetAlpha(0)
+    self.container:Animate(ax.option:Get("tab.fade.time", 0.2), {
+        Target = {x = self:GetWide() - self.container:GetWide() - paddingTiny, y = paddingSmall, alpha = 255},
+        Easing = "OutQuad",
+        Think = function(this)
+            self.container:SetAlpha(this.alpha)
+        end
+    })
 
     local buttons = {}
     hook.Run("PopulateTabButtons", buttons)
@@ -152,6 +183,12 @@ function PANEL:Populate(data)
 end
 
 function PANEL:Close(callback)
+    if ( self.closing ) then
+        return
+    end
+
+    self.closing = true
+
     self:SetMouseInputEnabled(false)
     self:SetKeyboardInputEnabled(false)
 
@@ -170,11 +207,38 @@ function PANEL:Close(callback)
         end
     end)
 
-    self:SetFadeStart(CurTime())
-    self.buttons.posTarget = {-self.buttons:GetWide() * 2, paddingSmall}
-    self.container.posTarget = {self:GetWide() * 2, paddingSmall}
-    self.buttons:AlphaTo(0, fadeDuration / 2, 0)
-    self.container:AlphaTo(0, fadeDuration / 2, 0)
+    self.buttons:Animate(fadeDuration, {
+        Target = {x = -self.buttons:GetWide() * 2, y = paddingSmall, alpha = 0},
+        Easing = "OutQuad",
+        Think = function(this)
+            self.buttons:SetPos(this.x, this.y)
+            self.buttons:SetAlpha(this.alpha)
+        end
+    })
+
+    self.container:Animate(fadeDuration, {
+        Target = {x = self:GetWide() * 2, y = paddingSmall, alpha = 0},
+        Easing = "OutQuad",
+        Think = function(this)
+            self.container:SetAlpha(this.alpha)
+            self.container:SetPos(this.x, this.y)
+        end
+    })
+
+    self:Animate(fadeDuration, {
+        Target = {alpha = 0},
+        Easing = "OutQuad",
+        Think = function(this)
+            self:SetAlpha(this.alpha)
+        end,
+        OnComplete = function()
+            if ( callback ) then
+                callback()
+            end
+
+            self:Remove()
+        end
+    })
 end
 
 function PANEL:OnKeyCodePressed(keyCode)
@@ -196,9 +260,6 @@ function PANEL:Think()
     if ( ( !bHoldingTab and !self.anchorEnabled ) or gui.IsGameUIVisible() ) then
         self:Close()
     end
-
-    self.buttons:SetPos(self.buttons.pos[1], self.buttons.pos[2])
-    self.container:SetPos(self.container.pos[1], self.container.pos[2])
 end
 
 function PANEL:Paint(width, height)
@@ -217,14 +278,6 @@ function PANEL:Paint(width, height)
     self:SetGradientRight(Lerp(time, self:GetGradientRight(), self:GetGradientRightTarget()))
     self:SetGradientTop(Lerp(time, self:GetGradientTop(), self:GetGradientTopTarget()))
     self:SetGradientBottom(Lerp(time, self:GetGradientBottom(), self:GetGradientBottomTarget()))
-
-    local fadeDuration = ax.option:Get("tab.fade.time", 0.2)
-    local fadeProgress = ( CurTime() - self.fadeStart ) / fadeDuration
-
-    self.buttons.pos[1] = Lerp(fadeProgress, self.buttons.pos[1], self.buttons.posTarget[1])
-    self.buttons.pos[2] = Lerp(fadeProgress, self.buttons.pos[2], self.buttons.posTarget[2])
-    self.container.pos[1] = Lerp(fadeProgress, self.container.pos[1], self.container.posTarget[1])
-    self.container.pos[2] = Lerp(fadeProgress, self.container.pos[2], self.container.posTarget[2])
 
     surface.SetDrawColor(0, 0, 0, 255 * self:GetGradientLeft())
     surface.SetMaterial(gradientLeft)
