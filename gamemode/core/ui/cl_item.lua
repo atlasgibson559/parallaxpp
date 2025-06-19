@@ -17,29 +17,21 @@ AccessorFunc(PANEL, "id", "ID", FORCE_NUMBER)
 
 function PANEL:Init()
     self:SetText("")
-    self:SetTall(ScreenScale(16))
+    self:SetContentAlignment(4)
 
     self.id = 0
 
     self.icon = self:Add("DModelPanel")
     self.icon:Dock(LEFT)
-    self.icon:DockMargin(0, 0, ScreenScale(4), 0)
-    self.icon:SetSize(self:GetTall(), self:GetTall())
     self.icon:SetMouseInputEnabled(false)
     self.icon.LayoutEntity = function(this, entity)
         -- Disable the rotation of the model
         -- Do not set this to nil, it will spew out errors
     end
 
-    self.name = self:Add("ax.text")
-    self.name:Dock(FILL)
-    self.name:SetFont("parallax.large")
-    self.name:SetContentAlignment(4)
-    self.name:SetMouseInputEnabled(false)
-
     self.weight = self:Add("ax.text")
     self.weight:Dock(RIGHT)
-    self.weight:DockMargin(0, 0, ScreenScale(4), 0)
+    self.weight:DockMargin(0, 0, ScreenScale(2), 0)
     self.weight:SetFont("parallax")
     self.weight:SetContentAlignment(6)
     self.weight:SetWide(ScreenScale(64))
@@ -48,10 +40,14 @@ end
 
 function PANEL:SetCount(count)
     if ( count and count > 1 ) then
-        self.name:SetText(self.item:GetName() .. " (" .. count .. "x)", true)
+        self:SetText(self.item:GetName() .. " (" .. count .. "x)")
     else
-        self.name:SetText(self.item:GetName(), true)
+        self:SetText(self.item:GetName())
     end
+
+    self:SetTall(self:GetTall() / 1.5)
+    self:SetTextInset(self:GetTall() + ScreenScale(2), 0)
+    self.icon:SetSize(self:GetTall(), self:GetTall())
 end
 
 function PANEL:SetItem(id)
@@ -63,9 +59,13 @@ function PANEL:SetItem(id)
 
     self.item = item
 
+    self:SetText(item:GetName())
+    self:SetTall(self:GetTall() / 1.5)
+    self:SetTextInset(self:GetTall() + ScreenScale(2), 0)
+    self.icon:SetSize(self:GetTall(), self:GetTall())
+
     self.icon:SetModel(item:GetModel())
     self.icon:SetSkin(item:GetSkin())
-    self.name:SetText(item:GetName(), true)
     self.weight:SetText(item:GetWeight() .. "kg", true, true)
 
     local entity = self.icon:GetEntity()
@@ -120,7 +120,6 @@ end
 function PANEL:Think()
     BaseClass.Think(self)
 
-    self.name:SetTextColor(self:GetTextColor())
     self.weight:SetTextColor(self:GetTextColor())
 end
 
