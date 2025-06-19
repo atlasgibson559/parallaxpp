@@ -128,7 +128,7 @@ ax.option:Register("hud.crosshair.type", {
     Category = "category.hud",
     SubCategory = "category.crosshair",
     Type = ax.types.array,
-    Default = "default",
+    Default = "cross",
     NoNetworking = true,
     Populate = function()
         return {

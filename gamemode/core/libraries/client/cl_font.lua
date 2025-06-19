@@ -22,7 +22,7 @@ surface.CreateFontInternal = surface.CreateFontInternal or surface.CreateFont
 -- @string name The name of the font.
 -- @tab data The font data.
 function surface.CreateFont(name, data)
-    if ( string.sub(name, 1, 2) == "ax" ) then
+    if ( string.sub(name, 1, 8) == "parallax" ) then
         ax.font.stored[name] = data
     end
 
