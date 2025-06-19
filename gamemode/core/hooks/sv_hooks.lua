@@ -287,10 +287,10 @@ function GM:OnReloaded()
     ax.module:LoadFolder("parallax/modules")
     ax.schema:Initialize()
 
+    ax.util:Print("Core reloaded in " .. math.Round(SysTime() - GM.RefreshTimeStart, 2) .. " seconds.")
+
     ax.config:Synchronize()
     ax.util:VerifyVersion()
-
-    ax.util:Print("Core reloaded in " .. math.Round(SysTime() - GM.RefreshTimeStart, 2) .. " seconds.")
 end
 
 function GM:DatabaseConnected()

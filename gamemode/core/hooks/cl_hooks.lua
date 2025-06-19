@@ -149,8 +149,8 @@ function GM:OnReloaded()
     ax.schema:Initialize()
     ax.option:Load()
 
-    hook.Run("LoadFonts")
     ax.util:Print("Core reloaded in " .. math.Round(SysTime() - GM.RefreshTimeStart, 2) .. " seconds.")
+    hook.Run("LoadFonts")
 end
 
 function GM:InitPostEntity()
