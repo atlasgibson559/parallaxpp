@@ -528,35 +528,35 @@ function GM:LoadFonts()
     surface.CreateFont("parallax.tiny", {
         font = "GorDIN Regular",
         size = scale4,
-        weight = 500,
+        weight = 700,
         antialias = true
     })
 
     surface.CreateFont("parallax.tiny.bold", {
         font = "GorDIN Bold",
         size = scale4,
-        weight = 700,
+        weight = 900,
         antialias = true
     })
 
     surface.CreateFont("parallax.small", {
         font = "GorDIN Regular",
         size = scale6,
-        weight = 500,
+        weight = 700,
         antialias = true
     })
 
     surface.CreateFont("parallax.small.bold", {
         font = "GorDIN Bold",
         size = scale6,
-        weight = 700,
+        weight = 900,
         antialias = true
     })
 
     surface.CreateFont("parallax.small.italic", {
         font = "GorDIN Regular",
         size = scale6,
-        weight = 500,
+        weight = 700,
         italic = true,
         antialias = true
     })
@@ -564,7 +564,7 @@ function GM:LoadFonts()
     surface.CreateFont("parallax.small.italic.bold", {
         font = "GorDIN Bold",
         size = scale6,
-        weight = 700,
+        weight = 900,
         italic = true,
         antialias = true
     })
@@ -572,21 +572,21 @@ function GM:LoadFonts()
     surface.CreateFont("parallax", {
         font = "GorDIN Regular",
         size = scale8,
-        weight = 500,
+        weight = 700,
         antialias = true
     })
 
     surface.CreateFont("parallax.bold", {
         font = "GorDIN Bold",
         size = scale8,
-        weight = 700,
+        weight = 900,
         antialias = true
     })
 
     surface.CreateFont("parallax.italic", {
         font = "GorDIN Regular",
-        size = ScreenScale(8),
-        weight = 500,
+        size = scale8,
+        weight = 700,
         italic = true,
         antialias = true
     })
@@ -594,67 +594,67 @@ function GM:LoadFonts()
     surface.CreateFont("parallax.italic.bold", {
         font = "GorDIN Bold",
         size = scale8,
-        weight = 700,
+        weight = 900,
         italic = true,
         antialias = true
     })
 
     surface.CreateFont("parallax.large", {
         font = "GorDIN Regular",
-        size = ScreenScale(10),
-        weight = 500,
+        size = scale12,
+        weight = 700,
         antialias = true
     })
 
     surface.CreateFont("parallax.large.bold", {
         font = "GorDIN Bold",
-        size = scale10,
-        weight = 700,
+        size = scale12,
+        weight = 900,
         antialias = true
     })
 
     surface.CreateFont("parallax.large.italic", {
         font = "GorDIN Regular",
-        size = ScreenScale(10),
-        weight = 500,
+        size = scale12,
+        weight = 700,
         italic = true,
         antialias = true
     })
 
     surface.CreateFont("parallax.large.italic.bold", {
         font = "GorDIN Bold",
-        size = scale10,
-        weight = 700,
+        size = scale12,
+        weight = 900,
         italic = true,
         antialias = true
     })
 
     surface.CreateFont("parallax.huge", {
         font = "GorDIN Regular",
-        size = scale12,
-        weight = 500,
+        size = scale16,
+        weight = 700,
         antialias = true
     })
 
     surface.CreateFont("parallax.huge.bold", {
         font = "GorDIN Bold",
-        size = scale12,
-        weight = 700,
+        size = scale16,
+        weight = 900,
         antialias = true
     })
 
     surface.CreateFont("parallax.huge.italic", {
         font = "GorDIN",
-        size = scale12,
-        weight = 500,
+        size = scale16,
+        weight = 700,
         italic = true,
         antialias = true
     })
 
     surface.CreateFont("parallax.huge.italic.bold", {
         font = "GorDIN Bold",
-        size = scale12,
-        weight = 700,
+        size = scale16,
+        weight = 900,
         italic = true,
         antialias = true
     })
@@ -662,84 +662,84 @@ function GM:LoadFonts()
     surface.CreateFont("parallax.button.large", {
         font = "GorDIN SemiBold",
         size = scale20,
-        weight = 600,
+        weight = 700,
         antialias = true
     })
 
     surface.CreateFont("parallax.button.large.hover", {
         font = "GorDIN Bold",
         size = scale20,
-        weight = 700,
+        weight = 900,
         antialias = true
     })
 
     surface.CreateFont("parallax.button", {
         font = "GorDIN SemiBold",
         size = scale16,
-        weight = 600,
+        weight = 700,
         antialias = true
     })
 
     surface.CreateFont("parallax.button.hover", {
         font = "GorDIN Bold",
         size = scale16,
-        weight = 700,
+        weight = 900,
         antialias = true
     })
 
     surface.CreateFont("parallax.button.small", {
         font = "GorDIN SemiBold",
         size = scale12,
-        weight = 600,
+        weight = 700,
         antialias = true
     })
 
     surface.CreateFont("parallax.button.small.hover", {
         font = "GorDIN Bold",
         size = scale12,
-        weight = 700,
+        weight = 900,
         antialias = true
     })
 
     surface.CreateFont("parallax.button.tiny", {
         font = "GorDIN SemiBold",
         size = scale10,
-        weight = 600,
+        weight = 700,
         antialias = true
     })
 
     surface.CreateFont("parallax.button.tiny.hover", {
         font = "GorDIN Bold",
         size = scale10,
-        weight = 700,
+        weight = 900,
         antialias = true
     })
 
     surface.CreateFont("parallax.title", {
         font = "GorDIN Bold",
         size = scale32,
-        weight = 700,
+        weight = 900,
         antialias = true,
     })
 
     surface.CreateFont("parallax.subtitle", {
         font = "GorDIN SemiBold",
         size = scale16,
-        weight = 600,
+        weight = 700,
         antialias = true,
     })
 
     surface.CreateFont("parallax.developer", {
         font = "Courier New",
         size = 16,
-        weight = 500,
+        weight = 700,
         antialias = true
     })
 
     surface.CreateFont("parallax.chat", {
         font = "GorDIN Regular",
         size = ScreenScale(8) * ax.option:Get("chat.size.font", 1),
-        weight = 500,
+        weight = 700,
         antialias = true
     })
 
