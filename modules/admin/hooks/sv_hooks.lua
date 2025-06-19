@@ -52,13 +52,13 @@ function MODULE:SaveData()
 end
 
 function MODULE:PlayerSpawnNPC(client, npcType, weapon)
-    return client:HasPermission("Parallax - Spawn NPCs")
+    return CAMI.PlayerHasAccess(client, "Parallax - Spawn NPCs", nil)
 end
 
 function MODULE:PlayerSpawnSWEP(client, weapon, swepTable)
-    return client:HasPermission("Parallax - Spawn Weapons")
+    return CAMI.PlayerHasAccess(client, "Parallax - Spawn Weapons", nil)
 end
 
 function MODULE:PlayerGiveSWEP(client, weapon, spawnInfo)
-    return client:HasPermission("Parallax - Spawn Weapons")
+    return CAMI.PlayerHasAccess(client, "Parallax - Spawn Weapons", nil)
 end
