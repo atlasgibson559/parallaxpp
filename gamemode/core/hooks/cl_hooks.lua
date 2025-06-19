@@ -391,7 +391,7 @@ function GM:HUDPaint()
             surface.SetDrawColor(crosshairColor)
             surface.DrawRect(centerX - size / 2, centerY - size / 2, size, size)
         elseif ( crosshairType == "circle" ) then
-            ax.util:DrawCircle(centerX, centerY, size / 2, 32, crosshairColor)
+            ax.util:DrawCircleScaled(centerX, centerY, size / 2, 32, crosshairColor)
         else
             ax.util:PrintError("Unknown crosshair type: " .. crosshairType)
             ax.option:Reset("hud.crosshair.type")
