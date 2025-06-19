@@ -383,16 +383,17 @@ function GM:HUDPaint()
 
         local size = ScreenScale(8) * crosshairSize
 
-        if ( crosshairType == "default" or crosshairType == "cross" ) then
+        if ( crosshairType == "cross" ) then
             surface.SetDrawColor(crosshairColor)
             surface.DrawRect(centerX - size / 2, centerY - crosshairThickness / 2, size, crosshairThickness)
             surface.DrawRect(centerX - crosshairThickness / 2, centerY - size / 2, crosshairThickness, size)
-        elseif ( crosshairType == "dot" ) then
+        elseif ( crosshairType == "rectangle" ) then
             surface.SetDrawColor(crosshairColor)
             surface.DrawRect(centerX - size / 2, centerY - size / 2, size, size)
         elseif ( crosshairType == "circle" ) then
-            surface.SetDrawColor(crosshairColor)
-            surface.DrawCircle(centerX, centerY, size / 2)
+            ax.util:DrawCircle(centerX, centerY, size / 2, 32, crosshairColor)
+        else
+            ax.util:PrintError("Unknown crosshair type: " .. crosshairType)
         end
     end
 

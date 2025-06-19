@@ -1009,6 +1009,30 @@ if ( CLIENT ) then
             surface.DrawTexturedRectUV(x, y, width, height, u0, v0, u1, v1)
         end
     end
+
+    --- Draws a filled circle using surface.DrawPoly
+    -- @param x number X position of the center
+    -- @param y number Y position of the center
+    -- @param radius number Radius of the circle
+    -- @param segments number Number of segments (more = smoother)
+    -- @param color table Color to fill the circle
+    function ax.util:DrawCircle(x, y, radius, segments, color)
+        surface.SetDrawColor(color.r, color.g, color.b, color.a)
+
+        local vertices = {}
+
+        table.insert(vertices, {x = x, y = y})
+
+        for i = 0, segments do
+            local a = math.rad((i / segments) * -360)
+            table.insert(vertices, {
+                x = x + math.cos(a) * radius,
+                y = y + math.sin(a) * radius
+            })
+        end
+
+        surface.DrawPoly(vertices)
+    end
 end
 
 function ax.util:VerifyVersion()
