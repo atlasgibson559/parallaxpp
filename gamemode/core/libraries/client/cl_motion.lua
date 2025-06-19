@@ -23,6 +23,25 @@ ax.motion.active = ax.motion.active or {}
 function ax.motion:Motion(panel, duration, data)
     if ( !IsValid(panel) or !istable(data) or !istable(data.Target) ) then return end
 
+    if ( !ax.option:Get("performance.animations") ) then
+        -- if animations are disabled, set target values immediately
+        for key, target in pairs(data.Target) do
+            panel[key] = target
+        end
+
+        -- call think if provided, because it might include logic that needs to run
+        if ( data.Think ) then
+            data.Think(panel)
+        end
+
+        -- call onComplete if provided
+        if ( data.OnComplete ) then
+            data.OnComplete(panel)
+        end
+
+        return
+    end
+
     local easing = data.Easing or "OutQuad"
     local delay = data.Delay or 0
     local now = SysTime()
