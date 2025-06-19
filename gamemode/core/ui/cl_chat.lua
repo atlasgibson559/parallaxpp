@@ -185,16 +185,17 @@ function PANEL:PopulateRecommendations(text)
             self.recommendations.indexSelect = 1
         end
 
-        for index, command in ipairs(self.recommendations.list) do
+        for i = 1, #self.recommendations.list do
+            local command = self.recommendations.list[i]
             local rec = self.recommendations:Add("DPanel")
             rec:Dock(TOP)
             rec:DockMargin(4, 4, 4, 0)
-            rec.index = index
+            rec.index = i
             rec.Paint = function(_, width, height)
                 surface.SetDrawColor(ax.color:Get("background.transparent"))
                 surface.DrawRect(0, 0, width, height)
 
-                if ( self.recommendations.indexSelect == index ) then
+                if ( self.recommendations.indexSelect == i ) then
                     surface.SetDrawColor(ax.config:Get("color.schema"))
                     surface.DrawRect(0, 0, width, height)
                 end
@@ -215,7 +216,8 @@ function PANEL:PopulateRecommendations(text)
             end
 
             descriptionWrapped = ax.util:GetWrappedText(descriptionWrapped, "parallax.tiny", self.recommendations:GetWide() - 16)
-            for k, v in ipairs(descriptionWrapped) do
+            for k = 1, #descriptionWrapped do
+                local v = descriptionWrapped[k]
                 local descLine = rec:Add("ax.text")
                 descLine:Dock(TOP)
                 descLine:DockMargin(8, -2, 8, 0)
@@ -227,7 +229,7 @@ function PANEL:PopulateRecommendations(text)
 
             rec:SetTall(height)
 
-            self.recommendations.panels[index] = rec
+            self.recommendations.panels[i] = rec
         end
     else
         self.recommendations:AlphaTo(0, 0.2, 0, function()
@@ -255,7 +257,8 @@ function PANEL:CycleRecommendations()
 
     self.recommendations.indexSelect = index
 
-    for _, panel in ipairs(self.recommendations.panels) do
+    for i = 1, #self.recommendations.panels do
+        local panel = self.recommendations.panels[i]
         panel.index = panel.index or 1
         if ( panel.index == index ) then
             self.recommendations:ScrollToChild(panel)

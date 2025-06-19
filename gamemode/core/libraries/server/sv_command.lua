@@ -62,15 +62,16 @@ function ax.command:Run(client, command, arguments)
     end
 
     if ( info.Arguments ) then
-        for k, v in ipairs(info.Arguments) do
-            local value = ax.util:CoerceType(v.Type, arguments[k])
+        for i = 1, #info.Arguments do
+            local v = info.Arguments[i]
+            local value = ax.util:CoerceType(v.Type, arguments[i])
             if ( ax.util:DetectType(value) != v.Type and !v.Optional ) then
                 client:Notify(v.ErrorMsg or "Invalid argument type provided!", NOTIFY_ERROR)
 
                 return false
             end
 
-            arguments[k] = value
+            arguments[i] = value
         end
     end
 

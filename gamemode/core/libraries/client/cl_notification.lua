@@ -47,9 +47,9 @@ function ax.notification:Add(text, duration, bgColor)
         surface.DrawRect(0, 0, width, height)
 
         -- draw each line
-        for i, line in ipairs(lines) do
+        for i = 1, #lines do
             draw.SimpleText(
-                line,
+                lines[i],
                 FONT_NAME,
                 PANEL_MARGIN,
                 PANEL_MARGIN + (i - 1) * lineHeight,
@@ -91,12 +91,13 @@ function ax.notification:Add(text, duration, bgColor)
             panel:AlphaTo(0, 0.2, 0, function() panel:Remove() end)
             -- Remove and reposition
             timer.Simple(0.35, function()
-                for i, v in ipairs(self.stored) do
-                    if v == panel then
+                for i = 1, #self.stored do
+                    if self.stored[i] == panel then
                         table.remove(self.stored, i)
                         break
                     end
                 end
+
                 self:RepositionAll()
             end)
         end
@@ -106,7 +107,9 @@ end
 -- Reposition notifications using Lerp targets
 function ax.notification:RepositionAll()
     local scrW = ScrW()
-    for i, panel in ipairs(self.stored) do
+    local storedCount = #self.stored
+    for i = 1, storedCount do
+        local panel = self.stored[i]
         if ( IsValid(panel) ) then
             panel.TargetX = (scrW - PANEL_WIDTH) / 2
             panel.TargetY = PANEL_SPACING + (i - 1) * (panel:GetTall() + PANEL_SPACING)

@@ -44,7 +44,9 @@ if ( SERVER ) then
         if ( isvector(target) ) then
             sendPVS = true
         elseif ( istable(target) ) then
-            for _, v in ipairs(target) do
+            local targetCount = #target
+            for i = 1, targetCount do
+                local v = target[i]
                 if ( IsValid(v) and v:IsPlayer() ) then
                     recipients[#recipients + 1] = v
                 end

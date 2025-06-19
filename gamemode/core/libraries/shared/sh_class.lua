@@ -37,8 +37,8 @@ function ax.class:Register(classData)
     end
 
     local uniqueID = string.lower(string.gsub(CLASS.Name, "%s+", "_")) .. "_" .. CLASS.Faction
-    for k, v in ipairs(self.instances) do
-        if ( v.UniqueID == uniqueID ) then
+    for i = 1, #self.instances do
+        if ( self.instances[i].UniqueID == uniqueID ) then
             return false, "Attempted to register a class that already exists!"
         end
     end
@@ -47,9 +47,9 @@ function ax.class:Register(classData)
 
     self.stored[CLASS.UniqueID] = CLASS
 
-    for k, v in ipairs(self.instances) do
-        if ( v.UniqueID == CLASS.UniqueID ) then
-            table.remove(self.instances, k)
+    for i = 1, #self.instances do
+        if ( self.instances[i].UniqueID == CLASS.UniqueID ) then
+            table.remove(self.instances, i)
             break
         end
     end
@@ -78,7 +78,8 @@ function ax.class:Get(identifier)
         return self.stored[identifier]
     end
 
-    for k, v in ipairs(self.instances) do
+    for i = 1, #self.instances do
+        local v = self.instances[i]
         if ( ax.util:FindString(v.Name, identifier) or ax.util:FindString(v.UniqueID, identifier) ) then
             return v
         end

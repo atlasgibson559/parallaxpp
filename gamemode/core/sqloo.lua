@@ -319,7 +319,8 @@ function ax.sqloo:Query(query, onSuccess, onError)
                     timer.Remove("ax.sqloo.wait")
                     self.queryTimerStarted = false
 
-                    for _, queuedQuery in ipairs(self.queryQueue) do
+                    for i = 1, #self.queryQueue do
+                        local queuedQuery = self.queryQueue[i]
                         self:Query(queuedQuery.query, queuedQuery.onSuccess, queuedQuery.onError)
 
                         uniqueID = util.CRC(queuedQuery.query .. tostring(queuedQuery.onSuccess) .. tostring(queuedQuery.onError))

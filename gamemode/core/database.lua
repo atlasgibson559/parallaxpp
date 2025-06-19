@@ -78,7 +78,7 @@ local function dispatch(fn, ...)
 end
 
 -- Proxy calls
-for _, fn in ipairs({
+local proxies = {
     "RegisterVar",
     "InitializeTable",
     "Insert",
@@ -88,7 +88,10 @@ for _, fn in ipairs({
     "LoadRow",
     "SaveRow",
     "GetDefaultRow"
-}) do
+}
+
+for i = 1, #proxies do
+    local fn = proxies[i]
     ax.database[fn] = function(self, ...)
         return dispatch(fn, ...)
     end

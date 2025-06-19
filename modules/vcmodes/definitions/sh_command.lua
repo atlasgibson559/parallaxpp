@@ -22,14 +22,15 @@ ax.command:Register("ChangeVoiceMode", {
     },
     Callback = function(info, client, arguments)
         local char = client:GetCharacter()
-
         if ( !char ) then
             client:Notify("You must have a character to change your voice mode!")
             return
         end
 
         local mode = arguments[1]
-        for k, v in ipairs(MODULE.Modes) do
+        local modesCount = #MODULE.Modes
+        for k = 1, modesCount do
+            local v = MODULE.Modes[k]
             if ( k == mode ) then
                 client:SetRelay("voiceMode", k)
                 client:Notify("Your voice chat mode has been changed to " .. v .. ".")

@@ -167,7 +167,8 @@ ax.option:Register("chat.size.font", {
     OnChange = function(self, value)
         hook.Run("LoadFonts")
 
-        for _, v in ipairs(ax.chat.messages) do
+        for i = 1, #ax.chat.messages do
+            local v = ax.chat.messages[i]
             if ( !IsValid(v) ) then continue end
 
             v:SizeToContents()

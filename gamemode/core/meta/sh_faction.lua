@@ -96,7 +96,9 @@ end
 -- @treturn table A table of class instances associated with the faction.
 function FACTION:GetClasses()
     local classes = {}
-    for k, v in ipairs(ax.class.instances) do
+    local instanceCount = #ax.class.instances
+    for i = 1, instanceCount do
+        local v = ax.class.instances[i]
         if ( v.Faction == self:GetID() ) then
             table.insert(classes, v)
         end

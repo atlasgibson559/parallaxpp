@@ -18,7 +18,9 @@ function GM:PlayerInitialSpawn(client)
         local factionBot = math.random(#ax.faction.instances)
 
         local models = {}
-        for k, v in ipairs(ax.faction:Get(factionBot):GetModels()) do
+        local factionModels = ax.faction:Get(factionBot):GetModels()
+        for i = 1, #factionModels do
+            local v = factionModels[i]
             if ( istable(v) ) then
                 table.insert(models, v[1])
             else

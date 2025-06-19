@@ -12,7 +12,10 @@
 local ENTITY = FindMetaTable("Entity")
 
 local CHAIR_CACHE = {}
-for _, v in ipairs(list.Get("Vehicles")) do
+local vehicles = list.Get("Vehicles")
+local vehicleCount = #vehicles
+for i = 1, vehicleCount do
+    local v = vehicles[i]
     if ( v.Category == "Chairs" ) then
         CHAIR_CACHE[v.Model] = true
     end
@@ -48,8 +51,10 @@ end
 function ENTITY:InheritMaterials(entity)
     self:SetMaterial(entity:GetMaterial())
 
-    for k, v in ipairs(entity:GetMaterials()) do
-        self:SetSubMaterial(k - 1, entity:GetSubMaterial(k - 1))
+    local materials = entity:GetMaterials()
+    local materialCount = #materials
+    for i = 1, materialCount do
+        self:SetSubMaterial(i - 1, entity:GetSubMaterial(i - 1))
     end
 end
 

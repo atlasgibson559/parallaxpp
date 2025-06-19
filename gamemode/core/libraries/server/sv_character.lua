@@ -232,7 +232,8 @@ function ax.character:CacheAll(client, callback)
     local condition = string.format("steamid = %s", sql.SQLStr(client:SteamID64()))
     ax.database:Select("ax_characters", nil, condition, function(result)
         if ( result ) then
-            for _, row in ipairs(result) do
+            for i = 1, #result do
+                local row = result[i]
                 local id = tonumber(row.id)
                 if ( !id ) then
                     ax.util:PrintError("Failed to convert character ID " .. tostring(row.id) .. " to number for player " .. tostring(client))

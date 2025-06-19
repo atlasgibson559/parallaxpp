@@ -65,7 +65,10 @@ end
 function INV:GetWeight()
     local weight = 0
 
-    for _, itemID in ipairs(self:GetItems()) do
+    local items = self:GetItems()
+    local itemCount = #items
+    for i = 1, itemCount do
+        local itemID = items[i]
         local item = ax.item:Get(itemID)
         if ( item ) then
             local itemWeight = item:GetWeight() or 0
@@ -116,7 +119,8 @@ function INV:GetReceivers()
     end
 
     if ( self.Receivers ) then
-        for _, receiver in ipairs(self.Receivers) do
+        for i = 1, #self.Receivers do
+            local receiver = self.Receivers[i]
             if ( IsValid(receiver) and receiver:IsPlayer() ) then
                 table.insert(receivers, receiver)
             end
@@ -164,7 +168,9 @@ end
 function INV:HasItem(itemUniqueID)
     if ( !isstring(itemUniqueID) ) then return false end
 
-    for _, itemID in ipairs(self:GetItems()) do
+    local items = self:GetItems()
+    for i = 1, #items do
+        local itemID = items[i]
         local item = ax.item:Get(itemID)
         if ( item and item:GetUniqueID() == itemUniqueID ) then
             return item
@@ -183,7 +189,10 @@ function INV:HasItemQuantity(itemUniqueID, quantity)
 
     local count = 0
 
-    for _, itemID in ipairs(self:GetItems()) do
+    local items = self:GetItems()
+    local itemsCount = #items
+    for i = 1, itemsCount do
+        local itemID = items[i]
         local item = ax.item:Get(itemID)
         if ( item and item:GetUniqueID() == itemUniqueID ) then
             count = count + 1

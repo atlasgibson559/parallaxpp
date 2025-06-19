@@ -17,13 +17,14 @@ local savedEntities = {}
 function MODULE:SaveEntities()
     ax.log:Send("Saving persistent entities...")
 
-    savedEntities = {}
-
-    -- Iterate through all possible persistent entity classes and mark them
+    savedEntities = {}    -- Iterate through all possible persistent entity classes and mark them
     -- as persistent. This is done to ensure that all entities are marked
     -- correctly before saving.
     for class, methods in pairs(self.PersistentEntities) do
-        for _, ent in ipairs(ents.FindByClass(class)) do
+        local entities = ents.FindByClass(class)
+        local entityCount = #entities
+        for i = 1, entityCount do
+            local ent = entities[i]
             if ( !IsValid(ent) ) then continue end
 
             ent:SetRelay("persistent", true)
@@ -61,7 +62,10 @@ function MODULE:LoadEntities()
     ax.log:Send("Loading persistent entities...")
 
     for k, v in pairs(savedEntities) do
-        for _, ent in ipairs(ents.FindByClass(v.class)) do
+        local entities = ents.FindByClass(v.class)
+        local entityCount = #entities
+        for i = 1, entityCount do
+            local ent = entities[i]
             if ( ent:GetRelay("persistent") != true ) then continue end
 
             SafeRemoveEntity(ent)
@@ -70,7 +74,9 @@ function MODULE:LoadEntities()
 
     savedEntities = ax.data:Get("persistent_entities", {})
 
-    for _, entData in ipairs(savedEntities) do
+    local entityCount = #savedEntities
+    for i = 1, entityCount do
+        local entData = savedEntities[i]
         local class = entData.class
         local ent = ents.Create(class)
         if ( !IsValid(ent) ) then continue end

@@ -50,7 +50,9 @@ function ax.module:LoadFolder(path)
     ax.util:Print("Loading modules from \"" .. path .. "\"...")
 
     local files, folders = file.Find(path .. "/*", "LUA")
-    for k, v in ipairs(folders) do
+    local folderCount = #folders
+    for i = 1, folderCount do
+        local v = folders[i]
         if ( file.Exists(path .. "/" .. v .. "/boot.lua", "LUA") ) then
             MODULE = { UniqueID = v }
                 hook.Run("PreInitializeModule", MODULE)
@@ -79,7 +81,9 @@ function ax.module:LoadFolder(path)
         end
     end
 
-    for k, v in ipairs(files) do
+    local fileCount = #files
+    for i = 1, fileCount do
+        local v = files[i]
         local ModuleUniqueID = string.StripExtension(v)
         if ( string.sub(v, 1, 3) == "cl_" or string.sub(v, 1, 3) == "sv_" or string.sub(v, 1, 3) == "sh_" ) then
             ModuleUniqueID = string.sub(v, 4)

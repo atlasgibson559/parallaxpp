@@ -44,7 +44,8 @@ end
 function MODULE:LoadData()
     local result = ax.database:Select("ax_admin_groups")
     if ( result ) then
-        for _, row in ipairs(result) do
+        for i = 1, #result do
+            local row = result[i]
             local group = {
                 Name = row.name,
                 Inherits = row.inherits,
@@ -57,7 +58,8 @@ function MODULE:LoadData()
 
     result = ax.database:Select("ax_admin_permissions")
     if ( result ) then
-        for _, row in ipairs(result) do
+        for i = 1, #result do
+            local row = result[i]
             local permission = {
                 Name = row.name,
                 MinAccess = row.minAccess,
@@ -69,11 +71,15 @@ function MODULE:LoadData()
     end
 
     if ( !savedGroups or !savedPerms ) then
-        for _, group in ipairs(DEFAULT_GROUPS) do
+        local groupCount = #DEFAULT_GROUPS
+        for i = 1, groupCount do
+            local group = DEFAULT_GROUPS[i]
             self:RegisterGroup(group.name, group.privilege)
         end
 
-        for _, perm in ipairs(DEFAULT_PERMISSIONS) do
+        local permCount = #DEFAULT_PERMISSIONS
+        for i = 1, permCount do
+            local perm = DEFAULT_PERMISSIONS[i]
             self:RegisterPermission(perm.name, perm.access)
         end
 

@@ -32,11 +32,11 @@ function PANEL:Think()
 end
 
 function PANEL:Populate()
-    self.cache.players = select(2, player.Iterator())
-
-    -- Divide the players into teams
+    self.cache.players = select(2, player.Iterator())    -- Divide the players into teams
     local teams = {}
-    for _, client in ipairs(self.cache.players) do
+    local playerCount = #self.cache.players
+    for i = 1, playerCount do
+        local client = self.cache.players[i]
         local teamID = client:Team()
         if ( !istable(teams[teamID]) ) then
             teams[teamID] = {}
@@ -51,21 +51,22 @@ function PANEL:Populate()
         table.insert(sortedTeams, { teamID = teamID, players = players })
     end
 
-    table.sort(sortedTeams, function(a, b) return a.teamID < b.teamID end)
-
-    -- Clear the current scoreboard
+    table.sort(sortedTeams, function(a, b) return a.teamID < b.teamID end)    -- Clear the current scoreboard
     self.container:Clear()
 
-    for _, teamData in ipairs(sortedTeams) do
+    local teamCount = #sortedTeams
+    for i = 1, teamCount do
+        local teamData = sortedTeams[i]
         local teamID = teamData.teamID
         local players = teamData.players
 
         -- Create a new panel for the team
         local teamPanel = self.container:Add("ax.scoreboard.team")
         teamPanel:SetTeam(teamID)
-
-        -- Add each player to the team panel
-        for _, client in ipairs(players) do
+          -- Add each player to the team panel
+        local teamPlayerCount = #players
+        for j = 1, teamPlayerCount do
+            local client = players[j]
             local playerPanel = teamPanel.container:Add("ax.scoreboard.player")
             playerPanel:SetPlayer(client)
 

@@ -161,7 +161,8 @@ function PANEL:Populate()
 
     createButton.DoClick = function(this)
         local availableFactions = 0
-        for k, v in ipairs(ax.faction:GetAll()) do
+        for i = 1, #ax.faction:GetAll() do
+            local v = ax.faction:GetAll()[i]
             if ( ax.faction:CanSwitchTo(ax.client, v:GetID()) ) then
                 availableFactions = availableFactions + 1
             end

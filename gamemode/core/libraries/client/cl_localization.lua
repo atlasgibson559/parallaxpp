@@ -79,7 +79,8 @@ function ax.localization:GetPhrase(key, ...)
     -- Otherwise if there is none and the language has a %s, we remove it from the string.
     if ( select("#", ...) > 0 ) then
         local args = { ... }
-        for i, arg in ipairs(args) do
+        for i = 1, #args do
+            local arg = args[i]
             if ( isstring(arg) ) then
                 args[i] = self:GetPhrase(arg, languageName)
             end

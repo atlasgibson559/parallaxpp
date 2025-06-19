@@ -74,7 +74,8 @@ function Derma_Message(text, title, buttonText)
 
     local wrapped = ax.util:GetWrappedText(text, "parallax", frame:GetWide() - ScreenScale(16))
     local textHeight = 0
-    for _, line in ipairs(wrapped) do
+    for i = 1, #wrapped do
+        local line = wrapped[i]
         local textLabel = frame:Add("ax.text")
         textLabel:Dock(TOP)
         textLabel:SetText(line, true)
@@ -132,7 +133,8 @@ function Derma_Query(text, title, ...)
 
     local wrapped = ax.util:GetWrappedText(text, "parallax", frame:GetWide() - ScreenScale(16))
     local textHeight = 0
-    for _, line in ipairs(wrapped) do
+    for i = 1, #wrapped do
+        local line = wrapped[i]
         local textLabel = frame:Add("ax.text")
         textLabel:Dock(TOP)
         textLabel:SetText(line, true)
@@ -210,7 +212,8 @@ function Derma_StringRequest(title, text, defaultText, onEnter, onCancel, okText
 
     local wrapped = ax.util:GetWrappedText(text, "parallax", frame:GetWide() - ScreenScale(16))
     local textHeight = 0
-    for i, line in ipairs(wrapped) do
+    for i = 1, #wrapped do
+        local line = wrapped[i]
         local textLabel = frame:Add("ax.text")
         textLabel:Dock(TOP)
         textLabel:SetText(line, true)
@@ -261,7 +264,9 @@ function Derma_StringRequest(title, text, defaultText, onEnter, onCancel, okText
 end
 
 function Derma_HideAll()
-    for _, frame in ipairs(ax.derma.open) do
+    local openCount = #ax.derma.open
+    for i = 1, openCount do
+        local frame = ax.derma.open[i]
         if ( IsValid(frame) ) then
             frame:Remove()
         end

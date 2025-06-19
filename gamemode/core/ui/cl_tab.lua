@@ -104,7 +104,9 @@ function PANEL:Init()
 
     buttonSizeable.Think = function(this)
         local totalHeight = 0
-        for _, v in ipairs(this:GetChildren()) do
+        local children = this:GetChildren()
+        for i = 1, #children do
+            local v = children[i]
             if ( IsValid(v) and v:IsVisible() ) then
                 totalHeight = totalHeight + v:GetTall() + 16
             end

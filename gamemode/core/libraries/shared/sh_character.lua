@@ -28,7 +28,8 @@ function ax.character:RegisterVariable(key, data)
             data.Alias = { data.Alias }
         end
 
-        for k, v in ipairs(data.Alias) do
+        for i = 1, #data.Alias do
+            local v = data.Alias[i]
             self.meta["Get" .. v] = function(character)
                 return self:GetVariable(character:GetID(), key)
             end

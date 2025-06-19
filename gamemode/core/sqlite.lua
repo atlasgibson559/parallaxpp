@@ -98,10 +98,12 @@ function ax.sqlite:AddColumn(tableName, columnName, columnType, defaultValue)
     local result = sql.Query(string.format("PRAGMA table_info(%s);", tableName))
     if ( result ) then
         local columnExists = false
-        for _, column in ipairs(result) do
+
+        for i = 1, #result do
+            local column = result[i]
             if ( column.name == columnName ) then
                 columnExists = true
-                break
+                return
             end
         end
 

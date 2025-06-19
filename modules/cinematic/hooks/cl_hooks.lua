@@ -59,7 +59,8 @@ function MODULE:PostDrawTranslucentRenderables()
             render.DrawSphere(node.pos, 4, 12, 12, Color(0, 255, 0))
 
             -- Control handles
-            for _, ctrl in ipairs(node.ctrl or {}) do
+            for j = 1, #node.ctrl do
+                local ctrl = node.ctrl[j]
                 render.DrawSphere(ctrl, 2, 8, 8, Color(255, 0, 0))
                 render.DrawLine(node.pos, ctrl, Color(255, 0, 0), true)
             end

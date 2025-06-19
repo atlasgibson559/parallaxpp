@@ -221,7 +221,8 @@ function ax.item:Cache(characterID, callback)
             return
         end
 
-        for _, row in ipairs(result) do
+        for i = 1, #result do
+            local row = result[i]
             local itemID = tonumber(row.id)
             local uniqueID = row.unique_id
 

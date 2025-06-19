@@ -95,7 +95,8 @@ function ax.command:Get(identifier)
 
         if ( !istable(v.Prefixes) ) then continue end
 
-        for _, v2 in ipairs(v.Prefixes) do
+        for i = 1, #v.Prefixes do
+            local v2 = v.Prefixes[i]
             if ( string.lower(v2) == string.lower(identifier) ) then
                 return v
             end

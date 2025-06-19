@@ -22,9 +22,10 @@ function ax.item:Load(path)
     if ( !path or !isstring(path) ) then return end
 
     local files, _ = file.Find(path .. "/*.lua", "LUA")
-    if ( !files or #files == 0 ) then return end
+    if ( !files or files[1] == nil ) then return end
 
-    for _, v in ipairs(files) do
+    for i = 1, #files do
+        local v = files[i]
         local filePath = path .. "/" .. v
         ITEM = setmetatable({}, self.meta)
 
@@ -155,7 +156,8 @@ function ax.item:LoadFolder(path)
     end
 
     -- Now we can load the rest of the folders and files.
-    for _, v in ipairs(folders) do
+    for i = 1, #folders do
+        local v = folders[i]
         if ( v == "base" ) then continue end
 
         self:Load(path .. "/" .. v)
