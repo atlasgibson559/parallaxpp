@@ -10,6 +10,7 @@
 ]]
 
 DeriveGamemode("sandbox")
+GM.RefreshTimeStart = SysTime()
 
 ax = ax or {util = {}, meta = {}, config = {}}
 
