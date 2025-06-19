@@ -1010,28 +1010,44 @@ if ( CLIENT ) then
         end
     end
 
-    --- Draws a filled circle using surface.DrawPoly
-    -- @param x number X position of the center
-    -- @param y number Y position of the center
-    -- @param radius number Radius of the circle
-    -- @param segments number Number of segments (more = smoother)
-    -- @param color table Color to fill the circle
+    --- Draws a filled circle using cached polygon data.
+    -- @param x number X position of the center.
+    -- @param y number Y position of the center.
+    -- @param radius number Radius of the circle.
+    -- @param segments number Number of segments (more = smoother).
+    -- @param color table Color to fill the circle.
+    local circleCache = {}
     function ax.util:DrawCircle(x, y, radius, segments, color)
-        local vertices = {}
+        local key = radius .. "_" .. segments
+        local shape = circleCache[key]
 
-        table.insert(vertices, {x = x, y = y})
+        if ( !shape ) then
+            shape = { { x = 0, y = 0 } }
 
-        for i = 0, segments do
-            local a = math.rad((i / segments) * -360)
-            table.insert(vertices, {
-                x = x + math.cos(a) * radius,
-                y = y + math.sin(a) * radius
-            })
+            for i = 0, segments do
+                local a = math.rad((i / segments) * -360)
+                shape[#shape + 1] = {
+                    x = math.cos(a) * radius,
+                    y = math.sin(a) * radius
+                }
+            end
+
+            circleCache[key] = shape
+        end
+
+        local verts = {}
+        for i = 1, #shape do
+            local v = shape[i]
+            verts[i] = { x = v.x + x, y = v.y + y }
         end
 
         surface.SetDrawColor(color.r, color.g, color.b, color.a)
-        surface.DrawPoly(vertices)
+        surface.DrawPoly(verts)
     end
+
+    hook.Add("OnScreenSizeChanged", "ax.util.ClearCircleCache", function()
+        circleCache = {}
+    end)
 end
 
 function ax.util:VerifyVersion()
