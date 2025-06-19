@@ -15,6 +15,7 @@ ITEM.Category = "Weapons"
 ITEM.Model = Model("models/weapons/w_smg1.mdl")
 
 ITEM.Weight = 5
+ITEM.NoStack = true
 
 ITEM.WeaponClass = "weapon_base"
 
