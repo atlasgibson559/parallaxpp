@@ -12,7 +12,7 @@
 DeriveGamemode("sandbox")
 GM.RefreshTimeStart = SysTime()
 
-ax = ax or {util = {}, gui = {}, meta = {}, config = {}}
+ax = ax or {util = {}, meta = {}, config = {}, globals = {}, gui = {}}
 
 include("core/types.lua")
 include("core/util.lua")
