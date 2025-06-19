@@ -352,7 +352,7 @@ function PANEL:AddSetting(settingData)
             end
             menu:Open()
         end
-    elseif ( configData.Type == ax.types.color ) then
+    elseif ( settingData.Type == ax.types.color ) then
         local color = panel:Add("EditablePanel")
         color:Dock(RIGHT)
         color:DockMargin(ScreenScale(8), ScreenScaleH(8), ScreenScale(8), ScreenScaleH(8))
@@ -416,7 +416,7 @@ function PANEL:AddSetting(settingData)
             end):SetIcon("icon16/arrow_refresh.png")
             menu:Open()
         end
-    elseif ( configData.Type == ax.types.string ) then
+    elseif ( settingData.Type == ax.types.string ) then
         local text = panel:Add("ax.text.entry")
         text:Dock(RIGHT)
         text:DockMargin(ScreenScale(8), ScreenScaleH(8), ScreenScale(8), ScreenScaleH(8))
