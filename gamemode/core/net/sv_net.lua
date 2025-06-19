@@ -212,14 +212,6 @@ end)
     Miscellaneous Networking
 -----------------------------------------------------------------------------]]--
 
-ax.net:Hook("client.ready", function(client)
-    local clientTable = client:GetTable()
-    if ( clientTable.axReady ) then return end
-
-    clientTable.axReady = true
-    hook.Run("PlayerReady", client)
-end)
-
 ax.net:Hook("client.voice.start", function(client, speaker)
     hook.Run("PlayerStartVoice", speaker)
 end)

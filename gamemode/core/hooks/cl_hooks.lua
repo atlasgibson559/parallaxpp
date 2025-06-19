@@ -159,8 +159,6 @@ function GM:InitPostEntity()
     if ( !IsValid(ax.gui.chatbox) ) then
         vgui.Create("ax.chatbox")
     end
-
-    ax.net:Start("client.ready")
 end
 
 function GM:OnCloseCaptionEmit()
