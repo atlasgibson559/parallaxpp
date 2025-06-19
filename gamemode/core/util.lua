@@ -47,7 +47,7 @@ function ax.util:CoerceType(typeID, value)
             return value
         end
     elseif ( typeID == ax.types.character ) then
-        if ( istable(value) and getmetatable(value) == ax.character.meta ) then
+        if ( istable(value) and ax.util:IsCharacter(value) ) then
             return value
         end
     elseif ( typeID == ax.types.steamid ) then

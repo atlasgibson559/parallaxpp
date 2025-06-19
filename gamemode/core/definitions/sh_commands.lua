@@ -55,8 +55,12 @@ ax.command:Register("PlyWhitelist", {
             return
         end
 
-        target:SetWhitelisted(faction:GetUniqueID(), true)
+        if ( target:HasWhitelist(faction:GetUniqueID()) ) then
+            client:Notify("The targeted player is already whitelisted to that faction!")
+            return
+        end
 
+        target:SetWhitelisted(faction:GetUniqueID(), true)
         client:Notify("You have whitelisted " .. target:Nick() .. " to the faction " .. faction:GetName() .. ".", NOTIFY_HINT)
     end
 })
@@ -83,8 +87,12 @@ ax.command:Register("PlyUnWhitelist", {
             return
         end
 
-        target:SetWhitelisted(faction:GetUniqueID(), false)
+        if ( !target:HasWhitelist(faction:GetUniqueID()) ) then
+            client:Notify("The targeted player is not whitelisted to that faction!")
+            return
+        end
 
+        target:SetWhitelisted(faction:GetUniqueID(), false)
         client:Notify("You have unwhitelisted " .. target:Nick() .. " from the faction " .. faction:GetName() .. ".", NOTIFY_HINT)
     end
 })
