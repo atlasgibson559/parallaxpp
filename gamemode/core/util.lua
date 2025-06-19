@@ -718,59 +718,22 @@ end
 -- @param path string Path to the folder containing tool files.
 -- @realm shared
 function ax.util:LoadTools(path)
-    local wGmodTool = weapons.GetStored("gmod_tool")
-    if ( !istable(wGmodTool) ) then
-        ErrorNoHalt("gmod_tool base not found; tools will not be loaded!\n")
-        return
-    end
+    for _, val in ipairs(file.Find(path .. "/*.lua", "LUA")) do
+        local _, _, toolmode = string.find(val, "([%w_]*).lua")
+        toolmode = toolmode:lower()
 
-    local files, folders = file.Find(path .. "/*.lua", "LUA")
+        TOOL = ax.tool:Create()
+        TOOL.Mode = toolmode
 
-    for _, fileName in ipairs(files) do
-        local toolID = string.StripExtension(fileName)
-        local toolPath = path .. "/" .. fileName
+        ax.util:LoadFile(path .. "/" .. val, "shared")
 
-        TOOL = {
-            Mode = toolID,
-            Category = "Parallax",
-            Name = "#" .. toolID,
-            ClientConVar = {},
-            ServerConVar = {}
-        }
+        TOOL:CreateConVars()
 
-        self:LoadFile(toolPath, "shared")
-
-        wGmodTool.Tool = wGmodTool.Tool or {}
-        wGmodTool.Tool[toolID] = TOOL
+        if ( hook.Run("PreRegisterTOOL", TOOL, toolmode) != false ) then
+            weapons.GetStored("gmod_tool").Tool[toolmode] = TOOL
+        end
 
         TOOL = nil
-    end
-
-    for _, dir in ipairs(folders) do
-        local toolPath = path .. "/" .. dir .. "/shared.lua"
-
-        if ( file.Exists(toolPath, "LUA") ) then
-            TOOL = {
-                Mode = dir,
-                Category = "Parallax",
-                Name = "#" .. dir,
-                ClientConVar = {},
-                ServerConVar = {}
-            }
-
-            self:LoadFile(toolPath, "shared")
-
-            if ( !weapons.GetStored("gmod_tool") ) then
-                ErrorNoHalt("gmod_tool base not found; skipping tool '" .. dir .. "'\n")
-                TOOL = nil
-                continue
-            end
-
-            weapons.GetStored("gmod_tool").Tool = weapons.GetStored("gmod_tool").Tool or {}
-            weapons.GetStored("gmod_tool").Tool[dir] = TOOL
-
-            TOOL = nil
-        end
     end
 end
 

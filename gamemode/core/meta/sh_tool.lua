@@ -9,50 +9,76 @@
     Attribution is required. If you use or modify this file, you must retain this notice.
 ]]
 
--- Credits to Helix for this file.
--- https://github.com/NebulousCloud/helix/blob/master/gamemode/core/meta/sh_tool.lua
-
 local TOOL = ax.tool or {}
 
 function TOOL:Create()
-    local object = {}
+    local tool = {}
 
-    setmetatable(object, self)
+    setmetatable(tool, self)
     self.__index = self
 
-    object.Mode = nil
-    object.SWEP = nil
-    object.Owner = nil
-    object.ClientConVar = {}
-    object.ServerConVar = {}
-    object.Objects = {}
-    object.Stage = 0
-    object.Message = "start"
-    object.LastMessage = 0
-    object.AllowedCVar = 0
+    tool.Mode           = nil
+    tool.SWEP           = nil
+    tool.Owner          = nil
+    tool.ClientConVar   = {}
+    tool.ServerConVar   = {}
+    tool.Objects        = {}
+    tool.Stage          = 0
+    tool.Message        = "start"
+    tool.LastMessage    = 0
+    tool.AllowedCVar    = 0
 
-    return object
+    return tool
 end
 
 function TOOL:CreateConVars()
     local mode = self:GetMode()
 
+    self.AllowedCVar   = CreateConVar("toolmode_allow_" .. mode, "1", { FCVAR_NOTIFY, FCVAR_REPLICATED }, "Set to 0 to disallow players being able to use the \"" .. mode .. "\" tool.")
+    self.ClientConVars = {}
+    self.ServerConVars = {}
+
     if ( CLIENT ) then
         for cvar, default in pairs(self.ClientConVar) do
-            CreateClientConVar(mode .. "_" .. cvar, default, true, true)
+            self.ClientConVars[cvar] = CreateClientConVar(mode .. "_" .. cvar, default, true, true, "Tool specific client setting (" .. mode .. ")")
         end
-
-        return
-    end
-
-    if ( SERVER ) then
-        self.AllowedCVar = CreateConVar("toolmode_allax_" .. mode, 1, FCVAR_NOTIFY)
+    else
+        for cvar, default in pairs(self.ServerConVar) do
+            self.ServerConVars[cvar] = CreateConVar(mode .. "_" .. cvar, default, FCVAR_ARCHIVE, "Tool specific server setting (" .. mode .. ")")
+        end
     end
 end
 
 function TOOL:GetServerInfo(property)
-    local mode = self:GetMode()
-    return GetConVar(mode .. "_" .. property):GetString()
+    if ( self.ServerConVars[property] && SERVER ) then
+        return self.ServerConVars[property]:GetString()
+    end
+
+    return GetConVarString(self:GetMode() .. "_" .. property)
+end
+
+function TOOL:GetClientInfo(property)
+    if ( self.ClientConVars[property] && CLIENT ) then
+        return self.ClientConVars[property]:GetString()
+    end
+
+    return self:GetOwner():GetInfo(self:GetMode() .. "_" .. property)
+end
+
+function TOOL:GetClientNumber(property, default)
+    if ( self.ClientConVars[property] && CLIENT ) then
+        return self.ClientConVars[property]:GetFloat()
+    end
+
+    return self:GetOwner():GetInfoNum(self:GetMode() .. "_" .. property, tonumber(default) or 0)
+end
+
+function TOOL:GetClientBool(property, default)
+    if ( self.ClientConVars[property] && CLIENT ) then
+        return self.ClientConVars[property]:GetBool()
+    end
+
+    return math.floor(self:GetOwner():GetInfoNum(self:GetMode() .. "_" .. property, tonumber(default) or 0)) != 0
 end
 
 function TOOL:BuildConVarList()
@@ -66,68 +92,25 @@ function TOOL:BuildConVarList()
     return convars
 end
 
-function TOOL:GetClientInfo(property)
-    return self:GetOwner():GetInfo(self:GetMode() .. "_" .. property)
-end
-
-function TOOL:GetClientNumber(property, default)
-    return self:GetOwner():GetInfoNum(self:GetMode() .. "_" .. property, tonumber(default) or 0)
-end
-
 function TOOL:Allowed()
-    if ( CLIENT ) then return true end
-
     return self.AllowedCVar:GetBool()
 end
 
-function TOOL:Init()
-end
-
-function TOOL:GetMode()
-    return self.Mode
-end
-
-function TOOL:GetSWEP()
-    return self.SWEP
-end
-
-function TOOL:GetOwner()
-    return self:GetSWEP().Owner or self.Owner
-end
-
-function TOOL:GetWeapon()
-    return self:GetSWEP().Weapon or self.Weapon
-end
-
-function TOOL:LeftClick()
-    return false
-end
-
-function TOOL:RightClick()
-    return false
-end
-
-function TOOL:Reload()
-    self:ClearObjects()
-end
-
-function TOOL:Deploy()
-    self:ReleaseGhostEntity()
-    return
-end
-
-function TOOL:Holster()
-    self:ReleaseGhostEntity()
-    return
-end
-
-function TOOL:Think()
-    self:ReleaseGhostEntity()
-end
+function TOOL:Init() end
+function TOOL:GetMode()       return self.Mode end
+function TOOL:GetWeapon()     return weapons.GetStored("gmod_tool") end
+function TOOL:GetOwner()      return self:GetWeapon():GetOwner() or self.Owner end
+function TOOL:GetSWEP()       return self:GetWeapon() end
+function TOOL:LeftClick()     return false end
+function TOOL:RightClick()    return false end
+function TOOL:Reload()        self:ClearObjects() end
+function TOOL:Deploy()        self:ReleaseGhostEntity() return end
+function TOOL:Holster()       self:ReleaseGhostEntity() return end
+function TOOL:Think()         self:ReleaseGhostEntity() end
 
 function TOOL:CheckObjects()
     for _, v in pairs(self.Objects) do
-        if ( !v.Ent:IsWorld() and !IsValid(v.Ent) ) then
+        if ( !v.Ent:IsWorld() and !v.Ent:IsValid() ) then
             self:ClearObjects()
         end
     end
