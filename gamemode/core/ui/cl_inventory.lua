@@ -109,9 +109,11 @@ function PANEL:SetInventory(id)
 
         return
     end
-
     local sortedItems = {}
-    for _, itemID in pairs(items) do
+    local itemsCount = #items
+
+    for i = 1, itemsCount do
+        local itemID = items[i]
         local item = ax.item:Get(itemID)
         if ( item ) then
             table.insert(sortedItems, itemID)
@@ -137,7 +139,8 @@ function PANEL:SetInventory(id)
     end)
 
     local groups = {}
-    for _, itemID in ipairs(sortedItems) do
+    for i = 1, #sortedItems do
+        local itemID = sortedItems[i]
         local item = ax.item:Get(itemID)
         if ( item ) then
             local uid = item:GetUniqueID()

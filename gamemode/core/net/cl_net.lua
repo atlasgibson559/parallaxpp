@@ -373,7 +373,8 @@ end)
 -- TODO: This is a temporary solution, should be replaced with a more robust caption library.
 local function GetCaptionDuration(...)
     local duration = 0
-    for _, v in ipairs({...}) do
+    for i = 1, select("#", ...) do
+        local v = select(i, ...)
         if ( isstring(v) ) then
             for _ in string.gmatch(v, "%S+") do
                 duration = duration + 0.5

@@ -185,9 +185,11 @@ function PLAYER:SetRagdolled(bState, duration)
     self:SetRelay("bWeaponRaised", false)
 
     local arsenalTable = {}
-    for k, v in ipairs(self:GetWeapons()) do
-        if ( IsValid(v) and v:IsWeapon() ) then
-            arsenalTable[k] = v:GetClass()
+    local weaponsTable = self:GetWeapons()
+    for i = 1, #weaponsTable do
+        local weapon = weaponsTable[i]
+        if ( IsValid(weapon) ) then
+            arsenalTable[i] = weapon:GetClass()
         end
     end
 
@@ -222,8 +224,8 @@ function PLAYER:SetRagdolled(bState, duration)
                 self:SetRelay("bWeaponRaised", true)
 
                 local ragdollArsenal = self:GetRelay("ragdollArsenal", {})
-                for _, weapon in ipairs(ragdollArsenal) do
-                    self:Give(weapon)
+                for i = 1, #ragdollArsenal do
+                    self:Give(ragdollArsenal[i])
                 end
 
                 local ragdollAmmo = self:GetRelay("ragdollAmmo", {})

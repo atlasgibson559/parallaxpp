@@ -48,8 +48,8 @@ function GM:ShouldPlayMainMenuMusic()
     if ( !IsValid(client) ) then return false end
 
     local exists = false
-    for _, v in ipairs(panels) do
-        if ( IsValid(ax.gui[v]) ) then
+    for i = 1, #panels do
+        if ( IsValid(ax.gui[panels[i]]) ) then
             exists = true
             break
         end
@@ -924,22 +924,23 @@ function GM:PopulateHelpCategories(categories)
             descriptionLabel:Dock(TOP)
             descriptionLabel:DockMargin(8, -4, 8, 0)
 
-            if ( commandInfo.Arguments ) then
+            if ( istable(commandInfo.Arguments) ) then
                 local argumentsLabel = panel:Add("ax.text")
                 argumentsLabel:SetFont("parallax.small")
                 argumentsLabel:SetText("Useable Arguments:", true)
                 argumentsLabel:Dock(TOP)
                 argumentsLabel:DockMargin(8, -4, 8, 0)
 
-                for index, data in ipairs(commandInfo.Arguments) do
+                for i = 1, #commandInfo.Arguments do
+                    local data = commandInfo.Arguments[i]
                     if ( !istable(data) ) then
-                        ax.util:PrintError("Command argument at index " .. index .. " from command '" .. commandName .. "' is not a table. Expected a table with 'Type' and 'ErrorMsg' fields.")
+                        ax.util:PrintError("Command argument at index " .. i .. " from command '" .. commandName .. "' is not a table. Expected a table with 'Type' and 'ErrorMsg' fields.")
                         data = { Type = "Unknown", ErrorMsg = "No error message provided." }
                     end
 
                     local argLabel = panel:Add("ax.text")
                     argLabel:SetFont("parallax.small")
-                    argLabel:SetText(index .. ": " .. ax.util:FormatType(data.Type) .. " - " .. (data.ErrorMsg or "No error message provided."), true)
+                    argLabel:SetText(i .. ": " .. ax.util:FormatType(data.Type) .. " - " .. (data.ErrorMsg or "No error message provided."), true)
                     if ( data.Optional ) then
                         argLabel:SetText(argLabel:GetText() .. " (Optional)", true)
                     end
@@ -949,8 +950,10 @@ function GM:PopulateHelpCategories(categories)
             end
 
             local height = 0
-            for k, v in pairs(panel:GetChildren()) do
-                if ( v:IsValid() and v:IsVisible() ) then
+            local children = panel:GetChildren()
+            for i = 1, #children do
+                local v = children[i]
+                if ( ispanel(v) and v:IsVisible() ) then
                     height = height + v:GetTall() + select(2, v:GetDockMargin())
                 end
             end
@@ -1014,7 +1017,8 @@ function GM:PlayerBindPress(client, bind, pressed)
     if ( string.find(bind, "messagemode") and pressed ) then
         ax.gui.chatbox:SetVisible(true)
 
-        for _, pnl in ipairs(ax.chat.messages) do
+        for i = 1, #ax.chat.messages do
+            local pnl = ax.chat.messages[i]
             if ( IsValid(pnl) ) then
                 pnl.alpha = 1
             end
@@ -1035,8 +1039,9 @@ function GM:ForceDermaSkin()
 end
 
 function GM:OnScreenSizeChanged(oldWidth, oldHeight, newWidth, newHeight)
-    for k, v in ipairs(ax.gui) do
-        if ( IsValid(v) and ispanel(v) ) then
+    for i = 1, #ax.gui do
+        local v = ax.gui[i]
+        if ( ispanel(v) and IsValid(v) ) then
             local className = v:GetClassName()
             v:Remove()
 

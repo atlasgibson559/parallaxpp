@@ -94,7 +94,8 @@ function PANEL:PopulateCategory(category, toSearch)
     end)
 
     local subCategories = {}
-    for k, v in ipairs(settings) do
+    for i = 1, #settings do
+        local v = settings[i]
         local subCategory = string.lower(v.SubCategory or "")
         if ( subCategory and !subCategories[subCategory] ) then
             subCategories[subCategory] = true

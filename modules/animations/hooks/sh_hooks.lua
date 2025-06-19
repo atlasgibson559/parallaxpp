@@ -250,8 +250,8 @@ function MODULE:MouthMoveAnimation(client)
     }
 
     local weight = client:IsSpeaking() and math.Clamp(client:VoiceVolume() * 2, 0, 2) or 0
-    for k, v in ipairs(flexes) do
-        client:SetFlexWeight(v, weight)
+    for i = 1, #flexes do
+        client:SetFlexWeight(flexes[i], weight)
     end
 end
 

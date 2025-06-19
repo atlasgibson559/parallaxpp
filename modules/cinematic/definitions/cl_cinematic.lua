@@ -34,8 +34,9 @@ function ax.cinematic:Start(duration, path)
     self.StartTime = CurTime()
 
     local lastPos
-
-    for i, node in ipairs(path) do
+    local pathCount = #path
+    for i = 1, pathCount do
+        local node = path[i]
         local pos = node.pos
         local ctrl = node.ctrl or {}
         local ang = node.ang or Angle()

@@ -219,8 +219,8 @@ ax.config:Register("inventory.max.weight", {
             local character = client:GetCharacter()
             if ( character ) then
                 local inventories = ax.inventory:GetByCharacterID(character:GetID())
-                for _, inventory in ipairs(inventories) do
-                    inventory.maxWeight = value
+                for i = 1, #inventories do
+                    inventories[i].maxWeight = value
                 end
             end
         end

@@ -47,7 +47,7 @@ function ax.util:CoerceType(typeID, value)
             return value
         end
     elseif ( typeID == ax.types.character ) then
-        if ( istable(value) and getmetatable(value) == ax.character.meta ) then
+        if ( istable(value) and ax.util:IsCharacter(value) ) then
             return value
         end
     elseif ( typeID == ax.types.steamid ) then
@@ -148,15 +148,16 @@ function ax.util:PreparePackage(...)
     local arguments = {...}
     local package = {}
 
-    for k, v in ipairs(arguments) do
-        if ( isentity(v) or type(v) == "Player" ) then
-            table.insert(package, tostring(v))
+    for i = 1, #arguments do
+        local arg = arguments[i]
+        if ( isentity(arg) or type(arg) == "Player" ) then
+            table.insert(package, tostring(arg))
 
-            if ( type(v) == "Player" ) then
-                table.insert(package, "[" .. v:SteamID64() .. "]")
+            if ( type(arg) == "Player" ) then
+                table.insert(package, "[" .. arg:SteamID64() .. "]")
             end
         else
-            table.insert(package, v)
+            table.insert(package, arg)
         end
     end
 
@@ -338,7 +339,9 @@ function ax.util:LoadFolder(directory, bFromLua)
         baseDir = ""
     end
 
-    for k, v in ipairs(file.Find(baseDir .. directory .. "/*.lua", "LUA")) do
+    local files = file.Find(baseDir .. directory .. "/*.lua", "LUA")
+    for i = 1, #files do
+        local v = files[i]
         if ( !file.Exists(baseDir .. directory .. "/" .. v, "LUA") ) then
             self:PrintError("Failed to load file " .. baseDir .. directory .. "/" .. v .. "!")
             continue
@@ -379,8 +382,8 @@ function ax.util:FindText(txt, find)
     end
 
     local words = string.Explode(" ", txt)
-    for k, v in ipairs(words) do
-        if ( self:FindString(v, find) ) then
+    for i = 1, #words do
+        if ( self:FindString(words[i], find) ) then
             return true
         end
     end
@@ -437,8 +440,9 @@ function ax.util:FindPlayer(identifier)
     end
 
     if ( istable(identifier) ) then
-        for k, v in ipairs(identifier) do
-            local foundPlayer = self:FindPlayer(v)
+        for i = 1, #identifier do
+            local foundPlayer = self:FindPlayer(identifier[i])
+
             if ( IsValid(foundPlayer) ) then
                 return foundPlayer
             end
@@ -583,7 +587,8 @@ local directions = {
 function ax.util:GetHeadingFromAngle(ang)
     local yaw = ang.yaw or ang[2]
 
-    for _, dir in ipairs(directions) do
+    for i = 1, #directions do
+        local dir = directions[i]
         if ( yaw > dir.min and yaw <= dir.max ) then
             return dir.name
         end
@@ -601,7 +606,7 @@ ax.util.activeSoundQueues = ax.util.activeSoundQueues or {}
 -- @param volume number Volume to play at.
 -- @param pitch number Pitch to play at.
 function ax.util:QueueSounds(ent, queue, volume, pitch)
-    if ( !IsValid(ent) or !istable(queue) or #queue == 0 ) then return end
+    if ( !IsValid(ent) or !istable(queue) or queue[1] == nil ) then return end
 
     local data = {
         entity = ent,
@@ -684,20 +689,22 @@ function ax.util:LoadEntityFolder(basePath, folder, globalKey, registerFn, defau
     local files, folders = file.Find(fullPath .. "*", "LUA")
     default = default or {}
 
-    for _, dir in ipairs(folders) do
+    for i = 1, #folders do
+        local dir = folders[i]
         local subPath = fullPath .. dir .. "/"
 
         _G[globalKey] = table.Copy(default)
         _G[globalKey].ClassName = dir
 
-        if ( self:LoadEntityFile(subPath, clientOnly) and (!clientOnly or CLIENT) ) then
+        if ( self:LoadEntityFile(subPath, clientOnly) and ( !clientOnly or CLIENT ) ) then
             registerFn(_G[globalKey], dir)
         end
 
         _G[globalKey] = nil
     end
 
-    for _, fileName in ipairs(files) do
+    for i = 1, #files do
+        local fileName = files[i]
         local class = string.StripExtension(fileName)
 
         _G[globalKey] = table.Copy(default)
@@ -884,7 +891,8 @@ function ax.util:CapTextWord(text, maxLength)
     local words = string.Explode(" ", text)
     local cappedText = ""
 
-    for _, word in ipairs(words) do
+    for i = 1, #words do
+        local word = words[i]
         if ( #cappedText + #word + 1 > maxLength ) then
             break
         end

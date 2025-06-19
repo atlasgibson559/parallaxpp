@@ -55,8 +55,12 @@ ax.command:Register("PlyWhitelist", {
             return
         end
 
-        target:SetWhitelisted(faction:GetUniqueID(), true)
+        if ( target:HasWhitelist(faction:GetUniqueID()) ) then
+            client:Notify("The targeted player is already whitelisted to that faction!")
+            return
+        end
 
+        target:SetWhitelisted(faction:GetUniqueID(), true)
         client:Notify("You have whitelisted " .. target:Nick() .. " to the faction " .. faction:GetName() .. ".", NOTIFY_HINT)
     end
 })
@@ -83,8 +87,12 @@ ax.command:Register("PlyUnWhitelist", {
             return
         end
 
-        target:SetWhitelisted(faction:GetUniqueID(), false)
+        if ( !target:HasWhitelist(faction:GetUniqueID()) ) then
+            client:Notify("The targeted player is not whitelisted to that faction!")
+            return
+        end
 
+        target:SetWhitelisted(faction:GetUniqueID(), false)
         client:Notify("You have unwhitelisted " .. target:Nick() .. " from the faction " .. faction:GetName() .. ".", NOTIFY_HINT)
     end
 })
@@ -217,8 +225,8 @@ ax.command:Register("CharGiveFlags", {
 
         -- Check if we already have all the flags
         local hasAllFlags = true
-        for k, v in ipairs(given) do
-            if ( !character:HasFlag(v) ) then
+        for i = 1, #given do
+            if ( !character:HasFlag(given[i]) ) then
                 hasAllFlags = false
             end
         end
@@ -229,8 +237,8 @@ ax.command:Register("CharGiveFlags", {
         end
 
         -- Give the flags to the character
-        for k, v in ipairs(given) do
-            character:GiveFlag(v)
+        for i = 1, #given do
+            character:GiveFlag(given[i])
         end
 
         local flagString = table.concat(given, ", ")
@@ -286,8 +294,8 @@ ax.command:Register("CharTakeFlags", {
 
         -- Check if we already dont have the flags we are trying to take
         local hasNoFlags = true
-        for k, v in ipairs(taken) do
-            if ( character:HasFlag(v) ) then
+        for i = 1, #taken do
+            if ( character:HasFlag(taken[i]) ) then
                 hasNoFlags = false
             end
         end
@@ -298,8 +306,8 @@ ax.command:Register("CharTakeFlags", {
         end
 
         -- Take the flags from the character
-        for k, v in ipairs(taken) do
-            character:TakeFlag(v)
+        for i = 1, #taken do
+            character:TakeFlag(taken[i])
         end
 
         local flagString = table.concat(taken, ", ")

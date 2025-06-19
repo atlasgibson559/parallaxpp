@@ -200,7 +200,9 @@ function ax.inventory:CacheAll(characterID, callback)
 
         local inventories = util.JSONToTable(result[1].inventories or "[]") or {}
         -- Check if we are the last inventory to cache, and if so, run the callback
-        for i, inventoryID in ipairs(inventories) do
+        local count = #inventories
+        for i = 1, count do
+            local inventoryID = inventories[i]
             local client = ax.character:GetPlayerByCharacter(characterID)
             if ( !IsValid(client) ) then
                 ax.util:PrintError("Invalid client for character " .. characterID)
@@ -216,7 +218,7 @@ function ax.inventory:CacheAll(characterID, callback)
                 ax.util:Print("Cached inventory " .. inventoryID .. " for character " .. characterID)
 
                 -- If we have a callback, call it with the cached inventory
-                if ( callback and i == #inventories ) then
+                if ( callback and i == count ) then
                     callback(inventory)
                 end
             end)

@@ -28,9 +28,11 @@ include("core/database.lua")
 AddCSLuaFile("core/boot.lua")
 include("core/boot.lua")
 
-for k, v in ipairs(engine.GetAddons()) do
-    if ( v.downloaded and v.mounted ) then
-        resource.AddWorkshop(v.wsid)
+local addons = engine.GetAddons()
+for i = 1, #addons do
+    local addon = addons[i]
+    if ( tobool(addon.mounted) and tobool(addon.downloaded) and isnumber(addon.wsid) ) then
+        resource.AddWorkshop(addon.wsid)
     end
 end
 

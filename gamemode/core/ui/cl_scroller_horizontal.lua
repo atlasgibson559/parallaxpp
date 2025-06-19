@@ -42,9 +42,9 @@ function PANEL:Init()
                 local closest = self.pnlCanvas:GetClosestChild(x, Canvas:GetTall() / 2)
                 local id = 0
 
-                for k, v in ipairs(self.Panels) do
-                    if ( v == closest ) then
-                        id = k
+                for i = 1, #self.Panels do
+                    if ( self.Panels[i] == closest ) then
+                        id = i
                         break
                     end
                 end
@@ -149,7 +149,8 @@ function PANEL:PerformLayout()
 
     local x = 0
 
-    for _, v in ipairs(self.Panels) do
+    for i = 1, #self.Panels do
+        local v = self.Panels[i]
         if ( !IsValid(v) or !v:IsVisible() ) then continue end
 
         v:SetPos(x, 0)

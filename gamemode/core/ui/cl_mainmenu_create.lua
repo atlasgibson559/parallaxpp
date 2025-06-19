@@ -112,7 +112,8 @@ function PANEL:PopulateFactionSelect()
         return aSort < bSort
     end)
 
-    for k, v in ipairs(factions) do
+    for i = 1, #factions do
+        local v = factions[i]
         if ( !ax.faction:CanSwitchTo(ax.client, v:GetID()) ) then continue end
 
         local name = (v.Name and ax.utf8:Upper(v.Name)) or "UNKNOWN FACTION"
@@ -220,7 +221,8 @@ function PANEL:PopulateCreateCharacter()
     backButton.DoClick = function()
         if ( self.currentCreatePage == 0 ) then
             local availableFactions = 0
-            for k, v in ipairs(ax.faction:GetAll()) do
+            for i = 1, #ax.faction:GetAll() do
+                local v = ax.faction:GetAll()[i]
                 if ( ax.faction:CanSwitchTo(ax.client, v:GetID()) ) then
                     availableFactions = availableFactions + 1
                 end
