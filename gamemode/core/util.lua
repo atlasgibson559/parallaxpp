@@ -1017,8 +1017,6 @@ if ( CLIENT ) then
     -- @param segments number Number of segments (more = smoother)
     -- @param color table Color to fill the circle
     function ax.util:DrawCircle(x, y, radius, segments, color)
-        surface.SetDrawColor(color.r, color.g, color.b, color.a)
-
         local vertices = {}
 
         table.insert(vertices, {x = x, y = y})
@@ -1031,6 +1029,7 @@ if ( CLIENT ) then
             })
         end
 
+        surface.SetDrawColor(color.r, color.g, color.b, color.a)
         surface.DrawPoly(vertices)
     end
 end

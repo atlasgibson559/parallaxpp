@@ -364,7 +364,7 @@ function GM:HUDPaint()
 
     shouldDraw = hook.Run("ShouldDrawCrosshair")
     if ( shouldDraw != false and ax.option:Get("hud.crosshair", true) ) then
-        local crosshairColor = ax.option:Get("hud.crosshair.color", Color(255, 255, 255, 255))
+        local crosshairColor = ax.option:Get("hud.crosshair.color", color_white)
         local crosshairSize = ax.option:Get("hud.crosshair.size", 1)
         local crosshairThickness = ax.option:Get("hud.crosshair.thickness", 1)
         local crosshairType = ax.option:Get("hud.crosshair.type", "cross")
