@@ -294,8 +294,8 @@ if ( CLIENT ) then
         local time = ft * 2
 
         lerpMultiplier = Lerp(time, lerpMultiplier, multiplier)
-        lerpRoll = Lerp(time, lerpRoll, velocity:Dot(newAngles:Right()) * 0.05 * math.max(0, lerpMultiplier - 0.5))
-        lerpYaw = Lerp(time, lerpYaw, velocity:Dot(newAngles:Right()) * 0.01 * math.max(0, lerpMultiplier - 0.5))
+        lerpRoll = Lerp(time * 4, lerpRoll, velocity:Dot(newAngles:Right()) * 0.01 * math.max(0, lerpMultiplier - 0.5))
+        lerpYaw = Lerp(time * 2, lerpYaw, velocity:Dot(newAngles:Right()) * 0.01 * math.max(0, lerpMultiplier - 0.5))
         lerpPitch = Lerp(time, lerpPitch, ( velocity:Dot(newAngles:Up()) * 0.05 + ( speed / 64 ) ) / 2)
         lerpFOV = Lerp(time, lerpFOV, fov + ( speed / 64 ))
 
