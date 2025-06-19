@@ -206,7 +206,16 @@ ax.net:Hook("inventory.cache", function(data)
         local character = ax.character.stored[inventory.CharacterID]
         if ( character ) then
             local inventories = character:GetInventories()
-            if ( !table.HasValue(inventories, inventory) ) then
+
+            local found = false
+            for i = 1, #inventories do
+                if ( inventories[i] == inventory ) then
+                    found = true
+                    break
+                end
+            end
+
+            if ( !found ) then
                 table.insert(inventories, inventory)
             end
 
@@ -222,7 +231,15 @@ ax.net:Hook("inventory.item.add", function(inventoryID, itemID, uniqueID, data)
     local inventory = ax.inventory:Get(inventoryID)
     if ( inventory ) then
         local items = inventory:GetItems()
-        if ( !table.HasValue(items, itemID) ) then
+        local found = false
+        for i = 1, #items do
+            if ( items[i] == itemID ) then
+                found = true
+                break
+            end
+        end
+
+        if ( !found ) then
             table.insert(items, itemID)
         end
     end
@@ -233,7 +250,15 @@ ax.net:Hook("inventory.item.remove", function(inventoryID, itemID)
     if ( !inventory ) then return end
 
     local items = inventory:GetItems()
-    if ( table.HasValue(items, itemID) ) then
+    local found = false
+    for i = 1, #items do
+        if ( items[i] == itemID ) then
+            found = true
+            break
+        end
+    end
+
+    if ( found ) then
         table.RemoveByValue(items, itemID)
     end
 

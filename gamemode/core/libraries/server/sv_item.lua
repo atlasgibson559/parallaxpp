@@ -67,7 +67,16 @@ function ax.item:Add(characterID, inventoryID, uniqueID, data, callback)
 
         if ( inventory ) then
             local items = inventory:GetItems()
-            if ( !table.HasValue(items, itemID) ) then
+            local found = false
+
+            for i = 1, #items do
+                if ( items[i] == itemID ) then
+                    found = true
+                    break
+                end
+            end
+
+            if ( !found ) then
                 table.insert(items, itemID)
             end
         end

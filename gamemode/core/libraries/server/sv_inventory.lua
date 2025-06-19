@@ -74,7 +74,16 @@ function ax.inventory:AssignToCharacter(characterID, inventoryID, callback)
         end
 
         local inventories = util.JSONToTable(result[1].inventories or "[]") or {}
-        if ( !table.HasValue(inventories, inventoryID) ) then
+
+        local found = false
+        for i = 1, #inventories do
+            if ( inventories[i] == inventoryID ) then
+                found = true
+                break
+            end
+        end
+
+        if ( !found ) then
             table.insert(inventories, inventoryID)
         end
 
@@ -256,7 +265,15 @@ function ax.inventory:AddItem(inventoryID, itemID, uniqueID, data)
         items = {}
     end
 
-    if ( !table.HasValue(items, itemID) ) then
+    local found = false
+    for i = 1, #items do
+        if ( items[i] == itemID ) then
+            found = true
+            break
+        end
+    end
+
+    if ( !found ) then
         table.insert(items, itemID)
     end
 
@@ -296,8 +313,16 @@ function ax.inventory:RemoveItem(inventoryID, itemID)
         return false
     end
 
+    local found = true
     local items = inventory:GetItems()
-    if ( table.HasValue(items, itemID) ) then
+    for i = 1, #items do
+        if ( items[i] != itemID ) then
+            found = false
+            break
+        end
+    end
+
+    if ( found ) then
         table.RemoveByValue(items, itemID)
     end
 

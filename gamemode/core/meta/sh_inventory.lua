@@ -137,7 +137,15 @@ function INV:AddReceiver(receiver)
 
     self.Receivers = self.Receivers or {}
 
-    if ( !table.HasValue(self.Receivers, receiver) ) then
+    local found = false
+    for i = 1, #self.Receivers do
+        if ( self.Receivers[i] == receiver ) then
+            found = true
+            break
+        end
+    end
+
+    if ( !found ) then
         table.insert(self.Receivers, receiver)
     end
 end

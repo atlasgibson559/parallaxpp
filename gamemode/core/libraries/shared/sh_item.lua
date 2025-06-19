@@ -92,7 +92,16 @@ function ax.item:LoadFolder(path)
     local _, folders = file.Find(path .. "/*", "LUA")
 
     -- If there is a base folder, we need to load it first so we can inherit from it later.
-    if ( table.HasValue(folders, "base") ) then
+    local found = false
+    for i = 1, #folders do
+        local v = folders[i]
+        if ( v == "base" ) then
+            found = true
+            break
+        end
+    end
+
+    if ( found ) then
         self:Load(path .. "/base")
     end
 
@@ -174,7 +183,16 @@ if ( CLIENT ) then
         local inventory = ax.inventory:Get(inventoryID)
         if ( inventory ) then
             local items = inventory:GetItems()
-            if ( !table.HasValue(items, itemID) ) then
+            local found = false
+
+            for i = 1, #items do
+                if ( items[i] == itemID ) then
+                    found = true
+                    break
+                end
+            end
+
+            if ( !found ) then
                 table.insert(items, itemID)
             end
         end

@@ -44,7 +44,15 @@ function PANEL:Init()
 
     local categories = {}
     for k, v in pairs(ax.option.stored) do
-        if ( table.HasValue(categories, v.Category) ) then continue end
+        local found = false
+        for i = 1, #categories do
+            if ( categories[i] == v.Category ) then
+                found = true
+                break
+            end
+        end
+
+        if ( found ) then continue end
 
         table.insert(categories, v.Category)
     end
