@@ -115,7 +115,7 @@ ax.character:RegisterVariable("model", {
     OnPopulate = function(self, parent, payload, client)
         local label = parent:Add("ax.text")
         label:Dock(TOP)
-        label:SetFont("parallax.button")
+        label:SetFont("parallax.large")
 
         local translation = ax.localization:GetPhrase(self.Name)
         local bTranslated = translation != self.Name

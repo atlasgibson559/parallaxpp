@@ -23,7 +23,7 @@ AccessorFunc(PANEL, "textInsetY", "TextInsetY", FORCE_NUMBER)
 AccessorFunc(PANEL, "wasHovered", "WasHovered", FORCE_BOOL)
 
 function PANEL:Init()
-    self:SetFont("parallax.button")
+    self:SetFont("parallax.large")
     self:SetTextColorProperty(ax.color:Get("white"))
     self:SetContentAlignment(4)
     self:SetTextInset(ScreenScale(2), 0)
@@ -85,7 +85,7 @@ function PANEL:Think()
     local hovering = self:IsHovered()
     if ( hovering and !self.wasHovered ) then
         surface.PlaySound("ax.button.enter")
-        self:SetFont("parallax.button.hover")
+        self:SetFont("parallax.large.bold")
         self.wasHovered = true
 
         self:Motion(0.2, {
@@ -124,7 +124,7 @@ function PANEL:Think()
             self:OnHovered()
         end
     elseif ( !hovering and self.wasHovered ) then
-        self:SetFont("parallax.button")
+        self:SetFont("parallax.large")
         self.wasHovered = false
 
         self:Motion(0.2, {
@@ -190,7 +190,7 @@ AccessorFunc(PANEL, "backgroundAlphaUnHovered", "BackgroundAlphaUnHovered", FORC
 AccessorFunc(PANEL, "backgroundColor", "BackgroundColor")
 
 function PANEL:Init()
-    self:SetFont("parallax.button.small")
+    self:SetFont("parallax.large")
     self:SetTextColorProperty(ax.color:Get("white"))
     self:SetContentAlignment(5)
     self:SetTall(ScreenScaleH(12))
@@ -234,7 +234,7 @@ function PANEL:Think()
     local hovering = self:IsHovered()
     if ( hovering and !self.wasHovered ) then
         surface.PlaySound("ax.button.enter")
-        self:SetFont("parallax.button.small.hover")
+        self:SetFont("parallax.large.bold")
         self.wasHovered = true
 
         self:Motion(0.2, {
@@ -257,7 +257,7 @@ function PANEL:Think()
             self:OnHovered()
         end
     elseif ( !hovering and self.wasHovered ) then
-        self:SetFont("parallax.button.small")
+        self:SetFont("parallax.large")
         self.wasHovered = false
 
         self:Motion(0.2, {
@@ -286,7 +286,7 @@ function PANEL:Think()
     end
 end
 
-vgui.Register("ax.button.small", PANEL, "ax.button")
+vgui.Register("ax.button.flat", PANEL, "ax.button")
 
 sound.Add({
     name = "ax.button.click",

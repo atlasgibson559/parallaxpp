@@ -70,7 +70,7 @@ function PANEL:PopulateFactionSelect()
     local title = self:Add("ax.text")
     title:Dock(TOP)
     title:DockMargin(padding, padding, 0, 0)
-    title:SetFont("parallax.title")
+    title:SetFont("parallax.large.bold")
     title:SetText(string.upper("mainmenu.create.character.faction"))
 
     local navigation = self:Add("EditablePanel")
@@ -78,7 +78,7 @@ function PANEL:PopulateFactionSelect()
     navigation:DockMargin(padding, 0, padding, padding)
     navigation:SetTall(ScreenScale(24))
 
-    local backButton = navigation:Add("ax.button.small")
+    local backButton = navigation:Add("ax.button.flat")
     backButton:Dock(LEFT)
     backButton:SetText("back")
     backButton.DoClick = function()
@@ -120,9 +120,9 @@ function PANEL:PopulateFactionSelect()
         local description = (v.Description and ax.utf8:Upper(v.Description)) or "UNKNOWN FACTION DESCRIPTION"
         description = ax.util:CapTextWord(description, factionList:GetTall() / 4) -- Unreliable, but it works for now
 
-        local descriptionWrapped = ax.util:GetWrappedText(description, "parallax.button.small", factionList:GetTall() * 1.5)
+        local descriptionWrapped = ax.util:GetWrappedText(description, "parallax.bold", factionList:GetTall() * 1.5)
 
-        local factionButton = factionList:Add("ax.button.small")
+        local factionButton = factionList:Add("ax.button.flat")
         factionButton:Dock(LEFT)
         factionButton:DockMargin(0, 0, 16, 0)
         factionButton:SetText(v.Name or "Unknown Faction")
@@ -163,11 +163,11 @@ function PANEL:PopulateFactionSelect()
 
             local textColor = factionButton:GetTextColor()
 
-            draw.SimpleText(name, factionButton:IsHovered() and "parallax.button.large.hover" or "parallax.button.large", tinyPadding, imageHeight - boxHeight + boxHeightStatic / 2, textColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+            draw.SimpleText(name, factionButton:IsHovered() and "parallax.large.large.hover" or "parallax.large.large", tinyPadding, imageHeight - boxHeight + boxHeightStatic / 2, textColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 
-            local textHeight = ax.util:GetTextHeight("parallax.button.tiny") - ScreenScale(4)
+            local textHeight = ax.util:GetTextHeight("parallax.bold") - ScreenScale(4)
             for i = 1, #descriptionWrapped do
-                draw.SimpleText(descriptionWrapped[i], "parallax.button.tiny", tinyPadding, imageHeight - boxHeight + boxHeightStatic + (i - 1) * textHeight, ColorAlpha(textColor, 255 * inertia), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                draw.SimpleText(descriptionWrapped[i], "parallax.bold", tinyPadding, imageHeight - boxHeight + boxHeightStatic + (i - 1) * textHeight, ColorAlpha(textColor, 255 * inertia), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
             end
         end
 
@@ -206,7 +206,7 @@ function PANEL:PopulateCreateCharacter()
     local title = self:Add("ax.text")
     title:Dock(TOP)
     title:DockMargin(padding, padding, 0, 0)
-    title:SetFont("parallax.title")
+    title:SetFont("parallax.large.bold")
     title:SetText(string.upper("mainmenu.create.character"))
 
     local navigation = self:Add("EditablePanel")
@@ -214,7 +214,7 @@ function PANEL:PopulateCreateCharacter()
     navigation:DockMargin(padding, 0, padding, padding)
     navigation:SetTall(ScreenScale(24))
 
-    local backButton = navigation:Add("ax.button.small")
+    local backButton = navigation:Add("ax.button.flat")
     backButton:Dock(LEFT)
     backButton:SetText("back")
 
@@ -242,7 +242,7 @@ function PANEL:PopulateCreateCharacter()
         end
     end
 
-    local nextButton = navigation:Add("ax.button.small")
+    local nextButton = navigation:Add("ax.button.flat")
     nextButton:Dock(RIGHT)
     nextButton:SetText("next")
 
@@ -318,7 +318,7 @@ function PANEL:PopulateCreateCharacterForm()
 
             local label = self.characterCreateForm:Add("ax.text")
             label:Dock(TOP)
-            label:SetFont("parallax.button")
+            label:SetFont("parallax.large")
 
             label:SetText(bTranslated and translation or v.Name or k)
 
@@ -329,7 +329,7 @@ function PANEL:PopulateCreateCharacterForm()
             local entry = self.characterCreateForm:Add("ax.text.entry")
             entry:Dock(TOP)
             entry:DockMargin(0, 0, 0, smallPadding)
-            entry:SetFont("parallax.button")
+            entry:SetFont("parallax.large")
             entry:SetPlaceholderText(v.Default or "")
             entry:SetTall(ScreenScale(16))
             entry:SetZPos(zPos)
@@ -352,7 +352,7 @@ function PANEL:PopulateCreateCharacterForm()
             local label = self.characterCreateForm:Add("ax.text")
             label:Dock(TOP)
             label:SetText(bTranslated and translation or v.Name or k)
-            label:SetFont("parallax.button")
+            label:SetFont("parallax.large")
             label:SizeToContents()
 
             zPos = zPos - 1
@@ -362,7 +362,7 @@ function PANEL:PopulateCreateCharacterForm()
             local entry = self.characterCreateForm:Add("ax.text.entry")
             entry:Dock(TOP)
             entry:DockMargin(0, 0, 0, smallPadding)
-            entry:SetFont("parallax.button.small")
+            entry:SetFont("parallax.bold")
             entry:SetPlaceholderText(v.Default or "")
             entry:SetMultiline(true)
             entry:SetTall(ScreenScale(12) * 4)

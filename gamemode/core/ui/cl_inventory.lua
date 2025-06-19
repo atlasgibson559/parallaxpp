@@ -49,7 +49,7 @@ function PANEL:Init()
     end
 
     for _, inventory in pairs(inventories) do
-        local button = self.buttons:Add("ax.button.small")
+        local button = self.buttons:Add("ax.button.flat")
         button:Dock(LEFT)
         button:SetText(inventory:GetName())
         button:SizeToContents()
@@ -93,7 +93,7 @@ function PANEL:SetInventory(id)
 
     local label = progress:Add("ax.text")
     label:Dock(FILL)
-    label:SetFont("parallax.large")
+    label:SetFont("parallax")
     label:SetText(weight .. "kg / " .. maxWeight .. "kg")
     label:SetContentAlignment(5)
 
@@ -217,7 +217,7 @@ function PANEL:SetInfo(id)
     local name = self.info:Add("ax.text")
     name:Dock(TOP)
     name:DockMargin(0, 0, 0, -ScreenScaleH(4))
-    name:SetFont("parallax.huge.bold")
+    name:SetFont("parallax.large.bold")
     name:SetText(item:GetName(), true)
 
     local description = item:GetDescription()
@@ -241,7 +241,7 @@ function PANEL:SetInfo(id)
             if ( actionName == "Take" ) then continue end
             if ( isfunction(actionData.OnCanRun) and actionData:OnCanRun(item, ax.client) == false ) then continue end
 
-            local button = actions:Add("ax.button.small")
+            local button = actions:Add("ax.button.flat")
             button:SetText(actionData.Name or actionName)
             button:SizeToContents()
             button.DoClick = function()

@@ -9,7 +9,7 @@
     Attribution is required. If you use or modify this file, you must retain this notice.
 ]]
 
-DEFINE_BASECLASS("ax.button.small")
+DEFINE_BASECLASS("ax.button.flat")
 
 local PANEL = {}
 
@@ -124,4 +124,4 @@ function PANEL:Think()
     self.weight:SetTextColor(self:GetTextColor())
 end
 
-vgui.Register("ax.item", PANEL, "ax.button.small")
+vgui.Register("ax.item", PANEL, "ax.button.flat")

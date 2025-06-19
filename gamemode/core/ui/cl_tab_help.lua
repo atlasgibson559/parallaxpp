@@ -19,7 +19,7 @@ function PANEL:Init()
 
     local title = self:Add("ax.text")
     title:Dock(TOP)
-    title:SetFont("parallax.title")
+    title:SetFont("parallax.huge.bold")
     title:SetText("HELP")
 
     self.buttons = self:Add("ax.scroller.horizontal")
@@ -39,7 +39,7 @@ function PANEL:Init()
     local categories = {}
     hook.Run("PopulateHelpCategories", categories)
     for k, v in SortedPairs(categories) do
-        local button = self.buttons:Add("ax.button.small")
+        local button = self.buttons:Add("ax.button.flat")
         button:Dock(LEFT)
         button:SetText(k)
         button:SizeToContents()

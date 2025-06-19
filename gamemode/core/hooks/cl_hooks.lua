@@ -516,46 +516,43 @@ function GM:HUDShouldDraw(name)
 end
 
 function GM:LoadFonts()
-    local scale4 = ScreenScaleH(6)
-    local scale6 = ScreenScaleH(8)
-    local scale8 = ScreenScaleH(10)
-    local scale10 = ScreenScaleH(12)
-    local scale12 = ScreenScaleH(16)
-    local scale16 = ScreenScaleH(20)
-    local scale20 = ScreenScaleH(24)
+    local scale6 = ScreenScaleH(6)
+    local scale8 = ScreenScaleH(8)
+    local scale10 = ScreenScaleH(10)
+    local scale16 = ScreenScaleH(16)
     local scale32 = ScreenScaleH(32)
 
     surface.CreateFont("parallax.tiny", {
         font = "GorDIN Regular",
-        size = scale4,
+        size = scale6,
         weight = 700,
         antialias = true
     })
 
     surface.CreateFont("parallax.tiny.bold", {
         font = "GorDIN Bold",
-        size = scale4,
+        size = scale6,
         weight = 900,
         antialias = true
     })
 
     surface.CreateFont("parallax.small", {
         font = "GorDIN Regular",
-        size = scale6,
+        size = scale8,
         weight = 700,
         antialias = true
     })
 
     surface.CreateFont("parallax.small.bold", {
         font = "GorDIN Bold",
-        size = scale6,
+        size = scale8,
         weight = 900,
         antialias = true
     })
 
     surface.CreateFont("parallax.small.italic", {
         font = "GorDIN Regular",
-        size = scale6,
+        size = scale8,
         weight = 700,
         italic = true,
         antialias = true
@@ -563,7 +560,7 @@ function GM:LoadFonts()
 
     surface.CreateFont("parallax.small.italic.bold", {
         font = "GorDIN Bold",
-        size = scale6,
+        size = scale8,
         weight = 900,
         italic = true,
         antialias = true
@@ -571,21 +568,21 @@ function GM:LoadFonts()
 
     surface.CreateFont("parallax", {
         font = "GorDIN Regular",
-        size = scale8,
+        size = scale10,
         weight = 700,
         antialias = true
     })
 
     surface.CreateFont("parallax.bold", {
         font = "GorDIN Bold",
-        size = scale8,
+        size = scale10,
         weight = 900,
         antialias = true
     })
 
     surface.CreateFont("parallax.italic", {
         font = "GorDIN Regular",
-        size = scale8,
+        size = scale10,
         weight = 700,
         italic = true,
         antialias = true
@@ -593,7 +590,7 @@ function GM:LoadFonts()
 
     surface.CreateFont("parallax.italic.bold", {
         font = "GorDIN Bold",
-        size = scale8,
+        size = scale10,
         weight = 900,
         italic = true,
         antialias = true
@@ -601,21 +598,21 @@ function GM:LoadFonts()
 
     surface.CreateFont("parallax.large", {
         font = "GorDIN Regular",
-        size = scale12,
+        size = scale16,
         weight = 700,
         antialias = true
     })
 
     surface.CreateFont("parallax.large.bold", {
         font = "GorDIN Bold",
-        size = scale12,
+        size = scale16,
         weight = 900,
         antialias = true
     })
 
     surface.CreateFont("parallax.large.italic", {
         font = "GorDIN Regular",
-        size = scale12,
+        size = scale16,
         weight = 700,
         italic = true,
         antialias = true
@@ -623,7 +620,7 @@ function GM:LoadFonts()
 
     surface.CreateFont("parallax.large.italic.bold", {
         font = "GorDIN Bold",
-        size = scale12,
+        size = scale16,
         weight = 900,
         italic = true,
         antialias = true
@@ -631,21 +628,21 @@ function GM:LoadFonts()
 
     surface.CreateFont("parallax.huge", {
         font = "GorDIN Regular",
-        size = scale16,
+        size = scale32,
         weight = 700,
         antialias = true
     })
 
     surface.CreateFont("parallax.huge.bold", {
         font = "GorDIN Bold",
-        size = scale16,
+        size = scale32,
         weight = 900,
         antialias = true
     })
 
     surface.CreateFont("parallax.huge.italic", {
         font = "GorDIN",
-        size = scale16,
+        size = scale32,
         weight = 700,
         italic = true,
         antialias = true
@@ -653,80 +650,10 @@ function GM:LoadFonts()
 
     surface.CreateFont("parallax.huge.italic.bold", {
         font = "GorDIN Bold",
-        size = scale16,
+        size = scale32,
         weight = 900,
         italic = true,
         antialias = true
-    })
-
-    surface.CreateFont("parallax.button.large", {
-        font = "GorDIN SemiBold",
-        size = scale20,
-        weight = 700,
-        antialias = true
-    })
-
-    surface.CreateFont("parallax.button.large.hover", {
-        font = "GorDIN Bold",
-        size = scale20,
-        weight = 900,
-        antialias = true
-    })
-
-    surface.CreateFont("parallax.button", {
-        font = "GorDIN SemiBold",
-        size = scale16,
-        weight = 700,
-        antialias = true
-    })
-
-    surface.CreateFont("parallax.button.hover", {
-        font = "GorDIN Bold",
-        size = scale16,
-        weight = 900,
-        antialias = true
-    })
-
-    surface.CreateFont("parallax.button.small", {
-        font = "GorDIN SemiBold",
-        size = scale12,
-        weight = 700,
-        antialias = true
-    })
-
-    surface.CreateFont("parallax.button.small.hover", {
-        font = "GorDIN Bold",
-        size = scale12,
-        weight = 900,
-        antialias = true
-    })
-
-    surface.CreateFont("parallax.button.tiny", {
-        font = "GorDIN SemiBold",
-        size = scale10,
-        weight = 700,
-        antialias = true
-    })
-
-    surface.CreateFont("parallax.button.tiny.hover", {
-        font = "GorDIN Bold",
-        size = scale10,
-        weight = 900,
-        antialias = true
-    })
-
-    surface.CreateFont("parallax.title", {
-        font = "GorDIN Bold",
-        size = scale32,
-        weight = 900,
-        antialias = true,
-    })
-
-    surface.CreateFont("parallax.subtitle", {
-        font = "GorDIN SemiBold",
-        size = scale16,
-        weight = 700,
-        antialias = true,
     })
 
     surface.CreateFont("parallax.developer", {
@@ -908,9 +835,9 @@ function GM:PopulateHelpCategories(categories)
 
             local hasFlag = char:HasFlag(k)
 
-            local button = scroller:Add("ax.button.small")
+            local button = scroller:Add("ax.button.flat")
             button:Dock(TOP)
-            button:SetFont("parallax.button.hover")
+            button:SetFont("parallax.large.bold")
             button:SetText("")
             button:SetBackgroundAlphaHovered(1)
             button:SetBackgroundAlphaUnHovered(0.5)
@@ -946,17 +873,17 @@ function GM:PopulateHelpCategories(categories)
             local key = button:Add("ax.text")
             key:Dock(LEFT)
             key:DockMargin(ScreenScale(8), 0, 0, 0)
-            key:SetFont("parallax.button.hover")
+            key:SetFont("parallax.large.bold")
             key:SetText(k)
 
             local seperator = button:Add("ax.text")
             seperator:Dock(LEFT)
-            seperator:SetFont("parallax.button")
+            seperator:SetFont("parallax.large")
             seperator:SetText(" - ")
 
             local description = button:Add("ax.text")
             description:Dock(LEFT)
-            description:SetFont("parallax.button")
+            description:SetFont("parallax.large")
             description:SetText(v.description)
 
             local function Think(this)
