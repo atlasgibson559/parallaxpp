@@ -14,6 +14,7 @@ local localization = {}
 localization["back"] = "Назад"
 localization["category"] = "Категория"
 localization["category.chat"] = "Чат"
+localization["category.crosshair"] = "Прицел"
 localization["category.color"] = "Цвета"
 localization["category.currency"] = "Валюта"
 localization["category.debug"] = "Отладка"
