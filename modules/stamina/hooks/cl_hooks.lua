@@ -24,32 +24,39 @@ local staminaTime = 0
 local staminaLast = 0
 function MODULE:HUDPaint()
     local shouldDraw = hook.Run("ShouldDrawStamina")
-    if ( shouldDraw != nil and shouldDraw != false ) then
-        local staminaFraction = ax.stamina:GetFraction()
-        staminaLerp = Lerp(FrameTime() * 5, staminaLerp, staminaFraction)
+    if ( shouldDraw == false ) then
+        ax.globals.drawingStamina = nil
+        return
+    end
 
-        if ( staminaLast != staminaFraction ) then
-            staminaTime = CurTime() + 5
-            staminaLast = staminaFraction
-        elseif ( staminaTime < CurTime() ) then
-            staminaAlpha = Lerp(FrameTime() * 2, staminaAlpha, 0)
-        elseif ( staminaAlpha < 255 ) then
-            staminaAlpha = Lerp(FrameTime() * 8, staminaAlpha, 255)
-        end
+    local staminaFraction = ax.stamina:GetFraction()
+    staminaLerp = Lerp(FrameTime() * 5, staminaLerp, staminaFraction)
 
-        if ( staminaAlpha > 0 ) then
-            local scrW, scrH = ScrW(), ScrH()
+    if ( staminaLast != staminaFraction ) then
+        staminaTime = CurTime() + 5
+        staminaLast = staminaFraction
+    elseif ( staminaTime < CurTime() ) then
+        staminaAlpha = Lerp(FrameTime() * 2, staminaAlpha, 0)
+    elseif ( staminaAlpha < 255 ) then
+        staminaAlpha = Lerp(FrameTime() * 8, staminaAlpha, 255)
+    end
 
-            local barWidth, barHeight = scrW / 6, ScreenScale(4)
-            local barX, barY = scrW / 2 - barWidth / 2, scrH / 1.025 - barHeight / 2
+    if ( math.Round(staminaAlpha) > 0 and staminaLerp > 0 ) then
+        local scrW, scrH = ScrW(), ScrH()
 
-            ax.util:DrawBlurRect(barX, barY, barWidth, barHeight, 2, nil, staminaAlpha)
+        local barWidth, barHeight = scrW / 6, ScreenScale(4)
+        local barX, barY = scrW / 2 - barWidth / 2, scrH / 1.025 - barHeight / 2
 
-            surface.SetDrawColor(ColorAlpha(ax.color:Get("background.transparent"), staminaAlpha / 2))
-            surface.DrawRect(barX, barY, barWidth, barHeight)
+        ax.util:DrawBlurRect(barX, barY, barWidth, barHeight, 2, nil, staminaAlpha)
 
-            surface.SetDrawColor(ColorAlpha(ax.color:Get("white"), staminaAlpha))
-            surface.DrawRect(barX, barY, barWidth * staminaLerp, barHeight)
-        end
+        surface.SetDrawColor(ColorAlpha(ax.color:Get("background.transparent"), staminaAlpha / 2))
+        surface.DrawRect(barX, barY, barWidth, barHeight)
+
+        surface.SetDrawColor(ColorAlpha(ax.color:Get("white"), staminaAlpha))
+        surface.DrawRect(barX, barY, barWidth * staminaLerp, barHeight)
+
+        ax.globals.drawingStamina = true
+    else
+        ax.globals.drawingStamina = nil
     end
 end
