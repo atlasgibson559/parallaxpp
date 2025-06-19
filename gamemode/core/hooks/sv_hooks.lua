@@ -520,13 +520,6 @@ local function IsAdmin(_, client)
 end
 
 GM.PlayerSpawnEffect = IsAdmin
-function GM:PlayerSpawnNPC(client, npc_type, weapon)
-    local character = client:GetCharacter()
-    if ( !character ) then return end
-
-    return character:HasFlag("n") or client:IsAdmin()
-end
-
 GM.PlayerSpawnObject = IsAdmin
 GM.PlayerSpawnProp = IsAdmin
 GM.PlayerSpawnRagdoll = IsAdmin
@@ -534,3 +527,10 @@ GM.PlayerSpawnSENT = IsAdmin
 GM.PlayerSpawnSWEP = IsAdmin
 GM.PlayerGiveSWEP = IsAdmin
 GM.PlayerSpawnVehicle = IsAdmin
+
+function GM:PlayerSpawnNPC(client, npc_type, weapon)
+    local character = client:GetCharacter()
+    if ( !character ) then return end
+
+    return character:HasFlag("n") or client:IsAdmin()
+end
