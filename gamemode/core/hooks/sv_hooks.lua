@@ -288,8 +288,9 @@ function GM:OnReloaded()
     ax.schema:Initialize()
 
     ax.config:Synchronize()
-
     ax.util:VerifyVersion()
+
+    ax.util:Print("Core reloaded in " .. math.Round(SysTime() - GM.RefreshTimeStart, 2) .. " seconds.")
 end
 
 function GM:DatabaseConnected()
