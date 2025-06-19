@@ -364,10 +364,10 @@ function GM:HUDPaint()
 
     shouldDraw = hook.Run("ShouldDrawCrosshair")
     if ( shouldDraw != false and ax.option:Get("hud.crosshair", true) ) then
-        local crosshairColor = ax.option:Get("hud.crosshair.color", Color(255, 255, 255, 255))
+        local crosshairColor = ax.option:Get("hud.crosshair.color", color_white)
         local crosshairSize = ax.option:Get("hud.crosshair.size", 1)
         local crosshairThickness = ax.option:Get("hud.crosshair.thickness", 1)
-        local crosshairType = ax.option:Get("hud.crosshair.type", "default")
+        local crosshairType = ax.option:Get("hud.crosshair.type", "cross")
 
         local centerX, centerY = ScrW() / 2, ScrH() / 2
         if ( hook.Run("ShouldDrawLocalPlayer", client) ) then
@@ -394,6 +394,8 @@ function GM:HUDPaint()
             ax.util:DrawCircle(centerX, centerY, size / 2, 32, crosshairColor)
         else
             ax.util:PrintError("Unknown crosshair type: " .. crosshairType)
+            ax.option:Reset("hud.crosshair.type")
+            ax.client:Notify("Unknown crosshair type: " .. crosshairType .. ". Resetting!")
         end
     end
 
