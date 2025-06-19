@@ -132,10 +132,9 @@ ax.option:Register("hud.crosshair.type", {
     NoNetworking = true,
     Populate = function()
         return {
-            ["default"] = "Default",
-            ["dot"] = "Dot",
-            ["circle"] = "Circle",
-            ["cross"] = "Cross"
+            ["cross"] = "Cross",
+            ["rectangle"] = "Rectangle",
+            ["circle"] = "Circle"
         }
     end
 })
