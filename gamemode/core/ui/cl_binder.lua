@@ -17,6 +17,38 @@ local PANEL = {}
 
 AccessorFunc(PANEL, "m_iSelectedNumber", "SelectedNumber", FORCE_NUMBER)
 
+ax.binds = ax.binds or {}
+local release = {}
+hook.Add("Think", "ax.keybinds.logic", function()
+    for settingName, keyCode in pairs(ax.binds) do
+        local settingData = ax.option.stored[settingName]
+        if ( !istable(settingData) or settingData.Type != ax.types.number or !settingData.IsKeybind ) then continue end
+        if ( !isnumber(keyCode) ) then continue end
+
+        if ( input.IsKeyDown(keyCode) ) then
+            if ( !release[settingName] ) then
+                release[settingName] = true
+
+                if ( isfunction(settingData.OnPressed) ) then
+                    settingData:OnPressed()
+                end
+
+                hook.Run("PostKeybindPressed", settingName, keyCode)
+            end
+        else
+            if ( release[settingName] ) then
+                if ( isfunction(settingData.OnReleased) ) then
+                    settingData:OnReleased()
+                end
+
+                hook.Run("PostKeybindReleased", settingName, keyCode)
+            end
+
+            release[settingName] = false
+        end
+    end
+end)
+
 function PANEL:Init()
     self:SetText("")
     self:SetFont("parallax")
@@ -27,34 +59,23 @@ function PANEL:Init()
     self:SetPaintBorderEnabled(true)
     self:SetSelectedNumber(0)
     self:SetMouseInputEnabled(true)
-    self:SetKeyBoardInputEnabled(false)
+    self:SetKeyboardInputEnabled(false)
 
-    self.Changed = false
+    self.Trapping = false
 end
 
-function PANEL:DoClick()
+function PANEL:OnMouseReleased(mouseCode)
+    if ( mouseCode != MOUSE_LEFT ) then return end
     self:GetParent():RequestFocus()
     self:SetText("...")
-    self.Changed = true
+
+    input.StartKeyTrapping()
+    self.Trapping = true
     self:SetKeyboardInputEnabled(true)
 end
 
-function PANEL:OnKeyCodeTyped(code)
-    if ( code == KEY_ESCAPE ) then
-        self:SetText(input.GetKeyName(self:GetSelectedNumber()))
-        self:SetKeyboardInputEnabled(false)
-        self.Changed = false
-        return
-    end
+function PANEL:OnKeyCodePressed(code)
 
-    self:SetSelectedNumber(code)
-    self:SetText(input.GetKeyName(code))
-    self:SetKeyboardInputEnabled(false)
-    self.Changed = true
-
-    if ( self.OnChange ) then
-        self:OnChange(code)
-    end
 end
 
 function PANEL:OnChange(code)
@@ -62,17 +83,44 @@ function PANEL:OnChange(code)
 end
 
 function PANEL:UpdateText()
-    self:SetText(input.GetKeyName(self:GetSelectedNumber()))
+    self:SetText(input.GetKeyName(self:GetSelectedNumber()) or "None")
 end
 
 function PANEL:AllowEnter(bAllow)
     self.AllowEnter = bAllow
 end
 
+function PANEL:SetValue(value)
+    self:SetSelectedNumber(value)
+    self:UpdateText()
+end
+
 function PANEL:Think()
-    if ( self.Changed and !self:HasKeyboardInputEnabled() ) then
-        self.Changed = false
-        self:UpdateText()
+    if ( self.Trapping and !self:IsKeyboardInputEnabled() ) then
+        self.Trapping = false
+
+        return
+    end
+
+    if ( input.IsKeyTrapping() and self.Trapping ) then
+        local code = input.CheckKeyTrapping()
+        if ( !isnumber(code) ) then return end
+
+        if ( code == KEY_ESCAPE ) then
+            self:SetKeyboardInputEnabled(false)
+            self.Trapping = false
+            self:UpdateText()
+            return
+        end
+
+        self:SetValue(code)
+        self:SetKeyboardInputEnabled(false)
+
+        if ( isfunction(self.OnChange) ) then
+            self:OnChange(code)
+        end
+
+        self.Trapping = false
     end
 end
 

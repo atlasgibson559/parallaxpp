@@ -37,7 +37,7 @@ if ( CLIENT ) then
     function ax.option:Load()
         hook.Run("PreOptionsLoad")
 
-        for k, v in pairs(ax.data:Get("options", {}, false, false)) do
+        for k, v in pairs(ax.data:Get("options", {}, true, true)) do
             local stored = self.stored[k]
             if ( !istable(stored) ) then
                 ax.util:PrintError("Option \"" .. k .. "\" does not exist!")

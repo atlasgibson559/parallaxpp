@@ -57,5 +57,5 @@ ax.types = ax.types or {
     character  = 256,
     steamid    = 512,
     steamid64  = 1024,
-    array   = 2048,
+    array      = 2048,
 }

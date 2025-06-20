@@ -185,6 +185,32 @@ function PANEL:AddSetting(settingData)
             end):SetIcon(value and "icon16/cross.png" or "icon16/tick.png")
             menu:Open()
         end
+    elseif ( settingData.Type == ax.types.number and settingData.IsKeybind ) then
+        local bind = panel:Add("ax.binder")
+        bind:Dock(RIGHT)
+        bind:DockMargin(ScreenScale(8), ScreenScaleH(8), ScreenScale(8), ScreenScaleH(8))
+        bind:SetWide(ScreenScale(128))
+        bind:SetSelectedNumber(value)
+        bind:UpdateText()
+
+        bind.OnChange = function(this, newValue)
+            ax.option:Set(settingData.UniqueID, newValue)
+            value = newValue
+            ax.client:EmitSound("ui/buttonclickrelease.wav", 60, pitch, 0.1, CHAN_STATIC)
+
+            ax.binds[settingData.UniqueID] = newValue
+        end
+
+        panel.DoRightClick = function()
+            local menu = DermaMenu()
+            menu:AddOption(ax.localization:GetPhrase("reset"), function()
+                ax.option:Reset(settingData.UniqueID)
+                value = ax.option:Get(settingData.UniqueID)
+
+                bind:SetSelectedNumber(value)
+            end):SetIcon("icon16/arrow_refresh.png")
+            menu:Open()
+        end
     elseif ( settingData.Type == ax.types.number ) then
         local slider = panel:Add("ax.slider")
         slider:Dock(RIGHT)
@@ -459,6 +485,8 @@ function PANEL:AddSetting(settingData)
             end):SetIcon("icon16/pencil.png")
             menu:Open()
         end
+    else
+        return
     end
 
     panel.OnHovered = function(this)

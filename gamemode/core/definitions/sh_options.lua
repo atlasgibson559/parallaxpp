@@ -259,3 +259,16 @@ ax.option:Register("chat.size.font", {
         end
     end
 })
+
+ax.option:Register("thirdperson.toggle", {
+    Name = "options.thirdperson.toggle",
+    Description = "options.thirdperson.toggle.help",
+    Category = "category.thirdperson",
+    Type = ax.types.number,
+    Default = KEY_K,
+    NoNetworking = true,
+    IsKeybind = true,
+    OnPressed = function(self)
+        RunConsoleCommand("ax_thirdperson_toggle")
+    end
+})
