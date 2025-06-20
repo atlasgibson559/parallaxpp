@@ -20,31 +20,31 @@ AccessorFunc(PANEL, "m_iSelectedNumber", "SelectedNumber", FORCE_NUMBER)
 ax.binds = ax.binds or {}
 local release = {}
 hook.Add("Think", "ax.keybinds.logic", function()
-    for settingName, keyCode in pairs(ax.binds) do
-        local settingData = ax.option.stored[settingName]
-        if ( !istable(settingData) or settingData.Type != ax.types.number or !settingData.IsKeybind ) then continue end
+    for optionName, keyCode in pairs(ax.binds) do
+        local optionData = ax.option.stored[optionName]
+        if ( !istable(optionData) or optionData.Type != ax.types.number or !optionData.IsKeybind ) then continue end
         if ( !isnumber(keyCode) ) then continue end
 
         if ( input.IsKeyDown(keyCode) ) then
-            if ( !release[settingName] ) then
-                release[settingName] = true
+            if ( !release[optionName] ) then
+                release[optionName] = true
 
-                if ( isfunction(settingData.OnPressed) ) then
-                    settingData:OnPressed()
+                if ( isfunction(optionData.OnPressed) ) then
+                    optionData:OnPressed()
                 end
 
-                hook.Run("PostKeybindPressed", settingName, keyCode)
+                hook.Run("PostKeybindPressed", optionName, keyCode)
             end
         else
-            if ( release[settingName] ) then
-                if ( isfunction(settingData.OnReleased) ) then
-                    settingData:OnReleased()
+            if ( release[optionName] ) then
+                if ( isfunction(optionData.OnReleased) ) then
+                    optionData:OnReleased()
                 end
 
-                hook.Run("PostKeybindReleased", settingName, keyCode)
+                hook.Run("PostKeybindReleased", optionName, keyCode)
             end
 
-            release[settingName] = false
+            release[optionName] = false
         end
     end
 end)

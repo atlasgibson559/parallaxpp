@@ -120,23 +120,23 @@ function PANEL:PopulateCategory(category, toSearch)
 
             for k2, v2 in SortedPairs(options) do
                 if ( string.lower(v2.SubCategory or "") == string.lower(k) ) then
-                    self:AddSetting(v2)
+                    self:Addoption(v2)
                 end
             end
         end
     else
         for k, v in SortedPairs(options) do
-            self:AddSetting(v)
+            self:Addoption(v)
         end
     end
 end
 
-function PANEL:AddSetting(settingData)
-    local value = ax.option:Get(settingData.UniqueID)
+function PANEL:Addoption(optionData)
+    local value = ax.option:Get(optionData.UniqueID)
 
     local panel = self.container:Add("ax.button.flat")
     panel:Dock(TOP)
-    panel:SetText(settingData.Name)
+    panel:SetText(optionData.Name)
     panel:SetTall(ScreenScaleH(26))
     panel:SetContentAlignment(4)
     panel:SetTextInset(ScreenScale(6), 0)
@@ -149,7 +149,7 @@ function PANEL:AddSetting(settingData)
 
     local label
     local options
-    if ( settingData.Type == ax.types.bool ) then
+    if ( optionData.Type == ax.types.bool ) then
         label = panel:Add("ax.text")
         label:Dock(RIGHT)
         label:DockMargin(0, 0, ScreenScale(8), 0)
@@ -162,7 +162,7 @@ function PANEL:AddSetting(settingData)
         end
 
         panel.DoClick = function()
-            ax.option:Set(settingData.UniqueID, !value)
+            ax.option:Set(optionData.UniqueID, !value)
             value = !value
 
             label:SetText(value and "< " .. enabled .. " >" or "< " .. disabled .. " >", true)
@@ -171,21 +171,21 @@ function PANEL:AddSetting(settingData)
         panel.DoRightClick = function(this)
             local menu = DermaMenu()
             menu:AddOption(ax.localization:GetPhrase("reset"), function()
-                ax.option:Reset(settingData.UniqueID)
-                value = ax.option:Get(settingData.UniqueID)
+                ax.option:Reset(optionData.UniqueID)
+                value = ax.option:Get(optionData.UniqueID)
 
                 label:SetText(value and enabled or disabled, true)
             end):SetIcon("icon16/arrow_refresh.png")
             menu:AddSpacer()
             menu:AddOption(value and disable or enable, function()
-                ax.option:Set(settingData.UniqueID, !value)
+                ax.option:Set(optionData.UniqueID, !value)
                 value = !value
 
                 label:SetText(value and "< " .. enabled .. " >" or "< " .. disabled .. " >", true)
             end):SetIcon(value and "icon16/cross.png" or "icon16/tick.png")
             menu:Open()
         end
-    elseif ( settingData.Type == ax.types.number and settingData.IsKeybind ) then
+    elseif ( optionData.Type == ax.types.number and optionData.IsKeybind ) then
         local bind = panel:Add("ax.binder")
         bind:Dock(RIGHT)
         bind:DockMargin(ScreenScale(8), ScreenScaleH(8), ScreenScale(8), ScreenScaleH(8))
@@ -194,24 +194,24 @@ function PANEL:AddSetting(settingData)
         bind:UpdateText()
 
         bind.OnChange = function(this, newValue)
-            ax.option:Set(settingData.UniqueID, newValue)
+            ax.option:Set(optionData.UniqueID, newValue)
             value = newValue
             ax.client:EmitSound("ui/buttonclickrelease.wav", 60, pitch, 0.1, CHAN_STATIC)
 
-            ax.binds[settingData.UniqueID] = newValue
+            ax.binds[optionData.UniqueID] = newValue
         end
 
         panel.DoRightClick = function()
             local menu = DermaMenu()
             menu:AddOption(ax.localization:GetPhrase("reset"), function()
-                ax.option:Reset(settingData.UniqueID)
-                value = ax.option:Get(settingData.UniqueID)
+                ax.option:Reset(optionData.UniqueID)
+                value = ax.option:Get(optionData.UniqueID)
 
                 bind:SetSelectedNumber(value)
             end):SetIcon("icon16/arrow_refresh.png")
             menu:Open()
         end
-    elseif ( settingData.Type == ax.types.number ) then
+    elseif ( optionData.Type == ax.types.number ) then
         local slider = panel:Add("ax.slider")
         slider:Dock(RIGHT)
         slider:DockMargin(ScreenScale(8), ScreenScaleH(8), ScreenScale(8), ScreenScaleH(8))
@@ -237,9 +237,9 @@ function PANEL:AddSetting(settingData)
             end
         end
 
-        slider:SetMin(settingData.Min or 0)
-        slider:SetMax(settingData.Max or 100)
-        slider:SetDecimals(settingData.Decimals or 0)
+        slider:SetMin(optionData.Min or 0)
+        slider:SetMax(optionData.Max or 100)
+        slider:SetDecimals(optionData.Decimals or 0)
         slider:SetValue(value, true)
 
         label = panel:Add("ax.text")
@@ -255,21 +255,21 @@ function PANEL:AddSetting(settingData)
         end
 
         slider.OnValueChanged = function(this, _)
-            ax.option:Set(settingData.UniqueID, this:GetValue())
+            ax.option:Set(optionData.UniqueID, this:GetValue())
             ax.client:EmitSound("ui/buttonrollover.wav", 100, 100, 1, CHAN_STATIC)
         end
 
         panel.DoClick = function(this)
             if ( !slider.bCursorInside ) then
                 local oldValue = value
-                ax.option:Reset(settingData.UniqueID)
+                ax.option:Reset(optionData.UniqueID)
 
-                value = ax.option:Get(settingData.UniqueID)
+                value = ax.option:Get(optionData.UniqueID)
                 slider:SetValue(value, true)
                 label:SetText(value, true, true, true)
 
-                if ( isfunction(settingData.OnReset) ) then
-                    settingData:OnReset(oldValue, value)
+                if ( isfunction(optionData.OnReset) ) then
+                    optionData:OnReset(oldValue, value)
                 end
 
                 return
@@ -283,21 +283,21 @@ function PANEL:AddSetting(settingData)
         panel.DoRightClick = function(this)
             local menu = DermaMenu()
             menu:AddOption(ax.localization:GetPhrase("reset"), function()
-                ax.option:Reset(settingData.UniqueID)
-                value = ax.option:Get(settingData.UniqueID)
+                ax.option:Reset(optionData.UniqueID)
+                value = ax.option:Get(optionData.UniqueID)
 
                 slider:SetValue(value, true)
                 label:SetText(value, true, true, true)
 
-                if ( isfunction(settingData.OnReset) ) then
-                    settingData:OnReset(oldValue, value)
+                if ( isfunction(optionData.OnReset) ) then
+                    optionData:OnReset(oldValue, value)
                 end
             end):SetIcon("icon16/arrow_refresh.png")
             menu:AddSpacer()
-            menu:AddOption(ax.localization:GetPhrase("set", settingData.Name), function()
+            menu:AddOption(ax.localization:GetPhrase("set", optionData.Name), function()
                 Derma_StringRequest(
-                    ax.localization:GetPhrase("set", settingData.Name),
-                    ax.localization:GetPhrase("set.description.options", settingData.Name),
+                    ax.localization:GetPhrase("set", optionData.Name),
+                    ax.localization:GetPhrase("set.description.options", optionData.Name),
                     value,
                     function(text)
                         if ( text == "" ) then return  end
@@ -305,7 +305,7 @@ function PANEL:AddSetting(settingData)
                         local num = tonumber(text)
 
                         if ( num ) then
-                            ax.option:Set(settingData.UniqueID, num)
+                            ax.option:Set(optionData.UniqueID, num)
                             value = num
 
                             slider:SetValue(value, true)
@@ -316,8 +316,8 @@ function PANEL:AddSetting(settingData)
             end):SetIcon("icon16/pencil.png")
             menu:Open()
         end
-    elseif ( settingData.Type == ax.types.array ) then
-        options = settingData:Populate()
+    elseif ( optionData.Type == ax.types.array ) then
+        options = optionData:Populate()
         local keys = {}
         for k2, _ in pairs(options) do
             table.insert(keys, k2)
@@ -352,7 +352,7 @@ function PANEL:AddSetting(settingData)
             nextKey = nextKey or keys[1]
             nextKey = tostring(nextKey)
 
-            ax.option:Set(settingData.UniqueID, nextKey)
+            ax.option:Set(optionData.UniqueID, nextKey)
             value = nextKey
 
             label:SetText("< " .. (options and options[value] or unknown) .. " >", true)
@@ -361,15 +361,15 @@ function PANEL:AddSetting(settingData)
         panel.DoRightClick = function()
             local menu = DermaMenu()
             menu:AddOption(ax.localization:GetPhrase("reset"), function()
-                ax.option:Reset(settingData.UniqueID)
-                value = ax.option:Get(settingData.UniqueID)
+                ax.option:Reset(optionData.UniqueID)
+                value = ax.option:Get(optionData.UniqueID)
 
                 label:SetText("< " .. (options and options[value] or unknown) .. " >", true)
             end):SetIcon("icon16/arrow_refresh.png")
             menu:AddSpacer()
             for k2, v2 in SortedPairs(options) do
                 menu:AddOption(v2, function()
-                    ax.option:Set(settingData.UniqueID, k2)
+                    ax.option:Set(optionData.UniqueID, k2)
                     value = k2
 
                     phrase = (options and options[value]) and ax.localization:GetPhrase(options[value]) or unknown
@@ -378,7 +378,7 @@ function PANEL:AddSetting(settingData)
             end
             menu:Open()
         end
-    elseif ( settingData.Type == ax.types.color ) then
+    elseif ( optionData.Type == ax.types.color ) then
         local color = panel:Add("EditablePanel")
         color:Dock(RIGHT)
         color:DockMargin(ScreenScale(8), ScreenScaleH(8), ScreenScale(8), ScreenScaleH(8))
@@ -412,7 +412,7 @@ function PANEL:AddSetting(settingData)
                 end
             end
             blocker.OnRemove = function(this)
-                ax.option:Set(settingData.UniqueID, value)
+                ax.option:Set(optionData.UniqueID, value)
             end
 
             local frame = blocker:Add("EditablePanel")
@@ -435,14 +435,14 @@ function PANEL:AddSetting(settingData)
         panel.DoRightClick = function(this)
             local menu = DermaMenu()
             menu:AddOption(ax.localization:GetPhrase("reset"), function()
-                ax.option:Reset(settingData.UniqueID)
-                value = ax.option:Get(settingData.UniqueID)
+                ax.option:Reset(optionData.UniqueID)
+                value = ax.option:Get(optionData.UniqueID)
 
                 color.color = value
             end):SetIcon("icon16/arrow_refresh.png")
             menu:Open()
         end
-    elseif ( settingData.Type == ax.types.string ) then
+    elseif ( optionData.Type == ax.types.string ) then
         local text = panel:Add("ax.text.entry")
         text:Dock(RIGHT)
         text:DockMargin(ScreenScale(8), ScreenScaleH(8), ScreenScale(8), ScreenScaleH(8))
@@ -453,7 +453,7 @@ function PANEL:AddSetting(settingData)
             local newValue = this:GetText()
             if ( newValue == value ) then return end
 
-            ax.option:Set(settingData.UniqueID, newValue)
+            ax.option:Set(optionData.UniqueID, newValue)
             value = newValue
 
             ax.client:EmitSound("ui/buttonclickrelease.wav", 60, pitch, 0.1, CHAN_STATIC)
@@ -462,20 +462,20 @@ function PANEL:AddSetting(settingData)
         panel.DoRightClick = function()
             local menu = DermaMenu()
             menu:AddOption(ax.localization:GetPhrase("reset"), function()
-                ax.option:Reset(settingData.UniqueID)
-                value = ax.option:Get(settingData.UniqueID)
+                ax.option:Reset(optionData.UniqueID)
+                value = ax.option:Get(optionData.UniqueID)
 
                 text:SetText(value)
             end):SetIcon("icon16/arrow_refresh.png")
             menu:AddSpacer()
-            menu:AddOption(ax.localization:GetPhrase("set", settingData.Name), function()
+            menu:AddOption(ax.localization:GetPhrase("set", optionData.Name), function()
                 Derma_StringRequest(
-                    ax.localization:GetPhrase("set", settingData.Name),
-                    ax.localization:GetPhrase("set.description.options", settingData.Name),
+                    ax.localization:GetPhrase("set", optionData.Name),
+                    ax.localization:GetPhrase("set.description.options", optionData.Name),
                     value,
                     function(textString)
                         if ( textString != "" ) then
-                            ax.option:Set(settingData.UniqueID, textString)
+                            ax.option:Set(optionData.UniqueID, textString)
                             value = textString
 
                             text:SetText(textString)
@@ -490,20 +490,20 @@ function PANEL:AddSetting(settingData)
     end
 
     panel.OnHovered = function(this)
-        if ( settingData.Type == ax.types.bool ) then
+        if ( optionData.Type == ax.types.bool ) then
             label:SetText(value and "< " .. enabled .. " >" or "< " .. disabled .. " >", true)
-        elseif ( settingData.Type == ax.types.array ) then
+        elseif ( optionData.Type == ax.types.array ) then
             local phrase = (options and options[value]) and ax.localization:GetPhrase(options[value]) or unknown
             label:SetText("< " .. phrase .. " >", true)
         end
 
         if ( !IsValid(ax.gui.tooltip) ) then
             ax.gui.tooltip = vgui.Create("ax.tooltip")
-            ax.gui.tooltip:SetText(settingData.Name, settingData.Description)
+            ax.gui.tooltip:SetText(optionData.Name, optionData.Description)
             ax.gui.tooltip:SizeToContents()
             ax.gui.tooltip:SetPanel(this)
         else
-            ax.gui.tooltip:SetText(settingData.Name, settingData.Description)
+            ax.gui.tooltip:SetText(optionData.Name, optionData.Description)
             ax.gui.tooltip:SizeToContents()
 
             timer.Simple(0, function()
@@ -515,9 +515,9 @@ function PANEL:AddSetting(settingData)
     end
 
     panel.OnUnHovered = function(this)
-        if ( settingData.Type == ax.types.bool ) then
+        if ( optionData.Type == ax.types.bool ) then
             label:SetText(value and enabled or disabled, true)
-        elseif ( settingData.Type == ax.types.array ) then
+        elseif ( optionData.Type == ax.types.array ) then
             local phrase = (options and options[value]) and ax.localization:GetPhrase(options[value]) or unknown
             label:SetText(phrase, true)
         end

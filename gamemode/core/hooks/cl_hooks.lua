@@ -1084,12 +1084,12 @@ function GM:SpawnMenuOpen()
 end
 
 function GM:PostOptionsLoad(instancesTable)
-    for settingName, value in pairs(instancesTable) do
-        local settingData = ax.option.stored[settingName]
-        if ( !istable(settingData) ) then continue end
+    for optionName, value in pairs(instancesTable) do
+        local optionData = ax.option.stored[optionName]
+        if ( !istable(optionData) ) then continue end
 
-        if ( settingData.Type == ax.types.number and settingData.IsKeybind ) then
-            ax.binds[settingName] = value
+        if ( optionData.Type == ax.types.number and optionData.IsKeybind ) then
+            ax.binds[optionName] = value
         end
     end
 end
