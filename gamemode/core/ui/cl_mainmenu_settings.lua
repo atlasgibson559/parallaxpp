@@ -37,7 +37,7 @@ function PANEL:Populate()
     title:Dock(TOP)
     title:DockMargin(padding, padding, 0, 0)
     title:SetFont("parallax.large.bold")
-    title:SetText("settings")
+    title:SetText("options")
 
     local navigation = self:Add("EditablePanel")
     navigation:Dock(BOTTOM)
@@ -56,11 +56,11 @@ function PANEL:Populate()
         self:SetVisible(false)
     end
 
-    local settings = self:Add("ax.settings")
-    settings:Dock(FILL)
-    settings:DockMargin(padding, 0, padding, 0)
+    local options = self:Add("ax.options")
+    options:Dock(FILL)
+    options:DockMargin(padding, 0, padding, 0)
 end
 
-vgui.Register("ax.mainmenu.settings", PANEL, "EditablePanel")
+vgui.Register("ax.mainmenu.options", PANEL, "EditablePanel")
 
-ax.gui.settingsLast = nil
+ax.gui.optionsLast = nil

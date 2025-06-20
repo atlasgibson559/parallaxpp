@@ -19,10 +19,10 @@ function PANEL:Init()
     local title = self:Add("ax.text")
     title:Dock(TOP)
     title:SetFont("parallax.huge.bold")
-    title:SetText("SETTINGS")
+    title:SetText("options")
 
-    local settings = self:Add("ax.settings")
-    settings:Dock(FILL)
+    local options = self:Add("ax.options")
+    options:Dock(FILL)
 end
 
-vgui.Register("ax.tab.settings", PANEL, "EditablePanel")
+vgui.Register("ax.tab.options", PANEL, "EditablePanel")

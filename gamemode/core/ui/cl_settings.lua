@@ -38,7 +38,7 @@ function PANEL:Init()
         if ( value and value != "" ) then
             self:PopulateCategory(nil, value)
         else
-            self:PopulateCategory(ax.gui.settingsLast)
+            self:PopulateCategory(ax.gui.optionsLast)
         end
     end
 
@@ -70,8 +70,8 @@ function PANEL:Init()
         self.buttons:AddPanel(button)
     end
 
-    if ( ax.gui.settingsLast ) then
-        self:PopulateCategory(ax.gui.settingsLast)
+    if ( ax.gui.optionsLast ) then
+        self:PopulateCategory(ax.gui.optionsLast)
     else
         self:PopulateCategory(categories[1])
     end
@@ -79,12 +79,12 @@ end
 
 function PANEL:PopulateCategory(category, toSearch)
     if ( category ) then
-        ax.gui.settingsLast = category
+        ax.gui.optionsLast = category
     end
 
     self.container:Clear()
 
-    local settings = {}
+    local options = {}
     for k, v in pairs(ax.option.stored) do
         if ( category and ax.util:FindString(v.Category, category) == false ) then
             continue
@@ -94,16 +94,16 @@ function PANEL:PopulateCategory(category, toSearch)
             continue
         end
 
-        table.insert(settings, v)
+        table.insert(options, v)
     end
 
-    table.sort(settings, function(a, b)
+    table.sort(options, function(a, b)
         return ax.localization:GetPhrase(a.Name) < ax.localization:GetPhrase(b.Name)
     end)
 
     local subCategories = {}
-    for i = 1, #settings do
-        local v = settings[i]
+    for i = 1, #options do
+        local v = options[i]
         local subCategory = string.lower(v.SubCategory or "")
         if ( subCategory and !subCategories[subCategory] ) then
             subCategories[subCategory] = true
@@ -118,14 +118,14 @@ function PANEL:PopulateCategory(category, toSearch)
             label:SetFont("parallax.huge.bold")
             label:SetText(string.upper(k))
 
-            for k2, v2 in SortedPairs(settings) do
+            for k2, v2 in SortedPairs(options) do
                 if ( string.lower(v2.SubCategory or "") == string.lower(k) ) then
                     self:AddSetting(v2)
                 end
             end
         end
     else
-        for k, v in SortedPairs(settings) do
+        for k, v in SortedPairs(options) do
             self:AddSetting(v)
         end
     end
@@ -528,6 +528,6 @@ function PANEL:AddSetting(settingData)
     end
 end
 
-vgui.Register("ax.settings", PANEL, "EditablePanel")
+vgui.Register("ax.options", PANEL, "EditablePanel")
 
-ax.gui.settingsLast = nil
+ax.gui.optionsLast = nil

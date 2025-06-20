@@ -68,7 +68,7 @@ function PANEL:Init()
 
     self.createPanel = self:Add("ax.mainmenu.create")
     self.selectPanel = self:Add("ax.mainmenu.load")
-    self.settingsPanel = self:Add("ax.mainmenu.settings")
+    self.optionsPanel = self:Add("ax.mainmenu.options")
 
     self.container = self:Add("EditablePanel")
     self.container:SetSize(self:GetWide(), self:GetTall())
@@ -85,12 +85,12 @@ function PANEL:Populate()
     -- Hide all other panels
     self.createPanel:SetVisible(false)
     self.selectPanel:SetVisible(false)
-    self.settingsPanel:SetVisible(false)
+    self.optionsPanel:SetVisible(false)
 
     -- And clear them
     self.createPanel:Clear()
     self.selectPanel:Clear()
-    self.settingsPanel:Clear()
+    self.optionsPanel:Clear()
 
     -- Set the gradients
     self:SetGradientLeftTarget(1)
@@ -190,13 +190,13 @@ function PANEL:Populate()
         end
     end
 
-    local settingsButton = buttons:Add("ax.button")
-    settingsButton:Dock(TOP)
-    settingsButton:DockMargin(0, 0, 0, 16)
-    settingsButton:SetText("mainmenu.settings")
+    local optionsButton = buttons:Add("ax.button")
+    optionsButton:Dock(TOP)
+    optionsButton:DockMargin(0, 0, 0, 16)
+    optionsButton:SetText("mainmenu.options")
 
-    settingsButton.DoClick = function()
-        self.settingsPanel:Populate()
+    optionsButton.DoClick = function()
+        self.optionsPanel:Populate()
     end
 
     local disconnectButton = buttons:Add("ax.button")

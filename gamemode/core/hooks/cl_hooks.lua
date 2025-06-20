@@ -812,9 +812,9 @@ function GM:PopulateTabButtons(buttons)
         end
     }
 
-    buttons["tab.settings"] = {
+    buttons["tab.options"] = {
         Populate = function(this, container)
-            container:Add("ax.tab.settings")
+            container:Add("ax.tab.options")
         end
     }
 end
