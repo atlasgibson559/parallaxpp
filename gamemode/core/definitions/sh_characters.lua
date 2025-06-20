@@ -38,7 +38,7 @@ ax.character:RegisterVariable("name", {
     ZPos = -3,
     Name = "character.create.name",
 
-    AllowNonAscii = false,
+    AllowNonAscii = true,
     Numeric = false,
 
     OnValidate = function(self, parent, payload, client)
@@ -74,7 +74,7 @@ ax.character:RegisterVariable("description", {
     Name = "character.create.description",
 
     OnValidate = function(self, parent, payload, client)
-        if ( string.len(payload.description) < 10 ) then
+        if ( string.len(string.Trim(payload.description)) < 10 ) then
             return false, "Description must be at least 10 characters long!"
         end
 
