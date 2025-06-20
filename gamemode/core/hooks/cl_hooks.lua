@@ -277,7 +277,7 @@ function GM:HUDPaintBackground()
         if ( hook.Run("ShouldDrawDefaultVignette") != false ) then
             surface.SetDrawColor(vignetteColor)
             surface.SetMaterial(vignette)
-            surface.DrawRect(0, 0, scrW, scrH, vignetteColor)
+            surface.DrawTexturedRect(0, 0, scrW, scrH)
         end
 
         hook.Run("DrawVignette", 1 - (vignetteColor.a / 255))
@@ -795,9 +795,7 @@ function GM:ShouldDrawVignette()
 end
 
 function GM:ShouldDrawDefaultVignette()
-    if ( !IsValid(vignette) ) then
-        return false
-    end
+    return !vignette:IsError()
 end
 
 function GM:ShouldShowInventory()
