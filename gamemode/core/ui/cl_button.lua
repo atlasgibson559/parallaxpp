@@ -215,7 +215,7 @@ function PANEL:SizeToContents()
 end
 
 function PANEL:Paint(width, height)
-    draw.RoundedBox(0, 0, 0, width, height, ColorAlpha(self.backgroundColor, 255 * elf.inertia))
+    draw.RoundedBox(0, 0, 0, width, height, ColorAlpha(self.backgroundColor, 255 * self.inertia))
     return false
 end
 
