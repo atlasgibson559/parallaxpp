@@ -215,18 +215,7 @@ function PANEL:SizeToContents()
 end
 
 function PANEL:Paint(width, height)
-    local ft = FrameTime()
-    local time = ft * 10
-
-    local performanceAnimations = ax.option:Get("performance.animations", true)
-    if ( !performanceAnimations ) then
-        time = 1
-    end
-
-    local inertia = self.inertia
-
-    draw.RoundedBox(0, 0, 0, width, height, ColorAlpha(self.backgroundColor, 255 * inertia))
-
+    draw.RoundedBox(0, 0, 0, width, height, ColorAlpha(self.backgroundColor, 255 * elf.inertia))
     return false
 end
 
