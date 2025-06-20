@@ -18,9 +18,9 @@ hook.Add("EntityRemoved", "ax.impr.EntityRemoved", function(ent)
     playerAccountID[ent:AccountID()] = nil
 end)
 
-local intern_getBySteamID64 = player.GetBySteamID64
-local intern_getBySteamID = player.GetBySteamID
-local intern_getByAccountID = player.GetByAccountID
+local intern_getBySteamID64 = intern_getBySteamID64 or player.GetBySteamID64
+local intern_getBySteamID = intern_getBySteamID or player.GetBySteamID
+local intern_getByAccountID = intern_getByAccountID or player.GetByAccountID
 
 function player.GetBySteamID64(steamID64)
     local ent = playerSteamID64[steamID64]
