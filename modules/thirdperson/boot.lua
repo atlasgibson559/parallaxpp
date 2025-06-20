@@ -95,6 +95,19 @@ ax.config:Register("thirdperson.tracecheck", {
     Category = "category.thirdperson"
 })
 
+ax.option:Register("thirdperson.toggle", {
+    Name = "options.thirdperson.toggle",
+    Description = "options.thirdperson.toggle.help",
+    Category = "category.thirdperson",
+    Type = ax.types.number,
+    Default = KEY_K,
+    NoNetworking = true,
+    IsKeybind = true,
+    OnPressed = function(self)
+        RunConsoleCommand("ax_thirdperson_toggle")
+    end
+})
+
 local meta = FindMetaTable("Player")
 function meta:InThirdperson()
     return SERVER and ax.option:Get(self, "thirdperson", false) or ax.option:Get("thirdperson", false)
@@ -119,9 +132,10 @@ if (CLIENT) then
         ["options.thirdperson.position.z"] = "Position Z",
         ["options.thirdperson.position.z.help"] = "Set the Z position of the third person camera.",
         ["options.thirdperson.reset"] = "Reset third person camera position.",
-        ["options.thirdperson.toggle"] = "Toggle third person view.",
         ["options.thirdperson.traceplayercheck"] = "Trace Player Check",
         ["options.thirdperson.traceplayercheck.help"] = "Draw only the players that the person would see as if they were in firstperson.",
+        ["options.thirdperson.toggle"] = "Toggle third person view.",
+        ["options.thirdperson.toggle.help"] = "Keybind to toggle third person view.",
     })
 
     ax.localization:Register("ru", {
@@ -142,8 +156,10 @@ if (CLIENT) then
         ["options.thirdperson.position.z"] = "Позиция по Z",
         ["options.thirdperson.position.z.help"] = "Устанавливает позицию по Z для вида от третьего лица.",
         ["options.thirdperson.reset"] = "Сбросить позицию вида от третьего лица.",
-        ["options.thirdperson.toggle"] = "Переключить вид от третьего лица.",
         ["options.thirdperson.traceplayercheck"] = "Проверка через трасировку",
         ["options.thirdperson.traceplayercheck.help"] = "Отрисовывать только тех игроков, которых игрок бы мог увидеть в виде от первого лица.",
+        ["options.thirdperson.toggle"] = "Переключить вид от третьего лица.",
+        ["options.thirdperson.toggle.help"] = "Клавиша для переключения вида от третьего лица.",
+
     })
 end
