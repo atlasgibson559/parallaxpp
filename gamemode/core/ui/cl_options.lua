@@ -120,18 +120,18 @@ function PANEL:PopulateCategory(category, toSearch)
 
             for k2, v2 in SortedPairs(options) do
                 if ( string.lower(v2.SubCategory or "") == string.lower(k) ) then
-                    self:Addoption(v2)
+                    self:AddOption(v2)
                 end
             end
         end
     else
         for k, v in SortedPairs(options) do
-            self:Addoption(v)
+            self:AddOption(v)
         end
     end
 end
 
-function PANEL:Addoption(optionData)
+function PANEL:AddOption(optionData)
     local value = ax.option:Get(optionData.UniqueID)
 
     local panel = self.container:Add("ax.button.flat")
