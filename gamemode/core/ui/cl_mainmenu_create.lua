@@ -116,7 +116,7 @@ function PANEL:PopulateFactionSelect()
 
         local name = (v.Name and ax.utf8:Upper(v.Name)) or "UNKNOWN FACTION"
         local description = (v.Description and ax.utf8:Upper(v.Description)) or "UNKNOWN FACTION DESCRIPTION"
-        description = ax.util:CapTextWord(description, factionList:GetTall() / 4) -- Unreliable, but it works for now
+        description = ax.util:CapTextWord(description, factionList:GetTall() / 3) -- Unreliable, but it works for now
 
         local descriptionWrapped = ax.util:GetWrappedText(description, "parallax.bold", factionList:GetTall() * 1.25)
 
@@ -160,8 +160,19 @@ function PANEL:PopulateFactionSelect()
             draw.RoundedBox(0, 0, imageHeight - boxHeight, width, boxHeight, ColorAlpha(ax.color:Get("white"), 255 * inertia))
 
             local textColor = factionButton:GetTextColor()
+            local hovered = factionButton:IsHovered()
+            local font = "parallax.huge"
+            if ( v.Font ) then
+                font = v.Font
+            elseif ( name:len() > 22 ) then
+                font = "parallax.massive"
+            end
 
-            draw.SimpleText(name, factionButton:IsHovered() and "parallax.huge.bold" or "parallax.huge", ScreenScale(8), imageHeight - boxHeight + boxHeightStatic / 2, textColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+            if ( hovered ) then
+                font = font .. ".bold"
+            end
+
+            draw.SimpleText(name, font, ScreenScale(8), imageHeight - boxHeight + boxHeightStatic / 2, textColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 
             local textHeight = ax.util:GetTextHeight("parallax.bold") / 1.5
             for d = 1, #descriptionWrapped do
