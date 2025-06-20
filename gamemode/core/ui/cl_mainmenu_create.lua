@@ -183,7 +183,12 @@ function PANEL:PopulateCreateCharacter()
     if ( !self.currentCreatePayload.faction or self.currentCreatePayload.faction == 0 ) then
         local factions = ax.faction:GetAll()
         if ( factions[1] != nil ) then
-            self.currentCreatePayload.faction = factions[1]:GetID()
+            for i = 1, #factions do
+                if ( ax.faction:CanSwitchTo(ax.client, factions[i]:GetID()) ) then
+                    self.currentCreatePayload.faction = factions[i]:GetID()
+                    break
+                end
+            end
         else
             ax.util:PrintError("No factions available for character creation!")
             return
