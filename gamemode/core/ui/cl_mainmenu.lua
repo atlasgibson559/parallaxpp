@@ -66,9 +66,9 @@ function PANEL:Init()
     self:SetPos(0, 0)
     self:MakePopup()
 
-    self.createPanel = self:Add("Parallax.Mainmenu.create")
-    self.selectPanel = self:Add("Parallax.Mainmenu.load")
-    self.optionsPanel = self:Add("Parallax.Mainmenu.options")
+    self.createPanel = self:Add("Parallax.Mainmenu.Create")
+    self.selectPanel = self:Add("Parallax.Mainmenu.Load")
+    self.optionsPanel = self:Add("Parallax.Mainmenu.Options")
 
     self.container = self:Add("EditablePanel")
     self.container:SetSize(self:GetWide(), self:GetTall())

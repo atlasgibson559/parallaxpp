@@ -61,13 +61,13 @@ function PANEL:Populate()
         local players = teamData.players
 
         -- Create a new panel for the team
-        local teamPanel = self.container:Add("Parallax.Scoreboard.team")
+        local teamPanel = self.container:Add("Parallax.Scoreboard.Team")
         teamPanel:SetTeam(teamID)
           -- Add each player to the team panel
         local teamPlayerCount = #players
         for j = 1, teamPlayerCount do
             local client = players[j]
-            local playerPanel = teamPanel.container:Add("Parallax.Scoreboard.player")
+            local playerPanel = teamPanel.container:Add("Parallax.Scoreboard.Player")
             playerPanel:SetPlayer(client)
 
             teamPanel.players[client:SteamID64()] = playerPanel
@@ -133,7 +133,7 @@ function PANEL:Paint(width, height)
     surface.DrawTexturedRect(0, 0, width, height)
 end
 
-vgui.Register("Parallax.Scoreboard.team", PANEL, "EditablePanel")
+vgui.Register("Parallax.Scoreboard.Team", PANEL, "EditablePanel")
 
 PANEL = {}
 
@@ -199,4 +199,4 @@ function PANEL:OnMousePressed(keyCode)
     end
 end
 
-vgui.Register("Parallax.Scoreboard.player", PANEL, "EditablePanel")
+vgui.Register("Parallax.Scoreboard.Player", PANEL, "EditablePanel")

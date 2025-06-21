@@ -198,4 +198,4 @@ function PANEL:PopulateDelete(characterID)
     navigation:SetTall(math.max(cancelButton:GetTall(), okButton:GetTall()))
 end
 
-vgui.Register("Parallax.Mainmenu.load", PANEL, "EditablePanel")
+vgui.Register("Parallax.Mainmenu.Load", PANEL, "EditablePanel")

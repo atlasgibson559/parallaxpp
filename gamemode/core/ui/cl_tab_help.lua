@@ -77,7 +77,7 @@ function PANEL:Populate(data)
         end
 
         if ( data.OnClose ) then
-            self:CallOnRemove("Parallax.Tab.help." .. data.name, function()
+            self:CallOnRemove("Parallax.Tab.Help." .. data.name, function()
                 data.OnClose()
             end)
         end
@@ -86,6 +86,6 @@ function PANEL:Populate(data)
     end
 end
 
-vgui.Register("Parallax.Tab.help", PANEL, "EditablePanel")
+vgui.Register("Parallax.Tab.Help", PANEL, "EditablePanel")
 
 Parallax.GUI.helpLast = nil

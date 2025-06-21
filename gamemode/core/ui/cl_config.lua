@@ -30,7 +30,7 @@ function PANEL:Init()
     self.container:GetVBar():SetWide(0)
     self.container.Paint = nil
 
-    self.search = self:Add("Parallax.Text.entry")
+    self.search = self:Add("Parallax.Text.Entry")
     self.search:Dock(TOP)
     self.search:SetUpdateOnType(true)
     self.search:SetPlaceholderText(Parallax.Localization:GetPhrase("search.description.config"))
@@ -452,7 +452,7 @@ function PANEL:AddConfig(configData)
             menu:Open()
         end
     elseif ( configData.Type == Parallax.Types.string ) then
-        local text = panel:Add("Parallax.Text.entry")
+        local text = panel:Add("Parallax.Text.Entry")
         text:Dock(RIGHT)
         text:DockMargin(ScreenScale(8), ScreenScaleH(4), ScreenScale(8), ScreenScaleH(4))
         text:SetWide(ScreenScale(128))

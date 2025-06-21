@@ -817,33 +817,33 @@ function GM:PopulateTabButtons(buttons)
 
     buttons["tab.help"] = {
         Populate = function(this, container)
-            container:Add("Parallax.Tab.help")
+            container:Add("Parallax.Tab.Help")
         end
     }
 
     if ( hook.Run("ShouldShowInventory") != false ) then
         buttons["tab.inventory"] = {
             Populate = function(this, container)
-                container:Add("Parallax.Tab.inventory")
+                container:Add("Parallax.Tab.Inventory")
             end
         }
     end
 
     buttons["tab.inventory"] = {
         Populate = function(this, container)
-            container:Add("Parallax.Tab.inventory")
+            container:Add("Parallax.Tab.Inventory")
         end
     }
 
     buttons["tab.scoreboard"] = {
         Populate = function(this, container)
-            container:Add("Parallax.Tab.scoreboard")
+            container:Add("Parallax.Tab.Scoreboard")
         end
     }
 
     buttons["tab.options"] = {
         Populate = function(this, container)
-            container:Add("Parallax.Tab.options")
+            container:Add("Parallax.Tab.Options")
         end
     }
 end

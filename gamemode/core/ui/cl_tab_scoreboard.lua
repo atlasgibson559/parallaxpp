@@ -25,4 +25,4 @@ function PANEL:Init()
     scoreboard:Dock(FILL)
 end
 
-vgui.Register("Parallax.Tab.scoreboard", PANEL, "EditablePanel")
+vgui.Register("Parallax.Tab.Scoreboard", PANEL, "EditablePanel")

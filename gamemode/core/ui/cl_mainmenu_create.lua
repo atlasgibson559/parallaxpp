@@ -348,7 +348,7 @@ function PANEL:PopulateCreateCharacterForm()
             label:SetZPos(zPos)
             zPos = zPos + 1
 
-            local entry = self.characterCreateForm:Add("Parallax.Text.entry")
+            local entry = self.characterCreateForm:Add("Parallax.Text.Entry")
             entry:Dock(TOP)
             entry:DockMargin(0, 0, 0, ScreenScaleH(16))
             entry:SetFont("parallax")
@@ -394,7 +394,7 @@ function PANEL:PopulateCreateCharacterForm()
             label:SetZPos(zPos)
             zPos = zPos + 1
 
-            local entry = self.characterCreateForm:Add("Parallax.Text.entry")
+            local entry = self.characterCreateForm:Add("Parallax.Text.Entry")
             entry:Dock(TOP)
             entry:DockMargin(0, 0, 0, ScreenScaleH(16))
             entry:SetFont("parallax")
@@ -424,4 +424,4 @@ function PANEL:PopulateCreateCharacterForm()
     end
 end
 
-vgui.Register("Parallax.Mainmenu.create", PANEL, "EditablePanel")
+vgui.Register("Parallax.Mainmenu.Create", PANEL, "EditablePanel")

@@ -221,7 +221,7 @@ function Derma_StringRequest(title, text, defaultText, onEnter, onCancel, okText
         textHeight = textHeight + textLabel:GetTall()
     end
 
-    local entry = frame:Add("Parallax.Text.entry")
+    local entry = frame:Add("Parallax.Text.Entry")
     entry:Dock(TOP)
     entry:DockMargin(0, ScreenScaleH(8), 0, ScreenScaleH(8))
     entry:SetText(defaultText)

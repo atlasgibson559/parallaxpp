@@ -26,4 +26,4 @@ function PANEL:Init()
     inventory:SetInventory()
 end
 
-vgui.Register("Parallax.Tab.inventory", PANEL, "EditablePanel")
+vgui.Register("Parallax.Tab.Inventory", PANEL, "EditablePanel")

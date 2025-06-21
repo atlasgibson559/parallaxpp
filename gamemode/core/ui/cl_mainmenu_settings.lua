@@ -61,6 +61,6 @@ function PANEL:Populate()
     options:DockMargin(padding, 0, padding, 0)
 end
 
-vgui.Register("Parallax.Mainmenu.options", PANEL, "EditablePanel")
+vgui.Register("Parallax.Mainmenu.Options", PANEL, "EditablePanel")
 
 Parallax.GUI.optionsLast = nil

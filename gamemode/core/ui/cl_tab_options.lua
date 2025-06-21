@@ -25,4 +25,4 @@ function PANEL:Init()
     options:Dock(FILL)
 end
 
-vgui.Register("Parallax.Tab.options", PANEL, "EditablePanel")
+vgui.Register("Parallax.Tab.Options", PANEL, "EditablePanel")

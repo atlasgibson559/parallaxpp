@@ -51,7 +51,7 @@ function PANEL:Init()
         surface.DrawRect(0, 0, width, height)
     end
 
-    self.entry = bottom:Add("Parallax.Text.entry")
+    self.entry = bottom:Add("Parallax.Text.Entry")
     self.entry:Dock(FILL)
     self.entry:DockMargin(8, 0, 0, 0)
     self.entry:SetPlaceholderText("Say something...")
