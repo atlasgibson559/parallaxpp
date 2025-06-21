@@ -447,9 +447,60 @@ ax.config:Register("time.respawn", {
     Max = 300,
 })
 
-ax.config:Register("restorepos", {
-    Name = "config.restorepos",
-    Description = "config.restorepos.help",
+ax.config:Register("characters.restorepos", {
+    Name = "config.characters.restorepos",
+    Description = "config.characters.restorepos.help",
+    Category = "category.characters",
     Type = ax.types.bool,
     Default = true,
+})
+
+ax.config:Register("characters.maxCount", {
+    Name = "config.characters.maxCount",
+    Description = "config.characters.maxCount.help",
+    Category = "category.characters",
+    Type = ax.types.number,
+    Default = 5,
+    Min = 1,
+    Max = 20,
+})
+
+ax.config:Register("characters.minNameLength", {
+    Name = "config.characters.minNameLength",
+    Description = "config.characters.minNameLength.help",
+    Category = "category.characters",
+    Type = ax.types.number,
+    Default = 3,
+    Min = 1,
+    Max = 32,
+})
+
+ax.config:Register("characters.maxNameLength", {
+    Name = "config.characters.maxNameLength",
+    Description = "config.characters.maxNameLength.help",
+    Category = "category.characters",
+    Type = ax.types.number,
+    Default = 32,
+    Min = 1,
+    Max = 64,
+})
+
+ax.config:Register("characters.minDescriptionLength", {
+    Name = "config.characters.minDescriptionLength",
+    Description = "config.characters.minDescriptionLength.help",
+    Category = "category.characters",
+    Type = ax.types.number,
+    Default = 1,
+    Min = 1,
+    Max = 1024,
+})
+
+ax.config:Register("characters.maxDescriptionLength", {
+    Name = "config.characters.maxDescriptionLength",
+    Description = "config.characters.maxDescriptionLength.help",
+    Category = "category.characters",
+    Type = ax.types.number,
+    Default = 256,
+    Min = 1,
+    Max = 1024,
 })

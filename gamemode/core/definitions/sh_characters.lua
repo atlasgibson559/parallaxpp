@@ -44,19 +44,20 @@ ax.character:RegisterVariable("name", {
     OnValidate = function(self, parent, payload, client)
         local name = payload.name or ""
         local factionData = ax.faction:Get(payload.faction)
-        local lengthMin = factionData.NameLengthMin or 3
-        local lengthMax = factionData.NameLengthMax or 32
-        if ( string.len(name) < lengthMin ) then
+        local lengthMin = factionData.NameLengthMin or ax.config:Get("characters.minNameLength") or 3
+        local lengthMax = factionData.NameLengthMax or ax.config:Get("characters.maxNameLength") or 32
+        local trimmed = string.Trim(name)
+        if ( string.len(trimmed) < lengthMin ) then
             return false, "Name must be at least " .. lengthMin .. " characters long!"
-        elseif ( string.len(name) > lengthMax ) then
+        elseif ( string.len(trimmed) > lengthMax ) then
             return false, "Name must be at most " .. lengthMax .. " characters long!"
         end
 
-        if ( string.find(name, "[^%a%d%s]") and factionData.AllowNonAscii != true ) then
+        if ( isnumber(string.find(trimmed, "[^%a%d%s]")) and factionData.AllowNonAscii != true ) then
             return false, "Name can only contain letters, numbers and spaces!"
         end
 
-        if ( string.find(name, "%s%s") and factionData.AllowMultipleSpaces != true ) then
+        if ( isnumber(string.find(trimmed, "%s%s")) and factionData.AllowMultipleSpaces != true ) then
             return false, "Name cannot contain multiple spaces in a row!"
         end
 
@@ -74,8 +75,17 @@ ax.character:RegisterVariable("description", {
     Name = "character.create.description",
 
     OnValidate = function(self, parent, payload, client)
-        if ( string.len(string.Trim(payload.description)) < 10 ) then
-            return false, "Description must be at least 10 characters long!"
+        local trimmed = string.Trim(payload.description or "")
+        local len = string.len(trimmed)
+
+        local minLength = ax.config:Get("characters.minDescriptionLength")
+        if ( len < minLength ) then
+            return false, "Description must be at least " .. minLength .. " characters long!"
+        end
+
+        local maxLength = ax.config:Get("characters.maxDescriptionLength")
+        if ( len > maxLength ) then
+            return false, "Description must be at most " .. maxLength .. " characters long!"
         end
 
         return true

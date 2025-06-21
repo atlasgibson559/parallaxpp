@@ -179,7 +179,7 @@ function GM:PostPlayerLoadedCharacter(client, character, previousCharacter)
     -- Restore character state
     local lastPos = character:GetData("last_pos")
     local lastAng = character:GetData("last_ang")
-    if ( isvector(lastPos) and isangle(lastAng) and ax.config:Get("restorepos", true) ) then
+    if ( isvector(lastPos) and isangle(lastAng) and ax.config:Get("characters.restorepos", true) ) then
         client:SetPos(lastPos)
         client:SetEyeAngles(lastAng)
     end
@@ -536,4 +536,13 @@ function GM:PlayerSpawnNPC(client, npc_type, weapon)
     if ( !character ) then return end
 
     return character:HasFlag("n") or client:IsAdmin()
+end
+
+function GM:PreCharacterCreate(client, payload)
+    local maxCharacters = ax.config:Get("characters.maxCount")
+    if ( table.Count(client:GetCharacters()) >= maxCharacters ) then
+        return false, "You have reached the maximum number of characters! (" .. maxCharacters .. ")"
+    end
+
+    return true
 end
