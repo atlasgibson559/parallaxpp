@@ -277,7 +277,7 @@ function GM:HUDPaintBackground()
         if ( hook.Run("ShouldDrawDefaultVignette") != false ) then
             surface.SetDrawColor(vignetteColor)
             surface.SetMaterial(vignette)
-            surface.DrawRect(0, 0, scrW, scrH, vignetteColor)
+            surface.DrawTexturedRect(0, 0, scrW, scrH)
         end
 
         hook.Run("DrawVignette", 1 - (vignetteColor.a / 255))
@@ -522,6 +522,7 @@ function GM:LoadFonts()
     local scale8 = ScreenScaleH(8)
     local scale10 = ScreenScaleH(10)
     local scale16 = ScreenScaleH(16)
+    local scale24 = ScreenScaleH(24)
     local scale32 = ScreenScaleH(32)
 
     surface.CreateFont("parallax.tiny", {
@@ -623,6 +624,36 @@ function GM:LoadFonts()
     surface.CreateFont("parallax.large.italic.bold", {
         font = "GorDIN Bold",
         size = scale16,
+        weight = 900,
+        italic = true,
+        antialias = true
+    })
+
+    surface.CreateFont("parallax.massive", {
+        font = "GorDIN Regular",
+        size = scale24,
+        weight = 700,
+        antialias = true
+    })
+
+    surface.CreateFont("parallax.massive.bold", {
+        font = "GorDIN Bold",
+        size = scale24,
+        weight = 900,
+        antialias = true
+    })
+
+    surface.CreateFont("parallax.massive.italic", {
+        font = "GorDIN Regular",
+        size = scale24,
+        weight = 700,
+        italic = true,
+        antialias = true
+    })
+
+    surface.CreateFont("parallax.massive.italic.bold", {
+        font = "GorDIN Bold",
+        size = scale24,
         weight = 900,
         italic = true,
         antialias = true
@@ -764,9 +795,7 @@ function GM:ShouldDrawVignette()
 end
 
 function GM:ShouldDrawDefaultVignette()
-    if ( !IsValid(vignette) ) then
-        return false
-    end
+    return !vignette:IsError()
 end
 
 function GM:ShouldShowInventory()

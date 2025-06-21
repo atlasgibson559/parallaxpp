@@ -182,18 +182,6 @@ function PLAYER:IsDeveloper()
     return hook.Run("IsPlayerDeveloper", self) or developers[self:SteamID64()] or false
 end
 
---- Checks if the player is running.
--- @realm shared
--- @treturn boolean Whether the player is running.
-function PLAYER:IsRunning()
-    if ( !IsValid(self) ) then return false end
-
-    local velocity = self:GetVelocity()
-    local speed = velocity:Length()
-
-    return speed > self:GetWalkSpeed() * 1.2
-end
-
 --- Checks if the player's model is female.
 -- @realm shared
 -- @treturn boolean Whether the player's model is female.

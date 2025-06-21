@@ -64,6 +64,7 @@ end
 
 function PANEL:SizeToContents()
     BaseClass.SizeToContents(self)
+
     self.baseHeight = self:GetTall()
     self.height = self.baseHeight
 end
