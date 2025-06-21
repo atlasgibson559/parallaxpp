@@ -13,6 +13,7 @@ DeriveGamemode("sandbox")
 GM.RefreshTimeStart = SysTime()
 
 Parallax = Parallax or {Util = {}, Meta = {}, Config = {}, Globals = {}, GUI = {}}
+ax = ax or Parallax
 
 include("core/types.lua")
 include("core/util.lua")
