@@ -447,6 +447,7 @@ function PANEL:AddOption(optionData)
         text:Dock(RIGHT)
         text:DockMargin(ScreenScale(8), ScreenScaleH(4), ScreenScale(8), ScreenScaleH(4))
         text:SetWide(ScreenScale(128))
+        text:SetFont("parallax.large")
         text:SetText(value)
 
         text.OnEnter = function(this)
