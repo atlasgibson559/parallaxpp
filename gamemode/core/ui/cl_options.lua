@@ -183,6 +183,15 @@ function PANEL:AddOption(optionData)
 
                 label:SetText(value and "< " .. enabled .. " >" or "< " .. disabled .. " >", true)
             end):SetIcon(value and "icon16/cross.png" or "icon16/tick.png")
+
+            if ( ax.client:IsDeveloper() and ax.config:Get("debug.developer") ) then
+                menu:AddSpacer()
+                menu:AddOption(ax.localization:GetPhrase("copy"), function()
+                    SetClipboardText(configData.UniqueID)
+                    ax.client:EmitSound("ui/buttonclickrelease.wav", 60, 100, 0.1, CHAN_STATIC)
+                end):SetIcon("icon16/pencil.png")
+            end
+
             menu:Open()
         end
     elseif ( optionData.Type == ax.types.number and optionData.IsKeybind ) then
@@ -209,6 +218,15 @@ function PANEL:AddOption(optionData)
 
                 bind:SetSelectedNumber(value)
             end):SetIcon("icon16/arrow_refresh.png")
+
+            if ( ax.client:IsDeveloper() and ax.config:Get("debug.developer") ) then
+                menu:AddSpacer()
+                menu:AddOption(ax.localization:GetPhrase("copy"), function()
+                    SetClipboardText(configData.UniqueID)
+                    ax.client:EmitSound("ui/buttonclickrelease.wav", 60, 100, 0.1, CHAN_STATIC)
+                end):SetIcon("icon16/pencil.png")
+            end
+
             menu:Open()
         end
     elseif ( optionData.Type == ax.types.number ) then
@@ -314,6 +332,15 @@ function PANEL:AddOption(optionData)
                     end
                 )
             end):SetIcon("icon16/pencil.png")
+
+            if ( ax.client:IsDeveloper() and ax.config:Get("debug.developer") ) then
+                menu:AddSpacer()
+                menu:AddOption(ax.localization:GetPhrase("copy"), function()
+                    SetClipboardText(configData.UniqueID)
+                    ax.client:EmitSound("ui/buttonclickrelease.wav", 60, 100, 0.1, CHAN_STATIC)
+                end):SetIcon("icon16/pencil.png")
+            end
+
             menu:Open()
         end
     elseif ( optionData.Type == ax.types.array ) then
@@ -376,6 +403,15 @@ function PANEL:AddOption(optionData)
                     label:SetText(panel:IsHovered() and "< " .. phrase .. " >" or phrase, true)
                 end):SetIcon("icon16/tick.png")
             end
+
+            if ( ax.client:IsDeveloper() and ax.config:Get("debug.developer") ) then
+                menu:AddSpacer()
+                menu:AddOption(ax.localization:GetPhrase("copy"), function()
+                    SetClipboardText(configData.UniqueID)
+                    ax.client:EmitSound("ui/buttonclickrelease.wav", 60, 100, 0.1, CHAN_STATIC)
+                end):SetIcon("icon16/pencil.png")
+            end
+
             menu:Open()
         end
     elseif ( optionData.Type == ax.types.color ) then
@@ -440,6 +476,15 @@ function PANEL:AddOption(optionData)
 
                 color.color = value
             end):SetIcon("icon16/arrow_refresh.png")
+
+            if ( ax.client:IsDeveloper() and ax.config:Get("debug.developer") ) then
+                menu:AddSpacer()
+                menu:AddOption(ax.localization:GetPhrase("copy"), function()
+                    SetClipboardText(configData.UniqueID)
+                    ax.client:EmitSound("ui/buttonclickrelease.wav", 60, 100, 0.1, CHAN_STATIC)
+                end):SetIcon("icon16/pencil.png")
+            end
+
             menu:Open()
         end
     elseif ( optionData.Type == ax.types.string ) then
@@ -484,6 +529,15 @@ function PANEL:AddOption(optionData)
                     end
                 )
             end):SetIcon("icon16/pencil.png")
+
+            if ( ax.client:IsDeveloper() and ax.config:Get("debug.developer") ) then
+                menu:AddSpacer()
+                menu:AddOption(ax.localization:GetPhrase("copy"), function()
+                    SetClipboardText(configData.UniqueID)
+                    ax.client:EmitSound("ui/buttonclickrelease.wav", 60, 100, 0.1, CHAN_STATIC)
+                end):SetIcon("icon16/pencil.png")
+            end
+
             menu:Open()
         end
     else

@@ -187,6 +187,15 @@ function PANEL:AddConfig(configData)
 
                 label:SetText(value and "< " .. enabled .. " >" or "< " .. disabled .. " >", true)
             end):SetIcon(value and "icon16/cross.png" or "icon16/tick.png")
+
+            if ( ax.client:IsDeveloper() and ax.config:Get("debug.developer") ) then
+                menu:AddSpacer()
+                menu:AddOption(ax.localization:GetPhrase("copy"), function()
+                    SetClipboardText(configData.UniqueID)
+                    ax.client:EmitSound("ui/buttonclickrelease.wav", 60, 100, 0.1, CHAN_STATIC)
+                end):SetIcon("icon16/pencil.png")
+            end
+
             menu:Open()
         end
     elseif ( configData.Type == ax.types.number ) then
@@ -285,6 +294,15 @@ function PANEL:AddConfig(configData)
                     end
                 )
             end):SetIcon("icon16/pencil.png")
+
+            if ( ax.client:IsDeveloper() and ax.config:Get("debug.developer") ) then
+                menu:AddSpacer()
+                menu:AddOption(ax.localization:GetPhrase("copy"), function()
+                    SetClipboardText(configData.UniqueID)
+                    ax.client:EmitSound("ui/buttonclickrelease.wav", 60, 100, 0.1, CHAN_STATIC)
+                end):SetIcon("icon16/pencil.png")
+            end
+
             menu:Open()
         end
     elseif ( configData.Type == ax.types.array ) then
@@ -349,6 +367,15 @@ function PANEL:AddConfig(configData)
                     label:SetText(panel:IsHovered() and "< " .. phrase .. " >" or phrase, true)
                 end):SetIcon("icon16/tick.png")
             end
+
+            if ( ax.client:IsDeveloper() and ax.config:Get("debug.developer") ) then
+                menu:AddSpacer()
+                menu:AddOption(ax.localization:GetPhrase("copy"), function()
+                    SetClipboardText(configData.UniqueID)
+                    ax.client:EmitSound("ui/buttonclickrelease.wav", 60, 100, 0.1, CHAN_STATIC)
+                end):SetIcon("icon16/pencil.png")
+            end
+
             menu:Open()
         end
     elseif ( configData.Type == ax.types.color ) then
@@ -413,6 +440,15 @@ function PANEL:AddConfig(configData)
                 value = ax.config:GetDefault(configData.UniqueID)
                 color.color = value
             end):SetIcon("icon16/arrow_refresh.png")
+
+            if ( ax.client:IsDeveloper() and ax.config:Get("debug.developer") ) then
+                menu:AddSpacer()
+                menu:AddOption(ax.localization:GetPhrase("copy"), function()
+                    SetClipboardText(configData.UniqueID)
+                    ax.client:EmitSound("ui/buttonclickrelease.wav", 60, 100, 0.1, CHAN_STATIC)
+                end):SetIcon("icon16/pencil.png")
+            end
+
             menu:Open()
         end
     elseif ( configData.Type == ax.types.string ) then
@@ -458,6 +494,15 @@ function PANEL:AddConfig(configData)
                     end
                 )
             end):SetIcon("icon16/pencil.png")
+
+            if ( ax.client:IsDeveloper() and ax.config:Get("debug.developer") ) then
+                menu:AddSpacer()
+                menu:AddOption(ax.localization:GetPhrase("copy"), function()
+                    SetClipboardText(configData.UniqueID)
+                    ax.client:EmitSound("ui/buttonclickrelease.wav", 60, 100, 0.1, CHAN_STATIC)
+                end):SetIcon("icon16/pencil.png")
+            end
+
             menu:Open()
         end
     end

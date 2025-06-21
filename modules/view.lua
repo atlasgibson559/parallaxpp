@@ -128,7 +128,27 @@ if ( CLIENT ) then
         ["option.view.roll.speed.help"] = "Speed at which the view roll adjusts to mouse movement."
     })
 
-     ax.localization:Register("ru", {
+    ax.localization:Register("bg", {
+        ["category.view"] = "Изглед",
+        ["option.view"] = "Ефекти на изгледа",
+        ["option.view.help"] = "Включване или изключване на ефектите на изгледа, като трептене и наклони.",
+        ["option.view.intensity"] = "Интензивност",
+        ["option.view.intensity.help"] = "Интензивност на ефекта на изместване на изгледа.",
+        ["option.view.max.roll"] = "Максимален наклон",
+        ["option.view.max.roll.help"] = "Максимален ъгъл на наклона на изгледа.",
+        ["option.view.max.tilt"] = "Максимален наклон",
+        ["option.view.max.tilt.help"] = "Максимален ъгъл на наклона на изгледа.",
+        ["option.view.multiplier"] = "Множител на изгледа",
+        ["option.view.multiplier.help"] = "Множител за ефектите на изгледа.",
+        ["option.view.multiplier.sprint"] = "Множител на изгледа при спринт",
+        ["option.view.multiplier.sprint.help"] = "Множител за ефектите на изгледа при спринт.",
+        ["option.view.pitch.speed"] = "Скорост на наклона",
+        ["option.view.pitch.speed.help"] = "Скорост, с която се променя наклонът на изгледа при движение с мишката.",
+        ["option.view.roll.speed"] = "Скорост на наклона",
+        ["option.view.roll.speed.help"] = "Скорост, с която се променя наклонът на изгледа при движение с мишката."
+    })
+
+    ax.localization:Register("ru", {
         ["category.view"] = "Взгляд",
         ["option.view"] = "Эффекты взгляда",
         ["option.view.help"] = "Eвключить или отключить эффекты вгляда, такие как тряска и наклоны.",

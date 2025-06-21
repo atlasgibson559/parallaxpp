@@ -61,6 +61,7 @@ end
 -- @param key The key of the string.
 -- @param language The language code.
 -- @return The localized string.
+
 local gmod_language = GetConVar("gmod_language")
 function ax.localization:GetPhrase(key, ...)
     local languageName = ( gmod_language and gmod_language:GetString() ) or "en"
@@ -96,3 +97,37 @@ function ax.localization:GetPhrase(key, ...)
     value = string.Trim(value)
     return value
 end
+
+concommand.Add("ax_localization_check", function(client, command, arguments)
+    if ( IsValid(client) and !client:IsDeveloper() ) then
+        ax.util:PrintError("You do not have permission to use this command!")
+        return
+    end
+
+    local enLocalisation = ax.localization.stored.en
+    local enCount = table.Count(enLocalisation)
+    ax.util:Print("English Localisation has " .. enCount .. " phrases.")
+
+    for languageName, data in pairs(ax.localization.stored) do
+        if ( languageName == "en" ) then continue end
+
+        local missingPhrases = {}
+        for phrase, translation in SortedPairs(enLocalisation) do
+            if ( !data[phrase] ) then
+                table.insert(missingPhrases, phrase)
+            end
+        end
+
+        local dataCount = table.Count(data)
+        if ( dataCount != enCount ) then
+            ax.util:Print("Language '" .. languageName .. "' has " .. ( dataCount > enCount and "more" or "less" ) .. " phrases (" .. dataCount .. ") than English! (" .. enCount .. ")")
+        end
+
+        if ( missingPhrases[1] != nil ) then
+            ax.util:PrintWarning("Language \"" .. languageName .. "\" is missing the following phrases: (" .. #missingPhrases .. ")")
+            for i = 1, #missingPhrases do
+                ax.util:PrintWarning("\t\t" .. missingPhrases[i])
+            end
+        end
+    end
+end)
