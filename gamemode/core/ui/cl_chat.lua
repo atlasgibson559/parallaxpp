@@ -23,7 +23,7 @@ function PANEL:Init()
     self:SetSize(hook.Run("GetChatboxSize"))
     self:SetPos(hook.Run("GetChatboxPos"))
 
-    local label = self:Add("Parallax.text")
+    local label = self:Add("Parallax.Text")
     label:Dock(TOP)
     label:SetTextInset(8, 0)
     label:SetFont("Parallax.small")
@@ -37,7 +37,7 @@ function PANEL:Init()
     bottom:Dock(BOTTOM)
     bottom:DockMargin(8, 8, 8, 8)
 
-    self.chatType = bottom:Add("Parallax.text.typewriter")
+    self.chatType = bottom:Add("Parallax.Text.Typewriter")
     self.chatType:Dock(LEFT)
     self.chatType:SetTextInset(8, 0)
     self.chatType:SetFont("Parallax.small")
@@ -51,7 +51,7 @@ function PANEL:Init()
         surface.DrawRect(0, 0, width, height)
     end
 
-    self.entry = bottom:Add("Parallax.text.entry")
+    self.entry = bottom:Add("Parallax.Text.entry")
     self.entry:Dock(FILL)
     self.entry:DockMargin(8, 0, 0, 0)
     self.entry:SetPlaceholderText("Say something...")
@@ -119,7 +119,7 @@ function PANEL:Init()
     self.history:SetPos(8, label:GetTall() + 8)
     self.history:GetVBar():SetWide(0)
 
-    self.recommendations = self:Add("Parallax.scroller.vertical")
+    self.recommendations = self:Add("Parallax.Scroller.Vertical")
     self.recommendations:SetSize(self.history:GetWide(), self.history:GetTall() - 8)
     self.recommendations:SetPos(8, self.history:GetY() + self.history:GetTall() - self.recommendations:GetTall() - 8)
     self.recommendations:SetAlpha(0)
@@ -203,7 +203,7 @@ function PANEL:PopulateRecommendations(text)
 
             local height = 0
 
-            local title = rec:Add("Parallax.text")
+            local title = rec:Add("Parallax.Text")
             title:Dock(TOP)
             title:DockMargin(8, 0, 8, 0)
             title:SetFont("Parallax.small")
@@ -218,7 +218,7 @@ function PANEL:PopulateRecommendations(text)
             descriptionWrapped = Parallax.Util:GetWrappedText(descriptionWrapped, "Parallax.tiny", self.recommendations:GetWide() - 16)
             for k = 1, #descriptionWrapped do
                 local v = descriptionWrapped[k]
-                local descLine = rec:Add("Parallax.text")
+                local descLine = rec:Add("Parallax.Text")
                 descLine:Dock(TOP)
                 descLine:DockMargin(8, -2, 8, 0)
                 descLine:SetFont("Parallax.tiny")
@@ -277,7 +277,7 @@ function PANEL:CycleRecommendations()
     self.chatType:SetText(data.UniqueID, true, true)
     self.chatType:RestartTyping()
 
-    surface.PlaySound("Parallax.button.enter")
+    surface.PlaySound("Parallax.Button.Enter")
 end
 
 function PANEL:SetVisible(visible)

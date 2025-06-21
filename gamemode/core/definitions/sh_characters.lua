@@ -123,7 +123,7 @@ Parallax.Character:RegisterVariable("model", {
     end,
 
     OnPopulate = function(self, parent, payload, client)
-        local label = parent:Add("Parallax.text")
+        local label = parent:Add("Parallax.Text")
         label:Dock(TOP)
         label:SetFont("Parallax.large")
 
@@ -132,7 +132,7 @@ Parallax.Character:RegisterVariable("model", {
 
         label:SetText(bTranslated and translation or self.Name or k)
 
-        local scroller = parent:Add("Parallax.scroller.vertical")
+        local scroller = parent:Add("Parallax.Scroller.Vertical")
         scroller:Dock(FILL)
 
         local layout = scroller:Add("DIconLayout")

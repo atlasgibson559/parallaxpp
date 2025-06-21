@@ -63,7 +63,7 @@ function PANEL:PopulateFactionSelect()
     self:Clear()
     self:SetVisible(true)
 
-    local title = self:Add("Parallax.text")
+    local title = self:Add("Parallax.Text")
     title:Dock(TOP)
     title:DockMargin(ScreenScale(32), ScreenScaleH(32), 0, 0)
     title:SetFont("Parallax.huge.bold")
@@ -74,7 +74,7 @@ function PANEL:PopulateFactionSelect()
     navigation:DockMargin(ScreenScale(32), 0, ScreenScale(32), ScreenScaleH(32))
     navigation:SetTall(ScreenScaleH(24))
 
-    local backButton = navigation:Add("Parallax.button.flat")
+    local backButton = navigation:Add("Parallax.Button.Flat")
     backButton:Dock(LEFT)
     backButton:SetText("back")
     backButton.DoClick = function()
@@ -88,7 +88,7 @@ function PANEL:PopulateFactionSelect()
 
     navigation:SetTall(backButton:GetTall())
 
-    local factionList = self:Add("Parallax.scroller.horizontal")
+    local factionList = self:Add("Parallax.Scroller.Horizontal")
     factionList:Dock(FILL)
     factionList:DockMargin(ScreenScale(32), ScreenScale(32) * 2, ScreenScale(32), ScreenScale(32))
     factionList:InvalidateParent(true)
@@ -120,7 +120,7 @@ function PANEL:PopulateFactionSelect()
 
         local descriptionWrapped = Parallax.Util:GetWrappedText(description, "Parallax.bold", factionList:GetTall() * 1.25)
 
-        local factionButton = factionList:Add("Parallax.button.flat")
+        local factionButton = factionList:Add("Parallax.Button.Flat")
         factionButton:Dock(LEFT)
         factionButton:DockMargin(0, 0, 16, 0)
         factionButton:SetText(v.Name or "Unknown Faction")
@@ -217,7 +217,7 @@ function PANEL:PopulateCreateCharacter()
     self:Clear()
     self:SetVisible(true)
 
-    local title = self:Add("Parallax.text")
+    local title = self:Add("Parallax.Text")
     title:Dock(TOP)
     title:DockMargin(ScreenScale(32), ScreenScaleH(32), 0, 0)
     title:SetFont("Parallax.huge.bold")
@@ -228,7 +228,7 @@ function PANEL:PopulateCreateCharacter()
     navigation:DockMargin(ScreenScale(32), 0, ScreenScale(32), ScreenScaleH(32))
     navigation:SetTall(ScreenScaleH(24))
 
-    local backButton = navigation:Add("Parallax.button.flat")
+    local backButton = navigation:Add("Parallax.Button.Flat")
     backButton:Dock(LEFT)
     backButton:SetText("back")
 
@@ -256,7 +256,7 @@ function PANEL:PopulateCreateCharacter()
         end
     end
 
-    local nextButton = navigation:Add("Parallax.button.flat")
+    local nextButton = navigation:Add("Parallax.Button.Flat")
     nextButton:Dock(RIGHT)
     nextButton:SetText("next")
 
@@ -338,7 +338,7 @@ function PANEL:PopulateCreateCharacterForm()
         if ( v.Type == Parallax.Types.string ) then
             zPos = zPos + 1 + v.ZPos
 
-            local label = self.characterCreateForm:Add("Parallax.text")
+            local label = self.characterCreateForm:Add("Parallax.Text")
             label:Dock(TOP)
             label:SetFont("Parallax.large.bold")
 
@@ -348,7 +348,7 @@ function PANEL:PopulateCreateCharacterForm()
             label:SetZPos(zPos)
             zPos = zPos + 1
 
-            local entry = self.characterCreateForm:Add("Parallax.text.entry")
+            local entry = self.characterCreateForm:Add("Parallax.Text.entry")
             entry:Dock(TOP)
             entry:DockMargin(0, 0, 0, ScreenScaleH(16))
             entry:SetFont("parallax")
@@ -384,7 +384,7 @@ function PANEL:PopulateCreateCharacterForm()
         elseif ( v.Type == Parallax.Types.text ) then
             zPos = zPos + 1 + v.ZPos
 
-            local label = self.characterCreateForm:Add("Parallax.text")
+            local label = self.characterCreateForm:Add("Parallax.Text")
             label:Dock(TOP)
             label:SetText(bTranslated and translation or v.Name or k)
             label:SetFont("Parallax.large.bold")
@@ -394,7 +394,7 @@ function PANEL:PopulateCreateCharacterForm()
             label:SetZPos(zPos)
             zPos = zPos + 1
 
-            local entry = self.characterCreateForm:Add("Parallax.text.entry")
+            local entry = self.characterCreateForm:Add("Parallax.Text.entry")
             entry:Dock(TOP)
             entry:DockMargin(0, 0, 0, ScreenScaleH(16))
             entry:SetFont("parallax")
@@ -424,4 +424,4 @@ function PANEL:PopulateCreateCharacterForm()
     end
 end
 
-vgui.Register("Parallax.mainmenu.create", PANEL, "EditablePanel")
+vgui.Register("Parallax.Mainmenu.create", PANEL, "EditablePanel")

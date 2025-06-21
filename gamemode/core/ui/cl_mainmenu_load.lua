@@ -35,7 +35,7 @@ function PANEL:Populate()
     self:Clear()
     self:SetVisible(true)
 
-    local title = self:Add("Parallax.text")
+    local title = self:Add("Parallax.Text")
     title:Dock(TOP)
     title:DockMargin(ScreenScale(32), ScreenScaleH(32), 0, 0)
     title:SetFont("Parallax.huge.bold")
@@ -46,7 +46,7 @@ function PANEL:Populate()
     navigation:DockMargin(ScreenScale(32), 0, ScreenScale(32), ScreenScaleH(32))
     navigation:SetTall(ScreenScaleH(24))
 
-    local backButton = navigation:Add("Parallax.button.flat")
+    local backButton = navigation:Add("Parallax.Button.Flat")
     backButton:Dock(LEFT)
     backButton:SetText("back")
     backButton.DoClick = function()
@@ -57,7 +57,7 @@ function PANEL:Populate()
 
     navigation:SetTall(backButton:GetTall())
 
-    local characterList = self:Add("Parallax.scroller.vertical")
+    local characterList = self:Add("Parallax.Scroller.Vertical")
     characterList:Dock(FILL)
     characterList:DockMargin(ScreenScale(32) * 4, ScreenScaleH(32), ScreenScale(32) * 4, ScreenScaleH(32))
     characterList:InvalidateParent(true)
@@ -66,7 +66,7 @@ function PANEL:Populate()
 
     local clientTable = client:GetTable()
     for k, v in pairs(clientTable.axCharacters) do
-        local button = characterList:Add("Parallax.button.flat")
+        local button = characterList:Add("Parallax.Button.Flat")
         button:Dock(TOP)
         button:DockMargin(0, 0, 0, ScreenScaleH(4))
         button:SetText("", true, true, true)
@@ -91,7 +91,7 @@ function PANEL:Populate()
             surface.DrawTexturedRect(0, 0, width, height)
         end
 
-        local deleteButton = button:Add("Parallax.button.flat")
+        local deleteButton = button:Add("Parallax.Button.Flat")
         deleteButton:Dock(RIGHT)
         deleteButton:DockMargin(ScreenScale(8), 0, 0, 0)
         deleteButton:SetText("X")
@@ -133,7 +133,7 @@ function PANEL:Populate()
             end
         end
 
-        local name = button:Add("Parallax.text")
+        local name = button:Add("Parallax.Text")
         name:Dock(TOP)
         name:SetFont("Parallax.huge.bold")
         name:SetText(v:GetName():upper())
@@ -144,7 +144,7 @@ function PANEL:Populate()
         -- Example: Sat Feb 19 19:49:00 2022
         local lastPlayedDate = os.date("%a %b %d %H:%M:%S %Y", v:GetLastPlayed())
 
-        local lastPlayed = button:Add("Parallax.text")
+        local lastPlayed = button:Add("Parallax.Text")
         lastPlayed:Dock(BOTTOM)
         lastPlayed:DockMargin(0, 0, 0, ScreenScaleH(8))
         lastPlayed:SetFont("Parallax.large")
@@ -158,13 +158,13 @@ end
 function PANEL:PopulateDelete(characterID)
     self:Clear()
 
-    local title = self:Add("Parallax.text")
+    local title = self:Add("Parallax.Text")
     title:Dock(TOP)
     title:DockMargin(ScreenScale(32), ScreenScaleH(32), 0, 0)
     title:SetFont("Parallax.huge.bold")
     title:SetText(string.upper("mainmenu.delete.character"))
 
-    local confirmation = self:Add("Parallax.text")
+    local confirmation = self:Add("Parallax.Text")
     confirmation:Dock(TOP)
     confirmation:DockMargin(ScreenScale(64), ScreenScaleH(16), 0, 0)
     confirmation:SetFont("Parallax.large")
@@ -174,14 +174,14 @@ function PANEL:PopulateDelete(characterID)
     navigation:Dock(BOTTOM)
     navigation:DockMargin(ScreenScale(32), 0, ScreenScale(32), ScreenScaleH(32))
 
-    local cancelButton = navigation:Add("Parallax.button.flat")
+    local cancelButton = navigation:Add("Parallax.Button.Flat")
     cancelButton:Dock(LEFT)
     cancelButton:SetText("CANCEL")
     cancelButton.DoClick = function()
         self:Populate()
     end
 
-    local okButton = navigation:Add("Parallax.button.flat")
+    local okButton = navigation:Add("Parallax.Button.Flat")
     okButton:Dock(RIGHT)
     okButton:SetText("OK")
     okButton.DoClick = function()
@@ -198,4 +198,4 @@ function PANEL:PopulateDelete(characterID)
     navigation:SetTall(math.max(cancelButton:GetTall(), okButton:GetTall()))
 end
 
-vgui.Register("Parallax.mainmenu.load", PANEL, "EditablePanel")
+vgui.Register("Parallax.Mainmenu.load", PANEL, "EditablePanel")

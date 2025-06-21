@@ -61,7 +61,7 @@ function PANEL:Init()
     subtitle:SetTextColor(Parallax.Config:Get("color.schema"))
     subtitle:SizeToContents()
 
-    local button = self:Add("Parallax.button.flat")
+    local button = self:Add("Parallax.Button.Flat")
     button:SetText("splash.continue")
     button:Center()
     button.DoClick = function()
@@ -69,7 +69,7 @@ function PANEL:Init()
             self:Remove()
         end)
 
-        vgui.Create("Parallax.mainmenu")
+        vgui.Create("Parallax.Mainmenu")
     end
 end
 
@@ -79,7 +79,7 @@ function PANEL:OnRemove()
     end
 
     if ( !IsValid(Parallax.GUI.mainmenu) ) then
-        vgui.Create("Parallax.mainmenu")
+        vgui.Create("Parallax.Mainmenu")
     end
 end
 
@@ -89,7 +89,7 @@ function PANEL:Paint(width, height)
     surface.DrawTexturedRect(0, 0, width, height / 2)
 end
 
-vgui.Register("Parallax.splash", PANEL, "EditablePanel")
+vgui.Register("Parallax.Splash", PANEL, "EditablePanel")
 
 if ( IsValid(Parallax.GUI.splash) ) then
     Parallax.GUI.splash:Remove()
@@ -104,5 +104,5 @@ concommand.Add("ax_splash", function(client, command, arguments)
         Parallax.GUI.splash:Remove()
     end
 
-    vgui.Create("Parallax.splash")
+    vgui.Create("Parallax.Splash")
 end, nil, "Open the splash screen", FCVAR_CLIENTCMD_CAN_EXECUTE)

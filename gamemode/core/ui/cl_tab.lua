@@ -121,7 +121,7 @@ function PANEL:Init()
     local buttons = {}
     hook.Run("PopulateTabButtons", buttons)
     for k, v in SortedPairs(buttons) do
-        local button = buttonSizeable:Add("Parallax.button")
+        local button = buttonSizeable:Add("Parallax.Button")
         button:Dock(TOP)
         button:DockMargin(0, 8, 0, 8)
         button:SetText(k)
@@ -173,7 +173,7 @@ function PANEL:Populate(data)
         end
 
         if ( data.OnClose ) then
-            self:CallOnRemove("Parallax.tab." .. data.name, function()
+            self:CallOnRemove("Parallax.Tab." .. data.name, function()
                 data.OnClose()
             end)
         end
@@ -296,7 +296,7 @@ function PANEL:Paint(width, height)
     surface.DrawTexturedRect(0, height / 2, width, height / 2)
 end
 
-vgui.Register("Parallax.tab", PANEL, "EditablePanel")
+vgui.Register("Parallax.Tab", PANEL, "EditablePanel")
 
 if ( IsValid(Parallax.GUI.tab) ) then
     Parallax.GUI.tab:Remove()

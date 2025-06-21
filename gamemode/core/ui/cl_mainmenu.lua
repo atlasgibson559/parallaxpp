@@ -66,9 +66,9 @@ function PANEL:Init()
     self:SetPos(0, 0)
     self:MakePopup()
 
-    self.createPanel = self:Add("Parallax.mainmenu.create")
-    self.selectPanel = self:Add("Parallax.mainmenu.load")
-    self.optionsPanel = self:Add("Parallax.mainmenu.options")
+    self.createPanel = self:Add("Parallax.Mainmenu.create")
+    self.selectPanel = self:Add("Parallax.Mainmenu.load")
+    self.optionsPanel = self:Add("Parallax.Mainmenu.options")
 
     self.container = self:Add("EditablePanel")
     self.container:SetSize(self:GetWide(), self:GetTall())
@@ -144,7 +144,7 @@ function PANEL:Populate()
     local client = Parallax.Client
     local clientTable = client:GetTable()
     if ( clientTable.axCharacter ) then -- client:GetCharacter() isn't validated yet, since it this panel is created before the meta tables are loaded
-        local playButton = buttons:Add("Parallax.button")
+        local playButton = buttons:Add("Parallax.Button")
         playButton:Dock(TOP)
         playButton:DockMargin(0, 0, 0, 16)
         playButton:SetText("mainmenu.play")
@@ -154,7 +154,7 @@ function PANEL:Populate()
         end
     end
 
-    local createButton = buttons:Add("Parallax.button")
+    local createButton = buttons:Add("Parallax.Button")
     createButton:Dock(TOP)
     createButton:DockMargin(0, 0, 0, 16)
     createButton:SetText("mainmenu.create.character")
@@ -180,7 +180,7 @@ function PANEL:Populate()
 
     local bHasCharacters = table.Count(clientTable.axCharacters or {}) > 0
     if ( bHasCharacters ) then
-        local selectButton = buttons:Add("Parallax.button")
+        local selectButton = buttons:Add("Parallax.Button")
         selectButton:Dock(TOP)
         selectButton:DockMargin(0, 0, 0, 16)
         selectButton:SetText("mainmenu.select.character")
@@ -190,7 +190,7 @@ function PANEL:Populate()
         end
     end
 
-    local optionsButton = buttons:Add("Parallax.button")
+    local optionsButton = buttons:Add("Parallax.Button")
     optionsButton:Dock(TOP)
     optionsButton:DockMargin(0, 0, 0, 16)
     optionsButton:SetText("mainmenu.options")
@@ -199,7 +199,7 @@ function PANEL:Populate()
         self.optionsPanel:Populate()
     end
 
-    local disconnectButton = buttons:Add("Parallax.button")
+    local disconnectButton = buttons:Add("Parallax.Button")
     disconnectButton:Dock(TOP)
     disconnectButton:DockMargin(0, 0, 0, 16)
     disconnectButton:SetText("mainmenu.leave")
@@ -248,13 +248,13 @@ function PANEL:Paint(width, height)
     surface.DrawTexturedRect(0, 0, width, height)
 end
 
-vgui.Register("Parallax.mainmenu", PANEL, "EditablePanel")
+vgui.Register("Parallax.Mainmenu", PANEL, "EditablePanel")
 
 if ( IsValid(Parallax.GUI.mainmenu) ) then
     Parallax.GUI.mainmenu:Remove()
 
     timer.Simple(0.1, function()
-        vgui.Create("Parallax.mainmenu")
+        vgui.Create("Parallax.Mainmenu")
     end)
 end
 
@@ -267,5 +267,5 @@ concommand.Add("ax_mainmenu", function(client, command, arguments)
         Parallax.GUI.mainmenu:Remove()
     end
 
-    vgui.Create("Parallax.mainmenu")
+    vgui.Create("Parallax.Mainmenu")
 end, nil, "Opens the main menu.", FCVAR_CLIENTCMD_CAN_EXECUTE)

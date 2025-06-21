@@ -41,7 +41,7 @@ Parallax.Net:Hook("character.cache.all", function(data)
     -- Rebuild the main menu
     if ( IsValid(Parallax.GUI.mainmenu) ) then
         Parallax.GUI.mainmenu:Remove()
-        Parallax.GUI.mainmenu = vgui.Create("Parallax.mainmenu")
+        Parallax.GUI.mainmenu = vgui.Create("Parallax.Mainmenu")
     end
 
     Parallax.Client:Notify("All characters cached!", NOTIFY_HINT)
@@ -351,11 +351,11 @@ Parallax.Net:Hook("gesture.play", function(client, name)
 end)
 
 Parallax.Net:Hook("splash", function()
-    Parallax.GUI.splash = vgui.Create("Parallax.splash")
+    Parallax.GUI.splash = vgui.Create("Parallax.Splash")
 end)
 
 Parallax.Net:Hook("mainmenu", function()
-    Parallax.GUI.mainmenu = vgui.Create("Parallax.mainmenu")
+    Parallax.GUI.mainmenu = vgui.Create("Parallax.Mainmenu")
 end)
 
 Parallax.Net:Hook("notification.send", function(text, type, duration)

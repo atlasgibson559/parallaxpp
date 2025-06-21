@@ -17,7 +17,7 @@ DEFINE_BASECLASS("EditablePanel")
 local PANEL = {}
 
 function PANEL:Init()
-    self.container = self:Add("Parallax.scroller.vertical")
+    self.container = self:Add("Parallax.Scroller.Vertical")
     self.container:Dock(FILL)
     self.container:DockMargin(0, ScreenScaleH(4), 0, 0)
 
@@ -86,7 +86,7 @@ function PANEL:Init()
     self.teamID = 0
     self.players = {}
 
-    self.teamName = self:Add("Parallax.text")
+    self.teamName = self:Add("Parallax.Text")
     self.teamName:SetTall(ScreenScaleH(12))
     self.teamName:Dock(TOP)
     self.teamName:DockMargin(ScreenScale(2), 0, 0, 0)
@@ -145,10 +145,10 @@ function PANEL:Init()
     self.avatar:SetSize(self:GetTall(), self:GetTall())
     self.avatar:SetPos(0, 0)
 
-    self.name = self:Add("Parallax.text")
+    self.name = self:Add("Parallax.Text")
     self.name:SetFont("Parallax.bold")
 
-    self.ping = self:Add("Parallax.text")
+    self.ping = self:Add("Parallax.Text")
     self.ping:SetSize(ScreenScale(32), self:GetTall())
     self.ping:SetFont("Parallax.bold")
     self.ping:SetContentAlignment(6)

@@ -114,7 +114,7 @@ function GM:ScoreboardShow()
     end
 
     if ( !IsValid(Parallax.GUI.tab) ) then
-        vgui.Create("Parallax.tab")
+        vgui.Create("Parallax.Tab")
     else
         Parallax.GUI.tab:Remove()
     end
@@ -718,7 +718,7 @@ function GM:OnPauseMenuShow()
     end
 
     if ( !IsValid(Parallax.GUI.mainmenu) ) then
-        vgui.Create("Parallax.mainmenu")
+        vgui.Create("Parallax.Mainmenu")
     else
         if ( Parallax.Client:GetCharacter() ) then
             Parallax.GUI.mainmenu:Remove()
@@ -810,40 +810,40 @@ function GM:PopulateTabButtons(buttons)
     if ( CAMI.PlayerHasAccess(Parallax.Client, "Parallax - Manage Config", nil) ) then
         buttons["tab.config"] = {
             Populate = function(this, container)
-                container:Add("Parallax.tab.config")
+                container:Add("Parallax.Tab.config")
             end
         }
     end
 
     buttons["tab.help"] = {
         Populate = function(this, container)
-            container:Add("Parallax.tab.help")
+            container:Add("Parallax.Tab.help")
         end
     }
 
     if ( hook.Run("ShouldShowInventory") != false ) then
         buttons["tab.inventory"] = {
             Populate = function(this, container)
-                container:Add("Parallax.tab.inventory")
+                container:Add("Parallax.Tab.inventory")
             end
         }
     end
 
     buttons["tab.inventory"] = {
         Populate = function(this, container)
-            container:Add("Parallax.tab.inventory")
+            container:Add("Parallax.Tab.inventory")
         end
     }
 
     buttons["tab.scoreboard"] = {
         Populate = function(this, container)
-            container:Add("Parallax.tab.scoreboard")
+            container:Add("Parallax.Tab.scoreboard")
         end
     }
 
     buttons["tab.options"] = {
         Populate = function(this, container)
-            container:Add("Parallax.tab.options")
+            container:Add("Parallax.Tab.options")
         end
     }
 end
@@ -855,7 +855,7 @@ function GM:PopulateHelpCategories(categories)
     end
 
     categories["flags"] = function(container)
-        local scroller = container:Add("Parallax.scroller.vertical")
+        local scroller = container:Add("Parallax.Scroller.Vertical")
         scroller:Dock(FILL)
         scroller:GetVBar():SetWide(0)
         scroller.Paint = nil
@@ -866,7 +866,7 @@ function GM:PopulateHelpCategories(categories)
 
             local hasFlag = char:HasFlag(k)
 
-            local button = scroller:Add("Parallax.button.flat")
+            local button = scroller:Add("Parallax.Button.Flat")
             button:Dock(TOP)
             button:SetFont("Parallax.large.bold")
             button:SetText("")
@@ -901,18 +901,18 @@ function GM:PopulateHelpCategories(categories)
                 menu:Open()
             end
 
-            local key = button:Add("Parallax.text")
+            local key = button:Add("Parallax.Text")
             key:Dock(LEFT)
             key:DockMargin(ScreenScale(8), 0, 0, 0)
             key:SetFont("Parallax.large.bold")
             key:SetText(k)
 
-            local seperator = button:Add("Parallax.text")
+            local seperator = button:Add("Parallax.Text")
             seperator:Dock(LEFT)
             seperator:SetFont("Parallax.large")
             seperator:SetText(" - ")
 
-            local description = button:Add("Parallax.text")
+            local description = button:Add("Parallax.Text")
             description:Dock(LEFT)
             description:SetFont("Parallax.large")
             description:SetText(v.description)
@@ -928,7 +928,7 @@ function GM:PopulateHelpCategories(categories)
     end
 
     categories["commands"] = function(container)
-        local scroller = container:Add("Parallax.scroller.vertical")
+        local scroller = container:Add("Parallax.Scroller.Vertical")
         scroller:Dock(FILL)
         scroller:GetVBar():SetWide(0)
         scroller.Paint = nil
@@ -951,7 +951,7 @@ function GM:PopulateHelpCategories(categories)
                 surface.DrawRect(0, 0, width, height)
             end
 
-            local nameLabel = panel:Add("Parallax.text")
+            local nameLabel = panel:Add("Parallax.Text")
             nameLabel:SetFont("Parallax.bold")
             nameLabel:SetText(commandName, true)
             nameLabel:Dock(TOP)
@@ -962,14 +962,14 @@ function GM:PopulateHelpCategories(categories)
                 description = "No description provided."
             end
 
-            local descriptionLabel = panel:Add("Parallax.text")
+            local descriptionLabel = panel:Add("Parallax.Text")
             descriptionLabel:SetFont("Parallax.small")
             descriptionLabel:SetText(description, true)
             descriptionLabel:Dock(TOP)
             descriptionLabel:DockMargin(8, -4, 8, 0)
 
             if ( istable(commandInfo.Arguments) ) then
-                local argumentsLabel = panel:Add("Parallax.text")
+                local argumentsLabel = panel:Add("Parallax.Text")
                 argumentsLabel:SetFont("Parallax.small")
                 argumentsLabel:SetText("Useable Arguments:", true)
                 argumentsLabel:Dock(TOP)
@@ -982,7 +982,7 @@ function GM:PopulateHelpCategories(categories)
                         data = { Type = "Unknown", ErrorMsg = "No error message provided." }
                     end
 
-                    local argLabel = panel:Add("Parallax.text")
+                    local argLabel = panel:Add("Parallax.Text")
                     argLabel:SetFont("Parallax.small")
                     argLabel:SetText(i .. ": " .. Parallax.Util:FormatType(data.Type) .. " - " .. (data.ErrorMsg or "No error message provided."), true)
                     if ( data.Optional ) then
@@ -1090,10 +1090,10 @@ function GM:OnScreenSizeChanged(oldWidth, oldHeight, newWidth, newHeight)
             v:Remove()
 
             -- Attempt to recreate the GUI element
-            if ( className == "Parallax.mainmenu" ) then
-                vgui.Create("Parallax.mainmenu")
-            elseif ( className == "Parallax.tab" ) then
-                vgui.Create("Parallax.tab")
+            if ( className == "Parallax.Mainmenu" ) then
+                vgui.Create("Parallax.Mainmenu")
+            elseif ( className == "Parallax.Tab" ) then
+                vgui.Create("Parallax.Tab")
             end
         end
     end

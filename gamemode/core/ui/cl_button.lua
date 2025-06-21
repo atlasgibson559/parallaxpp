@@ -85,7 +85,7 @@ end
 function PANEL:Think()
     local hovering = self:IsHovered()
     if ( hovering and !self.wasHovered ) then
-        surface.PlaySound("Parallax.button.enter")
+        surface.PlaySound("Parallax.Button.Enter")
         self:SetFont("Parallax.large.bold")
         self.wasHovered = true
 
@@ -171,7 +171,7 @@ function PANEL:Think()
 end
 
 function PANEL:OnMousePressed(key)
-    surface.PlaySound("Parallax.button.click")
+    surface.PlaySound("Parallax.Button.Click")
 
     if ( key == MOUSE_LEFT ) then
         self:DoClick()
@@ -180,9 +180,9 @@ function PANEL:OnMousePressed(key)
     end
 end
 
-vgui.Register("Parallax.button", PANEL, "DButton")
+vgui.Register("Parallax.Button", PANEL, "DButton")
 
-DEFINE_BASECLASS("Parallax.button")
+DEFINE_BASECLASS("Parallax.Button")
 
 PANEL = {}
 
@@ -223,7 +223,7 @@ end
 function PANEL:Think()
     local hovering = self:IsHovered()
     if ( hovering and !self.wasHovered ) then
-        surface.PlaySound("Parallax.button.enter")
+        surface.PlaySound("Parallax.Button.Enter")
         self:SetFont("Parallax.large.bold")
         self.wasHovered = true
 
@@ -276,10 +276,10 @@ function PANEL:Think()
     end
 end
 
-vgui.Register("Parallax.button.flat", PANEL, "Parallax.button")
+vgui.Register("Parallax.Button.Flat", PANEL, "Parallax.Button")
 
 sound.Add({
-    name = "Parallax.button.click",
+    name = "Parallax.Button.Click",
     channel = CHAN_STATIC,
     volume = 0.2,
     level = 80,
@@ -288,7 +288,7 @@ sound.Add({
 })
 
 sound.Add({
-    name = "Parallax.button.enter",
+    name = "Parallax.Button.Enter",
     channel = CHAN_STATIC,
     volume = 0.1,
     level = 80,

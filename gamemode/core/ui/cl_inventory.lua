@@ -18,13 +18,13 @@ function PANEL:Init()
 
     self:Dock(FILL)
 
-    self.buttons = self:Add("Parallax.scroller.horizontal")
+    self.buttons = self:Add("Parallax.Scroller.Horizontal")
     self.buttons:Dock(TOP)
     self.buttons:DockMargin(0, ScreenScaleH(4), 0, 0)
     self.buttons:SetTall(ScreenScaleH(24))
     self.buttons.Paint = nil
 
-    self.container = self:Add("Parallax.scroller.vertical")
+    self.container = self:Add("Parallax.Scroller.Vertical")
     self.container:Dock(FILL)
     self.container:GetVBar():SetWide(0)
     self.container.Paint = nil
@@ -39,7 +39,7 @@ function PANEL:Init()
 
     local inventories = Parallax.Inventory:GetByCharacterID(Parallax.Client:GetCharacter():GetID())
     if ( #inventories == 0 ) then
-        local label = self.buttons:Add("Parallax.text")
+        local label = self.buttons:Add("Parallax.Text")
         label:Dock(FILL)
         label:SetFont("Parallax.large")
         label:SetText("inventory.empty")
@@ -49,7 +49,7 @@ function PANEL:Init()
     end
 
     for _, inventory in pairs(inventories) do
-        local button = self.buttons:Add("Parallax.button.flat")
+        local button = self.buttons:Add("Parallax.Button.Flat")
         button:Dock(LEFT)
         button:SetText(inventory:GetName())
         button:SizeToContents()
@@ -91,7 +91,7 @@ function PANEL:SetInventory(id)
     local maxWeight = Parallax.Config:Get("inventory.mParallax.weight", 20)
     local weight = math.Round(maxWeight * progress:GetFraction(), 2)
 
-    local label = progress:Add("Parallax.text")
+    local label = progress:Add("Parallax.Text")
     label:Dock(FILL)
     label:SetFont("parallax")
     label:SetText(weight .. "kg / " .. maxWeight .. "kg")
@@ -99,7 +99,7 @@ function PANEL:SetInventory(id)
 
     local items = inventory:GetItems()
     if ( #items == 0 ) then
-        label = self.container:Add("Parallax.text")
+        label = self.container:Add("Parallax.Text")
         label:Dock(TOP)
         label:SetFont("Parallax.large")
         label:SetText("inventory.empty")
@@ -214,7 +214,7 @@ function PANEL:SetInfo(id)
         icon:SetLookAng(camData.angles)
     end
 
-    local name = self.info:Add("Parallax.text")
+    local name = self.info:Add("Parallax.Text")
     name:Dock(TOP)
     name:DockMargin(0, 0, 0, -ScreenScaleH(4))
     name:SetFont("Parallax.large.bold")
@@ -223,7 +223,7 @@ function PANEL:SetInfo(id)
     local description = item:GetDescription()
     local descriptionWrapped = Parallax.Util:GetWrappedText(description, "parallax", self.info:GetWide() - 32)
     for k, v in pairs(descriptionWrapped) do
-        local text = self.info:Add("Parallax.text")
+        local text = self.info:Add("Parallax.Text")
         text:Dock(TOP)
         text:DockMargin(0, 0, 0, -ScreenScaleH(4))
         text:SetText(v, true)
@@ -241,7 +241,7 @@ function PANEL:SetInfo(id)
             if ( actionName == "Take" ) then continue end
             if ( isfunction(actionData.OnCanRun) and actionData:OnCanRun(item, Parallax.Client) == false ) then continue end
 
-            local button = actions:Add("Parallax.button.flat")
+            local button = actions:Add("Parallax.Button.Flat")
             button:SetText(actionData.Name or actionName)
             button:SizeToContents()
             button.DoClick = function()

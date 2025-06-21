@@ -96,4 +96,4 @@ function PANEL:OnCursorMoved(x, y)
     self:SetValue(value)
 end
 
-vgui.Register("Parallax.slider", PANEL, "EditablePanel")
+vgui.Register("Parallax.Slider", PANEL, "EditablePanel")

@@ -140,4 +140,4 @@ function PANEL:Think()
     end
 end
 
-vgui.Register("Parallax.binder", PANEL, "Parallax.button")
+vgui.Register("Parallax.binder", PANEL, "Parallax.Button")

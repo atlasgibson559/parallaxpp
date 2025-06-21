@@ -16,7 +16,7 @@ local PANEL = {}
 function PANEL:Init()
     self:Dock(FILL)
 
-    local title = self:Add("Parallax.text")
+    local title = self:Add("Parallax.Text")
     title:Dock(TOP)
     title:SetFont("Parallax.huge.bold")
     title:SetText("CONFIG")
@@ -25,4 +25,4 @@ function PANEL:Init()
     config:Dock(FILL)
 end
 
-vgui.Register("Parallax.tab.config", PANEL, "EditablePanel")
+vgui.Register("Parallax.Tab.config", PANEL, "EditablePanel")

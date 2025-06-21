@@ -16,7 +16,7 @@ local PANEL = {}
 function PANEL:Init()
     self:Dock(FILL)
 
-    self.buttons = self:Add("Parallax.scroller.horizontal")
+    self.buttons = self:Add("Parallax.Scroller.Horizontal")
     self.buttons:Dock(TOP)
     self.buttons:DockMargin(0, ScreenScaleH(4), 0, 0)
     self.buttons:SetTall(ScreenScaleH(24))
@@ -25,12 +25,12 @@ function PANEL:Init()
     self.buttons.btnLeft:SetAlpha(0)
     self.buttons.btnRight:SetAlpha(0)
 
-    self.container = self:Add("Parallax.scroller.vertical")
+    self.container = self:Add("Parallax.Scroller.Vertical")
     self.container:Dock(FILL)
     self.container:GetVBar():SetWide(0)
     self.container.Paint = nil
 
-    self.search = self:Add("Parallax.text.entry")
+    self.search = self:Add("Parallax.Text.entry")
     self.search:Dock(TOP)
     self.search:SetUpdateOnType(true)
     self.search:SetPlaceholderText(Parallax.Localization:GetPhrase("search.description.config"))
@@ -58,7 +58,7 @@ function PANEL:Init()
     end
 
     for k, v in SortedPairs(categories) do
-        local button = self.buttons:Add("Parallax.button.flat")
+        local button = self.buttons:Add("Parallax.Button.Flat")
         button:Dock(LEFT)
         button:SetText(v)
         button:SizeToContents()
@@ -114,7 +114,7 @@ function PANEL:PopulateCategory(category, toSearch)
 
     if ( table.Count(subCategories) > 1 ) then
         for k, v in SortedPairs(subCategories) do
-            local label = self.container:Add("Parallax.text")
+            local label = self.container:Add("Parallax.Text")
             label:Dock(TOP)
             label:DockMargin(0, 0, 0, ScreenScaleH(4))
             label:SetFont("Parallax.huge.bold")
@@ -136,7 +136,7 @@ end
 function PANEL:AddConfig(configData)
     local value = Parallax.Config:Get(configData.UniqueID)
 
-    local panel = self.container:Add("Parallax.button.flat")
+    local panel = self.container:Add("Parallax.Button.Flat")
     panel:Dock(TOP)
     panel:SetText(configData.Name)
     panel:SetTall(ScreenScaleH(26))
@@ -152,7 +152,7 @@ function PANEL:AddConfig(configData)
     local label
     local configs
     if ( configData.Type == Parallax.Types.bool ) then
-        label = panel:Add("Parallax.text")
+        label = panel:Add("Parallax.Text")
         label:Dock(RIGHT)
         label:DockMargin(0, 0, ScreenScale(8), 0)
         label:SetText(value and enabled or disabled, true)
@@ -199,7 +199,7 @@ function PANEL:AddConfig(configData)
             menu:Open()
         end
     elseif ( configData.Type == Parallax.Types.number ) then
-        local slider = panel:Add("Parallax.slider")
+        local slider = panel:Add("Parallax.Slider")
         slider:Dock(RIGHT)
         slider:DockMargin(ScreenScale(8), ScreenScaleH(4), ScreenScale(8), ScreenScaleH(4))
         slider:SetWide(ScreenScale(128))
@@ -229,7 +229,7 @@ function PANEL:AddConfig(configData)
         slider:SetDecimals(configData.Decimals or 0)
         slider:SetValue(value, true)
 
-        label = panel:Add("Parallax.text")
+        label = panel:Add("Parallax.Text")
         label:Dock(RIGHT)
         label:DockMargin(0, 0, -ScreenScale(4), 8)
         label:SetText(value)
@@ -314,7 +314,7 @@ function PANEL:AddConfig(configData)
 
         local phrase = (configs and configs[value]) and Parallax.Localization:GetPhrase(configs[value]) or unknown
 
-        label = panel:Add("Parallax.text")
+        label = panel:Add("Parallax.Text")
         label:Dock(RIGHT)
         label:DockMargin(0, 0, ScreenScale(8), 0)
         label:SetText(phrase, true)
@@ -452,7 +452,7 @@ function PANEL:AddConfig(configData)
             menu:Open()
         end
     elseif ( configData.Type == Parallax.Types.string ) then
-        local text = panel:Add("Parallax.text.entry")
+        local text = panel:Add("Parallax.Text.entry")
         text:Dock(RIGHT)
         text:DockMargin(ScreenScale(8), ScreenScaleH(4), ScreenScale(8), ScreenScaleH(4))
         text:SetWide(ScreenScale(128))

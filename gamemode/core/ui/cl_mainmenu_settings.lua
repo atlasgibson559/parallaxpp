@@ -33,7 +33,7 @@ function PANEL:Populate()
 
     self:SetVisible(true)
 
-    local title = self:Add("Parallax.text")
+    local title = self:Add("Parallax.Text")
     title:Dock(TOP)
     title:DockMargin(padding, padding, 0, 0)
     title:SetFont("Parallax.large.bold")
@@ -44,7 +44,7 @@ function PANEL:Populate()
     navigation:DockMargin(padding, 0, padding, padding)
     navigation:SetTall(ScreenScale(24))
 
-    local backButton = navigation:Add("Parallax.button.flat")
+    local backButton = navigation:Add("Parallax.Button.Flat")
     backButton:Dock(LEFT)
     backButton:SetText("back")
     backButton.DoClick = function()
@@ -61,6 +61,6 @@ function PANEL:Populate()
     options:DockMargin(padding, 0, padding, 0)
 end
 
-vgui.Register("Parallax.mainmenu.options", PANEL, "EditablePanel")
+vgui.Register("Parallax.Mainmenu.options", PANEL, "EditablePanel")
 
 Parallax.GUI.optionsLast = nil

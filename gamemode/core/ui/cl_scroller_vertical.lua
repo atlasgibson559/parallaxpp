@@ -9,9 +9,9 @@
     Attribution is required. If you use or modify this file, you must retain this notice.
 ]]
 
---- Parallax.scroller.vertical
+--- Parallax.Scroller.Vertical
 -- A vertical scroll panel with smooth scrolling and custom canvas.
--- @panel Parallax.scroller.vertical
+-- @panel Parallax.Scroller.Vertical
 
 local PANEL = {}
 
@@ -134,4 +134,4 @@ function PANEL:Clear()
     return self.pnlCanvas:Clear()
 end
 
-vgui.Register("Parallax.scroller.vertical", PANEL, "DPanel")
+vgui.Register("Parallax.Scroller.Vertical", PANEL, "DPanel")
