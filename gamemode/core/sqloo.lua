@@ -9,36 +9,17 @@
     Attribution is required. If you use or modify this file, you must retain this notice.
 ]]
 
--- Detect if mysqloo binary exists before requiring
-local function hasMysqlooBinary()
-    local osName = jit.os:lower()
-    local arch = jit.arch == "x64" and "win64" or "win32"
-
-    if ( osName == "osx" ) then arch = "osx" end
-    if ( osName == "linux" ) then arch = "linux" end
-
-    local binaryName = "gmsv_mysqloo_" .. arch .. ".dll"
-    if ( osName == "linux" ) then binaryName = "gmsv_mysqloo_linux.dll" end
-    if ( osName == "osx" ) then binaryName = "gmsv_mysqloo_osx.dll" end
-
-    return file.Exists("lua/bin/" .. binaryName, "GAME")
-end
-
 function ax.util:HasMysqlooBinary()
-    return hasMysqlooBinary()
+    return util.IsBinaryModuleInstalled("mysqloo")
 end
 
-if ( !hasMysqlooBinary() ) then
+if ( !ax.util:HasMysqlooBinary() ) then
     ax.util:PrintWarning("MySQLOO binary not found in lua/bin/. ax.sqloo disabled.")
     return
 end
 
 -- Now safe to require
-local success, err = pcall(require, "mysqloo")
-if ( !success or !mysqloo ) then
-    ax.util:PrintWarning("Failed to load MySQLOO module: " .. (err or "unknown"))
-    return
-end
+require("mysqloo")
 
 --- Parallax MySQLOO Database Wrapper
 -- Provides a wrapper around the mysqloo module for async MySQL access
