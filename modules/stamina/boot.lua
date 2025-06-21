@@ -41,7 +41,7 @@ Parallax.Config:Register("stamina", {
 
 Parallax.Config:Register("stamina.max", {
     Name = "config.stamina.max",
-    Description = "config.stamina.mParallax.help",
+    Description = "config.stamina.max.Help",
     Category = "config.stamina",
     Type = Parallax.Types.number,
     Default = 100,
@@ -152,7 +152,7 @@ if ( CLIENT ) then
     deLocalization["config.stamina.drain.help"] = "Die Rate, mit der die Ausdauer des Spielers abfließt."
     deLocalization["config.stamina.help"] = "Aktivieren oder deaktivieren Sie die Ausdauer."
     deLocalization["config.stamina.max"] = "Maximale Ausdauer"
-    deLocalization["config.stamina.mParallax.help"] = "Die maximale Menge an Ausdauer, die der Spieler haben kann. Spieler müssen sich neu spawn, um dies anzuwenden."
+    deLocalization["config.stamina.max.Help"] = "Die maximale Menge an Ausdauer, die der Spieler haben kann. Spieler müssen sich neu spawn, um dies anzuwenden."
     deLocalization["config.stamina.regen"] = "Ausdauerregenerationsrate"
     deLocalization["config.stamina.regen.help"] = "Die Rate, mit der die Ausdauer des Spielers regeneriert wird."
     deLocalization["config.stamina.tick"] = "Ausdauer-Tickrate"
@@ -164,7 +164,7 @@ if ( CLIENT ) then
     enLocalization["config.stamina.drain.help"] = "The rate at which the player's stamina drains."
     enLocalization["config.stamina.help"] = "Enable or disable stamina."
     enLocalization["config.stamina.max"] = "Max Stamina"
-    enLocalization["config.stamina.mParallax.help"] = "The maximum amount of stamina the player can have, players need to respawn to apply this."
+    enLocalization["config.stamina.max.Help"] = "The maximum amount of stamina the player can have, players need to respawn to apply this."
     enLocalization["config.stamina.regen"] = "Stamina Regen Rate"
     enLocalization["config.stamina.regen.help"] = "The rate at which the player's stamina regenerates."
     enLocalization["config.stamina.tick"] = "Stamina Tick Rate"
@@ -176,7 +176,7 @@ if ( CLIENT ) then
     ruLocalization["config.stamina.drain.help"] = "Скорость с которой поглащается выносливость игрока."
     ruLocalization["config.stamina.help"] = "Должна ли выносливость быть включена?"
     ruLocalization["config.stamina.max"] = "Максимальная выносливость"
-    ruLocalization["config.stamina.mParallax.help"] = "Максимальное кол-во выносливости которое может иметь игрок, для принятия эффекта игрок должен перевозродиться."
+    ruLocalization["config.stamina.max.Help"] = "Максимальное кол-во выносливости которое может иметь игрок, для принятия эффекта игрок должен перевозродиться."
     ruLocalization["config.stamina.regen"] = "Скорость восстановления выносливости"
     ruLocalization["config.stamina.regen.help"] = "Скорость с которой восстанавливается выносливость игрока."
     ruLocalization["config.stamina.tick"] = "Интервал обновления выносливости"

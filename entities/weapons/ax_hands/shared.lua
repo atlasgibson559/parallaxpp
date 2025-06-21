@@ -119,7 +119,7 @@ local function VelocityRemove(entity, normalize)
     else
         local physicsObject = entity:GetPhysicsObject()
         local vel = IsValid(physicsObject) and physicsObject:GetVelocity() or entity:GetVelocity()
-        local len = math.min(Parallax.Config:Get("hands.mParallax.throw", 150), vel:Length2D())
+        local len = math.min(Parallax.Config:Get("hands.max.throw", 150), vel:Length2D())
 
         vel:Normalize()
         vel = vel * len
@@ -356,7 +356,7 @@ function SWEP:AllowPickup(target)
     local physicsObject = target:GetPhysicsObject()
     local owner = self:GetOwner()
 
-    return ( IsValid(physicsObject) and IsValid(owner) and !physicsObject:HasGameFlag(FVPHYSICS_NO_PLAYER_PICKUP) and physicsObject:GetMass() < Parallax.Config:Get("hands.mParallax.carry", 160) and !self:IsEntityStoodOn(target) and target.CanPickup != false )
+    return ( IsValid(physicsObject) and IsValid(owner) and !physicsObject:HasGameFlag(FVPHYSICS_NO_PLAYER_PICKUP) and physicsObject:GetMass() < Parallax.Config:Get("hands.max.Carry", 160) and !self:IsEntityStoodOn(target) and target.CanPickup != false )
 end
 
 function SWEP:DoPickup(throw)

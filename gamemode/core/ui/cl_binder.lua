@@ -9,9 +9,9 @@
     Attribution is required. If you use or modify this file, you must retain this notice.
 ]]
 
---- Parallax.binder
+--- Parallax.Binder
 -- A simple key binder panel for binding a single key input.
--- @panel Parallax.binder
+-- @panel Parallax.Binder
 
 local PANEL = {}
 
@@ -19,7 +19,7 @@ AccessorFunc(PANEL, "m_iSelectedNumber", "SelectedNumber", FORCE_NUMBER)
 
 Parallax.Binds = Parallax.Binds or {}
 local release = {}
-hook.Add("Think", "Parallax.keybinds.logic", function()
+hook.Add("Think", "Parallax.Keybinds.logic", function()
     if ( !system.HasFocus() or gui.IsConsoleVisible() or gui.IsGameUIVisible() or vgui.CursorVisible() ) then
         -- If the game doesn't have focus, we don't want to process keybinds.
         for optionName in pairs(release) do
@@ -140,4 +140,4 @@ function PANEL:Think()
     end
 end
 
-vgui.Register("Parallax.binder", PANEL, "Parallax.Button")
+vgui.Register("Parallax.Binder", PANEL, "Parallax.Button")

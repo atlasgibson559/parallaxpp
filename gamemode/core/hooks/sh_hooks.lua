@@ -142,7 +142,7 @@ end
 
 function GM:KeyPress(client, key)
     if ( SERVER and key == IN_RELOAD ) then
-        timer.Create("Parallax.weapon.raise." .. client:SteamID64(), Parallax.Config:Get("weapon.raise.time", 1), 1, function()
+        timer.Create("Parallax.Weapon.raise." .. client:SteamID64(), Parallax.Config:Get("weapon.raise.time", 1), 1, function()
             if ( IsValid(client) ) then
                 client:ToggleWeaponRaise()
             end
@@ -152,7 +152,7 @@ end
 
 function GM:KeyRelease(client, key)
     if ( SERVER and key == IN_RELOAD ) then
-        timer.Remove("Parallax.weapon.raise." .. client:SteamID64())
+        timer.Remove("Parallax.Weapon.raise." .. client:SteamID64())
     end
 end
 

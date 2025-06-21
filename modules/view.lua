@@ -47,26 +47,26 @@ Parallax.Option:Register("view.multiplier.sprint", {
     Category = "category.view"
 })
 
-Parallax.Option:Register("view.mParallax.roll", {
-    Name = "option.view.mParallax.roll",
+Parallax.Option:Register("view.max.roll", {
+    Name = "option.view.max.roll",
     Type = Parallax.Types.number,
     Default = 10,
     Min = 0,
     Max = 45,
     Decimals = 1,
-    Description = "option.view.mParallax.roll.help",
+    Description = "option.view.max.roll.help",
     NoNetworking = true,
     Category = "category.view"
 })
 
-Parallax.Option:Register("view.mParallax.tilt", {
-    Name = "option.view.mParallax.tilt",
+Parallax.Option:Register("view.max.tilt", {
+    Name = "option.view.max.tilt",
     Type = Parallax.Types.number,
     Default = 10,
     Min = 0,
     Max = 45,
     Decimals = 1,
-    Description = "option.view.mParallax.tilt.help",
+    Description = "option.view.max.tilt.help",
     NoNetworking = true,
     Category = "category.view"
 })
@@ -114,10 +114,10 @@ if ( CLIENT ) then
         ["option.view.help"] = "Enable or disable view effects such as sway and bobbing.",
         ["option.view.intensity"] = "Intensity",
         ["option.view.intensity.help"] = "Intensity of the view offset effect.",
-        ["option.view.mParallax.roll"] = "Max Roll",
-        ["option.view.mParallax.roll.help"] = "Maximum roll angle for the view.",
-        ["option.view.mParallax.tilt"] = "Max Tilt",
-        ["option.view.mParallax.tilt.help"] = "Maximum tilt angle for the view.",
+        ["option.view.max.roll"] = "Max Roll",
+        ["option.view.max.roll.help"] = "Maximum roll angle for the view.",
+        ["option.view.max.tilt"] = "Max Tilt",
+        ["option.view.max.tilt.help"] = "Maximum tilt angle for the view.",
         ["option.view.multiplier"] = "View Multiplier",
         ["option.view.multiplier.help"] = "Set the view multiplier.",
         ["option.view.multiplier.sprint"] = "View Multiplier Sprint",
@@ -134,10 +134,10 @@ if ( CLIENT ) then
         ["option.view.help"] = "Включване или изключване на ефектите на изгледа, като трептене и наклони.",
         ["option.view.intensity"] = "Интензивност",
         ["option.view.intensity.help"] = "Интензивност на ефекта на изместване на изгледа.",
-        ["option.view.mParallax.roll"] = "Максимален наклон",
-        ["option.view.mParallax.roll.help"] = "Максимален ъгъл на наклона на изгледа.",
-        ["option.view.mParallax.tilt"] = "Максимален наклон",
-        ["option.view.mParallax.tilt.help"] = "Максимален ъгъл на наклона на изгледа.",
+        ["option.view.max.roll"] = "Максимален наклон",
+        ["option.view.max.roll.help"] = "Максимален ъгъл на наклона на изгледа.",
+        ["option.view.max.tilt"] = "Максимален наклон",
+        ["option.view.max.tilt.help"] = "Максимален ъгъл на наклона на изгледа.",
         ["option.view.multiplier"] = "Множител на изгледа",
         ["option.view.multiplier.help"] = "Множител за ефектите на изгледа.",
         ["option.view.multiplier.sprint"] = "Множител на изгледа при спринт",
@@ -154,10 +154,10 @@ if ( CLIENT ) then
         ["option.view.help"] = "Eвключить или отключить эффекты вгляда, такие как тряска и наклоны.",
         ["option.view.intensity"] = "Интенсивность",
         ["option.view.intensity.help"] = "Интенсивность эффекта смещения взгляда.",
-        ["option.view.mParallax.roll"] = "Максимальное вращение",
-        ["option.view.mParallax.roll.help"] = "Максимальный угол вращения взгляда.",
-        ["option.view.mParallax.tilt"] = "Максимальный наклон",
-        ["option.view.mParallax.tilt.help"] = "Максимальный угол наклона взгляда.",
+        ["option.view.max.roll"] = "Максимальное вращение",
+        ["option.view.max.roll.help"] = "Максимальный угол вращения взгляда.",
+        ["option.view.max.tilt"] = "Максимальный наклон",
+        ["option.view.max.tilt.help"] = "Максимальный угол наклона взгляда.",
         ["option.view.multiplier"] = "Множитель взгляда",
         ["option.view.multiplier.help"] = "Множитель эффектов взгляда.",
         ["option.view.multiplier.sprint"] = "Множитель взгляда при беге",
@@ -277,8 +277,8 @@ if ( CLIENT ) then
     function MODULE:CreateMove(cmd)
         if ( !Parallax.Option:Get("view") ) then return end
 
-        local maxRoll = Parallax.Option:Get("view.mParallax.roll", 10)
-        local maxTilt = Parallax.Option:Get("view.mParallax.tilt", 10)
+        local maxRoll = Parallax.Option:Get("view.max.roll", 10)
+        local maxTilt = Parallax.Option:Get("view.max.tilt", 10)
         local mouseX = cmd:GetMouseX()
         local mouseY = cmd:GetMouseY()
 

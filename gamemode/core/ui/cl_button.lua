@@ -23,7 +23,7 @@ AccessorFunc(PANEL, "textInsetY", "TextInsetY", FORCE_NUMBER)
 AccessorFunc(PANEL, "wasHovered", "WasHovered", FORCE_BOOL)
 
 function PANEL:Init()
-    self:SetFont("Parallax.large")
+    self:SetFont("Parallax.Large")
     self:SetTextColorProperty(Parallax.Color:Get("white"))
     self:SetContentAlignment(4)
     self:SetTextInset(ScreenScale(2), 0)
@@ -47,7 +47,7 @@ function PANEL:SetText(text, bNoTranslate, bNoSizeToContents, bNoUppercase)
     end
 
     if ( !bNoUppercase ) then
-        text = Parallax.utf8:Upper(text)
+        text = Parallax.Utf8:Upper(text)
     end
 
     BaseClass.SetText(self, text)
@@ -86,7 +86,7 @@ function PANEL:Think()
     local hovering = self:IsHovered()
     if ( hovering and !self.wasHovered ) then
         surface.PlaySound("Parallax.Button.Enter")
-        self:SetFont("Parallax.large.bold")
+        self:SetFont("Parallax.Large.bold")
         self.wasHovered = true
 
         self:Motion(0.2, {
@@ -125,7 +125,7 @@ function PANEL:Think()
             self:OnHovered()
         end
     elseif ( !hovering and self.wasHovered ) then
-        self:SetFont("Parallax.large")
+        self:SetFont("Parallax.Large")
         self.wasHovered = false
 
         self:Motion(0.2, {
@@ -191,7 +191,7 @@ AccessorFunc(PANEL, "backgroundAlphaUnHovered", "BackgroundAlphaUnHovered", FORC
 AccessorFunc(PANEL, "backgroundColor", "BackgroundColor")
 
 function PANEL:Init()
-    self:SetFont("Parallax.large")
+    self:SetFont("Parallax.Large")
     self:SetTextColorProperty(Parallax.Color:Get("white"))
     self:SetContentAlignment(5)
     self:SetTall(ScreenScaleH(12))
@@ -224,7 +224,7 @@ function PANEL:Think()
     local hovering = self:IsHovered()
     if ( hovering and !self.wasHovered ) then
         surface.PlaySound("Parallax.Button.Enter")
-        self:SetFont("Parallax.large.bold")
+        self:SetFont("Parallax.Large.bold")
         self.wasHovered = true
 
         self:Motion(0.2, {
@@ -247,7 +247,7 @@ function PANEL:Think()
             self:OnHovered()
         end
     elseif ( !hovering and self.wasHovered ) then
-        self:SetFont("Parallax.large")
+        self:SetFont("Parallax.Large")
         self.wasHovered = false
 
         self:Motion(0.2, {

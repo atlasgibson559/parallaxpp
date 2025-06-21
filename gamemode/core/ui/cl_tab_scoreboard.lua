@@ -18,10 +18,10 @@ function PANEL:Init()
 
     local title = self:Add("Parallax.Text")
     title:Dock(TOP)
-    title:SetFont("Parallax.huge.bold")
+    title:SetFont("Parallax.Huge.bold")
     title:SetText("SCOREBOARD")
 
-    local scoreboard = self:Add("Parallax.scoreboard")
+    local scoreboard = self:Add("Parallax.Scoreboard")
     scoreboard:Dock(FILL)
 end
 

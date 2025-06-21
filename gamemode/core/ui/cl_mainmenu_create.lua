@@ -66,7 +66,7 @@ function PANEL:PopulateFactionSelect()
     local title = self:Add("Parallax.Text")
     title:Dock(TOP)
     title:DockMargin(ScreenScale(32), ScreenScaleH(32), 0, 0)
-    title:SetFont("Parallax.huge.bold")
+    title:SetFont("Parallax.Huge.bold")
     title:SetText(string.upper("mainmenu.create.character.faction"))
 
     local navigation = self:Add("EditablePanel")
@@ -114,11 +114,11 @@ function PANEL:PopulateFactionSelect()
         local v = factions[i]
         if ( !Parallax.Faction:CanSwitchTo(Parallax.Client, v:GetID()) ) then continue end
 
-        local name = (v.Name and Parallax.utf8:Upper(v.Name)) or "UNKNOWN FACTION"
-        local description = (v.Description and Parallax.utf8:Upper(v.Description)) or "UNKNOWN FACTION DESCRIPTION"
+        local name = (v.Name and Parallax.Utf8:Upper(v.Name)) or "UNKNOWN FACTION"
+        local description = (v.Description and Parallax.Utf8:Upper(v.Description)) or "UNKNOWN FACTION DESCRIPTION"
         description = Parallax.Util:CapTextWord(description, factionList:GetTall() / 3) -- Unreliable, but it works for now
 
-        local descriptionWrapped = Parallax.Util:GetWrappedText(description, "Parallax.bold", factionList:GetTall() * 1.25)
+        local descriptionWrapped = Parallax.Util:GetWrappedText(description, "Parallax.Bold", factionList:GetTall() * 1.25)
 
         local factionButton = factionList:Add("Parallax.Button.Flat")
         factionButton:Dock(LEFT)
@@ -161,11 +161,11 @@ function PANEL:PopulateFactionSelect()
 
             local textColor = factionButton:GetTextColor()
             local hovered = factionButton:IsHovered()
-            local font = "Parallax.huge"
+            local font = "Parallax.Huge"
             if ( v.Font ) then
                 font = v.Font
             elseif ( name:len() > 22 ) then
-                font = "Parallax.massive"
+                font = "Parallax.Massive"
             end
 
             if ( hovered ) then
@@ -174,9 +174,9 @@ function PANEL:PopulateFactionSelect()
 
             draw.SimpleText(name, font, ScreenScale(8), imageHeight - boxHeight + boxHeightStatic / 2, textColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 
-            local textHeight = Parallax.Util:GetTextHeight("Parallax.bold") / 1.5
+            local textHeight = Parallax.Util:GetTextHeight("Parallax.Bold") / 1.5
             for d = 1, #descriptionWrapped do
-                draw.SimpleText(descriptionWrapped[d], "Parallax.bold", ScreenScale(8), imageHeight - boxHeight + boxHeightStatic + (d - 1) * textHeight, ColorAlpha(textColor, 255 * inertia), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                draw.SimpleText(descriptionWrapped[d], "Parallax.Bold", ScreenScale(8), imageHeight - boxHeight + boxHeightStatic + (d - 1) * textHeight, ColorAlpha(textColor, 255 * inertia), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
             end
         end
 
@@ -220,7 +220,7 @@ function PANEL:PopulateCreateCharacter()
     local title = self:Add("Parallax.Text")
     title:Dock(TOP)
     title:DockMargin(ScreenScale(32), ScreenScaleH(32), 0, 0)
-    title:SetFont("Parallax.huge.bold")
+    title:SetFont("Parallax.Huge.bold")
     title:SetText(string.upper("mainmenu.create.character"))
 
     local navigation = self:Add("EditablePanel")
@@ -340,7 +340,7 @@ function PANEL:PopulateCreateCharacterForm()
 
             local label = self.characterCreateForm:Add("Parallax.Text")
             label:Dock(TOP)
-            label:SetFont("Parallax.large.bold")
+            label:SetFont("Parallax.Large.bold")
 
             label:SetText(bTranslated and translation or v.Name or k)
 
@@ -387,7 +387,7 @@ function PANEL:PopulateCreateCharacterForm()
             local label = self.characterCreateForm:Add("Parallax.Text")
             label:Dock(TOP)
             label:SetText(bTranslated and translation or v.Name or k)
-            label:SetFont("Parallax.large.bold")
+            label:SetFont("Parallax.Large.bold")
             label:SizeToContents()
 
             zPos = zPos - 1

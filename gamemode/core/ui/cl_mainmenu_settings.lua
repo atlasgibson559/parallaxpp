@@ -36,7 +36,7 @@ function PANEL:Populate()
     local title = self:Add("Parallax.Text")
     title:Dock(TOP)
     title:DockMargin(padding, padding, 0, 0)
-    title:SetFont("Parallax.large.bold")
+    title:SetFont("Parallax.Large.bold")
     title:SetText("options")
 
     local navigation = self:Add("EditablePanel")

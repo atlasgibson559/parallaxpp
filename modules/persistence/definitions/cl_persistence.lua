@@ -11,7 +11,7 @@
 
 local MODULE = MODULE
 
-properties.Add("Parallax.persistence.mark", {
+properties.Add("Parallax.Persistence.mark", {
     MenuLabel = "[Parallax] Mark for Persistence",
     Order = -1,
     MenuIcon = "icon16/accept.png",
@@ -27,7 +27,7 @@ properties.Add("Parallax.persistence.mark", {
     end
 })
 
-properties.Add("Parallax.persistence.unmark", {
+properties.Add("Parallax.Persistence.unmark", {
     MenuLabel = "[Parallax] Unmark for Persistence",
     Order = -1,
     MenuIcon = "icon16/cross.png",

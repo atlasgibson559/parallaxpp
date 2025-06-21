@@ -136,7 +136,7 @@ function ENT:OnTakeDamage(dmg)
 end
 
 function ENT:OnRemove()
-    if ( Parallax.shutDown ) then return end
+    if ( Parallax.ShutDown ) then return end
     if ( self:OnCooldown("take") ) then return end
 
     local item = Parallax.Item:Get(self:GetItemID())

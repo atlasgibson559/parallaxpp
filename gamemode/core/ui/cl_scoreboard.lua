@@ -61,13 +61,13 @@ function PANEL:Populate()
         local players = teamData.players
 
         -- Create a new panel for the team
-        local teamPanel = self.container:Add("Parallax.scoreboard.team")
+        local teamPanel = self.container:Add("Parallax.Scoreboard.team")
         teamPanel:SetTeam(teamID)
           -- Add each player to the team panel
         local teamPlayerCount = #players
         for j = 1, teamPlayerCount do
             local client = players[j]
-            local playerPanel = teamPanel.container:Add("Parallax.scoreboard.player")
+            local playerPanel = teamPanel.container:Add("Parallax.Scoreboard.player")
             playerPanel:SetPlayer(client)
 
             teamPanel.players[client:SteamID64()] = playerPanel
@@ -75,7 +75,7 @@ function PANEL:Populate()
     end
 end
 
-vgui.Register("Parallax.scoreboard", PANEL, "EditablePanel")
+vgui.Register("Parallax.Scoreboard", PANEL, "EditablePanel")
 
 PANEL = {}
 
@@ -90,7 +90,7 @@ function PANEL:Init()
     self.teamName:SetTall(ScreenScaleH(12))
     self.teamName:Dock(TOP)
     self.teamName:DockMargin(ScreenScale(2), 0, 0, 0)
-    self.teamName:SetFont("Parallax.italic.bold")
+    self.teamName:SetFont("Parallax.Italic.bold")
     self.teamName:SetContentAlignment(7)
 
     self.container = self:Add("EditablePanel")
@@ -133,7 +133,7 @@ function PANEL:Paint(width, height)
     surface.DrawTexturedRect(0, 0, width, height)
 end
 
-vgui.Register("Parallax.scoreboard.team", PANEL, "EditablePanel")
+vgui.Register("Parallax.Scoreboard.team", PANEL, "EditablePanel")
 
 PANEL = {}
 
@@ -146,11 +146,11 @@ function PANEL:Init()
     self.avatar:SetPos(0, 0)
 
     self.name = self:Add("Parallax.Text")
-    self.name:SetFont("Parallax.bold")
+    self.name:SetFont("Parallax.Bold")
 
     self.ping = self:Add("Parallax.Text")
     self.ping:SetSize(ScreenScale(32), self:GetTall())
-    self.ping:SetFont("Parallax.bold")
+    self.ping:SetFont("Parallax.Bold")
     self.ping:SetContentAlignment(6)
 
     self:SetMouseInputEnabled(true)
@@ -199,4 +199,4 @@ function PANEL:OnMousePressed(keyCode)
     end
 end
 
-vgui.Register("Parallax.scoreboard.player", PANEL, "EditablePanel")
+vgui.Register("Parallax.Scoreboard.player", PANEL, "EditablePanel")

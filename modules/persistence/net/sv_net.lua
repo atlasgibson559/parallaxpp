@@ -20,7 +20,7 @@ Parallax.Net:Hook("persistence.mark", function(client, ent)
     end
 
     ent:SetRelay("persistent", true)
-    Parallax.log:Send(Parallax.log:Format(client) .. " marked entity " .. tostring(ent) .. " as persistent.")
+    Parallax.Log:Send(Parallax.Log:Format(client) .. " marked entity " .. tostring(ent) .. " as persistent.")
     client:Notify("Marked entity " .. tostring(ent) .. " as persistent.")
 
     MODULE:SaveEntities()
@@ -35,7 +35,7 @@ Parallax.Net:Hook("persistence.unmark", function(client, ent)
     end
 
     ent:SetRelay("persistent", false)
-    Parallax.log:Send(Parallax.log:Format(client) .. " unmarked entity " .. tostring(ent) .. " as persistent.")
+    Parallax.Log:Send(Parallax.Log:Format(client) .. " unmarked entity " .. tostring(ent) .. " as persistent.")
     client:Notify("Unmarked entity " .. tostring(ent) .. " as persistent.")
 
     MODULE:SaveEntities()

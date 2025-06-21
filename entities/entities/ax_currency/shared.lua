@@ -20,13 +20,13 @@ function ENT:SetupDataTables()
     self:NetworkVar("Float", 0, "Amount")
 end
 
-properties.Add("Parallax.property.currency.setamount", {
+properties.Add("Parallax.Property.currency.setamount", {
     MenuLabel = "Set Amount",
     Order = 999,
     MenuIcon = "icon16/money.png",
     Filter = function( self, ent, client )
         if ( !IsValid(ent) or ent:GetClass() != "ax_currency" ) then return false end
-        if ( !gamemode.Call( "CanProperty", client, "Parallax.property.currency.setamount", ent ) ) then return false end
+        if ( !gamemode.Call( "CanProperty", client, "Parallax.Property.currency.setamount", ent ) ) then return false end
 
         return client:IsSuperAdmin()
     end,

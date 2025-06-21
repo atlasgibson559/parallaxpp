@@ -53,4 +53,4 @@ function MODULE:Format(ent)
     return ent:GetClass() .. " [" .. ent:EntIndex() .. "][" .. tag .. "]"
 end
 
-Parallax.log = MODULE
+Parallax.Log = MODULE

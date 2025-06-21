@@ -374,7 +374,7 @@ end
 
 function GM:ShutDown()
     Parallax.Util:Print("Shutting down Parallax...")
-    Parallax.shutDown = true
+    Parallax.ShutDown = true
 
     hook.Run("SaveData")
 end

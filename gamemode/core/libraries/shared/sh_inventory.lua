@@ -28,7 +28,7 @@ function Parallax.Inventory:CreateObject(data)
     inventory.ID = tonumber(data.ID or data.id or 0)
     inventory.CharacterID = tonumber(data.CharacterID or data.character_id or 0)
     inventory.Name = data.Name or data.name or "Inventory"
-    inventory.MaxWeight = tonumber(data.MaxWeight or data.max_weight) or Parallax.Config:Get("inventory.mParallax.weight", 20)
+    inventory.MaxWeight = tonumber(data.MaxWeight or data.max_weight) or Parallax.Config:Get("inventory.max.weight", 20)
     inventory.Items = Parallax.Util:SafeParseTable(data.Items or data.items)
     inventory.Data = Parallax.Util:SafeParseTable(data.Data or data.data)
     inventory.Receivers = Parallax.Util:SafeParseTable(data.Receivers or data.receivers)

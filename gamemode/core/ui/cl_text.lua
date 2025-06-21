@@ -30,7 +30,7 @@ function PANEL:SetText(text, bNoTranslate, bNoSizeToContents)
         text = Parallax.Localization:GetPhrase(string.lower(text))
 
         if ( isUpper ) then
-            text = Parallax.utf8:Upper(text)
+            text = Parallax.Utf8:Upper(text)
         end
     end
 

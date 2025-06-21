@@ -205,9 +205,9 @@ Parallax.Config:Register("jump.power", {
     end
 })
 
-Parallax.Config:Register("inventory.mParallax.weight", {
-    Name = "config.inventory.mParallax.weight",
-    Description = "config.inventory.mParallax.weight.help",
+Parallax.Config:Register("inventory.max.weight", {
+    Name = "config.inventory.max.weight",
+    Description = "config.inventory.max.weight.help",
     SubCategory = "category.inventory",
     Type = Parallax.Types.number,
     Default = 20,
@@ -340,9 +340,9 @@ Parallax.Config:Register("mainmenu.branchwarning", {
     Default = true
 })
 
-Parallax.Config:Register("hands.mParallax.carry", {
-    Name = "config.hands.mParallax.carry",
-    Description = "config.hands.mParallax.carry.help",
+Parallax.Config:Register("hands.max.Carry", {
+    Name = "config.hands.max.Carry",
+    Description = "config.hands.max.Carry.help",
     Category = "category.hands",
     Type = Parallax.Types.number,
     Default = 160,
@@ -351,9 +351,9 @@ Parallax.Config:Register("hands.mParallax.carry", {
     Decimals = 0
 })
 
-Parallax.Config:Register("hands.mParallax.force", {
-    Name = "config.hands.mParallax.force",
-    Description = "config.hands.mParallax.force.help",
+Parallax.Config:Register("hands.max.Force", {
+    Name = "config.hands.max.Force",
+    Description = "config.hands.max.Force.help",
     Category = "category.hands",
     Type = Parallax.Types.number,
     Default = 16500,
@@ -362,9 +362,9 @@ Parallax.Config:Register("hands.mParallax.force", {
     Decimals = 0
 })
 
-Parallax.Config:Register("hands.mParallax.throw", {
-    Name = "config.hands.mParallax.throw",
-    Description = "config.hands.mParallax.throw.help",
+Parallax.Config:Register("hands.max.throw", {
+    Name = "config.hands.max.throw",
+    Description = "config.hands.max.throw.help",
     Category = "category.hands",
     Type = Parallax.Types.number,
     Default = 150,

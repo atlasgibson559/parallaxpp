@@ -307,7 +307,7 @@ function GM:HUDPaint()
     shouldDraw = hook.Run("ShouldDrawDebugHUD")
     if ( shouldDraw != false ) then
         local green = Parallax.Config:Get("color.framework")
-        local width = math.max(Parallax.Util:GetTextWidth("Parallax.developer", "Pos: " .. tostring(client:GetPos())), Parallax.Util:GetTextWidth("Parallax.developer", "Ang: " .. tostring(client:EyeAngles())))
+        local width = math.max(Parallax.Util:GetTextWidth("Parallax.Developer", "Pos: " .. tostring(client:GetPos())), Parallax.Util:GetTextWidth("Parallax.Developer", "Ang: " .. tostring(client:EyeAngles())))
         local height = 16 * 6
 
         local character = client:GetCharacter()
@@ -320,15 +320,15 @@ function GM:HUDPaint()
         surface.SetDrawColor(backgroundColor)
         surface.DrawRect(x - padding, y - padding, width + padding * 2, height + padding * 2)
 
-        draw.SimpleText("[DEVELOPER HUD]", "Parallax.developer", x, y, green, TEXT_ALIGN_LEFT)
+        draw.SimpleText("[DEVELOPER HUD]", "Parallax.Developer", x, y, green, TEXT_ALIGN_LEFT)
 
-        draw.SimpleText("Pos: " .. tostring(client:GetPos()), "Parallax.developer", x, y + 16 * 1, green, TEXT_ALIGN_LEFT)
-        draw.SimpleText("Ang: " .. tostring(client:EyeAngles()), "Parallax.developer", x, y + 16 * 2, green, TEXT_ALIGN_LEFT)
-        draw.SimpleText("Health: " .. client:Health(), "Parallax.developer", x, y + 16 * 3, green, TEXT_ALIGN_LEFT)
-        draw.SimpleText("Ping: " .. client:Ping(), "Parallax.developer", x, y + 16 * 4, green, TEXT_ALIGN_LEFT)
+        draw.SimpleText("Pos: " .. tostring(client:GetPos()), "Parallax.Developer", x, y + 16 * 1, green, TEXT_ALIGN_LEFT)
+        draw.SimpleText("Ang: " .. tostring(client:EyeAngles()), "Parallax.Developer", x, y + 16 * 2, green, TEXT_ALIGN_LEFT)
+        draw.SimpleText("Health: " .. client:Health(), "Parallax.Developer", x, y + 16 * 3, green, TEXT_ALIGN_LEFT)
+        draw.SimpleText("Ping: " .. client:Ping(), "Parallax.Developer", x, y + 16 * 4, green, TEXT_ALIGN_LEFT)
 
         local fps = math.floor(1 / ft)
-        draw.SimpleText("FPS: " .. fps, "Parallax.developer", x, y + 16 * 5, green, TEXT_ALIGN_LEFT)
+        draw.SimpleText("FPS: " .. fps, "Parallax.Developer", x, y + 16 * 5, green, TEXT_ALIGN_LEFT)
 
         if ( character ) then
             local name = character:GetName()
@@ -339,11 +339,11 @@ function GM:HUDPaint()
             end
             local inventoryText = "Inventories: " .. table.concat(inventories, ", ")
 
-            draw.SimpleText("[CHARACTER INFO]", "Parallax.developer", x, y + 16 * 7, green, TEXT_ALIGN_LEFT)
-            draw.SimpleText("Character: " .. tostring(character), "Parallax.developer", x, y + 16 * 8, green, TEXT_ALIGN_LEFT)
-            draw.SimpleText("Name: " .. name, "Parallax.developer", x, y + 16 * 9, green, TEXT_ALIGN_LEFT)
-            draw.SimpleText("Model: " .. charModel, "Parallax.developer", x, y + 16 * 10, green, TEXT_ALIGN_LEFT)
-            draw.SimpleText(inventoryText, "Parallax.developer", x, y + 16 * 11, green, TEXT_ALIGN_LEFT)
+            draw.SimpleText("[CHARACTER INFO]", "Parallax.Developer", x, y + 16 * 7, green, TEXT_ALIGN_LEFT)
+            draw.SimpleText("Character: " .. tostring(character), "Parallax.Developer", x, y + 16 * 8, green, TEXT_ALIGN_LEFT)
+            draw.SimpleText("Name: " .. name, "Parallax.Developer", x, y + 16 * 9, green, TEXT_ALIGN_LEFT)
+            draw.SimpleText("Model: " .. charModel, "Parallax.Developer", x, y + 16 * 10, green, TEXT_ALIGN_LEFT)
+            draw.SimpleText(inventoryText, "Parallax.Developer", x, y + 16 * 11, green, TEXT_ALIGN_LEFT)
         end
     end
 
@@ -357,9 +357,9 @@ function GM:HUDPaint()
         surface.SetDrawColor(backgroundColor)
         surface.DrawRect(x - padding, y - padding, 410 + padding * 2, 45 + padding * 2)
 
-        draw.SimpleText("[PREVIEW MODE]", "Parallax.developer", x, y, orange, TEXT_ALIGN_LEFT)
-        draw.SimpleText("Warning! Anything you witness is subject to change.", "Parallax.developer", x, y + 16, red, TEXT_ALIGN_LEFT)
-        draw.SimpleText("This is not the final product.", "Parallax.developer", x, y + 16 * 2, red, TEXT_ALIGN_LEFT)
+        draw.SimpleText("[PREVIEW MODE]", "Parallax.Developer", x, y, orange, TEXT_ALIGN_LEFT)
+        draw.SimpleText("Warning! Anything you witness is subject to change.", "Parallax.Developer", x, y + 16, red, TEXT_ALIGN_LEFT)
+        draw.SimpleText("This is not the final product.", "Parallax.Developer", x, y + 16 * 2, red, TEXT_ALIGN_LEFT)
     end
 
     shouldDraw = hook.Run("ShouldDrawCrosshair")
@@ -408,7 +408,7 @@ function GM:HUDPaint()
         local clip = activeWeapon:Clip1()
         local ammoText = clip .. " / " .. ammo
 
-        draw.SimpleTextOutlined(ammoText, "Parallax.bold", scrW - 16, scrH - 16, Parallax.Color:Get("white"), TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, Parallax.Color:Get("black"))
+        draw.SimpleTextOutlined(ammoText, "Parallax.Bold", scrW - 16, scrH - 16, Parallax.Color:Get("white"), TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, Parallax.Color:Get("black"))
     end
 
     shouldDraw = hook.Run("ShouldDrawHealthBar")
@@ -469,7 +469,7 @@ function GM:PostDrawTranslucentRenderables(bDrawingDepth, bDrawingSkybox)
 
     local text = string.format("Entity: %s\nClass: %s\nModel: %s\nPosition: %s\nAngles: %s",
         tostring(entity), class, model, tostring(pos), tostring(ang))
-    local markedUp = markup.Parse("<font=Parallax.developer>" .. text .. "</font>")
+    local markedUp = markup.Parse("<font=Parallax.Developer>" .. text .. "</font>")
     if ( !markedUp ) then return end
 
     local textWidth, textHeight = markedUp:Size()
@@ -525,35 +525,35 @@ function GM:LoadFonts()
     local scale24 = ScreenScaleH(24)
     local scale32 = ScreenScaleH(32)
 
-    surface.CreateFont("Parallax.tiny", {
+    surface.CreateFont("Parallax.Tiny", {
         font = "GorDIN Regular",
         size = scale6,
         weight = 700,
         antialias = true
     })
 
-    surface.CreateFont("Parallax.tiny.bold", {
+    surface.CreateFont("Parallax.Tiny.bold", {
         font = "GorDIN Bold",
         size = scale6,
         weight = 900,
         antialias = true
     })
 
-    surface.CreateFont("Parallax.small", {
+    surface.CreateFont("Parallax.Small", {
         font = "GorDIN Regular",
         size = scale8,
         weight = 700,
         antialias = true
     })
 
-    surface.CreateFont("Parallax.small.bold", {
+    surface.CreateFont("Parallax.Small.bold", {
         font = "GorDIN Bold",
         size = scale8,
         weight = 900,
         antialias = true
     })
 
-    surface.CreateFont("Parallax.small.italic", {
+    surface.CreateFont("Parallax.Small.italic", {
         font = "GorDIN Regular",
         size = scale8,
         weight = 700,
@@ -561,7 +561,7 @@ function GM:LoadFonts()
         antialias = true
     })
 
-    surface.CreateFont("Parallax.small.italic.bold", {
+    surface.CreateFont("Parallax.Small.italic.bold", {
         font = "GorDIN Bold",
         size = scale8,
         weight = 900,
@@ -576,14 +576,14 @@ function GM:LoadFonts()
         antialias = true
     })
 
-    surface.CreateFont("Parallax.bold", {
+    surface.CreateFont("Parallax.Bold", {
         font = "GorDIN Bold",
         size = scale10,
         weight = 900,
         antialias = true
     })
 
-    surface.CreateFont("Parallax.italic", {
+    surface.CreateFont("Parallax.Italic", {
         font = "GorDIN Regular",
         size = scale10,
         weight = 700,
@@ -591,7 +591,7 @@ function GM:LoadFonts()
         antialias = true
     })
 
-    surface.CreateFont("Parallax.italic.bold", {
+    surface.CreateFont("Parallax.Italic.bold", {
         font = "GorDIN Bold",
         size = scale10,
         weight = 900,
@@ -599,21 +599,21 @@ function GM:LoadFonts()
         antialias = true
     })
 
-    surface.CreateFont("Parallax.large", {
+    surface.CreateFont("Parallax.Large", {
         font = "GorDIN Regular",
         size = scale16,
         weight = 700,
         antialias = true
     })
 
-    surface.CreateFont("Parallax.large.bold", {
+    surface.CreateFont("Parallax.Large.bold", {
         font = "GorDIN Bold",
         size = scale16,
         weight = 900,
         antialias = true
     })
 
-    surface.CreateFont("Parallax.large.italic", {
+    surface.CreateFont("Parallax.Large.italic", {
         font = "GorDIN Regular",
         size = scale16,
         weight = 700,
@@ -621,7 +621,7 @@ function GM:LoadFonts()
         antialias = true
     })
 
-    surface.CreateFont("Parallax.large.italic.bold", {
+    surface.CreateFont("Parallax.Large.italic.bold", {
         font = "GorDIN Bold",
         size = scale16,
         weight = 900,
@@ -629,21 +629,21 @@ function GM:LoadFonts()
         antialias = true
     })
 
-    surface.CreateFont("Parallax.massive", {
+    surface.CreateFont("Parallax.Massive", {
         font = "GorDIN Regular",
         size = scale24,
         weight = 700,
         antialias = true
     })
 
-    surface.CreateFont("Parallax.massive.bold", {
+    surface.CreateFont("Parallax.Massive.bold", {
         font = "GorDIN Bold",
         size = scale24,
         weight = 900,
         antialias = true
     })
 
-    surface.CreateFont("Parallax.massive.italic", {
+    surface.CreateFont("Parallax.Massive.italic", {
         font = "GorDIN Regular",
         size = scale24,
         weight = 700,
@@ -651,7 +651,7 @@ function GM:LoadFonts()
         antialias = true
     })
 
-    surface.CreateFont("Parallax.massive.italic.bold", {
+    surface.CreateFont("Parallax.Massive.italic.bold", {
         font = "GorDIN Bold",
         size = scale24,
         weight = 900,
@@ -659,21 +659,21 @@ function GM:LoadFonts()
         antialias = true
     })
 
-    surface.CreateFont("Parallax.huge", {
+    surface.CreateFont("Parallax.Huge", {
         font = "GorDIN Regular",
         size = scale32,
         weight = 700,
         antialias = true
     })
 
-    surface.CreateFont("Parallax.huge.bold", {
+    surface.CreateFont("Parallax.Huge.bold", {
         font = "GorDIN Bold",
         size = scale32,
         weight = 900,
         antialias = true
     })
 
-    surface.CreateFont("Parallax.huge.italic", {
+    surface.CreateFont("Parallax.Huge.italic", {
         font = "GorDIN",
         size = scale32,
         weight = 700,
@@ -681,7 +681,7 @@ function GM:LoadFonts()
         antialias = true
     })
 
-    surface.CreateFont("Parallax.huge.italic.bold", {
+    surface.CreateFont("Parallax.Huge.italic.bold", {
         font = "GorDIN Bold",
         size = scale32,
         weight = 900,
@@ -689,7 +689,7 @@ function GM:LoadFonts()
         antialias = true
     })
 
-    surface.CreateFont("Parallax.developer", {
+    surface.CreateFont("Parallax.Developer", {
         font = "Courier New",
         size = 16,
         weight = 700,
@@ -868,7 +868,7 @@ function GM:PopulateHelpCategories(categories)
 
             local button = scroller:Add("Parallax.Button.Flat")
             button:Dock(TOP)
-            button:SetFont("Parallax.large.bold")
+            button:SetFont("Parallax.Large.bold")
             button:SetText("")
             button:SetBackgroundAlphaHovered(1)
             button:SetBackgroundAlphaUnHovered(0.5)
@@ -904,17 +904,17 @@ function GM:PopulateHelpCategories(categories)
             local key = button:Add("Parallax.Text")
             key:Dock(LEFT)
             key:DockMargin(ScreenScale(8), 0, 0, 0)
-            key:SetFont("Parallax.large.bold")
+            key:SetFont("Parallax.Large.bold")
             key:SetText(k)
 
             local seperator = button:Add("Parallax.Text")
             seperator:Dock(LEFT)
-            seperator:SetFont("Parallax.large")
+            seperator:SetFont("Parallax.Large")
             seperator:SetText(" - ")
 
             local description = button:Add("Parallax.Text")
             description:Dock(LEFT)
-            description:SetFont("Parallax.large")
+            description:SetFont("Parallax.Large")
             description:SetText(v.description)
 
             local function Think(this)
@@ -952,7 +952,7 @@ function GM:PopulateHelpCategories(categories)
             end
 
             local nameLabel = panel:Add("Parallax.Text")
-            nameLabel:SetFont("Parallax.bold")
+            nameLabel:SetFont("Parallax.Bold")
             nameLabel:SetText(commandName, true)
             nameLabel:Dock(TOP)
             nameLabel:DockMargin(8, 0, 8, 0)
@@ -963,14 +963,14 @@ function GM:PopulateHelpCategories(categories)
             end
 
             local descriptionLabel = panel:Add("Parallax.Text")
-            descriptionLabel:SetFont("Parallax.small")
+            descriptionLabel:SetFont("Parallax.Small")
             descriptionLabel:SetText(description, true)
             descriptionLabel:Dock(TOP)
             descriptionLabel:DockMargin(8, -4, 8, 0)
 
             if ( istable(commandInfo.Arguments) ) then
                 local argumentsLabel = panel:Add("Parallax.Text")
-                argumentsLabel:SetFont("Parallax.small")
+                argumentsLabel:SetFont("Parallax.Small")
                 argumentsLabel:SetText("Useable Arguments:", true)
                 argumentsLabel:Dock(TOP)
                 argumentsLabel:DockMargin(8, -4, 8, 0)
@@ -983,7 +983,7 @@ function GM:PopulateHelpCategories(categories)
                     end
 
                     local argLabel = panel:Add("Parallax.Text")
-                    argLabel:SetFont("Parallax.small")
+                    argLabel:SetFont("Parallax.Small")
                     argLabel:SetText(i .. ": " .. Parallax.Util:FormatType(data.Type) .. " - " .. (data.ErrorMsg or "No error message provided."), true)
                     if ( data.Optional ) then
                         argLabel:SetText(argLabel:GetText() .. " (Optional)", true)

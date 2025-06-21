@@ -57,7 +57,7 @@ function INV:GetMaxWeight()
     local override = hook.Run("GetInventoryMaxWeight", self)
     if ( isnumber(override) ) then return override end
 
-    return self.MaxWeight or Parallax.Config:Get("inventory.mParallax.weight", 20)
+    return self.MaxWeight or Parallax.Config:Get("inventory.max.weight", 20)
 end
 
 --- Gets the current weight of the inventory.

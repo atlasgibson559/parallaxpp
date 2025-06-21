@@ -111,7 +111,7 @@ function PANEL:Populate()
     local title = sideButtons:Add("DLabel")
     title:Dock(TOP)
     title:DockMargin(0, 0, padding, 0)
-    title:SetFont("Parallax.huge.bold")
+    title:SetFont("Parallax.Huge.bold")
     title:SetText("PARALLAX")
     title:SetTextColor(Parallax.Config:Get("color.framework"))
     title:SizeToContents()
@@ -119,7 +119,7 @@ function PANEL:Populate()
     local subtitle = sideButtons:Add("DLabel")
     subtitle:Dock(TOP)
     subtitle:DockMargin(padding / 4, -padding / 8, 0, 0)
-    subtitle:SetFont("Parallax.large.bold")
+    subtitle:SetFont("Parallax.Large.bold")
 
     local schemaName = "UNKNOWN SCHEMA"
     if ( SCHEMA ) then
@@ -128,7 +128,7 @@ function PANEL:Populate()
             schemaName = SCHEMA:GetMenuTitle()
         end
 
-        schemaName = Parallax.utf8:Upper(schemaName)
+        schemaName = Parallax.Utf8:Upper(schemaName)
     else
         Parallax.Util:PrintError("SCHEMA is not defined! Please ensure that your schema is properly set up.")
     end

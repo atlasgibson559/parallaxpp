@@ -48,7 +48,7 @@ function MODULE:CalcView(client, pos, angles, fov)
 
     local view = {}
 
-    if ( Parallax.Option:Get("thirdperson.follParallax.head", false) ) then
+    if ( Parallax.Option:Get("thirdperson.follParallax.Head", false) ) then
         local head
 
         for i = 0, client:GetBoneCount() do
@@ -86,8 +86,8 @@ function MODULE:CalcView(client, pos, angles, fov)
     })
 
     local shootPos = traceData.HitPos
-    local followHitAngles = Parallax.Option:Get("thirdperson.follParallax.hit.angles", true)
-    local followHitFov = Parallax.Option:Get("thirdperson.follParallax.hit.fov", true)
+    local followHitAngles = Parallax.Option:Get("thirdperson.follParallax.Hit.angles", true)
+    local followHitFov = Parallax.Option:Get("thirdperson.follParallax.Hit.fov", true)
 
     local viewBob = angle_zero
     local curTime = CurTime()

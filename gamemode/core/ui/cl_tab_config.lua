@@ -18,7 +18,7 @@ function PANEL:Init()
 
     local title = self:Add("Parallax.Text")
     title:Dock(TOP)
-    title:SetFont("Parallax.huge.bold")
+    title:SetFont("Parallax.Huge.bold")
     title:SetText("CONFIG")
 
     local config = self:Add("Parallax.Config")

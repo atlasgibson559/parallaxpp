@@ -27,7 +27,7 @@ function Parallax.Inventory:Register(data, callback)
     Parallax.Database:Insert("ax_inventories", {
         character_id = data.characterID,
         name = data.name or "Main",
-        max_weight = data.maxWeight or Parallax.Config:Get("inventory.mParallax.weight", 20),
+        max_weight = data.maxWeight or Parallax.Config:Get("inventory.max.weight", 20),
         data = util.TableToJSON(data.data or {})
     }, function(inventoryID)
         if ( !inventoryID ) then

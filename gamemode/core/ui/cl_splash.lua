@@ -34,7 +34,7 @@ function PANEL:Init()
     title:Dock(TOP)
     title:DockMargin(0, ScreenScaleH(32), 0, 0)
     title:SetContentAlignment(5)
-    title:SetFont("Parallax.huge.bold")
+    title:SetFont("Parallax.Huge.bold")
     title:SetText("PARALLAX")
     title:SetTextColor(Parallax.Config:Get("color.framework"))
     title:SizeToContents()
@@ -43,7 +43,7 @@ function PANEL:Init()
     subtitle:Dock(TOP)
     subtitle:DockMargin(0, -ScreenScaleH(4), 0, 0)
     subtitle:SetContentAlignment(5)
-    subtitle:SetFont("Parallax.large.bold")
+    subtitle:SetFont("Parallax.Large.bold")
 
     local schemaName = "UNKNOWN SCHEMA"
     if ( SCHEMA ) then
@@ -52,7 +52,7 @@ function PANEL:Init()
             schemaName = SCHEMA:GetMenuTitle()
         end
 
-        schemaName = Parallax.utf8:Upper(schemaName)
+        schemaName = Parallax.Utf8:Upper(schemaName)
     else
         Parallax.Util:PrintError("SCHEMA is not defined! Please ensure that your schema is properly set up.")
     end

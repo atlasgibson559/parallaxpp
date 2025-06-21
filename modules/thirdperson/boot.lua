@@ -24,29 +24,29 @@ Parallax.Option:Register("thirdperson", {
     Category = "category.thirdperson"
 })
 
-Parallax.Option:Register("thirdperson.follParallax.head", {
-    Name = "options.thirdperson.follParallax.head",
+Parallax.Option:Register("thirdperson.follParallax.Head", {
+    Name = "options.thirdperson.follParallax.Head",
     Type = Parallax.Types.bool,
     Default = false,
-    Description = "options.thirdperson.follParallax.head.help",
+    Description = "options.thirdperson.follParallax.Head.help",
     NoNetworking = true,
     Category = "category.thirdperson"
 })
 
-Parallax.Option:Register("thirdperson.follParallax.hit.angles", {
-    Name = "options.thirdperson.follParallax.hit.angles",
+Parallax.Option:Register("thirdperson.follParallax.Hit.angles", {
+    Name = "options.thirdperson.follParallax.Hit.angles",
     Type = Parallax.Types.bool,
     Default = true,
-    Description = "options.thirdperson.follParallax.hit.angles.help",
+    Description = "options.thirdperson.follParallax.Hit.angles.help",
     NoNetworking = true,
     Category = "category.thirdperson"
 })
 
-Parallax.Option:Register("thirdperson.follParallax.hit.fov", {
-    Name = "options.thirdperson.follParallax.hit.fov",
+Parallax.Option:Register("thirdperson.follParallax.Hit.fov", {
+    Name = "options.thirdperson.follParallax.Hit.fov",
     Type = Parallax.Types.bool,
     Default = true,
-    Description = "options.thirdperson.follParallax.hit.fov.help",
+    Description = "options.thirdperson.follParallax.Hit.fov.help",
     NoNetworking = true,
     Category = "category.thirdperson"
 })
@@ -119,12 +119,12 @@ if (CLIENT) then
         ["option.thirdperson"] = "Third Person",
         ["option.thirdperson.enable"] = "Enable Third Person",
         ["option.thirdperson.enable.help"] = "Enable or disable third person view.",
-        ["options.thirdperson.follParallax.head"] = "Follow Head",
-        ["options.thirdperson.follParallax.head.help"] = "Follow the player's head with the third person camera.",
-        ["options.thirdperson.follParallax.hit.angles"] = "Follow Hit Angles",
-        ["options.thirdperson.follParallax.hit.angles.help"] = "Follow the hit angles with the third person camera.",
-        ["options.thirdperson.follParallax.hit.fov"] = "Follow Hit FOV",
-        ["options.thirdperson.follParallax.hit.fov.help"] = "Follow the hit FOV with the third person camera.",
+        ["options.thirdperson.follParallax.Head"] = "Follow Head",
+        ["options.thirdperson.follParallax.Head.help"] = "Follow the player's head with the third person camera.",
+        ["options.thirdperson.follParallax.Hit.angles"] = "Follow Hit Angles",
+        ["options.thirdperson.follParallax.Hit.angles.help"] = "Follow the hit angles with the third person camera.",
+        ["options.thirdperson.follParallax.Hit.fov"] = "Follow Hit FOV",
+        ["options.thirdperson.follParallax.Hit.fov.help"] = "Follow the hit FOV with the third person camera.",
         ["options.thirdperson.position.x"] = "Position X",
         ["options.thirdperson.position.x.help"] = "Set the X position of the third person camera.",
         ["options.thirdperson.position.y"] = "Position Y",
@@ -143,12 +143,12 @@ if (CLIENT) then
         ["option.thirdperson"] = "Третье лицо",
         ["option.thirdperson.enable"] = "Включение третьего лицо",
         ["option.thirdperson.enable.help"] = "Должно ли третье лицо быть включено?",
-        ["options.thirdperson.follParallax.head"] = "Следовать за головой",
-        ["options.thirdperson.follParallax.head.help"] = "Должен ли вид от третьего лица следовать за головой игрока?",
-        ["options.thirdperson.follParallax.hit.angles"] = "Следовать за углом удара",
-        ["options.thirdperson.follParallax.hit.angles.help"] = "Должен ли вид от третьего лица следовать за углом удара игрока?",
-        ["options.thirdperson.follParallax.hit.fov"] = "Следовать FOV удара",
-        ["options.thirdperson.follParallax.hit.fov.help"] = "Должен ли вид от третьего лица следовать за FOV удара игрока?",
+        ["options.thirdperson.follParallax.Head"] = "Следовать за головой",
+        ["options.thirdperson.follParallax.Head.help"] = "Должен ли вид от третьего лица следовать за головой игрока?",
+        ["options.thirdperson.follParallax.Hit.angles"] = "Следовать за углом удара",
+        ["options.thirdperson.follParallax.Hit.angles.help"] = "Должен ли вид от третьего лица следовать за углом удара игрока?",
+        ["options.thirdperson.follParallax.Hit.fov"] = "Следовать FOV удара",
+        ["options.thirdperson.follParallax.Hit.fov.help"] = "Должен ли вид от третьего лица следовать за FOV удара игрока?",
         ["options.thirdperson.position.x"] = "Позиция по X",
         ["options.thirdperson.position.x.help"] = "Устанавливает позицию по X для вида от третьего лица.",
         ["options.thirdperson.position.y"] = "Позиция по Y",

@@ -436,7 +436,7 @@ if ( SERVER ) then
         end
 
         if ( sequenceTime > 0 ) then
-            timer.Create("Parallax.sequence." .. self:SteamID64(), sequenceTime, 1, function()
+            timer.Create("Parallax.Sequence." .. self:SteamID64(), sequenceTime, 1, function()
                 self:LeaveSequence()
             end)
 

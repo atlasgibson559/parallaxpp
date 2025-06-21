@@ -41,7 +41,7 @@ function PANEL:Init()
     if ( #inventories == 0 ) then
         local label = self.buttons:Add("Parallax.Text")
         label:Dock(FILL)
-        label:SetFont("Parallax.large")
+        label:SetFont("Parallax.Large")
         label:SetText("inventory.empty")
         label:SetContentAlignment(5)
 
@@ -74,7 +74,7 @@ function PANEL:SetInventory(id)
 
     self.container:Clear()
 
-    local total = inventory:GetWeight() / Parallax.Config:Get("inventory.mParallax.weight", 20)
+    local total = inventory:GetWeight() / Parallax.Config:Get("inventory.max.weight", 20)
 
     local progress = self.container:Add("DProgress")
     progress:Dock(TOP)
@@ -88,7 +88,7 @@ function PANEL:SetInventory(id)
         draw.RoundedBox(0, 0, 0, width * fraction, height, Color(100, 200, 175, 200))
     end
 
-    local maxWeight = Parallax.Config:Get("inventory.mParallax.weight", 20)
+    local maxWeight = Parallax.Config:Get("inventory.max.weight", 20)
     local weight = math.Round(maxWeight * progress:GetFraction(), 2)
 
     local label = progress:Add("Parallax.Text")
@@ -101,7 +101,7 @@ function PANEL:SetInventory(id)
     if ( #items == 0 ) then
         label = self.container:Add("Parallax.Text")
         label:Dock(TOP)
-        label:SetFont("Parallax.large")
+        label:SetFont("Parallax.Large")
         label:SetText("inventory.empty")
         label:SetContentAlignment(5)
 
@@ -217,7 +217,7 @@ function PANEL:SetInfo(id)
     local name = self.info:Add("Parallax.Text")
     name:Dock(TOP)
     name:DockMargin(0, 0, 0, -ScreenScaleH(4))
-    name:SetFont("Parallax.large.bold")
+    name:SetFont("Parallax.Large.bold")
     name:SetText(item:GetName(), true)
 
     local description = item:GetDescription()

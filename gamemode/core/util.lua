@@ -620,9 +620,9 @@ function Parallax.Util:QueueSounds(ent, queue, volume, pitch)
     local id = tostring(ent) .. "_" .. CurTime()
     Parallax.Util.activeSoundQueues[id] = data
 
-    timer.Create("Parallax.sound.queue." .. id, 0.1, 0, function()
+    timer.Create("Parallax.Sound.queue." .. id, 0.1, 0, function()
         if ( !IsValid(data.entity) or !data.sounds[data.current] ) then
-            timer.Remove("Parallax.sound.queue." .. id)
+            timer.Remove("Parallax.Sound.queue." .. id)
             Parallax.Util.activeSoundQueues[id] = nil
             return
         end

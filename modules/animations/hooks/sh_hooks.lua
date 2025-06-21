@@ -259,7 +259,7 @@ local vectorAngle = FindMetaTable("Vector").Angle
 local normalizeAngle = math.NormalizeAngle
 function MODULE:CalcMainActivity(client, velocity)
     local clientTable = client:GetTable()
-    local forcedSequence = clientTable["Parallax.sequence.forced"]
+    local forcedSequence = clientTable["Parallax.Sequence.forced"]
 
     if ( forcedSequence ) then
         if ( client:GetSequence() != forcedSequence ) then

@@ -125,7 +125,7 @@ Parallax.Character:RegisterVariable("model", {
     OnPopulate = function(self, parent, payload, client)
         local label = parent:Add("Parallax.Text")
         label:Dock(TOP)
-        label:SetFont("Parallax.large")
+        label:SetFont("Parallax.Large")
 
         local translation = Parallax.Localization:GetPhrase(self.Name)
         local bTranslated = translation != self.Name

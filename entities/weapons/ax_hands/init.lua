@@ -180,7 +180,7 @@ function SWEP:Pickup()
 
             holdingPhysicsObject:AddGameFlag(FVPHYSICS_PLAYER_HELD)
 
-            local maxForce = Parallax.Config:Get("hands.mParallax.force", 16500)
+            local maxForce = Parallax.Config:Get("hands.max.Force", 16500)
             local vSize = self.axHoldingEntity:OBBMaxs() - self.axHoldingEntity:OBBMins()
             if ( self.axHoldingEntity:IsRagdoll() or math.max(vSize.x, vSize.y, vSize.z) > 60 ) then
                 self.axConstraint = constraint.Ballsocket(self.axCarry, self.axHoldingEntity, 0, bone, holdingPhysicsObject:WorldToLocal(pos), maxForce / 3, 0, 1)
