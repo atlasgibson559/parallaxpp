@@ -13,7 +13,7 @@
 -- @module Parallax.Command
 
 Parallax.Command = {}
-Parallax.Command.stored = {}
+Parallax.Command.Stored = {}
 
 --- Registers a new command.
 -- @realm shared
@@ -53,7 +53,7 @@ function Parallax.Command:Register(commandName, info)
     end
 
     info.UniqueID = commandName
-    self.stored[commandName] = info
+    self.Stored[commandName] = info
 
     if ( CAMI != nil ) then
         CAMI.RegisterPrivilege({
@@ -70,7 +70,7 @@ end
 -- @string name The name of the command.
 -- @internal
 function Parallax.Command:UnRegister(name)
-    self.stored[name] = nil
+    self.Stored[name] = nil
     hook.Run("OnCommandUnRegistered", name)
 end
 
@@ -84,11 +84,11 @@ function Parallax.Command:Get(identifier)
         return false
     end
 
-    if ( self.stored[identifier] ) then
-        return self.stored[identifier]
+    if ( self.Stored[identifier] ) then
+        return self.Stored[identifier]
     end
 
-    for k, v in pairs(self.stored) do
+    for k, v in pairs(self.Stored) do
         if ( string.lower(k) == string.lower(identifier) ) then
             return v
         end
@@ -110,7 +110,7 @@ end
 -- @realm shared
 -- @return table A table containing all registered commands.
 function Parallax.Command:GetAll()
-    return self.stored
+    return self.Stored
 end
 
 if ( CLIENT ) then

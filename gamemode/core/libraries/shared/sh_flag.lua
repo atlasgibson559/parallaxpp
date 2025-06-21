@@ -10,7 +10,7 @@
 ]]
 
 Parallax.Flag = Parallax.Flag or {}
-Parallax.Flag.stored = {}
+Parallax.Flag.Stored = {}
 
 function Parallax.Flag:Register(flag, description, callback)
     if ( !isstring(flag) or #flag != 1 ) then
@@ -18,7 +18,7 @@ function Parallax.Flag:Register(flag, description, callback)
         return false
     end
 
-    self.stored[flag] = {
+    self.Stored[flag] = {
         description = description or "No description provided",
         callback = callback or nil
     }
@@ -27,9 +27,9 @@ function Parallax.Flag:Register(flag, description, callback)
 end
 
 function Parallax.Flag:Get(flag)
-    return self.stored[flag]
+    return self.Stored[flag]
 end
 
 function Parallax.Flag:GetAll()
-    return self.stored
+    return self.Stored
 end

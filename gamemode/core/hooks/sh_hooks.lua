@@ -62,7 +62,7 @@ function GM:GetPlayerDeathSound(client)
 end
 
 function GM:PreOptionChanged(client, key, value)
-    local stored = Parallax.Option.stored[key]
+    local stored = Parallax.Option.Stored[key]
     if ( !istable(stored) ) then
         Parallax.Util:PrintError("Attempted to set unknown option \"" .. key .. "\"!")
         return false

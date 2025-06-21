@@ -86,7 +86,7 @@ end)
 Parallax.Net:Hook("config.reset", function(client, key)
     if ( !CAMI.PlayerHasAccess(client, "Parallax - Manage Config", nil) ) then return end
 
-    local stored = Parallax.Config.stored[key]
+    local stored = Parallax.Config.Stored[key]
     if ( !istable(stored) ) then return end
 
     local bResult = hook.Run("PrePlayerConfigReset", client, key)
@@ -100,7 +100,7 @@ end)
 Parallax.Net:Hook("config.set", function(client, key, value)
     if ( !CAMI.PlayerHasAccess(client, "Parallax - Manage Config", nil) ) then return end
 
-    local stored = Parallax.Config.stored[key]
+    local stored = Parallax.Config.Stored[key]
     if ( !istable(stored) ) then return end
 
     if ( value == nil ) then return end
@@ -131,8 +131,8 @@ end)
 Parallax.Net:Hook("option.sync", function(client, data)
     if ( !IsValid(client) or !istable(data) ) then return end
 
-    for k, v in pairs(Parallax.Option.stored) do
-        local stored = Parallax.Option.stored[k]
+    for k, v in pairs(Parallax.Option.Stored) do
+        local stored = Parallax.Option.Stored[k]
         if ( !istable(stored) ) then
             Parallax.Util:PrintError("Option \"" .. k .. "\" does not exist!")
             continue
@@ -189,7 +189,7 @@ Parallax.Net:Hook("item.perform", function(client, itemID, actionName)
 end)
 
 Parallax.Net:Hook("item.spawn", function(client, uniqueID)
-    if ( !isstring(uniqueID) or !istable(Parallax.Item.stored[uniqueID]) ) then return end
+    if ( !isstring(uniqueID) or !istable(Parallax.Item.Stored[uniqueID]) ) then return end
 
     local pos = client:GetEyeTrace().HitPos + vector_up
 

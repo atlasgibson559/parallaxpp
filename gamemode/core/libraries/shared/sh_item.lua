@@ -15,7 +15,7 @@
 Parallax.Item = Parallax.Item or {}
 Parallax.Item.base = Parallax.Item.base or {}
 Parallax.Item.Meta = Parallax.Item.Meta or {}
-Parallax.Item.stored = Parallax.Item.stored or {}
+Parallax.Item.Stored = Parallax.Item.Stored or {}
 Parallax.Item.instances = Parallax.Item.instances or {}
 
 function Parallax.Item:Load(path)
@@ -73,7 +73,7 @@ function Parallax.Item:Load(path)
 
         Parallax.Util:LoadFile(filePath, "shared")
 
-        self.stored[ITEM.UniqueID] = ITEM
+        self.Stored[ITEM.UniqueID] = ITEM
 
         if ( isfunction(ITEM.OnRegistered) ) then
             ITEM:OnRegistered()
@@ -116,7 +116,7 @@ end
 
 function Parallax.Item:Get(identifier)
     if ( isstring(identifier) ) then
-        return self.stored[identifier]
+        return self.Stored[identifier]
     elseif ( isnumber(identifier) ) then
         return self.instances[identifier]
     end
@@ -125,7 +125,7 @@ function Parallax.Item:Get(identifier)
 end
 
 function Parallax.Item:GetAll()
-    return self.stored
+    return self.Stored
 end
 
 function Parallax.Item:GetInstances()
@@ -141,7 +141,7 @@ function Parallax.Item:CreateObject(data)
     local inventoryID = tonumber(data.InventoryID or data.inventory_id or 0)
     local itemData = Parallax.Util:SafeParseTable(data.Data or data.data)
 
-    local base = self.stored[uniqueID]
+    local base = self.Stored[uniqueID]
     if ( !base ) then return end
 
     local item = setmetatable({}, self.Meta)
@@ -162,7 +162,7 @@ end
 -- client-side addition
 if ( CLIENT ) then
     function Parallax.Item:Add(itemID, inventoryID, uniqueID, data, callback)
-        if ( !itemID or !uniqueID or !self.stored[uniqueID] ) then return end
+        if ( !itemID or !uniqueID or !self.Stored[uniqueID] ) then return end
 
         data = data or {}
 

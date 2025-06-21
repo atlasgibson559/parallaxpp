@@ -13,7 +13,7 @@
 -- @module Parallax.Config
 
 Parallax.Config = Parallax.Config or {}
-Parallax.Config.stored = Parallax.Config.stored or {}
+Parallax.Config.Stored = Parallax.Config.Stored or {}
 Parallax.Config.instances = Parallax.Config.instances or {}
 
 --- Loads the configuration from the file.
@@ -25,7 +25,7 @@ function Parallax.Config:Load()
     local config = Parallax.Data:Get("config", {}, false, false)
 
     for k, v in pairs(config) do
-        local storedData = self.stored[k]
+        local storedData = self.Stored[k]
         if ( !istable(storedData) ) then continue end
 
         self.instances[k] = {}
@@ -44,7 +44,7 @@ end
 function Parallax.Config:GetSaveData()
     local saveData = {}
     for k, v in pairs(self.instances) do
-        local storedData = self.stored[k]
+        local storedData = self.Stored[k]
         if ( !istable(storedData) ) then continue end
         if ( storedData.NoSave ) then continue end
 
@@ -57,7 +57,7 @@ end
 function Parallax.Config:GetNetworkData()
     local saveData = self:GetSaveData()
     for k, v in pairs(saveData) do
-        local storedData = self.stored[k]
+        local storedData = self.Stored[k]
         if ( !istable(storedData) ) then continue end
 
         if ( storedData.NoNetworking ) then
@@ -92,7 +92,7 @@ end
 -- @return boolean Returns true if the config was reset successfully, false otherwise
 -- @usage Parallax.Config:Reset(key) -- Resets the config to the default value.
 function Parallax.Config:Reset(key)
-    local configData = self.stored[key]
+    local configData = self.Stored[key]
     if ( !istable(configData) ) then
         Parallax.Util:PrintError("Config \"" .. key .. "\" does not exist!")
         return false
@@ -110,7 +110,7 @@ end
 function Parallax.Config:ResetAll()
     hook.Run("PreConfigReset")
 
-    for k, v in pairs(self.stored) do
+    for k, v in pairs(self.Stored) do
         self:Reset(k)
     end
 

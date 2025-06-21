@@ -860,7 +860,7 @@ function GM:PopulateHelpCategories(categories)
         scroller:GetVBar():SetWide(0)
         scroller.Paint = nil
 
-        for k, v in SortedPairs(Parallax.Flag.stored) do
+        for k, v in SortedPairs(Parallax.Flag.Stored) do
             local char = Parallax.Client:GetCharacter()
             if ( !char ) then return end
 
@@ -1114,7 +1114,7 @@ end
 
 function GM:PostOptionsLoad(instancesTable)
     for optionName, value in pairs(instancesTable) do
-        local optionData = Parallax.Option.stored[optionName]
+        local optionData = Parallax.Option.Stored[optionName]
         if ( !istable(optionData) ) then continue end
 
         if ( optionData.Type == Parallax.Types.number and optionData.IsKeybind ) then

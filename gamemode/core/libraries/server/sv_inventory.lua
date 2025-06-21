@@ -43,7 +43,7 @@ function Parallax.Inventory:Register(data, callback)
             return false
         end
 
-        self.stored[inventoryID] = inventory
+        self.Stored[inventoryID] = inventory
         self:AssignToCharacter(data.characterID, inventoryID)
         self:Broadcast(inventory)
 
@@ -146,7 +146,7 @@ function Parallax.Inventory:Cache(client, inventoryID, callback)
             return
         end
 
-        self.stored[inventoryID] = inventory
+        self.Stored[inventoryID] = inventory
 
         self:AssignToCharacter(inventory:GetOwner(), inventoryID, function(invID)
             if ( !invID ) then

@@ -33,10 +33,10 @@ HOLDTYPE_TRANSLATOR["magic"] = "normal"
 HOLDTYPE_TRANSLATOR["revolver"] = "pistol"
 
 Parallax.Animations = Parallax.Animations or {}
-Parallax.Animations.stored = Parallax.Animations.stored or {}
+Parallax.Animations.Stored = Parallax.Animations.Stored or {}
 Parallax.Animations.translations = Parallax.Animations.translations or {}
 
-Parallax.Animations.stored["citizen_male"] = {
+Parallax.Animations.Stored["citizen_male"] = {
     normal = {
         [ACT_MP_STAND_IDLE] = {ACT_IDLE, ACT_IDLE_ANGRY_SMG1},
         [ACT_MP_WALK] = {ACT_WALK, ACT_WALK_AIM_RIFLE_STIMULATED},
@@ -96,7 +96,7 @@ Parallax.Animations.stored["citizen_male"] = {
     }
 }
 
-Parallax.Animations.stored["citizen_female"] = {
+Parallax.Animations.Stored["citizen_female"] = {
     normal = {
         [ACT_MP_STAND_IDLE] = {ACT_IDLE, ACT_IDLE_ANGRY_SMG1},
         [ACT_MP_WALK] = {ACT_WALK, ACT_WALK_AIM_RIFLE_STIMULATED},
@@ -156,7 +156,7 @@ Parallax.Animations.stored["citizen_female"] = {
     }
 }
 
-Parallax.Animations.stored["overwatch"] = {
+Parallax.Animations.Stored["overwatch"] = {
     normal = {
         [ACT_MP_STAND_IDLE] = {"idle_unarmed", ACT_IDLE_ANGRY},
         [ACT_MP_WALK] = {"walkunarmed_all", ACT_WALK_RIFLE},
@@ -216,7 +216,7 @@ Parallax.Animations.stored["overwatch"] = {
     }
 }
 
-Parallax.Animations.stored["metrocop"] = {
+Parallax.Animations.Stored["metrocop"] = {
     normal = {
         [ACT_MP_STAND_IDLE] = {ACT_IDLE, ACT_IDLE_ANGRY_SMG1},
         [ACT_MP_WALK] = {ACT_WALK, ACT_WALK_ANGRY},
@@ -277,7 +277,7 @@ Parallax.Animations.stored["metrocop"] = {
     }
 }
 
-Parallax.Animations.stored["vortigaunt"] = {
+Parallax.Animations.Stored["vortigaunt"] = {
     normal = {
         [ACT_MP_STAND_IDLE] = {ACT_IDLE, ACT_IDLE_ANGRY},
         [ACT_MP_WALK] = {ACT_WALK, ACT_WALK_AIM},
@@ -334,7 +334,7 @@ function Parallax.Animations:SetModelClass(model, class)
 
     class = string.lower(class)
 
-    if ( !self.stored[class] ) then
+    if ( !self.Stored[class] ) then
         Parallax.Util:PrintError("Animation class '" .. class .. "' does not exist!")
         return false
     end

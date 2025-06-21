@@ -13,14 +13,12 @@
 -- @module Parallax.Class
 
 Parallax.Class = Parallax.Class or {}
-Parallax.Class.stored = {}
+Parallax.Class.Stored = {}
 Parallax.Class.instances = {}
 Parallax.Class.Meta = Parallax.Class.Meta or {}
 
 function Parallax.Class:Instance()
-    local newInstance = setmetatable({}, self.Meta)
-
-    return newInstance
+    return setmetatable({}, self.Meta)
 end
 
 function Parallax.Class:Get(identifier)
@@ -33,8 +31,8 @@ function Parallax.Class:Get(identifier)
         return self.instances[identifier]
     end
 
-    if ( self.stored[identifier] ) then
-        return self.stored[identifier]
+    if ( self.Stored[identifier] ) then
+        return self.Stored[identifier]
     end
 
     for i = 1, #self.instances do

@@ -13,7 +13,7 @@
 -- @module Parallax.Module
 
 Parallax.Module = {}
-Parallax.Module.stored = {}
+Parallax.Module.Stored = {}
 Parallax.Module.disabled = {}
 
 --- Returns a module by its unique identifier or name.
@@ -26,11 +26,11 @@ function Parallax.Module:Get(identifier)
         return false
     end
 
-    if ( self.stored[identifier] ) then
-        return self.stored[identifier]
+    if ( self.Stored[identifier] ) then
+        return self.Stored[identifier]
     end
 
-    for k, v in pairs(self.stored) do
+    for k, v in pairs(self.Stored) do
         if ( Parallax.Util:FindString(v.Name, identifier) ) then
             return v
         end
@@ -73,7 +73,7 @@ function Parallax.Module:LoadFolder(path)
                 Parallax.Item:LoadFolder(path .. "/" .. v .. "/items")
                 Parallax.Util:LoadFolder(path .. "/" .. v .. "/config", true)
                 Parallax.Util:LoadEntities(path .. "/" .. v .. "/entities")
-                self.stored[v] = MODULE
+                self.Stored[v] = MODULE
                 hook.Run("PostInitializeModule", MODULE)
             MODULE = nil
         else
@@ -99,7 +99,7 @@ function Parallax.Module:LoadFolder(path)
         MODULE = { UniqueID = ModuleUniqueID }
             hook.Run("PreInitializeModule", MODULE)
             Parallax.Util:LoadFile(path .. "/" .. v, realm)
-            self.stored[ModuleUniqueID] = MODULE
+            self.Stored[ModuleUniqueID] = MODULE
             hook.Run("PostInitializeModule", MODULE)
         MODULE = nil
     end

@@ -31,8 +31,8 @@ Parallax.Net:Hook("character.cache.all", function(data)
         local character = Parallax.Character:CreateObject(v.ID, v, client)
         local characterID = character:GetID()
 
-        Parallax.Character.stored = Parallax.Character.stored or {}
-        Parallax.Character.stored[characterID] = character
+        Parallax.Character.Stored = Parallax.Character.Stored or {}
+        Parallax.Character.Stored[characterID] = character
 
         clientTable.axCharacters = clientTable.axCharacters or {}
         clientTable.axCharacters[characterID] = character
@@ -56,8 +56,8 @@ Parallax.Net:Hook("character.cache", function(data)
     local character = Parallax.Character:CreateObject(data.ID, data, client)
     local characterID = character:GetID()
 
-    Parallax.Character.stored = Parallax.Character.stored or {}
-    Parallax.Character.stored[characterID] = character
+    Parallax.Character.Stored = Parallax.Character.Stored or {}
+    Parallax.Character.Stored[characterID] = character
 
     clientTable.axCharacters = clientTable.axCharacters or {}
     clientTable.axCharacters[characterID] = character
@@ -79,10 +79,10 @@ end)
 Parallax.Net:Hook("character.delete", function(characterID)
     if ( !isnumber(characterID) ) then return end
 
-    local character = Parallax.Character.stored[characterID]
+    local character = Parallax.Character.Stored[characterID]
     if ( !character ) then return end
 
-    Parallax.Character.stored[characterID] = nil
+    Parallax.Character.Stored[characterID] = nil
 
     local client = Parallax.Client
     local clientTable = client:GetTable()
@@ -114,7 +114,7 @@ Parallax.Net:Hook("character.load", function(characterID)
 
     local client = Parallax.Client
 
-    local character, reason = Parallax.Character:CreateObject(characterID, Parallax.Character.stored[characterID], client)
+    local character, reason = Parallax.Character:CreateObject(characterID, Parallax.Character.Stored[characterID], client)
     if ( !character ) then
         Parallax.Util:PrintError("Failed to load character ", characterID, ", ", reason, "!")
         return
@@ -123,8 +123,8 @@ Parallax.Net:Hook("character.load", function(characterID)
     local currentCharacter = client:GetCharacter()
     local clientTable = client:GetTable()
 
-    Parallax.Character.stored = Parallax.Character.stored or {}
-    Parallax.Character.stored[characterID] = character
+    Parallax.Character.Stored = Parallax.Character.Stored or {}
+    Parallax.Character.Stored[characterID] = character
 
     clientTable.axCharacters = clientTable.axCharacters or {}
     clientTable.axCharacters[characterID] = character
@@ -186,7 +186,7 @@ end)
 -----------------------------------------------------------------------------]]--
 
 Parallax.Net:Hook("option.set", function(key, value)
-    local stored = Parallax.Option.stored[key]
+    local stored = Parallax.Option.Stored[key]
     if ( !istable(stored) ) then return end
 
     Parallax.Option:Set(key, value, true)
@@ -201,9 +201,9 @@ Parallax.Net:Hook("inventory.cache", function(data)
 
     local inventory = Parallax.Inventory:CreateObject(data)
     if ( inventory ) then
-        Parallax.Inventory.stored[inventory:GetID()] = inventory
+        Parallax.Inventory.Stored[inventory:GetID()] = inventory
 
-        local character = Parallax.Character.stored[inventory.CharacterID]
+        local character = Parallax.Character.Stored[inventory.CharacterID]
         if ( character ) then
             local inventories = character:GetInventories()
 
@@ -280,7 +280,7 @@ Parallax.Net:Hook("inventory.register", function(data)
 
     local inventory = Parallax.Inventory:CreateObject(data)
     if ( inventory ) then
-        Parallax.Inventory.stored[inventory.ID] = inventory
+        Parallax.Inventory.Stored[inventory.ID] = inventory
     end
 end)
 

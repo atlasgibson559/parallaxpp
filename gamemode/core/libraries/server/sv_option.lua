@@ -13,11 +13,11 @@
 -- @module Parallax.Option
 
 Parallax.Option = Parallax.Option or {}
-Parallax.Option.stored = Parallax.Option.stored or {}
+Parallax.Option.Stored = Parallax.Option.Stored or {}
 Parallax.Option.clients = Parallax.Option.clients or {}
 
 function Parallax.Option:Set(client, key, value, bNoNetworking)
-    local stored = self.stored[key]
+    local stored = self.Stored[key]
     if ( !istable(stored) ) then
         Parallax.Util:PrintError("Option \"" .. key .. "\" does not exist!")
         return false
@@ -51,7 +51,7 @@ end
 function Parallax.Option:Get(client, key, fallback)
     if ( !IsValid(client) ) then return default end
 
-    local stored = Parallax.Option.stored[key]
+    local stored = Parallax.Option.Stored[key]
     if ( !istable(stored) ) then
         Parallax.Util:PrintError("Option \"" .. key .. "\" does not exist!")
         return default

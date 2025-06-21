@@ -13,7 +13,7 @@
 -- @module Parallax.Color
 
 Parallax.Color = {}
-Parallax.Color.stored = {}
+Parallax.Color.Stored = {}
 
 --- Registers a new color.
 -- @realm shared
@@ -32,7 +32,7 @@ function Parallax.Color:Register(name, color)
     local bResult = hook.Run("PreColorRegistered", name, color)
     if ( bResult == false ) then return false end
 
-    self.stored[name] = color
+    self.Stored[name] = color
     hook.Run("OnColorRegistered", name, color)
 end
 
@@ -41,7 +41,7 @@ end
 -- @param name The name of the color.
 -- @return The color.
 function Parallax.Color:Get(name)
-    local storedColor = self.stored[name]
+    local storedColor = self.Stored[name]
     if ( Parallax.Util:CoerceType(Parallax.Types.color, storedColor) ) then
         return Color(storedColor.r, storedColor.g, storedColor.b, storedColor.a or 255)
     end
@@ -132,7 +132,7 @@ end
 
 if ( CLIENT ) then
     concommand.Add("ax_list_colors", function(client, cmd, arguments)
-        for k, v in pairs(Parallax.Color.stored) do
+        for k, v in pairs(Parallax.Color.Stored) do
             Parallax.Util:Print("Color: " .. k .. " >> ", Parallax.Color:Get("cyan"), v, " Sample")
         end
     end)

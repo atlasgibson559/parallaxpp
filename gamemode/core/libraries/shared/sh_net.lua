@@ -14,7 +14,7 @@
 -- @realm shared
 
 Parallax.Net = Parallax.Net or {}
-Parallax.Net.stored = Parallax.Net.stored or {}
+Parallax.Net.Stored = Parallax.Net.Stored or {}
 Parallax.Net.cooldown = Parallax.Net.cooldown or {}
 
 if ( SERVER ) then
@@ -25,7 +25,7 @@ end
 -- @string name Unique identifier.
 -- @func callback Callback with player, unpacked arguments.
 function Parallax.Net:Hook(name, callback, bNoDelay)
-    self.stored[name] = {callback, bNoDelay or false}
+    self.Stored[name] = {callback, bNoDelay or false}
 end
 
 --- Starts a stream.
@@ -94,7 +94,7 @@ net.Receive("Parallax.Net.msg", function(len, client)
         return
     end
 
-    local stored = Parallax.Net.stored[name]
+    local stored = Parallax.Net.Stored[name]
     if ( !istable(stored) or #stored < 1 ) then
         Parallax.Util:PrintError("[Networking] No handler for '" .. name .. "'")
         return

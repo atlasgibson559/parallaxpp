@@ -13,7 +13,7 @@
 -- @module Parallax.Config
 
 Parallax.Config = Parallax.Config or {}
-Parallax.Config.stored = Parallax.Config.stored or {}
+Parallax.Config.Stored = Parallax.Config.Stored or {}
 Parallax.Config.instances = Parallax.Config.instances or {}
 
 --- Gets the current value of the specified configuration.
@@ -24,7 +24,7 @@ Parallax.Config.instances = Parallax.Config.instances or {}
 -- @usage local color = Parallax.Config.Get("color.schema", Color(0, 100, 150))
 -- print(color) -- Prints the color of the schema.
 function Parallax.Config:Get(key, fallback)
-    local configData = self.stored[key]
+    local configData = self.Stored[key]
     if ( !istable(configData) ) then
         Parallax.Util:PrintError("Config \"" .. tostring(key) .. "\" does not exist!")
         return fallback
@@ -51,7 +51,7 @@ end
 -- @usage local defaultColor = Parallax.Config.GetDefault("color.schema")
 -- print(defaultColor) -- Prints the default color of the schema.
 function Parallax.Config:GetDefault(key)
-    local configData = self.stored[key]
+    local configData = self.Stored[key]
     if ( !istable(configData) ) then
         Parallax.Util:PrintError("Config \"" .. tostring(key) .. "\" does not exist!")
         return nil
@@ -70,7 +70,7 @@ end
 -- @treturn boolean Whether the configuration was successfully set.
 -- @usage Parallax.Config.Set("color.schema", Color(0, 100, 150)) -- Sets the color of the schema.
 function Parallax.Config:Set(key, value)
-    local stored = self.stored[key]
+    local stored = self.Stored[key]
     if ( !istable(stored) ) then
         Parallax.Util:PrintError("Config \"" .. tostring(key) .. "\" does not exist!")
         return false
@@ -117,7 +117,7 @@ end
 -- @treturn boolean Whether the default value of the configuration was successfully set.
 -- @usage Parallax.Config.SetDefault("color.schema", Color(0, 100, 150)) -- Sets the default color of the schema.
 function Parallax.Config:SetDefault(key, value)
-    local stored = self.stored[key]
+    local stored = self.Stored[key]
     if ( !istable(stored) ) then
         Parallax.Util:PrintError("Config \"" .. tostring(key) .. "\" does not exist!")
         return false
@@ -188,7 +188,7 @@ function Parallax.Config:Register(key, data)
 
     data.UniqueID = key
 
-    self.stored[key] = data
+    self.Stored[key] = data
     hook.Run("PostConfigRegistered", key, data)
 
     return true

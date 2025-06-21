@@ -14,7 +14,7 @@
 
 Parallax.Inventory = Parallax.Inventory or {}
 Parallax.Inventory.Meta = Parallax.Inventory.Meta or {}
-Parallax.Inventory.stored = Parallax.Inventory.stored or {}
+Parallax.Inventory.Stored = Parallax.Inventory.Stored or {}
 
 -- Create an inventory object
 function Parallax.Inventory:CreateObject(data)
@@ -33,23 +33,23 @@ function Parallax.Inventory:CreateObject(data)
     inventory.Data = Parallax.Util:SafeParseTable(data.Data or data.data)
     inventory.Receivers = Parallax.Util:SafeParseTable(data.Receivers or data.receivers)
 
-    self.stored[inventory.ID] = inventory
+    self.Stored[inventory.ID] = inventory
 
     return inventory
 end
 
 function Parallax.Inventory:Get(id)
-    return tonumber(id) and self.stored[id] or nil
+    return tonumber(id) and self.Stored[id] or nil
 end
 
 function Parallax.Inventory:GetAll()
-    return self.stored
+    return self.Stored
 end
 
 function Parallax.Inventory:GetByCharacterID(characterID)
     local inventories = {}
 
-    for _, inv in pairs(self.stored) do
+    for _, inv in pairs(self.Stored) do
         if ( inv:GetOwner() == characterID ) then
             table.insert(inventories, inv)
         end

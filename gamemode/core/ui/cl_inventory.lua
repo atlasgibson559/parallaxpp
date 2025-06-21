@@ -145,7 +145,7 @@ function PANEL:SetInventory(id)
         local item = Parallax.Item:Get(itemID)
         if ( item ) then
             local uid = item:GetUniqueID()
-            local def = Parallax.Item.stored[uid] or {}
+            local def = Parallax.Item.Stored[uid] or {}
             local stackable = ( !def.NoStack )
             local dataKey = stackable and util.TableToJSON(item:GetData() or {}) or tostring(itemID)
             local key = util.CRC(uid .. dataKey)

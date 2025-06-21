@@ -55,7 +55,7 @@ function Parallax.Character:Create(client, query, callback)
         clientTable.axCharacters = clientTable.axCharacters or {}
         clientTable.axCharacters[characterID] = character
 
-        self.stored[characterID] = character
+        self.Stored[characterID] = character
 
         Parallax.Net:Start(client, "character.cache", character)
         Parallax.Inventory:Register({characterID = characterID})
@@ -98,7 +98,7 @@ function Parallax.Character:Load(client, characterID)
                 return
             end
 
-            self.stored[characterID] = character
+            self.Stored[characterID] = character
 
             hook.Run("PrePlayerLoadedCharacter", client, character, currentCharacter)
 
@@ -134,7 +134,7 @@ function Parallax.Character:Delete(characterID, callback)
         return false
     end
 
-    local character = self.stored[characterID]
+    local character = self.Stored[characterID]
     if ( !character ) then
         Parallax.Util:PrintError("Attempted to delete character that does not exist (" .. characterID .. ")")
         return false
@@ -158,7 +158,7 @@ function Parallax.Character:Delete(characterID, callback)
         Parallax.Net:Start(client, "character.delete", characterID)
     end
 
-    self.stored[characterID] = nil
+    self.Stored[characterID] = nil
 
     -- Delete all related inventories and items for this character
     Parallax.Database:Delete("ax_inventories", string.format("character_id = %s", sql.SQLStr(characterID)))
@@ -204,7 +204,7 @@ function Parallax.Character:Cache(client, characterID, callback)
         local clientTable = client:GetTable()
         clientTable.axCharacters = clientTable.axCharacters or {}
         clientTable.axCharacters[characterID] = result[1]
-        self.stored[characterID] = result[1]
+        self.Stored[characterID] = result[1]
 
         Parallax.Net:Start(client, "character.cache", result[1])
 
@@ -252,7 +252,7 @@ function Parallax.Character:CacheAll(client, callback)
                     continue
                 end
 
-                self.stored[id] = character
+                self.Stored[id] = character
                 clientTable.axCharacters[id] = character
             end
 

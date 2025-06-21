@@ -13,13 +13,13 @@
 -- @module Parallax.Hooks
 
 Parallax.Hooks = {}
-Parallax.Hooks.stored = {}
+Parallax.Hooks.Stored = {}
 
 --- Registers a new hook type.
 -- @realm shared
 -- @string name The name of the hook type.
 function Parallax.Hooks:Register(name)
-    self.stored[name] = true
+    self.Stored[name] = true
     hook.Run("OnHookRegistered", name)
 end
 
@@ -28,14 +28,14 @@ end
 -- @string name The name of the hook type.
 -- @internal
 function Parallax.Hooks:UnRegister(name)
-    self.stored[name] = nil
+    self.Stored[name] = nil
     hook.Run("OnHookUnRegistered", name)
 end
 
 hook.axCall = hook.axCall or hook.Call
 
 function hook.Call(name, gm, ...)
-    for k, v in pairs(Parallax.Hooks.stored) do
+    for k, v in pairs(Parallax.Hooks.Stored) do
         local tab = _G[k]
         if ( !tab ) then continue end
 
@@ -49,7 +49,7 @@ function hook.Call(name, gm, ...)
         end
     end
 
-    for k, v in pairs(Parallax.Module.stored) do
+    for k, v in pairs(Parallax.Module.Stored) do
         for k2, v2 in pairs(v) do
             if ( isfunction(v2) and k2 == name ) then
                 local a, b, c, d, e, f = v2(v, ...)

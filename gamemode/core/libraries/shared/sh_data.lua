@@ -10,7 +10,7 @@
 ]]
 
 Parallax.Data = Parallax.Data or {}
-Parallax.Data.stored = Parallax.Data.stored or {}
+Parallax.Data.Stored = Parallax.Data.Stored or {}
 
 file.CreateDir("parallax")
 
@@ -27,13 +27,13 @@ function Parallax.Data:Set(key, value, bGlobal, bMap)
     file.CreateDir(path)
     file.Write(path .. key .. ".json", util.TableToJSON({value}))
 
-    self.stored[key] = value
+    self.Stored[key] = value
 
     return path
 end
 
 function Parallax.Data:Get(key, fallback, bGlobal, bMap, bRefresh)
-    local stored = self.stored[key]
+    local stored = self.Stored[key]
     if ( !bRefresh and stored != nil ) then
         return stored
     end
@@ -51,7 +51,7 @@ function Parallax.Data:Get(key, fallback, bGlobal, bMap, bRefresh)
     if ( data != nil ) then
         data = util.JSONToTable(data)
 
-        self.stored[key] = data[1]
+        self.Stored[key] = data[1]
         return data[1]
     end
 

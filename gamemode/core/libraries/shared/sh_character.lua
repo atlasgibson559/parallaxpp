@@ -16,7 +16,7 @@ Parallax.Character = Parallax.Character or {} -- Character library.
 Parallax.Character.Meta = Parallax.Character.Meta or {} -- All currently registered character meta functions.
 Parallax.Character.variables = Parallax.Character.variables or {} -- All currently registered variables.
 Parallax.Character.fields = Parallax.Character.fields or {} -- All currently registered fields.
-Parallax.Character.stored = Parallax.Character.stored or {} -- All currently stored characters which are in use.
+Parallax.Character.Stored = Parallax.Character.Stored or {} -- All currently stored characters which are in use.
 
 --- Registers a variable for the character.
 -- @realm shared
@@ -75,7 +75,7 @@ function Parallax.Character:SetVariable(id, key, value)
         return false, "Attempted to set a variable that does not exist!"
     end
 
-    local character = self.stored[id]
+    local character = self.Stored[id]
     if ( !character ) then
         Parallax.Util:PrintError("Attempted to set a variable for a character that does not exist!")
         return false, "Attempted to set a variable for a character that does not exist!"
@@ -105,7 +105,7 @@ function Parallax.Character:SetVariable(id, key, value)
 end
 
 function Parallax.Character:GetVariable(id, key)
-    local character = self.stored[id]
+    local character = self.Stored[id]
     if ( !character ) then
         Parallax.Util:PrintError("Attempted to get a variable for a character that does not exist!")
         return false, "Attempted to get a variable for a character that does not exist!"
@@ -128,9 +128,9 @@ function Parallax.Character:CreateObject(characterID, data, client)
         return false, "Invalid data provided"
     end
 
-    if ( self.stored[characterID] ) then
+    if ( self.Stored[characterID] ) then
         Parallax.Util:PrintWarning("Attempted to create a character object that already exists!")
-        return self.stored[characterID], "Character already exists"
+        return self.Stored[characterID], "Character already exists"
     end
 
     characterID = tonumber(characterID)
@@ -157,7 +157,7 @@ function Parallax.Character:CreateObject(characterID, data, client)
         end
     end
 
-    self.stored[characterID] = character
+    self.Stored[characterID] = character
 
     return character
 end
@@ -173,11 +173,11 @@ function Parallax.Character:GetPlayerByCharacter(id)
 end
 
 function Parallax.Character:Get(id)
-    return self.stored[id]
+    return self.Stored[id]
 end
 
 function Parallax.Character:GetAll()
-    return self.stored
+    return self.Stored
 end
 
 function Parallax.Character:GetAllVariables()

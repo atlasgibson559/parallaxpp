@@ -151,7 +151,7 @@ function CLASS:Register()
     end
 
     self.UniqueID = self.UniqueID or uniqueID
-    Parallax.Class.stored[self.UniqueID] = self
+    Parallax.Class.Stored[self.UniqueID] = self
 
     for i = 1, #instances do
         if ( instances[i].UniqueID == self.UniqueID ) then
@@ -163,7 +163,7 @@ function CLASS:Register()
     self.ID = #instances + 1
 
     table.insert(instances, self)
-    Parallax.Class.stored[self.UniqueID] = self
+    Parallax.Class.Stored[self.UniqueID] = self
 
     hook.Run("PostClassRegistered", self)
 end

@@ -13,10 +13,10 @@
 -- @module Parallax.Option
 
 Parallax.Option = Parallax.Option or {}
-Parallax.Option.stored = Parallax.Option.stored or {}
+Parallax.Option.Stored = Parallax.Option.Stored or {}
 
 function Parallax.Option:SetDefault(key, default)
-    local stored = self.stored[key]
+    local stored = self.Stored[key]
     if ( !istable(stored) ) then
         Parallax.Util:PrintError("Option \"" .. key .. "\" does not exist!")
         return false
@@ -38,7 +38,7 @@ if ( CLIENT ) then
         hook.Run("PreOptionsLoad")
 
         for k, v in pairs(Parallax.Data:Get("options", {}, true, true)) do
-            local stored = self.stored[k]
+            local stored = self.Stored[k]
             if ( !istable(stored) ) then
                 Parallax.Util:PrintError("Option \"" .. k .. "\" does not exist!")
                 continue
@@ -65,7 +65,7 @@ if ( CLIENT ) then
     function Parallax.Option:GetSaveData()
         local data = {}
         for k, v in pairs(self.instances) do
-            if ( v != nil and v != self.stored[k].Default ) then
+            if ( v != nil and v != self.Stored[k].Default ) then
                 data[k] = v
             end
         end
@@ -74,7 +74,7 @@ if ( CLIENT ) then
     end
 
     function Parallax.Option:Set(key, value, bNoNetworking)
-        local stored = self.stored[key]
+        local stored = self.Stored[key]
         if ( !istable(stored) ) then
             Parallax.Util:PrintError("Option \"" .. key .. "\" does not exist!")
             return false
@@ -108,7 +108,7 @@ if ( CLIENT ) then
     end
 
     function Parallax.Option:Get(key, fallback)
-        local optionData = self.stored[key]
+        local optionData = self.Stored[key]
         if ( !istable(optionData) ) then
             Parallax.Util:PrintError("Option \"" .. key .. "\" does not exist!")
             return fallback
@@ -128,7 +128,7 @@ if ( CLIENT ) then
     end
 
     function Parallax.Option:GetDefault(key)
-        local optionData = self.stored[key]
+        local optionData = self.Stored[key]
         if ( !istable(optionData) ) then
             Parallax.Util:PrintError("Option \"" .. key .. "\" does not exist!")
             return nil
@@ -143,7 +143,7 @@ if ( CLIENT ) then
     -- @treturn boolean Returns true if the option was reset successfully, false otherwise
     -- @usage Parallax.Option:Reset(key)
     function Parallax.Option:Reset(key)
-        local optionData = self.stored[key]
+        local optionData = self.Stored[key]
         if ( !istable(optionData) ) then
             Parallax.Util:PrintError("Option \"" .. key .. "\" does not exist!")
             return false
@@ -198,7 +198,7 @@ function Parallax.Option:Register(key, data)
 
     data.UniqueID = key
 
-    self.stored[key] = data
+    self.Stored[key] = data
     hook.Run("PostOptionRegistered", key, data)
 
     return true

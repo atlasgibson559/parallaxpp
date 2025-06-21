@@ -43,7 +43,7 @@ function PANEL:Init()
     end
 
     local categories = {}
-    for k, v in pairs(Parallax.Option.stored) do
+    for k, v in pairs(Parallax.Option.Stored) do
         local found = false
         for i = 1, #categories do
             if ( categories[i] == v.Category ) then
@@ -85,7 +85,7 @@ function PANEL:PopulateCategory(category, toSearch)
     self.container:Clear()
 
     local options = {}
-    for k, v in pairs(Parallax.Option.stored) do
+    for k, v in pairs(Parallax.Option.Stored) do
         if ( category and Parallax.Util:FindString(v.Category, category) == false ) then
             continue
         end

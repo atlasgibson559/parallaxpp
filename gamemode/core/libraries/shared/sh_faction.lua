@@ -13,7 +13,7 @@
 -- @module Parallax.Faction
 
 Parallax.Faction = Parallax.Faction or {}
-Parallax.Faction.stored = {}
+Parallax.Faction.Stored = {}
 Parallax.Faction.instances = {}
 Parallax.Faction.Meta = Parallax.Faction.Meta or {}
 
@@ -38,7 +38,7 @@ function Parallax.Faction:Register(factionData)
 
     table.insert(self.instances, FACTION)
 
-    self.stored[FACTION.UniqueID] = FACTION
+    self.Stored[FACTION.UniqueID] = FACTION
 
     team.SetUp(FACTION.ID, FACTION.Name, FACTION.Color, false)
     hook.Run("PostFactionRegistered", FACTION)
@@ -59,8 +59,8 @@ function Parallax.Faction:Get(identifier)
 
         return self.instances[identifier]
     elseif ( isstring(identifier) ) then
-        if ( self.stored[identifier] ) then
-            return self.stored[identifier]
+        if ( self.Stored[identifier] ) then
+            return self.Stored[identifier]
         end
 
         for i = 1, #self.instances do

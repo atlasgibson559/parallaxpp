@@ -13,7 +13,7 @@
 -- @module Parallax.Localization
 
 Parallax.Localization = {}
-Parallax.Localization.stored = {}
+Parallax.Localization.Stored = {}
 
 --- Register a new language.
 -- @realm client
@@ -30,13 +30,13 @@ function Parallax.Localization:Register(languageName, data)
         return false
     end
 
-    local stored = self.stored[languageName]
+    local stored = self.Stored[languageName]
     if ( !istable(stored) ) then
-        self.stored[languageName] = {}
+        self.Stored[languageName] = {}
     end
 
     for phrase, translation in pairs(data) do
-        self.stored[languageName][phrase] = translation
+        self.Stored[languageName][phrase] = translation
     end
 
     hook.Run("OnLanguageRegistered", languageName, data)
@@ -47,13 +47,13 @@ end
 -- @param language The language code.
 -- @return The language data.
 function Parallax.Localization:Get(languageName)
-    local stored = self.stored[languageName]
+    local stored = self.Stored[languageName]
     if ( !istable(stored) ) then
         Parallax.Util:PrintError("Attempted to get localisation data that doesn't exist! Language: " .. languageName)
         return false
     end
 
-    return self.stored[languageName]
+    return self.Stored[languageName]
 end
 
 --- Get a localized string.
@@ -99,11 +99,11 @@ function Parallax.Localization:GetPhrase(key, ...)
 end
 
 concommand.Add("ax_localization_check", function(client, command, arguments)
-    local enLocalisation = Parallax.Localization.stored.en
+    local enLocalisation = Parallax.Localization.Stored.en
     local enCount = table.Count(enLocalisation)
     Parallax.Util:Print("English Localisation has " .. enCount .. " phrases.")
 
-    for languageName, data in pairs(Parallax.Localization.stored) do
+    for languageName, data in pairs(Parallax.Localization.Stored) do
         if ( languageName == "en" ) then continue end
 
         local missingPhrases = {}

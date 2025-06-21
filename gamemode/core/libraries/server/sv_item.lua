@@ -21,7 +21,7 @@
 -- @tparam[opt] function callback Optional callback called with (itemID, data)
 -- @within Parallax.Item
 function Parallax.Item:Add(characterID, inventoryID, uniqueID, data, callback)
-    if ( !characterID or !uniqueID or !self.stored[uniqueID] ) then
+    if ( !characterID or !uniqueID or !self.Stored[uniqueID] ) then
         Parallax.Util:PrintError("Invalid parameters for item addition: characterID=" .. tostring(characterID) .. ", uniqueID=" .. tostring(uniqueID))
         return
     end
@@ -32,7 +32,7 @@ function Parallax.Item:Add(characterID, inventoryID, uniqueID, data, callback)
     end
 
     local inventory = Parallax.Inventory:Get(inventoryID)
-    if ( inventory and !inventory:HasSpaceFor(self.stored[uniqueID].Weight) ) then
+    if ( inventory and !inventory:HasSpaceFor(self.Stored[uniqueID].Weight) ) then
         return
     end
 
@@ -147,7 +147,7 @@ function Parallax.Item:PerformAction(itemID, actionName, callback)
         return false
     end
 
-    local base = self.stored[item:GetUniqueID()]
+    local base = self.Stored[item:GetUniqueID()]
     if ( !base or !base.Actions ) then
         Parallax.Util:PrintError("Item '" .. item:GetUniqueID() .. "' does not have actions defined.")
         return false
@@ -235,7 +235,7 @@ function Parallax.Item:Cache(characterID, callback)
             local itemID = tonumber(row.id)
             local uniqueID = row.unique_id
 
-            if ( self.stored[uniqueID] ) then
+            if ( self.Stored[uniqueID] ) then
                 local item = self:CreateObject(row)
                 if ( !item ) then
                     Parallax.Util:PrintError("Failed to create object for item #" .. itemID .. ", skipping")
@@ -332,7 +332,7 @@ function Parallax.Item:Remove(itemID, callback)
 end
 
 function Parallax.Item:Spawn(itemID, uniqueID, position, angles, callback, data)
-    if ( !uniqueID or !position or !self.stored[uniqueID] ) then
+    if ( !uniqueID or !position or !self.Stored[uniqueID] ) then
         Parallax.Util:PrintError("Invalid parameters for item spawn.")
         return nil
     end
@@ -373,7 +373,7 @@ concommand.Add("ax_item_add", function(client, cmd, arguments)
     end
 
     local uniqueID = arguments[1]
-    if ( !uniqueID or !Parallax.Item.stored[uniqueID] ) then
+    if ( !uniqueID or !Parallax.Item.Stored[uniqueID] ) then
         client:Notify("Invalid item unique ID specified.")
         return
     end

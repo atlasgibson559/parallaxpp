@@ -108,7 +108,7 @@ concommand.Add("ax_command", function(client, cmd, arguments)
 
     Parallax.Util:Print("Commands:")
 
-    for k, v in pairs(Parallax.Command.stored) do
+    for k, v in pairs(Parallax.Command.Stored) do
         if ( !CAMI.PlayerHasAccess(client, "Parallax - Commands - " .. k) ) then
             continue
         end
@@ -120,7 +120,7 @@ concommand.Add("ax_command", function(client, cmd, arguments)
 end--[[, function(cmd, argStr, arguments)
     local commands = {}
 
-    for k, v in pairs(Parallax.Command.stored) do
+    for k, v in pairs(Parallax.Command.Stored) do
         table.insert(commands, cmd .. " " .. v.Name)
     end
 

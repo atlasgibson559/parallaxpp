@@ -10,7 +10,7 @@
 ]]
 
 Parallax.Notification = Parallax.Notification or {}
-Parallax.Notification.stored = Parallax.Notification.stored or {}
+Parallax.Notification.Stored = Parallax.Notification.Stored or {}
 
 -- Configuration
 local PANEL_WIDTH = ScrW() / 2.5
@@ -77,7 +77,7 @@ function Parallax.Notification:Add(text, duration, bgColor)
     end
 
     -- Insert at beginning
-    table.insert(self.stored, 1, panel)
+    table.insert(self.Stored, 1, panel)
 
     -- Animate all notifications to new positions
     self:RepositionAll()
@@ -92,9 +92,9 @@ function Parallax.Notification:Add(text, duration, bgColor)
             panel:AlphaTo(0, 0.2, 0, function() panel:Remove() end)
             -- Remove and reposition
             timer.Simple(0.35, function()
-                for i = 1, #self.stored do
-                    if self.stored[i] == panel then
-                        table.remove(self.stored, i)
+                for i = 1, #self.Stored do
+                    if self.Stored[i] == panel then
+                        table.remove(self.Stored, i)
                         break
                     end
                 end
@@ -108,9 +108,9 @@ end
 -- Reposition notifications using Lerp targets
 function Parallax.Notification:RepositionAll()
     local scrW = ScrW()
-    local storedCount = #self.stored
+    local storedCount = #self.Stored
     for i = 1, storedCount do
-        local panel = self.stored[i]
+        local panel = self.Stored[i]
         if ( IsValid(panel) ) then
             panel.TargetX = (scrW - PANEL_WIDTH) / 2
             panel.TargetY = PANEL_SPACING + (i - 1) * (panel:GetTall() + PANEL_SPACING)

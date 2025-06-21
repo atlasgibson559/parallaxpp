@@ -31,7 +31,7 @@ hook.Add("Think", "Parallax.Keybinds.logic", function()
 
 
     for optionName, keyCode in pairs(Parallax.Binds) do
-        local optionData = Parallax.Option.stored[optionName]
+        local optionData = Parallax.Option.Stored[optionName]
         if ( !istable(optionData) or optionData.Type != Parallax.Types.number or !optionData.IsKeybind ) then continue end
         if ( !isnumber(keyCode) ) then continue end
 
