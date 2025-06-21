@@ -14,36 +14,11 @@
 
 Parallax.Faction = Parallax.Faction or {}
 Parallax.Faction.Stored = {}
-Parallax.Faction.instances = {}
+Parallax.Faction.Instances = {}
 Parallax.Faction.Meta = Parallax.Faction.Meta or {}
 
-function Parallax.Faction:Register(factionData)
-    local FACTION = setmetatable(factionData, self.Meta)
-
-    local bResult = hook.Run("PreFactionRegistered", FACTION)
-    if ( bResult == false ) then
-        Parallax.Util:PrintError("Attempted to register a faction that was blocked by a hook!")
-        return false, "Attempted to register a faction that was blocked by a hook!"
-    end
-
-    local uniqueID = string.lower(string.gsub(FACTION.Name, "%s+", "_"))
-    for i = 1, #self.instances do
-        if ( self.instances[i].UniqueID == uniqueID ) then
-            return false, "Attempted to register a faction that already exists!"
-        end
-    end
-
-    FACTION.UniqueID = FACTION.UniqueID or uniqueID
-    FACTION.ID = #self.instances + 1
-
-    table.insert(self.instances, FACTION)
-
-    self.Stored[FACTION.UniqueID] = FACTION
-
-    team.SetUp(FACTION.ID, FACTION.Name, FACTION.Color, false)
-    hook.Run("PostFactionRegistered", FACTION)
-
-    return FACTION.ID
+function Parallax.Faction:Instance()
+    return setmetatable({}, self.Meta)
 end
 
 function Parallax.Faction:Get(identifier)
@@ -57,18 +32,20 @@ function Parallax.Faction:Get(identifier)
             return false, "Attempted to get a faction with an invalid ID!"
         end
 
-        return self.instances[identifier]
+        return self.Instances[identifier]
     elseif ( isstring(identifier) ) then
         if ( self.Stored[identifier] ) then
             return self.Stored[identifier]
         end
 
-        for i = 1, #self.instances do
-            local v = self.instances[i]
+        for i = 1, #self.Instances do
+            local v = self.Instances[i]
             if ( Parallax.Util:FindString(v.Name, identifier) or Parallax.Util:FindString(v.UniqueID, identifier) ) then
                 return v
             end
         end
+    elseif ( Parallax.Util:IsFaction(identifier) ) then
+        return identifier
     end
 
     return nil
@@ -115,5 +92,5 @@ function Parallax.Faction:CanSwitchTo(client, factionID, oldFactionID)
 end
 
 function Parallax.Faction:GetAll()
-    return self.instances
+    return self.Instances
 end

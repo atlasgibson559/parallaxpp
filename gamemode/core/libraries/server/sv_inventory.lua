@@ -161,7 +161,7 @@ function Parallax.Inventory:Cache(client, inventoryID, callback)
                 end
 
                 local itemIDs = {}
-                for _, item in pairs(Parallax.Item.instances) do
+                for _, item in pairs(Parallax.Item.Instances) do
                     if ( item:GetOwner() == inventory:GetOwner() ) then
                         table.insert(itemIDs, item:GetID())
                     end

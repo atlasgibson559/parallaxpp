@@ -63,7 +63,7 @@ function Parallax.Item:Add(characterID, inventoryID, uniqueID, data, callback)
             return
         end
 
-        self.instances[itemID] = item
+        self.Instances[itemID] = item
 
         if ( inventory ) then
             local items = inventory:GetItems()
@@ -97,7 +97,7 @@ end
 function Parallax.Item:Transfer(itemID, fromInventoryID, toInventoryID, callback)
     if ( !itemID or !fromInventoryID or !toInventoryID ) then return false end
 
-    local item = self.instances[itemID]
+    local item = self.Instances[itemID]
     if ( !item ) then return false end
 
     local fromInventory = Parallax.Inventory:Get(fromInventoryID)
@@ -258,7 +258,7 @@ function Parallax.Item:Cache(characterID, callback)
                     end
                 end
 
-                self.instances[itemID] = item
+                self.Instances[itemID] = item
 
                 if ( item.OnCache ) then
                     item:OnCache()
@@ -269,7 +269,7 @@ function Parallax.Item:Cache(characterID, callback)
         end
 
         local instanceList = {}
-        for _, item in pairs(self.instances) do
+        for _, item in pairs(self.Instances) do
             if ( item:GetOwner() == characterID ) then
                 table.insert(instanceList, {
                     ID = item:GetID(),
@@ -296,7 +296,7 @@ end
 -- @param itemID The item ID to remove.
 -- @param callback Optional function to call after removal.
 function Parallax.Item:Remove(itemID, callback)
-    local item = self.instances[itemID]
+    local item = self.Instances[itemID]
     if ( !item ) then
         Parallax.Util:PrintError("Invalid item ID for removal: " .. tostring(itemID))
         return false
@@ -320,7 +320,7 @@ function Parallax.Item:Remove(itemID, callback)
     end
 
     -- Remove from memory
-    self.instances[itemID] = nil
+    self.Instances[itemID] = nil
 
     hook.Run("OnItemRemovedPermanently", itemID)
 

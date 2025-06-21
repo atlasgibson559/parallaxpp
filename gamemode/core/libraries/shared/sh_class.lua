@@ -14,7 +14,7 @@
 
 Parallax.Class = Parallax.Class or {}
 Parallax.Class.Stored = {}
-Parallax.Class.instances = {}
+Parallax.Class.Instances = {}
 Parallax.Class.Meta = Parallax.Class.Meta or {}
 
 function Parallax.Class:Instance()
@@ -28,15 +28,15 @@ function Parallax.Class:Get(identifier)
     end
 
     if ( isnumber(identifier) ) then
-        return self.instances[identifier]
+        return self.Instances[identifier]
     end
 
     if ( self.Stored[identifier] ) then
         return self.Stored[identifier]
     end
 
-    for i = 1, #self.instances do
-        local v = self.instances[i]
+    for i = 1, #self.Instances do
+        local v = self.Instances[i]
         if ( Parallax.Util:FindString(v.Name, identifier) or Parallax.Util:FindString(v.UniqueID, identifier) ) then
             return v
         end
@@ -86,5 +86,5 @@ function Parallax.Class:OnSwitch(client, classID)
 end
 
 function Parallax.Class:GetAll()
-    return self.instances
+    return self.Instances
 end

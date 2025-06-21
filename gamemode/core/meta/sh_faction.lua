@@ -85,6 +85,7 @@ end
 function FACTION:GetColor()
     return self.Color or Parallax.Color:Get("white")
 end
+FACTION.GetColour = FACTION.GetColor
 
 --- Gets the faction's models.
 -- @treturn table A table of model paths for the faction.
@@ -96,13 +97,97 @@ end
 -- @treturn table A table of class instances associated with the faction.
 function FACTION:GetClasses()
     local classes = {}
-    local instanceCount = #Parallax.Class.instances
+    local instanceCount = #Parallax.Class.Instances
     for i = 1, instanceCount do
-        local v = Parallax.Class.instances[i]
+        local v = Parallax.Class.Instances[i]
         if ( v.Faction == self:GetID() ) then
             table.insert(classes, v)
         end
     end
 
     return classes
+end
+
+--- Sets the faction's name.
+-- @param name The name of the faction.
+-- @treturn boolean True if the name was set successfully, false otherwise.
+-- @treturn string|nil An error message if the name was not set successfully.
+function FACTION:SetName(name)
+    if ( !isstring(name) ) then
+        Parallax.Util:PrintError("Attempted to set a faction's name without a valid name!")
+        return false, "Attempted to set a faction's name without a valid name!"
+    end
+
+    self.Name = name
+    return true
+end
+
+--- Sets the faction's description.
+-- @param description The description of the faction.
+-- @treturn boolean True if the description was set successfully, false otherwise.
+-- @treturn string|nil An error message if the description was not set successfully.
+function FACTION:SetDescription(description)
+    if ( !isstring(description) ) then
+        Parallax.Util:PrintError("Attempted to set a faction's description without a valid description!")
+        return false, "Attempted to set a faction's description without a valid description!"
+    end
+
+    self.Description = description
+    return true
+end
+
+--- Sets the faction's color.
+-- @param color The color of the faction.
+-- @treturn boolean True if the color was set successfully, false otherwise.
+function FACTION:SetColor(color)
+    if ( !Parallax.Util:CoerceType(Parallax.Types.color, color) ) then
+        Parallax.Util:PrintError("Attempted to set a faction's color without a valid color!")
+        return false, "Attempted to set a faction's color without a valid color!"
+    end
+
+    self.Color = color
+    return true
+end
+
+FACTION.SetColour = FACTION.SetColor
+
+--- Sets the faction's models.
+-- @param models A table of model paths for the faction.
+-- @treturn boolean True if the models were set successfully, false otherwise.
+function FACTION:SetModels(models)
+    if ( !istable(models) and !isstring(models) ) then
+        Parallax.Util:PrintError("Attempted to set a faction's models without a valid table or string!")
+        return false, "Attempted to set a faction's models without a valid table or string!"
+    end
+
+    self.Models = models
+    return true
+end
+
+function FACTION:MakeDefault()
+    self.IsDefault = true
+end
+
+function FACTION:Register()
+    local bResult = hook.Run("PreFactionRegistered", self)
+    if ( bResult == false ) then
+        Parallax.Util:PrintError("Attempted to register a faction that was blocked by a hook!")
+        return false, "Attempted to register a faction that was blocked by a hook!"
+    end
+
+    local uniqueID = string.lower(string.gsub(self:GetName(), "%s+", "_"))
+    for i = 1, #Parallax.Faction.Instances do
+        if ( Parallax.Faction.Instances[i].UniqueID == uniqueID ) then
+            return false, "Attempted to register a faction that already exists!"
+        end
+    end
+
+    self.UniqueID = self.UniqueID or uniqueID
+    self.ID = #Parallax.Faction.Instances + 1
+
+    table.insert(Parallax.Faction.Instances, self)
+    Parallax.Faction.Stored[self.UniqueID] = self
+
+    team.SetUp(self:GetID(), self:GetName(), self:GetColor(), false)
+    hook.Run("PostFactionRegistered", self)
 end

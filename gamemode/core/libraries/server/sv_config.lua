@@ -14,7 +14,7 @@
 
 Parallax.Config = Parallax.Config or {}
 Parallax.Config.Stored = Parallax.Config.Stored or {}
-Parallax.Config.instances = Parallax.Config.instances or {}
+Parallax.Config.Instances = Parallax.Config.Instances or {}
 
 --- Loads the configuration from the file.
 -- @realm shared
@@ -28,8 +28,8 @@ function Parallax.Config:Load()
         local storedData = self.Stored[k]
         if ( !istable(storedData) ) then continue end
 
-        self.instances[k] = {}
-        self.instances[k].Value = Parallax.Util:CoerceType(storedData.Type, v)
+        self.Instances[k] = {}
+        self.Instances[k].Value = Parallax.Util:CoerceType(storedData.Type, v)
     end
 
     local tableToSend = self:GetNetworkData()
@@ -43,7 +43,7 @@ end
 
 function Parallax.Config:GetSaveData()
     local saveData = {}
-    for k, v in pairs(self.instances) do
+    for k, v in pairs(self.Instances) do
         local storedData = self.Stored[k]
         if ( !istable(storedData) ) then continue end
         if ( storedData.NoSave ) then continue end

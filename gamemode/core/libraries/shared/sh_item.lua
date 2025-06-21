@@ -16,7 +16,7 @@ Parallax.Item = Parallax.Item or {}
 Parallax.Item.base = Parallax.Item.base or {}
 Parallax.Item.Meta = Parallax.Item.Meta or {}
 Parallax.Item.Stored = Parallax.Item.Stored or {}
-Parallax.Item.instances = Parallax.Item.instances or {}
+Parallax.Item.Instances = Parallax.Item.Instances or {}
 
 function Parallax.Item:Load(path)
     if ( !path or !isstring(path) ) then return end
@@ -118,7 +118,7 @@ function Parallax.Item:Get(identifier)
     if ( isstring(identifier) ) then
         return self.Stored[identifier]
     elseif ( isnumber(identifier) ) then
-        return self.instances[identifier]
+        return self.Instances[identifier]
     end
 
     return nil
@@ -129,7 +129,7 @@ function Parallax.Item:GetAll()
 end
 
 function Parallax.Item:GetInstances()
-    return self.instances
+    return self.Instances
 end
 
 function Parallax.Item:CreateObject(data)
@@ -176,7 +176,7 @@ if ( CLIENT ) then
 
         if ( !item ) then return end
 
-        self.instances[itemID] = item
+        self.Instances[itemID] = item
 
         local inventory = Parallax.Inventory:Get(inventoryID)
         if ( inventory ) then

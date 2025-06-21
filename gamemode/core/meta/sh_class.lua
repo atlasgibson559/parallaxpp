@@ -21,17 +21,17 @@ end
 --- Compares the class with another class.
 -- @param other The other class to compare with.
 -- @treturn boolean Whether the classes are equal.
-function CLASS:__eq(other)
+function CLASS:__eq(other) -- TODO: I don't think this even works lol
     return isnumber(other) and self:GetID() == other or
             isstring(other) and self:GetUniqueID() == other or
             istable(other) and self:GetID() == other:GetID() and self:GetUniqueID() == other:GetUniqueID()
 end
 
-CLASS.Name = "Unknown"
-CLASS.Description = "No description available."
-CLASS.IsDefault = false
-CLASS.CanSwitchTo = nil
-CLASS.OnSwitch = nil
+CLASS.Name          = "Unknown"
+CLASS.Description   = "No description available."
+CLASS.IsDefault     = false
+CLASS.CanSwitchTo   = nil
+CLASS.OnSwitch      = nil
 
 function CLASS:SetName(name)
     if ( !isstring(name) or #name == 0 ) then
@@ -143,7 +143,7 @@ function CLASS:Register()
     end
 
     local uniqueID = string.lower(string.gsub(self:GetName(), "%s+", "_")) .. "_" .. self:GetFaction()
-    local instances = Parallax.Class.instances
+    local instances = Parallax.Class:GetAll()
     for i = 1, #instances do
         if ( instances[i].UniqueID == uniqueID ) then
             return false, "Attempted to register a class that already exists!"

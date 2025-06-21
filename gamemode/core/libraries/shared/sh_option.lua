@@ -25,14 +25,14 @@ function Parallax.Option:SetDefault(key, default)
     stored.Default = default
 
     if ( SERVER ) then
-        Parallax.Net:Start(nil, "option.sync", self.instances)
+        Parallax.Net:Start(nil, "option.sync", self.Instances)
     end
 
     return true
 end
 
 if ( CLIENT ) then
-    Parallax.Option.instances = Parallax.Option.instances or {}
+    Parallax.Option.Instances = Parallax.Option.Instances or {}
 
     function Parallax.Option:Load()
         hook.Run("PreOptionsLoad")
@@ -44,8 +44,8 @@ if ( CLIENT ) then
                 continue
             end
 
-            if ( !istable(self.instances[k]) ) then
-                self.instances[k] = nil
+            if ( !istable(self.Instances[k]) ) then
+                self.Instances[k] = nil
             end
 
             if ( v != nil and v != stored.Default ) then
@@ -54,17 +54,17 @@ if ( CLIENT ) then
                     continue
                 end
 
-                self.instances[k] = v
+                self.Instances[k] = v
             end
         end
 
-        Parallax.Net:Start("option.sync", self.instances)
-        hook.Run("PostOptionsLoad", self.instances)
+        Parallax.Net:Start("option.sync", self.Instances)
+        hook.Run("PostOptionsLoad", self.Instances)
     end
 
     function Parallax.Option:GetSaveData()
         local data = {}
-        for k, v in pairs(self.instances) do
+        for k, v in pairs(self.Instances) do
             if ( v != nil and v != self.Stored[k].Default ) then
                 data[k] = v
             end
@@ -84,12 +84,12 @@ if ( CLIENT ) then
         local bResult = hook.Run("PreOptionChanged", Parallax.Client, key, value, oldValue)
         if ( bResult == false ) then return false end
 
-        if ( !istable(self.instances[key]) ) then
-            self.instances[key] = nil
+        if ( !istable(self.Instances[key]) ) then
+            self.Instances[key] = nil
         end
 
         if ( value != nil and value != stored.Default ) then
-            self.instances[key] = value
+            self.Instances[key] = value
         end
 
         if ( stored.NoNetworking != true and !bNoNetworking ) then
@@ -114,7 +114,7 @@ if ( CLIENT ) then
             return fallback
         end
 
-        local instance = self.instances[key]
+        local instance = self.Instances[key]
         if ( instance == nil ) then
             if ( optionData.Default == nil ) then
                 Parallax.Util:PrintError("Option \"" .. key .. "\" has no value or default set!")
@@ -155,7 +155,7 @@ if ( CLIENT ) then
     end
 
     function Parallax.Option:ResetAll()
-        self.instances = {}
+        self.Instances = {}
 
         Parallax.Data:Set("options", {}, true, true)
         Parallax.Net:Start("option.sync", {})

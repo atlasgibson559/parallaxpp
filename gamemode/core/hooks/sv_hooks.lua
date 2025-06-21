@@ -15,7 +15,7 @@ function GM:PlayerInitialSpawn(client)
     Parallax.Util:Print("Starting to load player " .. client:SteamName() .. " (" .. client:SteamID64() .. ")")
 
     if ( client:IsBot() ) then
-        local factionBot = math.random(#Parallax.Faction.instances)
+        local factionBot = math.random(#Parallax.Faction.Instances)
 
         local models = {}
         local factionModels = Parallax.Faction:Get(factionBot):GetModels()

@@ -14,7 +14,7 @@
 
 Parallax.Config = Parallax.Config or {}
 Parallax.Config.Stored = Parallax.Config.Stored or {}
-Parallax.Config.instances = Parallax.Config.instances or {}
+Parallax.Config.Instances = Parallax.Config.Instances or {}
 
 --- Gets the current value of the specified configuration.
 -- @realm shared
@@ -32,7 +32,7 @@ function Parallax.Config:Get(key, fallback)
 
     fallback = configData.Default != nil and configData.Default or fallback
 
-    local instance = self.instances[key]
+    local instance = self.Instances[key]
     if ( !istable(instance) ) then
         return fallback
     end
@@ -57,7 +57,7 @@ function Parallax.Config:GetDefault(key)
         return nil
     end
 
-    local instance = self.instances[key] or {}
+    local instance = self.Instances[key] or {}
     local defaultValue = instance.Default or configData.Default
 
     return defaultValue
@@ -85,13 +85,13 @@ function Parallax.Config:Set(key, value)
         return false
     end
 
-    local instance = self.instances[key] or {}
+    local instance = self.Instances[key] or {}
     local oldValue = instance.Value or instance.Default or stored.Default
     local bResult = hook.Run("PreConfigChanged", key, value, oldValue)
     if ( bResult == false ) then return false end
 
     instance.Value = value
-    self.instances[key] = instance
+    self.Instances[key] = instance
 
     if ( SERVER and stored.NoNetworking != true ) then
         Parallax.Net:Start(nil, "config.set", key, value)
@@ -123,9 +123,9 @@ function Parallax.Config:SetDefault(key, value)
         return false
     end
 
-    local instance = self.instances[key] or {}
+    local instance = self.Instances[key] or {}
     instance.Default = value
-    self.instances[key] = instance
+    self.Instances[key] = instance
 
     return true
 end

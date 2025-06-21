@@ -298,7 +298,7 @@ Parallax.Net:Hook("item.cache", function(data)
     for k, v in pairs(data) do
         local item = Parallax.Item:CreateObject(v)
         if ( item ) then
-            Parallax.Item.instances[item.ID] = item
+            Parallax.Item.Instances[item.ID] = item
 
             if ( item.OnCache ) then
                 item:OnCache()
