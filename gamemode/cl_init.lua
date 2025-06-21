@@ -20,8 +20,8 @@ include("core/boot.lua")
 
 LocalPlayerInternal = LocalPlayer
 function LocalPlayer()
-    if ( IsValid(ParallParallax.Client) ) then
-        return ParallParallax.Client
+    if ( IsValid(Parallax.Client) ) then
+        return Parallax.Client
     end
 
     return LocalPlayerInternal()

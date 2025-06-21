@@ -76,4 +76,4 @@ end
 
 ---
 
-**Enforcement**: This style guide applies to all pull requests and code contributions to ParallParallax.
+**Enforcement**: This style guide applies to all pull requests and code contributions to Parallax.

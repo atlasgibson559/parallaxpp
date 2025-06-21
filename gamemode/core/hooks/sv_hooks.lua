@@ -373,7 +373,7 @@ function GM:Think()
 end
 
 function GM:ShutDown()
-    Parallax.Util:Print("Shutting down ParallParallax...")
+    Parallax.Util:Print("Shutting down Parallax...")
     Parallax.shutDown = true
 
     hook.Run("SaveData")
