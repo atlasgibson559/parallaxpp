@@ -12,7 +12,7 @@
 GM.Name = "Parallax"
 GM.Author = "Riggs and bloodycop6385"
 GM.Description = "Parallax is a modular roleplay framework for Garry's Mod, built for performance, structure, and developer clarity."
-GM.State = "Alpha"
+GM.State = "Beta"
 
 ax.util:Print("Framework Initializing...")
 ax.util:LoadFolder("libraries/external")
