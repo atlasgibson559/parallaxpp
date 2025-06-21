@@ -77,8 +77,8 @@ function ax.motion:Motion(panel, duration, data)
         target = data.Target,
         current = current,
         easing = easing,
-        think = type(data.Think) == "function" and data.Think or nil,
-        onComplete = type(data.OnComplete) == "function" and data.OnComplete or nil,
+        think = isfunction(data.Think) and data.Think or nil,
+        onComplete = isfunction(data.OnComplete) and data.OnComplete or nil,
     })
 end
 
