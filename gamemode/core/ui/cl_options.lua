@@ -188,7 +188,7 @@ function PANEL:AddOption(optionData)
     elseif ( optionData.Type == ax.types.number and optionData.IsKeybind ) then
         local bind = panel:Add("ax.binder")
         bind:Dock(RIGHT)
-        bind:DockMargin(ScreenScale(8), ScreenScaleH(8), ScreenScale(8), ScreenScaleH(8))
+        bind:DockMargin(ScreenScale(8), ScreenScaleH(4), ScreenScale(8), ScreenScaleH(4))
         bind:SetWide(ScreenScale(128))
         bind:SetSelectedNumber(value)
         bind:UpdateText()
@@ -214,7 +214,7 @@ function PANEL:AddOption(optionData)
     elseif ( optionData.Type == ax.types.number ) then
         local slider = panel:Add("ax.slider")
         slider:Dock(RIGHT)
-        slider:DockMargin(ScreenScale(8), ScreenScaleH(8), ScreenScale(8), ScreenScaleH(8))
+        slider:DockMargin(ScreenScale(8), ScreenScaleH(4), ScreenScale(8), ScreenScaleH(4))
         slider:SetWide(ScreenScale(128))
         slider:SetMouseInputEnabled(false)
 
@@ -381,7 +381,7 @@ function PANEL:AddOption(optionData)
     elseif ( optionData.Type == ax.types.color ) then
         local color = panel:Add("EditablePanel")
         color:Dock(RIGHT)
-        color:DockMargin(ScreenScale(8), ScreenScaleH(8), ScreenScale(8), ScreenScaleH(8))
+        color:DockMargin(ScreenScale(8), ScreenScaleH(4), ScreenScale(8), ScreenScaleH(4))
         color:SetWide(ScreenScale(128))
         color:SetMouseInputEnabled(false)
         color.color = value
@@ -445,7 +445,7 @@ function PANEL:AddOption(optionData)
     elseif ( optionData.Type == ax.types.string ) then
         local text = panel:Add("ax.text.entry")
         text:Dock(RIGHT)
-        text:DockMargin(ScreenScale(8), ScreenScaleH(8), ScreenScale(8), ScreenScaleH(8))
+        text:DockMargin(ScreenScale(8), ScreenScaleH(4), ScreenScale(8), ScreenScaleH(4))
         text:SetWide(ScreenScale(128))
         text:SetText(value)
 

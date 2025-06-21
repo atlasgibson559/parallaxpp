@@ -192,7 +192,7 @@ function PANEL:AddConfig(configData)
     elseif ( configData.Type == ax.types.number ) then
         local slider = panel:Add("ax.slider")
         slider:Dock(RIGHT)
-        slider:DockMargin(ScreenScale(8), ScreenScaleH(8), ScreenScale(8), ScreenScaleH(8))
+        slider:DockMargin(ScreenScale(8), ScreenScaleH(4), ScreenScale(8), ScreenScaleH(4))
         slider:SetWide(ScreenScale(128))
         slider:SetMouseInputEnabled(false)
 
@@ -309,8 +309,8 @@ function PANEL:AddConfig(configData)
 
         panel.DoClick = function()
             -- Pick the next key depending on where the cursor is near the label, if the cursor is near the left side of the label, pick the previous key, if it's near the right side, pick the next key.
-            local x, _ = label:CursorPos() -- not used
-            local w, _ = label:GetSize() -- not used
+            local x, _ = label:CursorPos()
+            local w, _ = label:GetSize()
             local percent = x / w
             local nextKey = nil
             for i = 1, #keys do
@@ -354,7 +354,7 @@ function PANEL:AddConfig(configData)
     elseif ( configData.Type == ax.types.color ) then
         local color = panel:Add("EditablePanel")
         color:Dock(RIGHT)
-        color:DockMargin(ScreenScale(8), ScreenScaleH(8), ScreenScale(8), ScreenScaleH(8))
+        color:DockMargin(ScreenScale(8), ScreenScaleH(4), ScreenScale(8), ScreenScaleH(4))
         color:SetWide(ScreenScale(128))
         color:SetMouseInputEnabled(false)
         color.color = value
@@ -418,8 +418,9 @@ function PANEL:AddConfig(configData)
     elseif ( configData.Type == ax.types.string ) then
         local text = panel:Add("ax.text.entry")
         text:Dock(RIGHT)
-        text:DockMargin(ScreenScale(8), ScreenScaleH(8), ScreenScale(8), ScreenScaleH(8))
+        text:DockMargin(ScreenScale(8), ScreenScaleH(4), ScreenScale(8), ScreenScaleH(4))
         text:SetWide(ScreenScale(128))
+        text:SetFont("parallax.large")
         text:SetText(value)
 
         text.OnEnter = function(this)
