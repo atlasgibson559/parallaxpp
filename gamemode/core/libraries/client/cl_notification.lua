@@ -70,8 +70,9 @@ function ax.notification:Add(text, duration, bgColor)
 
     -- Think hook for interpolation
     panel.Think = function(this)
-        this.CurrentX = Lerp(FrameTime() * INTERP_SPEED, this.CurrentX, this.TargetX)
-        this.CurrentY = Lerp(FrameTime() * INTERP_SPEED, this.CurrentY, this.TargetY)
+        local frameTime = FrameTime()
+        this.CurrentX = Lerp(frameTime * INTERP_SPEED, this.CurrentX, this.TargetX)
+        this.CurrentY = Lerp(frameTime * INTERP_SPEED, this.CurrentY, this.TargetY)
         this:SetPos(this.CurrentX, this.CurrentY)
     end
 
