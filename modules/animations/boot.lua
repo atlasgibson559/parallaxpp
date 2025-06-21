@@ -219,7 +219,7 @@ ax.animations.stored["overwatch"] = {
 ax.animations.stored["metrocop"] = {
     normal = {
         [ACT_MP_STAND_IDLE] = {ACT_IDLE, ACT_IDLE_ANGRY_SMG1},
-        [ACT_MP_WALK] = {ACT_WALK, ACT_WALK_AIM_RIFLE},
+        [ACT_MP_WALK] = {ACT_WALK, ACT_WALK_ANGRY},
         [ACT_MP_RUN] = {ACT_RUN, ACT_RUN},
         [ACT_MP_CROUCH_IDLE] = {ACT_COVER_PISTOL_LOW, ACT_COVER_SMG1_LOW},
         [ACT_MP_CROUCHWALK] = {ACT_WALK_CROUCH, ACT_WALK_CROUCH}
@@ -259,6 +259,21 @@ ax.animations.stored["metrocop"] = {
         [ACT_MP_CROUCHWALK] = {ACT_WALK_CROUCH, ACT_WALK_CROUCH},
         shoot = ACT_GESTURE_RANGE_ATTACK_SMG1,
         reload = ACT_GESTURE_RELOAD_SMG1
+    },
+    melee = {
+        [ACT_MP_STAND_IDLE] = {ACT_IDLE, ACT_IDLE_ANGRY_MELEE},
+        [ACT_MP_WALK] = {ACT_WALK, ACT_WALK_ANGRY},
+        [ACT_MP_RUN] = {ACT_RUN, ACT_RUN},
+        [ACT_MP_CROUCH_IDLE] = {ACT_COVER_PISTOL_LOW, ACT_COVER_PISTOL_LOW},
+        [ACT_MP_CROUCHWALK] = {ACT_WALK_CROUCH, ACT_WALK_CROUCH},
+        shoot = ACT_GESTURE_MELEE_ATTACK_SWING
+    },
+    grenade = {
+        [ACT_MP_STAND_IDLE] = {ACT_IDLE, ACT_IDLE_ANGRY_MELEE},
+        [ACT_MP_WALK] = {ACT_WALK, ACT_WALK_ANGRY},
+        [ACT_MP_RUN] = {ACT_RUN, ACT_RUN},
+        [ACT_MP_CROUCH_IDLE] = {ACT_COVER_PISTOL_LOW, ACT_COVER_PISTOL_LOW},
+        [ACT_MP_CROUCHWALK] = {ACT_WALK_CROUCH, ACT_WALK_CROUCH}
     }
 }
 
