@@ -20,6 +20,16 @@ AccessorFunc(PANEL, "m_iSelectedNumber", "SelectedNumber", FORCE_NUMBER)
 ax.binds = ax.binds or {}
 local release = {}
 hook.Add("Think", "ax.keybinds.logic", function()
+    if ( !system.HasFocus() or gui.IsConsoleVisible() or gui.IsGameUIVisible() or vgui.CursorVisible() ) then
+        -- If the game doesn't have focus, we don't want to process keybinds.
+        for optionName in pairs(release) do
+            release[optionName] = false
+        end
+
+        return
+    end
+
+
     for optionName, keyCode in pairs(ax.binds) do
         local optionData = ax.option.stored[optionName]
         if ( !istable(optionData) or optionData.Type != ax.types.number or !optionData.IsKeybind ) then continue end
@@ -29,6 +39,9 @@ hook.Add("Think", "ax.keybinds.logic", function()
             if ( !release[optionName] ) then
                 release[optionName] = true
 
+                local prevent = hook.Run("PreKeybindPressed", optionName, keyCode)
+                if ( prevent == true ) then continue end
+
                 if ( isfunction(optionData.OnPressed) ) then
                     optionData:OnPressed()
                 end
@@ -37,6 +50,9 @@ hook.Add("Think", "ax.keybinds.logic", function()
             end
         else
             if ( release[optionName] ) then
+                local prevent = hook.Run("PreKeybindReleased", optionName, keyCode)
+                if ( prevent == true ) then continue end
+
                 if ( isfunction(optionData.OnReleased) ) then
                     optionData:OnReleased()
                 end
