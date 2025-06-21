@@ -259,7 +259,7 @@ local vectorAngle = FindMetaTable("Vector").Angle
 local normalizeAngle = math.NormalizeAngle
 function MODULE:CalcMainActivity(client, velocity)
     local clientTable = client:GetTable()
-    local forcedSequence = clientTable["ax.sequence.forced"]
+    local forcedSequence = clientTable["Parallax.sequence.forced"]
 
     if ( forcedSequence ) then
         if ( client:GetSequence() != forcedSequence ) then
@@ -384,7 +384,7 @@ function MODULE:TranslateActivity(client, act)
         return IdleActivityTranslate[act]
     end
 
-    local class = ax.animations:GetModelClass(client:GetModel())
+    local class = Parallax.Animations:GetModelClass(client:GetModel())
     if ( !class or class == "player" ) then
         if ( client:InVehicle() ) then
             return

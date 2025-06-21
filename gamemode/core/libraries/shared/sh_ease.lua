@@ -12,12 +12,12 @@
 --- Easing functions for lerping values.
 -- This module provides a set of easing functions to create smooth transitions between values.
 -- It allows you to specify the type of easing function to use, such as "InQuad", "OutCubic", etc.
--- @module ax.ease
+-- @module Parallax.Ease
 
-ax.ease = ax.ease or {}
+Parallax.Ease = Parallax.Ease or {}
 
 -- Internal mapping of available easing functions
-ax.ease.list = {
+Parallax.Ease.list = {
     InBack = math.ease.InBack,
     InBounce = math.ease.InBounce,
     InCirc = math.ease.InCirc,
@@ -57,8 +57,8 @@ ax.ease.list = {
 -- @param startValue The starting value for the interpolation (number, color table, vector, or angle).
 -- @param endValue The ending value for the interpolation (number, color table, vector, or angle).
 -- @return The interpolated value based on the easing function.
-function ax.ease:Lerp(easeType, time, startValue, endValue)
-    local easeFunc = ax.ease.list[easeType]
+function Parallax.Ease:Lerp(easeType, time, startValue, endValue)
+    local easeFunc = Parallax.Ease.list[easeType]
     if ( !easeFunc ) then
         error("[easeLerp] Invalid easing type: " .. tostring(easeType))
     end

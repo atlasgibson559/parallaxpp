@@ -10,38 +10,38 @@
 ]]
 
 -- Configuration for the gamemode
--- @module ax.config
+-- @module Parallax.Config
 
-ax.config = ax.config or {}
-ax.config.stored = ax.config.stored or {}
-ax.config.instances = ax.config.instances or {}
+Parallax.Config = Parallax.Config or {}
+Parallax.Config.stored = Parallax.Config.stored or {}
+Parallax.Config.instances = Parallax.Config.instances or {}
 
 --- Loads the configuration from the file.
 -- @realm shared
 -- @return Whether or not the configuration was loaded.
--- @usage ax.config:Load()
+-- @usage Parallax.Config:Load()
 -- @internal
-function ax.config:Load()
-    local config = ax.data:Get("config", {}, false, false)
+function Parallax.Config:Load()
+    local config = Parallax.Data:Get("config", {}, false, false)
 
     for k, v in pairs(config) do
         local storedData = self.stored[k]
         if ( !istable(storedData) ) then continue end
 
         self.instances[k] = {}
-        self.instances[k].Value = ax.util:CoerceType(storedData.Type, v)
+        self.instances[k].Value = Parallax.Util:CoerceType(storedData.Type, v)
     end
 
     local tableToSend = self:GetNetworkData()
-    ax.net:Start(nil, "config.sync", tableToSend)
+    Parallax.Net:Start(nil, "config.sync", tableToSend)
 
-    ax.util:Print("Configuration loaded.")
+    Parallax.Util:Print("Configuration loaded.")
     hook.Run("PostConfigLoad", config, tableToSend)
 
     return true
 end
 
-function ax.config:GetSaveData()
+function Parallax.Config:GetSaveData()
     local saveData = {}
     for k, v in pairs(self.instances) do
         local storedData = self.stored[k]
@@ -54,7 +54,7 @@ function ax.config:GetSaveData()
     return saveData
 end
 
-function ax.config:GetNetworkData()
+function Parallax.Config:GetNetworkData()
     local saveData = self:GetSaveData()
     for k, v in pairs(saveData) do
         local storedData = self.stored[k]
@@ -71,17 +71,17 @@ end
 --- Saves the configuration to the file.
 -- @realm server
 -- @return Whether or not the configuration was saved.
--- @usage ax.config:Save() -- Saves the configuration to the file.
+-- @usage Parallax.Config:Save() -- Saves the configuration to the file.
 -- @internal
-function ax.config:Save()
+function Parallax.Config:Save()
     hook.Run("PreConfigSave")
 
     local values = self:GetSaveData()
 
-    ax.data:Set("config", values, false, false)
+    Parallax.Data:Set("config", values, false, false)
 
     hook.Run("PostConfigSave", values)
-    ax.util:Print("Configuration saved.")
+    Parallax.Util:Print("Configuration saved.")
 
     return true
 end
@@ -90,11 +90,11 @@ end
 -- @realm server
 -- @string key The config key to reset
 -- @return boolean Returns true if the config was reset successfully, false otherwise
--- @usage ax.config:Reset(key) -- Resets the config to the default value.
-function ax.config:Reset(key)
+-- @usage Parallax.Config:Reset(key) -- Resets the config to the default value.
+function Parallax.Config:Reset(key)
     local configData = self.stored[key]
     if ( !istable(configData) ) then
-        ax.util:PrintError("Config \"" .. key .. "\" does not exist!")
+        Parallax.Util:PrintError("Config \"" .. key .. "\" does not exist!")
         return false
     end
 
@@ -106,15 +106,15 @@ end
 --- Resets the configuration to the default values.
 -- @realm server
 -- @return Whether or not the configuration was reset.
--- @usage ax.config:ResetAll() -- Resets the configuration to the default values.
-function ax.config:ResetAll()
+-- @usage Parallax.Config:ResetAll() -- Resets the configuration to the default values.
+function Parallax.Config:ResetAll()
     hook.Run("PreConfigReset")
 
     for k, v in pairs(self.stored) do
         self:Reset(k)
     end
 
-    ax.net:Start(nil, "config.sync", self:GetNetworkData())
+    Parallax.Net:Start(nil, "config.sync", self:GetNetworkData())
 
     self:Save()
     hook.Run("PostConfigReset")
@@ -126,12 +126,12 @@ end
 -- @realm server
 -- @param client The player to synchronize the configuration with.
 -- @return Whether or not the configuration was synchronized with the player.
--- @usage ax.config:Synchronize(Entity(1)) -- Synchronizes the configuration with the first player.
-function ax.config:Synchronize(client)
+-- @usage Parallax.Config:Synchronize(Entity(1)) -- Synchronizes the configuration with the first player.
+function Parallax.Config:Synchronize(client)
     local tableToSend = self:GetNetworkData()
 
     if ( !IsValid(client) ) then
-        ax.net:Start(nil, "config.sync", tableToSend)
+        Parallax.Net:Start(nil, "config.sync", tableToSend)
         hook.Run("PostConfigSync")
 
         return
@@ -140,7 +140,7 @@ function ax.config:Synchronize(client)
     local shouldSend = hook.Run("PreConfigSync", client, tableToSend)
     if ( shouldSend == false ) then return false end
 
-    ax.net:Start(client, "config.sync", tableToSend)
+    Parallax.Net:Start(client, "config.sync", tableToSend)
     hook.Run("PostConfigSync", client)
 
     return true

@@ -372,4 +372,4 @@ function tween.new(duration, subject, target, easing)
   }, Tween_mt)
 end
 
-ax.tween = tween
+Parallax.tween = tween

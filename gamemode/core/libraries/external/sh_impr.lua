@@ -2,7 +2,7 @@ local playerSteamID64 = {}
 local playerSteamID = {}
 local playerAccountID = {}
 
-hook.Add("OnEntityCreated", "ax.impr.OnEntityCreated", function(ent)
+hook.Add("OnEntityCreated", "Parallax.impr.OnEntityCreated", function(ent)
     if ( !ent:IsPlayer() ) then return end
 
     playerSteamID64[ent:SteamID64()] = ent
@@ -10,7 +10,7 @@ hook.Add("OnEntityCreated", "ax.impr.OnEntityCreated", function(ent)
     playerAccountID[ent:AccountID()] = ent
 end)
 
-hook.Add("EntityRemoved", "ax.impr.EntityRemoved", function(ent)
+hook.Add("EntityRemoved", "Parallax.impr.EntityRemoved", function(ent)
     if ( !ent:IsPlayer() ) then return end
 
     playerSteamID64[ent:SteamID64()] = nil

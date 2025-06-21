@@ -20,13 +20,13 @@ function ENT:SetupDataTables()
     self:NetworkVar("Float", 0, "Amount")
 end
 
-properties.Add("ax.property.currency.setamount", {
+properties.Add("Parallax.property.currency.setamount", {
     MenuLabel = "Set Amount",
     Order = 999,
     MenuIcon = "icon16/money.png",
     Filter = function( self, ent, client )
         if ( !IsValid(ent) or ent:GetClass() != "ax_currency" ) then return false end
-        if ( !gamemode.Call( "CanProperty", client, "ax.property.currency.setamount", ent ) ) then return false end
+        if ( !gamemode.Call( "CanProperty", client, "Parallax.property.currency.setamount", ent ) ) then return false end
 
         return client:IsSuperAdmin()
     end,
@@ -58,7 +58,7 @@ properties.Add("ax.property.currency.setamount", {
         if ( !isnumber(amount) ) then return end
 
         if ( amount < 0 ) then
-            ax.util:PrintWarning(Format("Admin %s (%s) tried to set the amount of currency to a negative value!", client:SteamName(), client:SteamID64()))
+            Parallax.Util:PrintWarning(Format("Admin %s (%s) tried to set the amount of currency to a negative value!", client:SteamName(), client:SteamID64()))
             return
         end
 

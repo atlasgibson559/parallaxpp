@@ -11,7 +11,7 @@
 
 local MODULE = MODULE
 
-properties.Add("ax.persistence.mark", {
+properties.Add("Parallax.persistence.mark", {
     MenuLabel = "[Parallax] Mark for Persistence",
     Order = -1,
     MenuIcon = "icon16/accept.png",
@@ -23,11 +23,11 @@ properties.Add("ax.persistence.mark", {
         return client:IsAdmin()
     end,
     Action = function(self, ent)
-        ax.net:Start("persistence.mark", ent)
+        Parallax.Net:Start("persistence.mark", ent)
     end
 })
 
-properties.Add("ax.persistence.unmark", {
+properties.Add("Parallax.persistence.unmark", {
     MenuLabel = "[Parallax] Unmark for Persistence",
     Order = -1,
     MenuIcon = "icon16/cross.png",
@@ -39,6 +39,6 @@ properties.Add("ax.persistence.unmark", {
         return client:IsAdmin()
     end,
     Action = function(self, ent)
-        ax.net:Start("persistence.unmark", ent)
+        Parallax.Net:Start("persistence.unmark", ent)
     end
 })

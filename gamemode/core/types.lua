@@ -17,7 +17,7 @@
 -- Use this system to ensure compatibility if values are ever changed internally.
 --
 -- @realm shared
--- @table ax.types
+-- @table Parallax.Types
 -- @field string Basic string type
 -- @field text Multi-line string
 -- @field number Numeric values
@@ -30,9 +30,9 @@
 -- @field steamid A Steam ID string
 -- @field steamid64 A Steam ID 64-bit integer
 -- @field array Flag that represents an array of values
--- @usage if ( ax.types[number] ) then ... end
+-- @usage if ( Parallax.Types[number] ) then ... end
 
-ax.types = ax.types or {
+Parallax.Types = Parallax.Types or {
     [1]     = "string",
     [2]     = "text",
     [4]     = "number",

@@ -9,17 +9,17 @@
     Attribution is required. If you use or modify this file, you must retain this notice.
 ]]
 
---- ax.binder
+--- Parallax.binder
 -- A simple key binder panel for binding a single key input.
--- @panel ax.binder
+-- @panel Parallax.binder
 
 local PANEL = {}
 
 AccessorFunc(PANEL, "m_iSelectedNumber", "SelectedNumber", FORCE_NUMBER)
 
-ax.binds = ax.binds or {}
+Parallax.Binds = Parallax.Binds or {}
 local release = {}
-hook.Add("Think", "ax.keybinds.logic", function()
+hook.Add("Think", "Parallax.keybinds.logic", function()
     if ( !system.HasFocus() or gui.IsConsoleVisible() or gui.IsGameUIVisible() or vgui.CursorVisible() ) then
         -- If the game doesn't have focus, we don't want to process keybinds.
         for optionName in pairs(release) do
@@ -30,9 +30,9 @@ hook.Add("Think", "ax.keybinds.logic", function()
     end
 
 
-    for optionName, keyCode in pairs(ax.binds) do
-        local optionData = ax.option.stored[optionName]
-        if ( !istable(optionData) or optionData.Type != ax.types.number or !optionData.IsKeybind ) then continue end
+    for optionName, keyCode in pairs(Parallax.Binds) do
+        local optionData = Parallax.Option.stored[optionName]
+        if ( !istable(optionData) or optionData.Type != Parallax.Types.number or !optionData.IsKeybind ) then continue end
         if ( !isnumber(keyCode) ) then continue end
 
         if ( input.IsKeyDown(keyCode) ) then
@@ -140,4 +140,4 @@ function PANEL:Think()
     end
 end
 
-vgui.Register("ax.binder", PANEL, "ax.button")
+vgui.Register("Parallax.binder", PANEL, "Parallax.button")

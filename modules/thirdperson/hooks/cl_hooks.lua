@@ -12,21 +12,21 @@
 local MODULE = MODULE
 
 concommand.Add("ax_thirdperson_toggle", function()
-    ax.option:Set("thirdperson", !ax.option:Get("thirdperson", false))
-end, nil, ax.localization:GetPhrase("options.thirdperson.toggle"))
+    Parallax.Option:Set("thirdperson", !Parallax.Option:Get("thirdperson", false))
+end, nil, Parallax.Localization:GetPhrase("options.thirdperson.toggle"))
 
 concommand.Add("ax_thirdperson_reset", function()
-    ax.option:Set("thirdperson.position.x", ax.option:GetDefault("thirdperson.position.x"))
-    ax.option:Set("thirdperson.position.y", ax.option:GetDefault("thirdperson.position.y"))
-    ax.option:Set("thirdperson.position.z", ax.option:GetDefault("thirdperson.position.z"))
-end, nil, ax.localization:GetPhrase("options.thirdperson.reset"))
+    Parallax.Option:Set("thirdperson.position.x", Parallax.Option:GetDefault("thirdperson.position.x"))
+    Parallax.Option:Set("thirdperson.position.y", Parallax.Option:GetDefault("thirdperson.position.y"))
+    Parallax.Option:Set("thirdperson.position.z", Parallax.Option:GetDefault("thirdperson.position.z"))
+end, nil, Parallax.Localization:GetPhrase("options.thirdperson.reset"))
 
 local fakePos
 local fakeAngles
 local fakeFov
 
 function MODULE:PreRenderThirdpersonView(client, pos, angles, fov)
-    if ( IsValid(ax.gui.mainmenu) ) then
+    if ( IsValid(Parallax.gui.mainmenu) ) then
         return false
     end
 
@@ -38,7 +38,7 @@ function MODULE:PreRenderThirdpersonView(client, pos, angles, fov)
 end
 
 function MODULE:CalcView(client, pos, angles, fov)
-    if ( !ax.option:Get("thirdperson", false) or hook.Run("PreRenderThirdpersonView", client, pos, angles, fov) == false ) then
+    if ( !Parallax.Option:Get("thirdperson", false) or hook.Run("PreRenderThirdpersonView", client, pos, angles, fov) == false ) then
         fakePos = nil
         fakeAngles = nil
         fakeFov = nil
@@ -48,12 +48,12 @@ function MODULE:CalcView(client, pos, angles, fov)
 
     local view = {}
 
-    if ( ax.option:Get("thirdperson.follax.head", false) ) then
+    if ( Parallax.Option:Get("thirdperson.follParallax.head", false) ) then
         local head
 
         for i = 0, client:GetBoneCount() do
             local bone = client:GetBoneName(i)
-            if ( ax.util:FindString(bone, "head") ) then
+            if ( Parallax.Util:FindString(bone, "head") ) then
                 head = i
                 break
             end
@@ -69,7 +69,7 @@ function MODULE:CalcView(client, pos, angles, fov)
 
     local trace = util.TraceHull({
         start = pos,
-        endpos = pos - (angles:Forward() * ax.option:Get("thirdperson.position.x", 0)) + (angles:Right() * ax.option:Get("thirdperson.position.y", 0)) + (angles:Up() * ax.option:Get("thirdperson.position.z", 0)),
+        endpos = pos - (angles:Forward() * Parallax.Option:Get("thirdperson.position.x", 0)) + (angles:Right() * Parallax.Option:Get("thirdperson.position.y", 0)) + (angles:Up() * Parallax.Option:Get("thirdperson.position.z", 0)),
         filter = client,
         mask = MASK_SHOT,
         mins = Vector(-4, -4, -4),
@@ -86,8 +86,8 @@ function MODULE:CalcView(client, pos, angles, fov)
     })
 
     local shootPos = traceData.HitPos
-    local followHitAngles = ax.option:Get("thirdperson.follax.hit.angles", true)
-    local followHitFov = ax.option:Get("thirdperson.follax.hit.fov", true)
+    local followHitAngles = Parallax.Option:Get("thirdperson.follParallax.hit.angles", true)
+    local followHitFov = Parallax.Option:Get("thirdperson.follParallax.hit.fov", true)
 
     local viewBob = angle_zero
     local curTime = CurTime()
@@ -111,15 +111,15 @@ function MODULE:CalcView(client, pos, angles, fov)
 end
 
 function MODULE:ShouldDrawLocalPlayer(client)
-    return ax.option:Get("thirdperson", false)
+    return Parallax.Option:Get("thirdperson", false)
 end
 
 function MODULE:PrePlayerDraw(client, flags)
-    if ( ax.config:Get("thirdperson.tracecheck") and ax.client != client ) then
+    if ( Parallax.Config:Get("thirdperson.tracecheck") and Parallax.Client != client ) then
         local traceLine = util.TraceLine({
-            start = ax.client:GetShootPos(),
+            start = Parallax.Client:GetShootPos(),
             endpos = client:GetShootPos(),
-            filter = ax.client
+            filter = Parallax.Client
         })
 
         if ( !traceLine.Hit ) then
@@ -139,11 +139,11 @@ function MODULE:AddToolMenuTabs()
     spawnmenu.AddToolMenuOption("Parallax", "User", "ax_thirdperson", "Third Person", "", "", function(panel)
         panel:ClearControls()
 
-        panel:AddControl("Header", { Text = ax.localization:GetPhrase("options.thirdperson.title"), Description = ax.localization:GetPhrase("options.thirdperson.description") })
-        panel:CheckBox(ax.localization:GetPhrase("options.thirdperson.enable"), "ax_thirdperson_enable")
-        panel:NumSlider(ax.localization:GetPhrase("options.thirdperson.position.x"), "ax_thirdperson_position_x", -1000, 1000, 0)
-        panel:NumSlider(ax.localization:GetPhrase("options.thirdperson.position.y"), "ax_thirdperson_position_y", -1000, 1000, 0)
-        panel:NumSlider(ax.localization:GetPhrase("options.thirdperson.position.z"), "ax_thirdperson_position_z", -1000, 1000, 0)
+        panel:AddControl("Header", { Text = Parallax.Localization:GetPhrase("options.thirdperson.title"), Description = Parallax.Localization:GetPhrase("options.thirdperson.description") })
+        panel:CheckBox(Parallax.Localization:GetPhrase("options.thirdperson.enable"), "ax_thirdperson_enable")
+        panel:NumSlider(Parallax.Localization:GetPhrase("options.thirdperson.position.x"), "ax_thirdperson_position_x", -1000, 1000, 0)
+        panel:NumSlider(Parallax.Localization:GetPhrase("options.thirdperson.position.y"), "ax_thirdperson_position_y", -1000, 1000, 0)
+        panel:NumSlider(Parallax.Localization:GetPhrase("options.thirdperson.position.z"), "ax_thirdperson_position_z", -1000, 1000, 0)
     end)
 end
 ]]

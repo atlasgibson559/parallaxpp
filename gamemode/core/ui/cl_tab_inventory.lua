@@ -16,14 +16,14 @@ local PANEL = {}
 function PANEL:Init()
     self:Dock(FILL)
 
-    local title = self:Add("ax.text")
+    local title = self:Add("Parallax.text")
     title:Dock(TOP)
-    title:SetFont("parallax.huge.bold")
+    title:SetFont("Parallax.huge.bold")
     title:SetText("INVENTORY")
 
-    local inventory = self:Add("ax.inventory")
+    local inventory = self:Add("Parallax.Inventory")
     inventory:Dock(FILL)
     inventory:SetInventory()
 end
 
-vgui.Register("ax.tab.inventory", PANEL, "EditablePanel")
+vgui.Register("Parallax.tab.inventory", PANEL, "EditablePanel")

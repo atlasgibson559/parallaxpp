@@ -9,153 +9,153 @@
     Attribution is required. If you use or modify this file, you must retain this notice.
 ]]
 
-ax.config:Register("color.framework", {
+Parallax.Config:Register("color.framework", {
     Name = "config.color.framework",
     Description = "config.color.framework.help",
     SubCategory = "category.color",
-    Type = ax.types.color,
+    Type = Parallax.Types.color,
     Default = Color(142, 68, 255)
 })
 
-ax.config:Register("color.schema", {
+Parallax.Config:Register("color.schema", {
     Name = "config.color.schema",
     Description = "config.color.schema.help",
     SubCategory = "category.color",
-    Type = ax.types.color,
+    Type = Parallax.Types.color,
     Default = Color(27, 0, 150)
 })
 
-ax.config:Register("color.server.message", {
+Parallax.Config:Register("color.server.message", {
     Name = "config.color.server.message",
     Description = "config.color.server.message.help",
     SubCategory = "category.color",
-    Type = ax.types.color,
+    Type = Parallax.Types.color,
     Default = Color(156, 241, 255, 200)
 })
 
-ax.config:Register("color.client.message", {
+Parallax.Config:Register("color.client.message", {
     Name = "config.color.client.message",
     Description = "config.color.client.message.help",
     SubCategory = "category.color",
-    Type = ax.types.color,
+    Type = Parallax.Types.color,
     Default = Color(255, 241, 122, 200)
 })
 
-ax.config:Register("color.server.error", {
+Parallax.Config:Register("color.server.error", {
     Name = "config.color.server.error",
     Description = "config.color.server.error.help",
     SubCategory = "category.color",
-    Type = ax.types.color,
+    Type = Parallax.Types.color,
     Default = Color(136, 221, 255, 255)
 })
 
-ax.config:Register("color.client.error", {
+Parallax.Config:Register("color.client.error", {
     Name = "config.color.client.error",
     Description = "config.color.client.error.help",
     SubCategory = "category.color",
-    Type = ax.types.color,
+    Type = Parallax.Types.color,
     Default = Color(255, 221, 102, 255)
 })
 
-ax.config:Register("color.error", {
+Parallax.Config:Register("color.error", {
     Name = "config.color.error",
     Description = "config.color.error.help",
     SubCategory = "category.color",
-    Type = ax.types.color,
+    Type = Parallax.Types.color,
     Default = Color(255, 120, 120)
 })
 
-ax.config:Register("color.warning", {
+Parallax.Config:Register("color.warning", {
     Name = "config.color.warning",
     Description = "config.color.warning.help",
     SubCategory = "category.color",
-    Type = ax.types.color,
+    Type = Parallax.Types.color,
     Default = Color(255, 200, 120)
 })
 
-ax.config:Register("color.success", {
+Parallax.Config:Register("color.success", {
     Name = "config.color.success",
     Description = "config.color.success.help",
     SubCategory = "category.color",
-    Type = ax.types.color,
+    Type = Parallax.Types.color,
     Default = Color(120, 255, 120)
 })
 
-ax.config:Register("color.info", {
+Parallax.Config:Register("color.info", {
     Name = "config.color.info",
     Description = "config.color.info.help",
     SubCategory = "category.color",
-    Type = ax.types.color,
+    Type = Parallax.Types.color,
     Default = Color(75, 165, 255)
 })
 
-ax.config:Register("voice", {
+Parallax.Config:Register("voice", {
     Name = "config.voice",
     Description = "config.voice.help",
-    Type = ax.types.bool,
+    Type = Parallax.Types.bool,
     Default = true
 })
 
-ax.config:Register("voice.distance", {
+Parallax.Config:Register("voice.distance", {
     Name = "config.voice.distance",
     Description = "config.voice.distance.help",
-    Type = ax.types.number,
+    Type = Parallax.Types.number,
     Default = 384,
     Min = 0,
     Max = 1024,
     Decimals = 0
 })
 
-ax.config:Register("mainmenu.music", {
+Parallax.Config:Register("mainmenu.music", {
     Name = "config.mainmenu.music",
     Description = "config.mainmenu.music.help",
     SubCategory = "category.mainmenu",
-    Type = ax.types.string,
+    Type = Parallax.Types.string,
     Default = "music/hl2_song20_submix0.mp3"
 })
 
-ax.config:Register("mainmenu.pos", {
+Parallax.Config:Register("mainmenu.pos", {
     Name = "config.mainmenu.pos",
     Description = "config.mainmenu.pos.help",
     SubCategory = "category.mainmenu",
-    Type = ax.types.vector,
+    Type = Parallax.Types.vector,
     Default = vector_origin
 })
 
-ax.config:Register("mainmenu.ang", {
+Parallax.Config:Register("mainmenu.ang", {
     Name = "config.mainmenu.ang",
     Description = "config.mainmenu.ang.help",
     SubCategory = "category.mainmenu",
-    Type = ax.types.angle,
+    Type = Parallax.Types.angle,
     Default = angle_zero
 })
 
-ax.config:Register("mainmenu.fov", {
+Parallax.Config:Register("mainmenu.fov", {
     Name = "config.mainmenu.fov",
     Description = "config.mainmenu.fov.help",
     SubCategory = "category.mainmenu",
-    Type = ax.types.number,
+    Type = Parallax.Types.number,
     Default = 90,
     Min = 0,
     Max = 120,
     Decimals = 0
 })
 
-ax.config:Register("save.interval", {
+Parallax.Config:Register("save.interval", {
     Name = "config.save.interval",
     Description = "config.save.interval.help",
-    Type = ax.types.number,
+    Type = Parallax.Types.number,
     Default = 300,
     Min = 0,
     Max = 3600,
     Decimals = 0
 })
 
-ax.config:Register("speed.walk", {
+Parallax.Config:Register("speed.walk", {
     Name = "config.speed.walk",
     Description = "config.speed.walk.help",
     SubCategory = "category.player",
-    Type = ax.types.number,
+    Type = Parallax.Types.number,
     Default = 80,
     Min = 0,
     Max = 1000,
@@ -169,11 +169,11 @@ ax.config:Register("speed.walk", {
     end
 })
 
-ax.config:Register("speed.run", {
+Parallax.Config:Register("speed.run", {
     Name = "config.speed.run",
     Description = "config.speed.run.help",
     SubCategory = "category.player",
-    Type = ax.types.number,
+    Type = Parallax.Types.number,
     Default = 180,
     Min = 0,
     Max = 1000,
@@ -187,11 +187,11 @@ ax.config:Register("speed.run", {
     end
 })
 
-ax.config:Register("jump.power", {
+Parallax.Config:Register("jump.power", {
     Name = "config.jump.power",
     Description = "config.jump.power.help",
     SubCategory = "category.player",
-    Type = ax.types.number,
+    Type = Parallax.Types.number,
     Default = 160,
     Min = 0,
     Max = 1000,
@@ -205,11 +205,11 @@ ax.config:Register("jump.power", {
     end
 })
 
-ax.config:Register("inventory.max.weight", {
-    Name = "config.inventory.max.weight",
-    Description = "config.inventory.max.weight.help",
+Parallax.Config:Register("inventory.mParallax.weight", {
+    Name = "config.inventory.mParallax.weight",
+    Description = "config.inventory.mParallax.weight.help",
     SubCategory = "category.inventory",
-    Type = ax.types.number,
+    Type = Parallax.Types.number,
     Default = 20,
     Min = 0,
     Max = 100,
@@ -218,7 +218,7 @@ ax.config:Register("inventory.max.weight", {
         for _, client in player.Iterator() do
             local character = client:GetCharacter()
             if ( character ) then
-                local inventories = ax.inventory:GetByCharacterID(character:GetID())
+                local inventories = Parallax.Inventory:GetByCharacterID(character:GetID())
                 for i = 1, #inventories do
                     inventories[i].maxWeight = value
                 end
@@ -227,279 +227,279 @@ ax.config:Register("inventory.max.weight", {
     end
 })
 
-ax.config:Register("chat.radius.ic", {
+Parallax.Config:Register("chat.radius.ic", {
     Name = "config.chat.radius.ic",
     Description = "config.chat.radius.ic.help",
     Category = "category.chat",
-    Type = ax.types.number,
+    Type = Parallax.Types.number,
     Default = 384,
     Min = 0,
     Max = 1000,
     Decimals = 0
 })
 
-ax.config:Register("chat.radius.whisper", {
+Parallax.Config:Register("chat.radius.whisper", {
     Name = "config.chat.radius.whisper",
     Description = "config.chat.radius.whisper.help",
     Category = "category.chat",
-    Type = ax.types.number,
+    Type = Parallax.Types.number,
     Default = 96,
     Min = 0,
     Max = 1000,
     Decimals = 0
 })
 
-ax.config:Register("chat.radius.yell", {
+Parallax.Config:Register("chat.radius.yell", {
     Name = "config.chat.radius.yell",
     Description = "config.chat.radius.yell.help",
     Category = "category.chat",
-    Type = ax.types.number,
+    Type = Parallax.Types.number,
     Default = 1024,
     Min = 0,
     Max = 1000,
     Decimals = 0
 })
 
-ax.config:Register("chat.radius.me", {
+Parallax.Config:Register("chat.radius.me", {
     Name = "config.chat.radius.me",
     Description = "config.chat.radius.me.help",
     Category = "category.chat",
-    Type = ax.types.number,
+    Type = Parallax.Types.number,
     Default = 512,
     Min = 0,
     Max = 1000,
     Decimals = 0
 })
 
-ax.config:Register("chat.radius.it", {
+Parallax.Config:Register("chat.radius.it", {
     Name = "config.chat.radius.it",
     Description = "config.chat.radius.it.help",
     Category = "category.chat",
-    Type = ax.types.number,
+    Type = Parallax.Types.number,
     Default = 512,
     Min = 0,
     Max = 1000,
     Decimals = 0
 })
 
-ax.config:Register("chat.radius.looc", {
+Parallax.Config:Register("chat.radius.looc", {
     Name = "config.chat.radius.looc",
     Description = "config.chat.radius.looc.help",
     Category = "category.chat",
-    Type = ax.types.number,
+    Type = Parallax.Types.number,
     Default = 512,
     Min = 0,
     Max = 1000,
     Decimals = 0
 })
 
-ax.config:Register("chat.ooc", {
+Parallax.Config:Register("chat.ooc", {
     Name = "config.chat.ooc",
     Description = "config.chat.ooc.help",
     Category = "category.chat",
-    Type = ax.types.bool,
+    Type = Parallax.Types.bool,
     Default = true,
 })
 
-ax.config:Register("currency.singular", {
+Parallax.Config:Register("currency.singular", {
     Name = "config.currency.singular",
     Description = "config.currency.singular.help",
     Category = "category.currency",
-    Type = ax.types.string,
+    Type = Parallax.Types.string,
     Default = "Dollar"
 })
 
-ax.config:Register("currency.plural", {
+Parallax.Config:Register("currency.plural", {
     Name = "config.currency.plural",
     Description = "config.currency.plural.help",
     Category = "category.currency",
-    Type = ax.types.string,
+    Type = Parallax.Types.string,
     Default = "Dollars"
 })
-ax.config:Register("currency.symbol", {
+Parallax.Config:Register("currency.symbol", {
     Name = "config.currency.symbol",
     Description = "config.currency.symbol.help",
     Category = "category.currency",
-    Type = ax.types.string,
+    Type = Parallax.Types.string,
     Default = "$"
 })
 
-ax.config:Register("currency.model", {
+Parallax.Config:Register("currency.model", {
     Name = "config.currency.model",
     Description = "config.currency.model.help",
     Category = "category.currency",
-    Type = ax.types.string,
+    Type = Parallax.Types.string,
     Default = "models/props_junk/cardboard_box004a.mdl"
 })
 
-ax.config:Register("mainmenu.branchwarning", {
+Parallax.Config:Register("mainmenu.branchwarning", {
     Name = "config.mainmenu.branchwarning",
     Description = "config.mainmenu.branchwarning.help",
     Category = "category.mainmenu",
-    Type = ax.types.bool,
+    Type = Parallax.Types.bool,
     Default = true
 })
 
-ax.config:Register("hands.max.carry", {
-    Name = "config.hands.max.carry",
-    Description = "config.hands.max.carry.help",
+Parallax.Config:Register("hands.mParallax.carry", {
+    Name = "config.hands.mParallax.carry",
+    Description = "config.hands.mParallax.carry.help",
     Category = "category.hands",
-    Type = ax.types.number,
+    Type = Parallax.Types.number,
     Default = 160,
     Min = 0,
     Max = 500,
     Decimals = 0
 })
 
-ax.config:Register("hands.max.force", {
-    Name = "config.hands.max.force",
-    Description = "config.hands.max.force.help",
+Parallax.Config:Register("hands.mParallax.force", {
+    Name = "config.hands.mParallax.force",
+    Description = "config.hands.mParallax.force.help",
     Category = "category.hands",
-    Type = ax.types.number,
+    Type = Parallax.Types.number,
     Default = 16500,
     Min = 0,
     Max = 50000,
     Decimals = 0
 })
 
-ax.config:Register("hands.max.throw", {
-    Name = "config.hands.max.throw",
-    Description = "config.hands.max.throw.help",
+Parallax.Config:Register("hands.mParallax.throw", {
+    Name = "config.hands.mParallax.throw",
+    Description = "config.hands.mParallax.throw.help",
     Category = "category.hands",
-    Type = ax.types.number,
+    Type = Parallax.Types.number,
     Default = 150,
     Min = 0,
     Max = 256,
     Decimals = 0
 })
 
-ax.config:Register("hands.range", {
+Parallax.Config:Register("hands.range", {
     Name = "config.hands.range",
     Description = "config.hands.range.help",
     Category = "category.hands",
-    Type = ax.types.number,
+    Type = Parallax.Types.number,
     Default = 96,
     Min = 0,
     Max = 256,
     Decimals = 0
 })
 
-ax.config:Register("weapon.raise.time", {
+Parallax.Config:Register("weapon.raise.time", {
     Name = "config.weapon.raise.time",
     Description = "config.weapon.raise.time.help",
     SubCategory = "category.weapon",
-    Type = ax.types.number,
+    Type = Parallax.Types.number,
     Default = 1,
     Min = 0,
     Max = 5,
     Decimals = 1
 })
 
-ax.config:Register("weapon.raise.alwaysraised", {
+Parallax.Config:Register("weapon.raise.alwaysraised", {
     Name = "config.weapon.raise.alwaysraised",
     Description = "config.weapon.raise.alwaysraised.help",
     SubCategory = "category.weapon",
-    Type = ax.types.bool,
+    Type = Parallax.Types.bool,
     Default = false
 })
 
-ax.config:Register("debug.networking", {
+Parallax.Config:Register("debug.networking", {
     Name = "config.debug.networking",
     Description = "config.debug.networking.help",
     SubCategory = "category.debug",
-    Type = ax.types.bool,
+    Type = Parallax.Types.bool,
     Default = false
 })
 
-ax.config:Register("networking.cooldown", {
+Parallax.Config:Register("networking.cooldown", {
     Name = "config.networking.cooldown",
     Description = "config.networking.cooldown.help",
     SubCategory = "category.networking",
-    Type = ax.types.number,
+    Type = Parallax.Types.number,
     Default = 0.1,
     Min = 0,
     Max = 60,
     Decimals = 1
 })
 
-ax.config:Register("debug.developer", {
+Parallax.Config:Register("debug.developer", {
     Name = "config.debug.developer",
     Description = "config.debug.developer.help",
     SubCategory = "category.debug",
-    Type = ax.types.bool,
+    Type = Parallax.Types.bool,
     Default = false
 })
 
-ax.config:Register("debug.preview", {
+Parallax.Config:Register("debug.preview", {
     Name = "config.debug.preview",
     Description = "config.debug.preview.help",
     SubCategory = "category.debug",
-    Type = ax.types.bool,
+    Type = Parallax.Types.bool,
     Default = false
 })
 
-ax.config:Register("time.respawn", {
+Parallax.Config:Register("time.respawn", {
     Name = "config.time.respawn",
     Description = "config.time.respawn.help",
-    Type = ax.types.number,
+    Type = Parallax.Types.number,
     Default = 60,
     Min = 0,
     Max = 300,
 })
 
-ax.config:Register("characters.restorepos", {
+Parallax.Config:Register("characters.restorepos", {
     Name = "config.characters.restorepos",
     Description = "config.characters.restorepos.help",
     Category = "category.characters",
-    Type = ax.types.bool,
+    Type = Parallax.Types.bool,
     Default = true,
 })
 
-ax.config:Register("characters.maxCount", {
+Parallax.Config:Register("characters.maxCount", {
     Name = "config.characters.maxCount",
     Description = "config.characters.maxCount.help",
     Category = "category.characters",
-    Type = ax.types.number,
+    Type = Parallax.Types.number,
     Default = 5,
     Min = 1,
     Max = 20,
 })
 
-ax.config:Register("characters.minNameLength", {
+Parallax.Config:Register("characters.minNameLength", {
     Name = "config.characters.minNameLength",
     Description = "config.characters.minNameLength.help",
     Category = "category.characters",
-    Type = ax.types.number,
+    Type = Parallax.Types.number,
     Default = 3,
     Min = 1,
     Max = 32,
 })
 
-ax.config:Register("characters.maxNameLength", {
+Parallax.Config:Register("characters.maxNameLength", {
     Name = "config.characters.maxNameLength",
     Description = "config.characters.maxNameLength.help",
     Category = "category.characters",
-    Type = ax.types.number,
+    Type = Parallax.Types.number,
     Default = 32,
     Min = 1,
     Max = 64,
 })
 
-ax.config:Register("characters.minDescriptionLength", {
+Parallax.Config:Register("characters.minDescriptionLength", {
     Name = "config.characters.minDescriptionLength",
     Description = "config.characters.minDescriptionLength.help",
     Category = "category.characters",
-    Type = ax.types.number,
+    Type = Parallax.Types.number,
     Default = 1,
     Min = 1,
     Max = 1024,
 })
 
-ax.config:Register("characters.maxDescriptionLength", {
+Parallax.Config:Register("characters.maxDescriptionLength", {
     Name = "config.characters.maxDescriptionLength",
     Description = "config.characters.maxDescriptionLength.help",
     Category = "category.characters",
-    Type = ax.types.number,
+    Type = Parallax.Types.number,
     Default = 256,
     Min = 1,
     Max = 1024,

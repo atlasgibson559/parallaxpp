@@ -20,7 +20,7 @@ function PLAYER:GetData(key, default)
     local tbl = self:GetTable()
     local axDatabase = tbl.axDatabase
     if ( !axDatabase ) then
-        ax.util:PrintError("Player does not have a database connection, unable to get data.")
+        Parallax.Util:PrintError("Player does not have a database connection, unable to get data.")
         return default
     end
 

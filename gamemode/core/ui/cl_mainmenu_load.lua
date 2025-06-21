@@ -20,7 +20,7 @@ function PANEL:Init()
 end
 
 function PANEL:Populate()
-    local client = ax.client
+    local client = Parallax.Client
     if ( !IsValid(client) ) then return end
 
     local parent = self:GetParent()
@@ -35,10 +35,10 @@ function PANEL:Populate()
     self:Clear()
     self:SetVisible(true)
 
-    local title = self:Add("ax.text")
+    local title = self:Add("Parallax.text")
     title:Dock(TOP)
     title:DockMargin(ScreenScale(32), ScreenScaleH(32), 0, 0)
-    title:SetFont("parallax.huge.bold")
+    title:SetFont("Parallax.huge.bold")
     title:SetText(string.upper("mainmenu.select.character"))
 
     local navigation = self:Add("EditablePanel")
@@ -46,7 +46,7 @@ function PANEL:Populate()
     navigation:DockMargin(ScreenScale(32), 0, ScreenScale(32), ScreenScaleH(32))
     navigation:SetTall(ScreenScaleH(24))
 
-    local backButton = navigation:Add("ax.button.flat")
+    local backButton = navigation:Add("Parallax.button.flat")
     backButton:Dock(LEFT)
     backButton:SetText("back")
     backButton.DoClick = function()
@@ -57,7 +57,7 @@ function PANEL:Populate()
 
     navigation:SetTall(backButton:GetTall())
 
-    local characterList = self:Add("ax.scroller.vertical")
+    local characterList = self:Add("Parallax.scroller.vertical")
     characterList:Dock(FILL)
     characterList:DockMargin(ScreenScale(32) * 4, ScreenScaleH(32), ScreenScale(32) * 4, ScreenScaleH(32))
     characterList:InvalidateParent(true)
@@ -66,19 +66,19 @@ function PANEL:Populate()
 
     local clientTable = client:GetTable()
     for k, v in pairs(clientTable.axCharacters) do
-        local button = characterList:Add("ax.button.flat")
+        local button = characterList:Add("Parallax.button.flat")
         button:Dock(TOP)
         button:DockMargin(0, 0, 0, ScreenScaleH(4))
         button:SetText("", true, true, true)
         button:SetTall(characterList:GetWide() / 8)
 
         button.DoClick = function()
-            ax.net:Start("character.load", v:GetID())
+            Parallax.Net:Start("character.load", v:GetID())
         end
 
         local banner = hook.Run("GetCharacterBanner", v:GetID()) or "gamepadui/hl2/chapter14"
         if ( type(banner) == "string" ) then
-            banner = ax.util:GetMaterial(banner)
+            banner = Parallax.Util:GetMaterial(banner)
         end
 
         local image = button:Add("DPanel")
@@ -86,20 +86,20 @@ function PANEL:Populate()
         image:DockMargin(0, 0, ScreenScale(8), 0)
         image:SetSize(button:GetTall() * 1.75, button:GetTall())
         image.Paint = function(this, width, height)
-            surface.SetDrawColor(ax.color:Get("white"))
+            surface.SetDrawColor(Parallax.Color:Get("white"))
             surface.SetMaterial(banner)
             surface.DrawTexturedRect(0, 0, width, height)
         end
 
-        local deleteButton = button:Add("ax.button.flat")
+        local deleteButton = button:Add("Parallax.button.flat")
         deleteButton:Dock(RIGHT)
         deleteButton:DockMargin(ScreenScale(8), 0, 0, 0)
         deleteButton:SetText("X")
-        deleteButton:SetTextColorProperty(ax.config:Get("color.error"))
+        deleteButton:SetTextColorProperty(Parallax.Config:Get("color.error"))
         deleteButton:SetSize(0, button:GetTall())
         deleteButton:SetContentAlignment(5)
-        deleteButton.baseTextColorTarget = ax.color:Get("black")
-        deleteButton.backgroundColor = ax.config:Get("color.error")
+        deleteButton.baseTextColorTarget = Parallax.Color:Get("black")
+        deleteButton.backgroundColor = Parallax.Config:Get("color.error")
         deleteButton.width = 0
         deleteButton.DoClick = function()
             self:PopulateDelete(v:GetID())
@@ -133,9 +133,9 @@ function PANEL:Populate()
             end
         end
 
-        local name = button:Add("ax.text")
+        local name = button:Add("Parallax.text")
         name:Dock(TOP)
-        name:SetFont("parallax.huge.bold")
+        name:SetFont("Parallax.huge.bold")
         name:SetText(v:GetName():upper())
         name.Think = function(this)
             this:SetTextColor(button:GetTextColor())
@@ -144,10 +144,10 @@ function PANEL:Populate()
         -- Example: Sat Feb 19 19:49:00 2022
         local lastPlayedDate = os.date("%a %b %d %H:%M:%S %Y", v:GetLastPlayed())
 
-        local lastPlayed = button:Add("ax.text")
+        local lastPlayed = button:Add("Parallax.text")
         lastPlayed:Dock(BOTTOM)
         lastPlayed:DockMargin(0, 0, 0, ScreenScaleH(8))
-        lastPlayed:SetFont("parallax.large")
+        lastPlayed:SetFont("Parallax.large")
         lastPlayed:SetText(lastPlayedDate, true)
         lastPlayed.Think = function(this)
             this:SetTextColor(button:GetTextColor())
@@ -158,30 +158,30 @@ end
 function PANEL:PopulateDelete(characterID)
     self:Clear()
 
-    local title = self:Add("ax.text")
+    local title = self:Add("Parallax.text")
     title:Dock(TOP)
     title:DockMargin(ScreenScale(32), ScreenScaleH(32), 0, 0)
-    title:SetFont("parallax.huge.bold")
+    title:SetFont("Parallax.huge.bold")
     title:SetText(string.upper("mainmenu.delete.character"))
 
-    local confirmation = self:Add("ax.text")
+    local confirmation = self:Add("Parallax.text")
     confirmation:Dock(TOP)
     confirmation:DockMargin(ScreenScale(64), ScreenScaleH(16), 0, 0)
-    confirmation:SetFont("parallax.large")
+    confirmation:SetFont("Parallax.large")
     confirmation:SetText("mainmenu.delete.character.confirm")
 
     local navigation = self:Add("EditablePanel")
     navigation:Dock(BOTTOM)
     navigation:DockMargin(ScreenScale(32), 0, ScreenScale(32), ScreenScaleH(32))
 
-    local cancelButton = navigation:Add("ax.button.flat")
+    local cancelButton = navigation:Add("Parallax.button.flat")
     cancelButton:Dock(LEFT)
     cancelButton:SetText("CANCEL")
     cancelButton.DoClick = function()
         self:Populate()
     end
 
-    local okButton = navigation:Add("ax.button.flat")
+    local okButton = navigation:Add("Parallax.button.flat")
     okButton:Dock(RIGHT)
     okButton:SetText("OK")
     okButton.DoClick = function()
@@ -189,7 +189,7 @@ function PANEL:PopulateDelete(characterID)
             "Are you REALLY sure you want to delete this character? This action cannot be undone.",
             "Delete Character",
             "Yes", function()
-                ax.net:Start("character.delete", characterID)
+                Parallax.Net:Start("character.delete", characterID)
             end,
             "No", function() end
         )
@@ -198,4 +198,4 @@ function PANEL:PopulateDelete(characterID)
     navigation:SetTall(math.max(cancelButton:GetTall(), okButton:GetTall()))
 end
 
-vgui.Register("ax.mainmenu.load", PANEL, "EditablePanel")
+vgui.Register("Parallax.mainmenu.load", PANEL, "EditablePanel")

@@ -10,7 +10,7 @@
 ]]
 
 if ( !tobool(CAMI) ) then
-    ax.util:PrintError("CAMI is not installed.")
+    Parallax.Util:PrintError("CAMI is not installed.")
     return
 end
 

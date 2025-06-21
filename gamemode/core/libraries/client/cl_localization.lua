@@ -10,23 +10,23 @@
 ]]
 
 --- Localization library
--- @module ax.localization
+-- @module Parallax.Localization
 
-ax.localization = {}
-ax.localization.stored = {}
+Parallax.Localization = {}
+Parallax.Localization.stored = {}
 
 --- Register a new language.
 -- @realm client
 -- @param language The language code.
 -- @param data The language data.
-function ax.localization:Register(languageName, data)
+function Parallax.Localization:Register(languageName, data)
     if ( !isstring(languageName) ) then
-        ax.util:PrintError("Attempted to register a language without a language code!")
+        Parallax.Util:PrintError("Attempted to register a language without a language code!")
         return false
     end
 
     if ( !istable(data) ) then
-        ax.util:PrintError("Attempted to register a language without data!")
+        Parallax.Util:PrintError("Attempted to register a language without data!")
         return false
     end
 
@@ -46,10 +46,10 @@ end
 -- @realm client
 -- @param language The language code.
 -- @return The language data.
-function ax.localization:Get(languageName)
+function Parallax.Localization:Get(languageName)
     local stored = self.stored[languageName]
     if ( !istable(stored) ) then
-        ax.util:PrintError("Attempted to get localisation data that doesn't exist! Language: " .. languageName)
+        Parallax.Util:PrintError("Attempted to get localisation data that doesn't exist! Language: " .. languageName)
         return false
     end
 
@@ -63,7 +63,7 @@ end
 -- @return The localized string.
 
 local gmod_language = GetConVar("gmod_language")
-function ax.localization:GetPhrase(key, ...)
+function Parallax.Localization:GetPhrase(key, ...)
     local languageName = ( gmod_language and gmod_language:GetString() ) or "en"
 
     local data = self:Get(languageName)
@@ -99,11 +99,11 @@ function ax.localization:GetPhrase(key, ...)
 end
 
 concommand.Add("ax_localization_check", function(client, command, arguments)
-    local enLocalisation = ax.localization.stored.en
+    local enLocalisation = Parallax.Localization.stored.en
     local enCount = table.Count(enLocalisation)
-    ax.util:Print("English Localisation has " .. enCount .. " phrases.")
+    Parallax.Util:Print("English Localisation has " .. enCount .. " phrases.")
 
-    for languageName, data in pairs(ax.localization.stored) do
+    for languageName, data in pairs(Parallax.Localization.stored) do
         if ( languageName == "en" ) then continue end
 
         local missingPhrases = {}
@@ -115,13 +115,13 @@ concommand.Add("ax_localization_check", function(client, command, arguments)
 
         local dataCount = table.Count(data)
         if ( dataCount != enCount ) then
-            ax.util:Print("Language '" .. languageName .. "' has " .. ( dataCount > enCount and "more" or "less" ) .. " phrases (" .. dataCount .. ") than English! (" .. enCount .. ")")
+            Parallax.Util:Print("Language '" .. languageName .. "' has " .. ( dataCount > enCount and "more" or "less" ) .. " phrases (" .. dataCount .. ") than English! (" .. enCount .. ")")
         end
 
         if ( missingPhrases[1] != nil ) then
-            ax.util:PrintWarning("Language \"" .. languageName .. "\" is missing the following phrases: (" .. #missingPhrases .. ")")
+            Parallax.Util:PrintWarning("Language \"" .. languageName .. "\" is missing the following phrases: (" .. #missingPhrases .. ")")
             for i = 1, #missingPhrases do
-                ax.util:PrintWarning("\t\t" .. missingPhrases[i])
+                Parallax.Util:PrintWarning("\t\t" .. missingPhrases[i])
             end
         end
     end

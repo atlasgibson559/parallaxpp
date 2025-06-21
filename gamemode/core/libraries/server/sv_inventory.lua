@@ -10,28 +10,28 @@
 ]]
 
 -- Inventory management library.
--- @module ax.inventory
+-- @module Parallax.Inventory
 
-function ax.inventory:Register(data, callback)
+function Parallax.Inventory:Register(data, callback)
     if ( !istable(data) or !data.characterID ) then
-        ax.util:PrintError("Invalid data provided for inventory registration.")
+        Parallax.Util:PrintError("Invalid data provided for inventory registration.")
         return false
     end
 
     local bResult = hook.Run("PreInventoryRegistered", data)
     if ( bResult == false ) then
-        ax.util:PrintError("PreInventoryRegistered hook denied inventory registration for character " .. data.characterID)
+        Parallax.Util:PrintError("PreInventoryRegistered hook denied inventory registration for character " .. data.characterID)
         return false
     end
 
-    ax.database:Insert("ax_inventories", {
+    Parallax.Database:Insert("ax_inventories", {
         character_id = data.characterID,
         name = data.name or "Main",
-        max_weight = data.maxWeight or ax.config:Get("inventory.max.weight", 20),
+        max_weight = data.maxWeight or Parallax.Config:Get("inventory.mParallax.weight", 20),
         data = util.TableToJSON(data.data or {})
     }, function(inventoryID)
         if ( !inventoryID ) then
-            ax.util:PrintError("Failed to insert inventory into database for character " .. data.characterID)
+            Parallax.Util:PrintError("Failed to insert inventory into database for character " .. data.characterID)
             return false
         end
 
@@ -39,7 +39,7 @@ function ax.inventory:Register(data, callback)
 
         local inventory = self:CreateObject(data)
         if ( !inventory ) then
-            ax.util:PrintError("Failed to create inventory object for ID " .. inventoryID)
+            Parallax.Util:PrintError("Failed to create inventory object for ID " .. inventoryID)
             return false
         end
 
@@ -55,21 +55,21 @@ function ax.inventory:Register(data, callback)
     end)
 end
 
-function ax.inventory:AssignToCharacter(characterID, inventoryID, callback)
+function Parallax.Inventory:AssignToCharacter(characterID, inventoryID, callback)
     if ( !characterID or !inventoryID ) then
-        ax.util:PrintError("Invalid character ID or inventory ID for assignment.")
+        Parallax.Util:PrintError("Invalid character ID or inventory ID for assignment.")
         return
     end
 
     local bResult = hook.Run("PreInventoryAssigned", characterID, inventoryID)
     if ( bResult == false ) then
-        ax.util:PrintError("PreInventoryAssigned hook denied assignment of inventory " .. inventoryID .. " to character " .. characterID)
+        Parallax.Util:PrintError("PreInventoryAssigned hook denied assignment of inventory " .. inventoryID .. " to character " .. characterID)
         return
     end
 
-    ax.database:Select("ax_characters", nil, "id = " .. characterID, function(result)
+    Parallax.Database:Select("ax_characters", nil, "id = " .. characterID, function(result)
         if ( !result or !result[1] ) then
-            ax.util:PrintError("Character with ID " .. characterID .. " not found in database.")
+            Parallax.Util:PrintError("Character with ID " .. characterID .. " not found in database.")
             return
         end
 
@@ -87,11 +87,11 @@ function ax.inventory:AssignToCharacter(characterID, inventoryID, callback)
             table.insert(inventories, inventoryID)
         end
 
-        ax.database:Update("ax_characters", {
+        Parallax.Database:Update("ax_characters", {
             inventories = util.TableToJSON(inventories)
         }, "id = " .. characterID)
 
-        local character = ax.character:Get(characterID)
+        local character = Parallax.Character:Get(characterID)
         if ( character ) then
             character:SetInventories(inventories)
         end
@@ -104,13 +104,13 @@ function ax.inventory:AssignToCharacter(characterID, inventoryID, callback)
     end)
 end
 
-function ax.inventory:Broadcast(inventory)
+function Parallax.Inventory:Broadcast(inventory)
     if ( !inventory ) then return end
 
     local receivers = inventory:GetReceivers()
     if ( !istable(receivers) ) then return end
 
-    ax.net:Start(receivers, "inventory.register", {
+    Parallax.Net:Start(receivers, "inventory.register", {
         ID = inventory:GetID(),
         CharacterID = inventory:GetOwner(),
         Name = inventory:GetName(),
@@ -121,28 +121,28 @@ function ax.inventory:Broadcast(inventory)
     })
 end
 
-function ax.inventory:Cache(client, inventoryID, callback)
+function Parallax.Inventory:Cache(client, inventoryID, callback)
     if ( !IsValid(client) or !inventoryID ) then
-        ax.util:PrintError("Invalid client or inventory ID for caching.")
+        Parallax.Util:PrintError("Invalid client or inventory ID for caching.")
         return
     end
 
     local bResult = hook.Run("PreInventoryCached", inventoryID, client)
     if ( bResult == false ) then
-        ax.util:PrintError("PreInventoryCached hook denied caching of inventory " .. inventoryID .. " for player " .. tostring(client))
+        Parallax.Util:PrintError("PreInventoryCached hook denied caching of inventory " .. inventoryID .. " for player " .. tostring(client))
         return
     end
 
     -- Yeah, big pyramid of function calls...
-    ax.database:Select("ax_inventories", nil, "id = " .. inventoryID, function(result)
+    Parallax.Database:Select("ax_inventories", nil, "id = " .. inventoryID, function(result)
         if ( !result or !result[1] ) then
-            ax.util:PrintError("Failed to cache inventory with ID " .. inventoryID .. " for player " .. tostring(client))
+            Parallax.Util:PrintError("Failed to cache inventory with ID " .. inventoryID .. " for player " .. tostring(client))
             return
         end
 
         local inventory = self:CreateObject(result[1])
         if ( !inventory ) then
-            ax.util:PrintError("Failed to create inventory object for ID " .. inventoryID)
+            Parallax.Util:PrintError("Failed to create inventory object for ID " .. inventoryID)
             return
         end
 
@@ -150,18 +150,18 @@ function ax.inventory:Cache(client, inventoryID, callback)
 
         self:AssignToCharacter(inventory:GetOwner(), inventoryID, function(invID)
             if ( !invID ) then
-                ax.util:PrintError("Failed to assign inventory " .. invID .. " to character " .. inventory:GetOwner())
+                Parallax.Util:PrintError("Failed to assign inventory " .. invID .. " to character " .. inventory:GetOwner())
                 return
             end
 
-            ax.item:Cache(inventory:GetOwner(), function(items)
+            Parallax.Item:Cache(inventory:GetOwner(), function(items)
                 if ( !items ) then
-                    ax.util:PrintError("Failed to cache items for inventory " .. invID)
+                    Parallax.Util:PrintError("Failed to cache items for inventory " .. invID)
                     return
                 end
 
                 local itemIDs = {}
-                for _, item in pairs(ax.item.instances) do
+                for _, item in pairs(Parallax.Item.instances) do
                     if ( item:GetOwner() == inventory:GetOwner() ) then
                         table.insert(itemIDs, item:GetID())
                     end
@@ -169,7 +169,7 @@ function ax.inventory:Cache(client, inventoryID, callback)
 
                 inventory.Items = itemIDs
 
-                ax.net:Start(client, "inventory.cache", {
+                Parallax.Net:Start(client, "inventory.cache", {
                     ID = inventory:GetID(),
                     CharacterID = inventory:GetOwner(),
                     Name = inventory:GetName(),
@@ -189,21 +189,21 @@ function ax.inventory:Cache(client, inventoryID, callback)
     end)
 end
 
-function ax.inventory:CacheAll(characterID, callback)
+function Parallax.Inventory:CacheAll(characterID, callback)
     if ( !characterID ) then
-        ax.util:PrintError("Invalid character ID for caching inventories.")
+        Parallax.Util:PrintError("Invalid character ID for caching inventories.")
         return
     end
 
     local bResult = hook.Run("PreInventoryCacheAll", characterID)
     if ( bResult == false ) then
-        ax.util:PrintError("PreInventoryCacheAll hook denied caching of all inventories for character " .. characterID)
+        Parallax.Util:PrintError("PreInventoryCacheAll hook denied caching of all inventories for character " .. characterID)
         return
     end
 
-    ax.database:Select("ax_characters", nil, "id = " .. characterID, function(result)
+    Parallax.Database:Select("ax_characters", nil, "id = " .. characterID, function(result)
         if ( !result or !result[1] ) then
-            ax.util:PrintError("Character with ID " .. characterID .. " not found in database.")
+            Parallax.Util:PrintError("Character with ID " .. characterID .. " not found in database.")
             return
         end
 
@@ -212,19 +212,19 @@ function ax.inventory:CacheAll(characterID, callback)
         local count = #inventories
         for i = 1, count do
             local inventoryID = inventories[i]
-            local client = ax.character:GetPlayerByCharacter(characterID)
+            local client = Parallax.Character:GetPlayerByCharacter(characterID)
             if ( !IsValid(client) ) then
-                ax.util:PrintError("Invalid client for character " .. characterID)
+                Parallax.Util:PrintError("Invalid client for character " .. characterID)
                 return
             end
 
             self:Cache(client, inventoryID, function(success, inventory)
                 if ( !success ) then
-                    ax.util:PrintError("Failed to cache inventory " .. inventoryID .. " for character " .. characterID)
+                    Parallax.Util:PrintError("Failed to cache inventory " .. inventoryID .. " for character " .. characterID)
                     return
                 end
 
-                ax.util:Print("Cached inventory " .. inventoryID .. " for character " .. characterID)
+                Parallax.Util:Print("Cached inventory " .. inventoryID .. " for character " .. characterID)
 
                 -- If we have a callback, call it with the cached inventory
                 if ( callback and i == count ) then
@@ -237,21 +237,21 @@ function ax.inventory:CacheAll(characterID, callback)
     end)
 end
 
-function ax.inventory:AddItem(inventoryID, itemID, uniqueID, data)
+function Parallax.Inventory:AddItem(inventoryID, itemID, uniqueID, data)
     if ( !inventoryID or !itemID or !uniqueID ) then
-        ax.util:PrintError("Invalid parameters for item addition.")
+        Parallax.Util:PrintError("Invalid parameters for item addition.")
         return false
     end
 
-    local item = ax.item:Get(itemID)
+    local item = Parallax.Item:Get(itemID)
     if ( !item ) then
-        ax.util:PrintError("Invalid item ID " .. itemID .. " for addition.")
+        Parallax.Util:PrintError("Invalid item ID " .. itemID .. " for addition.")
         return false
     end
 
     local inventory = self:Get(inventoryID)
     if ( !inventory ) then
-        ax.util:PrintError("Invalid inventory ID " .. inventoryID .. " for item addition.")
+        Parallax.Util:PrintError("Invalid inventory ID " .. inventoryID .. " for item addition.")
         return false
     end
 
@@ -282,12 +282,12 @@ function ax.inventory:AddItem(inventoryID, itemID, uniqueID, data)
     if ( SERVER ) then
         data = data or {}
 
-        ax.database:Update("ax_items", {
+        Parallax.Database:Update("ax_items", {
             inventory_id = inventoryID,
             data = util.TableToJSON(data)
         }, "id = " .. itemID)
 
-        ax.net:Start(receivers, "inventory.item.add", inventoryID, itemID, uniqueID, data)
+        Parallax.Net:Start(receivers, "inventory.item.add", inventoryID, itemID, uniqueID, data)
     end
 
     hook.Run("OnItemAdded", item, inventoryID, uniqueID, data)
@@ -295,21 +295,21 @@ function ax.inventory:AddItem(inventoryID, itemID, uniqueID, data)
     return true
 end
 
-function ax.inventory:RemoveItem(inventoryID, itemID)
+function Parallax.Inventory:RemoveItem(inventoryID, itemID)
     if ( !inventoryID or !itemID ) then
-        ax.util:PrintError("Invalid parameters for item removal.")
+        Parallax.Util:PrintError("Invalid parameters for item removal.")
         return false
     end
 
-    local item = ax.item:Get(itemID)
+    local item = Parallax.Item:Get(itemID)
     if ( !item ) then
-        ax.util:PrintError("Invalid item ID " .. itemID .. " for removal.")
+        Parallax.Util:PrintError("Invalid item ID " .. itemID .. " for removal.")
         return false
     end
 
     local inventory = self:Get(inventoryID)
     if ( !inventory ) then
-        ax.util:PrintError("Invalid inventory ID " .. inventoryID .. " for item removal.")
+        Parallax.Util:PrintError("Invalid inventory ID " .. inventoryID .. " for item removal.")
         return false
     end
 
@@ -329,13 +329,13 @@ function ax.inventory:RemoveItem(inventoryID, itemID)
     item:SetInventory(0)
 
     if ( SERVER ) then
-        ax.database:Update("ax_items", {
+        Parallax.Database:Update("ax_items", {
             inventory_id = 0
         }, "id = " .. itemID)
 
         local receivers = inventory:GetReceivers()
         if ( istable(receivers) ) then
-            ax.net:Start(receivers, "inventory.item.remove", inventoryID, itemID)
+            Parallax.Net:Start(receivers, "inventory.item.remove", inventoryID, itemID)
         end
     end
 

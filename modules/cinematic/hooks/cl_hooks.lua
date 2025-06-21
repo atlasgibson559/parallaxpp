@@ -12,9 +12,9 @@
 local MODULE = MODULE
 
 function MODULE:CalcView(ply, pos, ang, fov)
-    if ( !ax.cinematic.Active ) then return end
+    if ( !Parallax.Cinematic.Active ) then return end
 
-    local camPos, camAng, camFov = ax.cinematic:GetValue()
+    local camPos, camAng, camFov = Parallax.Cinematic:GetValue()
     if ( !camPos ) then return end
 
     return {
@@ -26,9 +26,9 @@ function MODULE:CalcView(ply, pos, ang, fov)
 end
 
 function MODULE:PostDrawTranslucentRenderables()
-    if ( !ax.cinematic.Debug ) then return end
+    if ( !Parallax.Cinematic.Debug ) then return end
 
-    for id, path in pairs(ax.cinematic.RenderPaths) do
+    for id, path in pairs(Parallax.Cinematic.RenderPaths) do
         for i = 2, #path do
             local prev = path[i - 1]
             local node = path[i]
@@ -40,7 +40,7 @@ function MODULE:PostDrawTranslucentRenderables()
             local last = points[1]
             for j = 1, 60 do
                 local t = j / 60
-                local pos = ax.cinematic:Bezier(points, t)
+                local pos = Parallax.Cinematic:Bezier(points, t)
 
                 -- Layered line thickness by offsetting
                 for offset = -1, 1 do

@@ -15,7 +15,7 @@ local PANEL = {}
 
 function PANEL:Init()
     self:SetFont("parallax")
-    self:SetTextColor(ax.color:Get("text.light"))
+    self:SetTextColor(Parallax.Color:Get("text.light"))
 end
 
 function PANEL:SetText(text, bNoTranslate, bNoSizeToContents)
@@ -27,10 +27,10 @@ function PANEL:SetText(text, bNoTranslate, bNoSizeToContents)
             isUpper = true
         end
 
-        text = ax.localization:GetPhrase(string.lower(text))
+        text = Parallax.Localization:GetPhrase(string.lower(text))
 
         if ( isUpper ) then
-            text = ax.utf8:Upper(text)
+            text = Parallax.utf8:Upper(text)
         end
     end
 
@@ -48,7 +48,7 @@ function PANEL:SizeToContents()
     self:SetSize(width + 8, height + 4)
 end
 
-vgui.Register("ax.text", PANEL, "DLabel")
+vgui.Register("Parallax.text", PANEL, "DLabel")
 
 DEFINE_BASECLASS("DLabel")
 
@@ -59,7 +59,7 @@ AccessorFunc(PANEL, "fTypingSpeed", "TypingSpeed", FORCE_NUMBER)
 
 function PANEL:Init()
     self:SetFont("parallax")
-    self:SetTextColor(ax.color:Get("text.light"))
+    self:SetTextColor(Parallax.Color:Get("text.light"))
 
     self.fullText = ""
     self.displayedText = ""
@@ -74,7 +74,7 @@ function PANEL:SetText(text, bNoTranslate, bNoSizeToContents)
     if ( !bNoTranslate ) then
         local isUpper = (string.upper(text) == text)
 
-        text = ax.localization:GetPhrase(string.lower(text))
+        text = Parallax.Localization:GetPhrase(string.lower(text))
 
         if ( isUpper ) then
             text = string.upper(text)
@@ -122,7 +122,7 @@ function PANEL:SizeToContents()
     self:SetSize(width + 8, height + 4)
 end
 
-vgui.Register("ax.text.typewriter", PANEL, "DLabel")
+vgui.Register("Parallax.text.typewriter", PANEL, "DLabel")
 
 concommand.Add("parallax_showtypewriter", function()
     local frame = vgui.Create("DFrame")
@@ -131,7 +131,7 @@ concommand.Add("parallax_showtypewriter", function()
     frame:Center()
     frame:MakePopup()
 
-    local label = frame:Add("ax.text.typewriter")
+    local label = frame:Add("Parallax.text.typewriter")
     label:Dock(FILL)
     label:SetTypingSpeed(0.05)
     label:SetText("WELCOME TO SANTEGO BASE", true, true)

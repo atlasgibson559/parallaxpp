@@ -9,12 +9,12 @@
     Attribution is required. If you use or modify this file, you must retain this notice.
 ]]
 
-ax.data = ax.data or {}
-ax.data.stored = ax.data.stored or {}
+Parallax.Data = Parallax.Data or {}
+Parallax.Data.stored = Parallax.Data.stored or {}
 
 file.CreateDir("parallax")
 
-function ax.data:Set(key, value, bGlobal, bMap)
+function Parallax.Data:Set(key, value, bGlobal, bMap)
     local path = "parallax/"
     if ( !bGlobal and SCHEMA and SCHEMA.Folder ) then
         path = path .. SCHEMA.Folder .. "/"
@@ -32,7 +32,7 @@ function ax.data:Set(key, value, bGlobal, bMap)
     return path
 end
 
-function ax.data:Get(key, fallback, bGlobal, bMap, bRefresh)
+function Parallax.Data:Get(key, fallback, bGlobal, bMap, bRefresh)
     local stored = self.stored[key]
     if ( !bRefresh and stored != nil ) then
         return stored

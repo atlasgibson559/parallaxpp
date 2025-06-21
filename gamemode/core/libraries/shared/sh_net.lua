@@ -9,22 +9,22 @@
     Attribution is required. If you use or modify this file, you must retain this notice.
 ]]
 
--- ax.net
+-- Parallax.Net
 -- Streaming data layer using sfs. NetStream-style API.
 -- @realm shared
 
-ax.net = ax.net or {}
-ax.net.stored = ax.net.stored or {}
-ax.net.cooldown = ax.net.cooldown or {}
+Parallax.Net = Parallax.Net or {}
+Parallax.Net.stored = Parallax.Net.stored or {}
+Parallax.Net.cooldown = Parallax.Net.cooldown or {}
 
 if ( SERVER ) then
-    util.AddNetworkString("ax.net.msg")
+    util.AddNetworkString("Parallax.Net.msg")
 end
 
 --- Hooks a network message.
 -- @string name Unique identifier.
 -- @func callback Callback with player, unpacked arguments.
-function ax.net:Hook(name, callback, bNoDelay)
+function Parallax.Net:Hook(name, callback, bNoDelay)
     self.stored[name] = {callback, bNoDelay or false}
 end
 
@@ -33,7 +33,7 @@ end
 -- @string name Hook name.
 -- @vararg Arguments to send.
 if ( SERVER ) then
-    function ax.net:Start(target, name, ...)
+    function Parallax.Net:Start(target, name, ...)
         local arguments = {...}
         local encoded = sfs.encode(arguments)
         if ( !isstring(encoded) or #encoded < 1 ) then return end
@@ -57,7 +57,7 @@ if ( SERVER ) then
             recipients = select(2, player.Iterator())
         end
 
-        net.Start("ax.net.msg")
+        net.Start("Parallax.Net.msg")
             net.WriteString(name)
             net.WriteData(encoded, #encoded)
 
@@ -67,60 +67,60 @@ if ( SERVER ) then
             net.Send(recipients)
         end
 
-        if ( ax.config:Get("debug.networking") ) then
-            ax.util:Print("[Networking] Sent '" .. name .. "' to " .. (SERVER and #recipients .. " players" or "server"))
+        if ( Parallax.Config:Get("debug.networking") ) then
+            Parallax.Util:Print("[Networking] Sent '" .. name .. "' to " .. (SERVER and #recipients .. " players" or "server"))
         end
     end
 else
-    function ax.net:Start(name, ...)
+    function Parallax.Net:Start(name, ...)
         local arguments = {...}
         local encoded = sfs.encode(arguments)
         if ( !isstring(encoded) or #encoded < 1 ) then return end
 
-        net.Start("ax.net.msg")
+        net.Start("Parallax.Net.msg")
             net.WriteString(name)
             net.WriteData(encoded, #encoded)
         net.SendToServer()
     end
 end
 
-net.Receive("ax.net.msg", function(len, client)
+net.Receive("Parallax.Net.msg", function(len, client)
     local name = net.ReadString()
     local raw = net.ReadData(len / 8)
 
     local ok, decoded = pcall(sfs.decode, raw)
     if ( !ok or type(decoded) != "table" ) then
-        ax.util:PrintError("[Networking] Decode failed for '" .. name .. "'")
+        Parallax.Util:PrintError("[Networking] Decode failed for '" .. name .. "'")
         return
     end
 
-    local stored = ax.net.stored[name]
+    local stored = Parallax.Net.stored[name]
     if ( !istable(stored) or #stored < 1 ) then
-        ax.util:PrintError("[Networking] No handler for '" .. name .. "'")
+        Parallax.Util:PrintError("[Networking] No handler for '" .. name .. "'")
         return
     end
 
     local callback = stored[1]
     if ( !isfunction(callback) ) then
-        ax.util:PrintError("[Networking] No handler for '" .. name .. "'")
+        Parallax.Util:PrintError("[Networking] No handler for '" .. name .. "'")
         return
     end
 
     if ( SERVER ) then
-        local configCooldown = ax.config:Get("networking.cooldown", 0.1)
+        local configCooldown = Parallax.Config:Get("networking.cooldown", 0.1)
         if ( !stored[2] and isnumber(configCooldown) and configCooldown > 0 ) then
             local steam64 = client:SteamID64()
-            if ( !istable(ax.net.cooldown[steam64]) ) then ax.net.cooldown[steam64] = {} end
-            if ( !isnumber(ax.net.cooldown[steam64][name]) ) then ax.net.cooldown[steam64][name] = 0 end
+            if ( !istable(Parallax.Net.cooldown[steam64]) ) then Parallax.Net.cooldown[steam64] = {} end
+            if ( !isnumber(Parallax.Net.cooldown[steam64][name]) ) then Parallax.Net.cooldown[steam64][name] = 0 end
 
-            local coolDown = ax.net.cooldown[steam64][name]
+            local coolDown = Parallax.Net.cooldown[steam64][name]
             if ( isnumber(coolDown) and coolDown > CurTime() ) then
-                ax.util:PrintWarning("[Networking] '" .. name .. "' is on cooldown for " .. math.ceil(coolDown - CurTime()) .. " seconds, ignoring request from " .. (tostring(client) or "unknown"))
+                Parallax.Util:PrintWarning("[Networking] '" .. name .. "' is on cooldown for " .. math.ceil(coolDown - CurTime()) .. " seconds, ignoring request from " .. (tostring(client) or "unknown"))
 
                 return
             end
 
-            ax.net.cooldown[steam64][name] = CurTime() + (configCooldown or 0.1)
+            Parallax.Net.cooldown[steam64][name] = CurTime() + (configCooldown or 0.1)
         end
 
         callback(client, unpack(decoded))
@@ -128,21 +128,21 @@ net.Receive("ax.net.msg", function(len, client)
         callback(unpack(decoded))
     end
 
-    if ( ax.config:Get("debug.networking") ) then
-        ax.util:Print("[Networking] Received '" .. name .. "' from " .. (SERVER and client:Nick() or "server"))
+    if ( Parallax.Config:Get("debug.networking") ) then
+        Parallax.Util:Print("[Networking] Received '" .. name .. "' from " .. (SERVER and client:Nick() or "server"))
     end
 end)
 
 --[[
 --- Example usage:
 if ( SERVER ) then
-    ax.net:Hook("test", function(client, val, val2)
+    Parallax.Net:Hook("test", function(client, val, val2)
         print(client, "sent:", val, val2)
     end)
 end
 
 if ( CLIENT ) then
-    ax.net:Start(nil, "test", {89})
-    ax.net:Start(nil, "test", "hello", "world")
+    Parallax.Net:Start(nil, "test", {89})
+    Parallax.Net:Start(nil, "test", "hello", "world")
 end
 ]]

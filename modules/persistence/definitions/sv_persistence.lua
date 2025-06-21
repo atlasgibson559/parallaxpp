@@ -15,7 +15,7 @@ local savedEntities = {}
 
 --- Saves all persistent entities and their custom data.
 function MODULE:SaveEntities()
-    ax.log:Send("Saving persistent entities...")
+    Parallax.log:Send("Saving persistent entities...")
 
     savedEntities = {}    -- Iterate through all possible persistent entity classes and mark them
     -- as persistent. This is done to ensure that all entities are marked
@@ -53,13 +53,13 @@ function MODULE:SaveEntities()
         })
     end
 
-    ax.log:Send("Saved " .. #savedEntities .. " persistent entities.")
-    ax.data:Set("persistent_entities", savedEntities)
+    Parallax.log:Send("Saved " .. #savedEntities .. " persistent entities.")
+    Parallax.Data:Set("persistent_entities", savedEntities)
 end
 
 --- Loads all previously saved persistent entities.
 function MODULE:LoadEntities()
-    ax.log:Send("Loading persistent entities...")
+    Parallax.log:Send("Loading persistent entities...")
 
     for k, v in pairs(savedEntities) do
         local entities = ents.FindByClass(v.class)
@@ -72,7 +72,7 @@ function MODULE:LoadEntities()
         end
     end
 
-    savedEntities = ax.data:Get("persistent_entities", {})
+    savedEntities = Parallax.Data:Get("persistent_entities", {})
 
     local entityCount = #savedEntities
     for i = 1, entityCount do
@@ -98,7 +98,7 @@ function MODULE:LoadEntities()
         ent:SetRelay("persistent", true)
     end
 
-    ax.log:Send("Loaded " .. #savedEntities .. " persistent entities.")
+    Parallax.log:Send("Loaded " .. #savedEntities .. " persistent entities.")
 end
 
 concommand.Add("ax_persistence_save", function(client, cmd, arguments)
@@ -108,7 +108,7 @@ concommand.Add("ax_persistence_save", function(client, cmd, arguments)
     end
 
     MODULE:SaveEntities()
-    ax.log:Send(ax.log:Format(client) .. " manually saved all persistent entities.")
+    Parallax.log:Send(Parallax.log:Format(client) .. " manually saved all persistent entities.")
     client:Notify("Saved all persistent entities.")
 end)
 
@@ -119,7 +119,7 @@ concommand.Add("ax_persistence_load", function(client, cmd, arguments)
     end
 
     MODULE:LoadEntities()
-    ax.log:Send(ax.log:Format(client) .. " manually loaded all persistent entities.")
+    Parallax.log:Send(Parallax.log:Format(client) .. " manually loaded all persistent entities.")
     client:Notify("Loaded all persistent entities.")
 end)
 
@@ -138,7 +138,7 @@ concommand.Add("ax_persistence_mark", function(client, cmd, arguments)
     end
 
     ent:SetRelay("persistent", true)
-    ax.log:Send(ax.log:Format(client) .. " marked entity " .. tostring(ent) .. " as persistent.")
+    Parallax.log:Send(Parallax.log:Format(client) .. " marked entity " .. tostring(ent) .. " as persistent.")
     client:Notify("Marked entity " .. tostring(ent) .. " as persistent.")
 
     MODULE:SaveEntities()
@@ -159,7 +159,7 @@ concommand.Add("ax_persistence_unmark", function(client, cmd, arguments)
     end
 
     ent:SetRelay("persistent", false)
-    ax.log:Send(ax.log:Format(client) .. " unmarked entity " .. tostring(ent) .. " as persistent.")
+    Parallax.log:Send(Parallax.log:Format(client) .. " unmarked entity " .. tostring(ent) .. " as persistent.")
     client:Notify("Unmarked entity " .. tostring(ent) .. " as persistent.")
 
     MODULE:SaveEntities()

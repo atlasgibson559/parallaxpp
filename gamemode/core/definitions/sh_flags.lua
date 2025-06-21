@@ -9,7 +9,7 @@
     Attribution is required. If you use or modify this file, you must retain this notice.
 ]]
 
-ax.flag:Register("t", "flag.toolgun", function(info, char, has)
+Parallax.Flag:Register("t", "flag.toolgun", function(info, char, has)
     local client = char:GetPlayer()
     if ( !IsValid(client) ) then return end
 
@@ -25,7 +25,7 @@ ax.flag:Register("t", "flag.toolgun", function(info, char, has)
     end
 end)
 
-ax.flag:Register("p", "flag.physgun", function(info, char, has)
+Parallax.Flag:Register("p", "flag.physgun", function(info, char, has)
     local client = char:GetPlayer()
     if ( !IsValid(client) ) then return end
 
@@ -41,5 +41,5 @@ ax.flag:Register("p", "flag.physgun", function(info, char, has)
     end
 end)
 
-ax.flag:Register("s", "flag.spawnmenu", nil)
-ax.flag:Register("n", "flag.npc", nil)
+Parallax.Flag:Register("s", "flag.spawnmenu", nil)
+Parallax.Flag:Register("n", "flag.npc", nil)

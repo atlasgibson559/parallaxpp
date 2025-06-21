@@ -9,18 +9,18 @@
     Attribution is required. If you use or modify this file, you must retain this notice.
 ]]
 
-ax.notification = ax.notification or {}
-ax.notification.stored = ax.notification.stored or {}
+Parallax.Notification = Parallax.Notification or {}
+Parallax.Notification.stored = Parallax.Notification.stored or {}
 
 -- Configuration
 local PANEL_WIDTH = ScrW() / 2.5
 local PANEL_MARGIN = 8
 local PANEL_SPACING = 4
 local INTERP_SPEED = 8
-local FONT_NAME = "parallax.bold"
+local FONT_NAME = "Parallax.bold"
 
 -- Utility function to create a notification
-function ax.notification:Add(text, duration, bgColor)
+function Parallax.Notification:Add(text, duration, bgColor)
     duration = duration or 3
     bgColor.a = 200
 
@@ -32,10 +32,10 @@ function ax.notification:Add(text, duration, bgColor)
     -- Prepare wrapped lines
     local maxTextWidth = PANEL_WIDTH - PANEL_MARGIN * 2
 
-    local phrase = ax.localization:GetPhrase(text)
+    local phrase = Parallax.Localization:GetPhrase(text)
     if ( isstring(phrase) ) then text = phrase end
 
-    local lines = ax.util:GetWrappedText(text, FONT_NAME, maxTextWidth)
+    local lines = Parallax.Util:GetWrappedText(text, FONT_NAME, maxTextWidth)
     surface.SetFont(FONT_NAME)
     local _, lineHeight = surface.GetTextSize("Ay")
     local totalHeight = #lines * lineHeight + PANEL_MARGIN * 2
@@ -53,7 +53,7 @@ function ax.notification:Add(text, duration, bgColor)
                 FONT_NAME,
                 PANEL_MARGIN,
                 PANEL_MARGIN + (i - 1) * lineHeight,
-                ax.color:Get("white"),
+                Parallax.Color:Get("white"),
                 TEXT_ALIGN_LEFT,
                 TEXT_ALIGN_TOP
             )
@@ -106,7 +106,7 @@ function ax.notification:Add(text, duration, bgColor)
 end
 
 -- Reposition notifications using Lerp targets
-function ax.notification:RepositionAll()
+function Parallax.Notification:RepositionAll()
     local scrW = ScrW()
     local storedCount = #self.stored
     for i = 1, storedCount do
@@ -121,26 +121,26 @@ end
 notification.AddLegacy = function(text, type, length)
     local color
     if ( type == NOTIFY_ERROR ) then
-        color = ax.config:Get("color.error")
-        ax.client:EmitSound("ax.notification.error")
+        color = Parallax.Config:Get("color.error")
+        Parallax.Client:EmitSound("Parallax.Notification.error")
     elseif ( type == NOTIFY_HINT ) then
-        color = ax.config:Get("color.success")
-        ax.client:EmitSound("ax.notification.hint")
+        color = Parallax.Config:Get("color.success")
+        Parallax.Client:EmitSound("Parallax.Notification.hint")
     else
-        color = ax.config:Get("color.info")
-        ax.client:EmitSound("ax.notification.generic")
+        color = Parallax.Config:Get("color.info")
+        Parallax.Client:EmitSound("Parallax.Notification.generic")
     end
 
-    ax.notification:Add(text, length or 3, color)
+    Parallax.Notification:Add(text, length or 3, color)
 end
 
 concommand.Add("test_notification", function(client, cmd, arguments)
     local text = table.concat(arguments, " ")
-    ax.notification:Add(text, 5)
+    Parallax.Notification:Add(text, 5)
 end)
 
 sound.Add({
-    name = "ax.notification.error",
+    name = "Parallax.Notification.error",
     channel = CHAN_STATIC,
     volume = 1.0,
     level = 80,
@@ -148,7 +148,7 @@ sound.Add({
 })
 
 sound.Add({
-    name = "ax.notification.hint",
+    name = "Parallax.Notification.hint",
     channel = CHAN_STATIC,
     volume = 1.0,
     level = 80,
@@ -156,7 +156,7 @@ sound.Add({
 })
 
 sound.Add({
-    name = "ax.notification.generic",
+    name = "Parallax.Notification.generic",
     channel = CHAN_STATIC,
     volume = 1.0,
     level = 80,

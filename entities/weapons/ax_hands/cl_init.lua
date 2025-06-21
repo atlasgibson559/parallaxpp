@@ -18,7 +18,7 @@ function SWEP:CheckYaw()
         if ( client:OnCooldown("hands") ) then return end
         client:SetCooldown("hands", 0.5)
 
-        ax.net:Start("hands.reset")
+        Parallax.Net:Start("hands.reset")
     end
 end
 

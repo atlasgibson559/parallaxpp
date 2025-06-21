@@ -11,21 +11,21 @@
 
 --- Cinematic
 -- Clientside Bézier-based camera system using keyframes and timestamped playback.
--- @module ax.cinematic
+-- @module Parallax.Cinematic
 
-ax.cinematic = ax.cinematic or {}
-ax.cinematic.Active = nil
-ax.cinematic.Path = {}
-ax.cinematic.TotalDistance = 0
-ax.cinematic.StartTime = 0
-ax.cinematic.Duration = 0
-ax.cinematic.Debug = true
-ax.cinematic.RenderPaths = {}
+Parallax.Cinematic = Parallax.Cinematic or {}
+Parallax.Cinematic.Active = nil
+Parallax.Cinematic.Path = {}
+Parallax.Cinematic.TotalDistance = 0
+Parallax.Cinematic.StartTime = 0
+Parallax.Cinematic.Duration = 0
+Parallax.Cinematic.Debug = true
+Parallax.Cinematic.RenderPaths = {}
 
 --- Starts a new cinematic path.
 -- @param duration Playback duration
 -- @param path Table of {pos, ang, [fov], [ctrl]} entries
-function ax.cinematic:Start(duration, path)
+function Parallax.Cinematic:Start(duration, path)
     self:Stop()
 
     self.Path = {}
@@ -82,7 +82,7 @@ function ax.cinematic:Start(duration, path)
 end
 
 --- Stops the current cinematic.
-function ax.cinematic:Stop()
+function Parallax.Cinematic:Stop()
     self.Path = {}
     self.TotalDistance = 0
     self.StartTime = 0
@@ -94,7 +94,7 @@ end
 --- Cubic Bézier curve calculator.
 -- @param points Table of 4 control points
 -- @param t Normalized progress
-function ax.cinematic:Bezier(points, t)
+function Parallax.Cinematic:Bezier(points, t)
     local u = 1 - t
     local tt = t * t
     local uu = u * u
@@ -107,7 +107,7 @@ function ax.cinematic:Bezier(points, t)
         ttt * points[4]
 end
 
-function ax.cinematic:GetValue()
+function Parallax.Cinematic:GetValue()
     local elapsed = CurTime() - self.StartTime
     if elapsed >= self.Duration then self:Stop() return end
 
@@ -229,7 +229,7 @@ local path = {
 }
 
 concommand.Add("ax_cinematic_example", function()
-    ax.cinematic:Start(#path * 4, path)
+    Parallax.Cinematic:Start(#path * 4, path)
 end)
 
 -- Prints a point with the current eye pos, angle and fov, used for adding new points
@@ -246,6 +246,6 @@ concommand.Add("ax_cinematic_print", function(ply, cmd, arguments)
         pos.x - ply:GetForward().x * 64, pos.y - ply:GetForward().y * 64, pos.z - ply:GetForward().z * 64
     )
 
-    ax.util:Print(output)
+    Parallax.Util:Print(output)
     SetClipboardText(output)
 end)

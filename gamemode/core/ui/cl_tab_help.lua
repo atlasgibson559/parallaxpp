@@ -17,12 +17,12 @@ function PANEL:Init()
     self:Dock(FILL)
     self:InvalidateParent(true)
 
-    local title = self:Add("ax.text")
+    local title = self:Add("Parallax.text")
     title:Dock(TOP)
-    title:SetFont("parallax.huge.bold")
+    title:SetFont("Parallax.huge.bold")
     title:SetText("HELP")
 
-    self.buttons = self:Add("ax.scroller.horizontal")
+    self.buttons = self:Add("Parallax.scroller.horizontal")
     self.buttons:Dock(TOP)
     self.buttons:DockMargin(0, ScreenScaleH(4), 0, 0)
     self.buttons:SetTall(ScreenScaleH(24))
@@ -39,13 +39,13 @@ function PANEL:Init()
     local categories = {}
     hook.Run("PopulateHelpCategories", categories)
     for k, v in SortedPairs(categories) do
-        local button = self.buttons:Add("ax.button.flat")
+        local button = self.buttons:Add("Parallax.button.flat")
         button:Dock(LEFT)
         button:SetText(k)
         button:SizeToContents()
 
         button.DoClick = function()
-            ax.gui.helpLast = k
+            Parallax.gui.helpLast = k
 
             self:Populate(v)
         end
@@ -54,8 +54,8 @@ function PANEL:Init()
     end
 
     for k, v in SortedPairs(categories) do
-        if ( ax.gui.helpLast ) then
-            if ( ax.gui.helpLast == k ) then
+        if ( Parallax.gui.helpLast ) then
+            if ( Parallax.gui.helpLast == k ) then
                 self:Populate(v)
                 break
             end
@@ -77,7 +77,7 @@ function PANEL:Populate(data)
         end
 
         if ( data.OnClose ) then
-            self:CallOnRemove("ax.tab.help." .. data.name, function()
+            self:CallOnRemove("Parallax.tab.help." .. data.name, function()
                 data.OnClose()
             end)
         end
@@ -86,6 +86,6 @@ function PANEL:Populate(data)
     end
 end
 
-vgui.Register("ax.tab.help", PANEL, "EditablePanel")
+vgui.Register("Parallax.tab.help", PANEL, "EditablePanel")
 
-ax.gui.helpLast = nil
+Parallax.gui.helpLast = nil

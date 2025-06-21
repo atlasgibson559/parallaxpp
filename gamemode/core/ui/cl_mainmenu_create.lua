@@ -24,11 +24,11 @@ end
 function PANEL:ResetPayload()
     self.currentCreatePage = 0
 
-    for k, v in pairs(ax.character.variables) do
+    for k, v in pairs(Parallax.Character.variables) do
         if ( v.Editable != true ) then continue end
 
         -- This is a bit of a hack, but it works for now.
-        if ( v.Type == ax.types.string or v.Type == ax.types.text ) then
+        if ( v.Type == Parallax.Types.string or v.Type == Parallax.Types.text ) then
             self:SetPayload(k, "")
         end
     end
@@ -63,10 +63,10 @@ function PANEL:PopulateFactionSelect()
     self:Clear()
     self:SetVisible(true)
 
-    local title = self:Add("ax.text")
+    local title = self:Add("Parallax.text")
     title:Dock(TOP)
     title:DockMargin(ScreenScale(32), ScreenScaleH(32), 0, 0)
-    title:SetFont("parallax.huge.bold")
+    title:SetFont("Parallax.huge.bold")
     title:SetText(string.upper("mainmenu.create.character.faction"))
 
     local navigation = self:Add("EditablePanel")
@@ -74,7 +74,7 @@ function PANEL:PopulateFactionSelect()
     navigation:DockMargin(ScreenScale(32), 0, ScreenScale(32), ScreenScaleH(32))
     navigation:SetTall(ScreenScaleH(24))
 
-    local backButton = navigation:Add("ax.button.flat")
+    local backButton = navigation:Add("Parallax.button.flat")
     backButton:Dock(LEFT)
     backButton:SetText("back")
     backButton.DoClick = function()
@@ -88,7 +88,7 @@ function PANEL:PopulateFactionSelect()
 
     navigation:SetTall(backButton:GetTall())
 
-    local factionList = self:Add("ax.scroller.horizontal")
+    local factionList = self:Add("Parallax.scroller.horizontal")
     factionList:Dock(FILL)
     factionList:DockMargin(ScreenScale(32), ScreenScale(32) * 2, ScreenScale(32), ScreenScale(32))
     factionList:InvalidateParent(true)
@@ -97,7 +97,7 @@ function PANEL:PopulateFactionSelect()
     factionList.btnLeft:SetAlpha(0)
     factionList.btnRight:SetAlpha(0)
 
-    local factions = table.Copy(ax.faction:GetAll())
+    local factions = table.Copy(Parallax.Faction:GetAll())
     table.sort(factions, function(a, b)
         local aSort = a.SortOrder or 100
         local bSort = b.SortOrder or 100
@@ -112,15 +112,15 @@ function PANEL:PopulateFactionSelect()
 
     for i = 1, #factions do
         local v = factions[i]
-        if ( !ax.faction:CanSwitchTo(ax.client, v:GetID()) ) then continue end
+        if ( !Parallax.Faction:CanSwitchTo(Parallax.Client, v:GetID()) ) then continue end
 
-        local name = (v.Name and ax.utf8:Upper(v.Name)) or "UNKNOWN FACTION"
-        local description = (v.Description and ax.utf8:Upper(v.Description)) or "UNKNOWN FACTION DESCRIPTION"
-        description = ax.util:CapTextWord(description, factionList:GetTall() / 3) -- Unreliable, but it works for now
+        local name = (v.Name and Parallax.utf8:Upper(v.Name)) or "UNKNOWN FACTION"
+        local description = (v.Description and Parallax.utf8:Upper(v.Description)) or "UNKNOWN FACTION DESCRIPTION"
+        description = Parallax.Util:CapTextWord(description, factionList:GetTall() / 3) -- Unreliable, but it works for now
 
-        local descriptionWrapped = ax.util:GetWrappedText(description, "parallax.bold", factionList:GetTall() * 1.25)
+        local descriptionWrapped = Parallax.Util:GetWrappedText(description, "Parallax.bold", factionList:GetTall() * 1.25)
 
-        local factionButton = factionList:Add("ax.button.flat")
+        local factionButton = factionList:Add("Parallax.button.flat")
         factionButton:Dock(LEFT)
         factionButton:DockMargin(0, 0, 16, 0)
         factionButton:SetText(v.Name or "Unknown Faction")
@@ -136,7 +136,7 @@ function PANEL:PopulateFactionSelect()
 
         local banner = v.Image or hook.Run("GetFactionBanner", v:GetID()) or "gamepadui/hl2/chapter14"
         if ( type(banner) == "string" ) then
-            banner = ax.util:GetMaterial(banner)
+            banner = Parallax.Util:GetMaterial(banner)
         end
 
         local image = factionButton:Add("DPanel")
@@ -147,7 +147,7 @@ function PANEL:PopulateFactionSelect()
             local imageHeight = height * 0.85
             imageHeight = math.Round(imageHeight)
 
-            surface.SetDrawColor(ax.color:Get("white"))
+            surface.SetDrawColor(Parallax.Color:Get("white"))
             surface.SetMaterial(banner)
             surface.DrawTexturedRect(0, 0, width, imageHeight)
 
@@ -157,15 +157,15 @@ function PANEL:PopulateFactionSelect()
 
             local boxHeight = boxHeightStatic * inertia
             boxHeight = math.Round(boxHeight)
-            draw.RoundedBox(0, 0, imageHeight - boxHeight, width, boxHeight, ColorAlpha(ax.color:Get("white"), 255 * inertia))
+            draw.RoundedBox(0, 0, imageHeight - boxHeight, width, boxHeight, ColorAlpha(Parallax.Color:Get("white"), 255 * inertia))
 
             local textColor = factionButton:GetTextColor()
             local hovered = factionButton:IsHovered()
-            local font = "parallax.huge"
+            local font = "Parallax.huge"
             if ( v.Font ) then
                 font = v.Font
             elseif ( name:len() > 22 ) then
-                font = "parallax.massive"
+                font = "Parallax.massive"
             end
 
             if ( hovered ) then
@@ -174,9 +174,9 @@ function PANEL:PopulateFactionSelect()
 
             draw.SimpleText(name, font, ScreenScale(8), imageHeight - boxHeight + boxHeightStatic / 2, textColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 
-            local textHeight = ax.util:GetTextHeight("parallax.bold") / 1.5
+            local textHeight = Parallax.Util:GetTextHeight("Parallax.bold") / 1.5
             for d = 1, #descriptionWrapped do
-                draw.SimpleText(descriptionWrapped[d], "parallax.bold", ScreenScale(8), imageHeight - boxHeight + boxHeightStatic + (d - 1) * textHeight, ColorAlpha(textColor, 255 * inertia), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                draw.SimpleText(descriptionWrapped[d], "Parallax.bold", ScreenScale(8), imageHeight - boxHeight + boxHeightStatic + (d - 1) * textHeight, ColorAlpha(textColor, 255 * inertia), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
             end
         end
 
@@ -192,16 +192,16 @@ function PANEL:PopulateCreateCharacter()
 
     -- If we have no faction select the 1st one available
     if ( !self.currentCreatePayload.faction or self.currentCreatePayload.faction == 0 ) then
-        local factions = ax.faction:GetAll()
+        local factions = Parallax.Faction:GetAll()
         if ( factions[1] != nil ) then
             for i = 1, #factions do
-                if ( ax.faction:CanSwitchTo(ax.client, factions[i]:GetID()) ) then
+                if ( Parallax.Faction:CanSwitchTo(Parallax.Client, factions[i]:GetID()) ) then
                     self.currentCreatePayload.faction = factions[i]:GetID()
                     break
                 end
             end
         else
-            ax.util:PrintError("No factions available for character creation!")
+            Parallax.Util:PrintError("No factions available for character creation!")
             return
         end
     end
@@ -217,10 +217,10 @@ function PANEL:PopulateCreateCharacter()
     self:Clear()
     self:SetVisible(true)
 
-    local title = self:Add("ax.text")
+    local title = self:Add("Parallax.text")
     title:Dock(TOP)
     title:DockMargin(ScreenScale(32), ScreenScaleH(32), 0, 0)
-    title:SetFont("parallax.huge.bold")
+    title:SetFont("Parallax.huge.bold")
     title:SetText(string.upper("mainmenu.create.character"))
 
     local navigation = self:Add("EditablePanel")
@@ -228,16 +228,16 @@ function PANEL:PopulateCreateCharacter()
     navigation:DockMargin(ScreenScale(32), 0, ScreenScale(32), ScreenScaleH(32))
     navigation:SetTall(ScreenScaleH(24))
 
-    local backButton = navigation:Add("ax.button.flat")
+    local backButton = navigation:Add("Parallax.button.flat")
     backButton:Dock(LEFT)
     backButton:SetText("back")
 
     backButton.DoClick = function()
         if ( self.currentCreatePage == 0 ) then
             local availableFactions = 0
-            for i = 1, #ax.faction:GetAll() do
-                local v = ax.faction:GetAll()[i]
-                if ( ax.faction:CanSwitchTo(ax.client, v:GetID()) ) then
+            for i = 1, #Parallax.Faction:GetAll() do
+                local v = Parallax.Faction:GetAll()[i]
+                if ( Parallax.Faction:CanSwitchTo(Parallax.Client, v:GetID()) ) then
                     availableFactions = availableFactions + 1
                 end
             end
@@ -256,19 +256,19 @@ function PANEL:PopulateCreateCharacter()
         end
     end
 
-    local nextButton = navigation:Add("ax.button.flat")
+    local nextButton = navigation:Add("Parallax.button.flat")
     nextButton:Dock(RIGHT)
     nextButton:SetText("next")
 
     nextButton.DoClick = function()
         local isNextEmpty = true
-        for k, v in pairs(ax.character.variables) do
+        for k, v in pairs(Parallax.Character.variables) do
             if ( v.Editable != true ) then continue end
 
             if ( isfunction(v.OnValidate) ) then
-                local isValid, errorMessage = v:OnValidate(self.characterCreateForm, self.currentCreatePayload, ax.client)
+                local isValid, errorMessage = v:OnValidate(self.characterCreateForm, self.currentCreatePayload, Parallax.Client)
                 if ( !isValid ) then
-                    ax.client:Notify(errorMessage)
+                    Parallax.Client:Notify(errorMessage)
                     return
                 end
             end
@@ -277,11 +277,11 @@ function PANEL:PopulateCreateCharacter()
             if ( page != self.currentCreatePage + 1 ) then continue end
 
             if ( isfunction(v.OnValidate) ) then
-                isNextEmpty = v:OnValidate(self.characterCreateForm, self.currentCreatePayload, ax.client)
+                isNextEmpty = v:OnValidate(self.characterCreateForm, self.currentCreatePayload, Parallax.Client)
                 if ( isNextEmpty ) then continue end
             end
 
-            if ( v.Type == ax.types.string or v.Type == ax.types.text ) then
+            if ( v.Type == Parallax.Types.string or v.Type == Parallax.Types.text ) then
                 local entry = self.characterCreateForm:GetChild(k)
                 if ( entry and entry:GetValue() != "" ) then
                     self:SetPayload(k, entry:GetValue())
@@ -291,7 +291,7 @@ function PANEL:PopulateCreateCharacter()
         end
 
         if ( isNextEmpty ) then
-            ax.net:Start("character.create", self.currentCreatePayload)
+            Parallax.Net:Start("character.create", self.currentCreatePayload)
         else
             self.currentCreatePage = self.currentCreatePage + 1
             self:PopulateCreateCharacterForm()
@@ -314,14 +314,14 @@ function PANEL:PopulateCreateCharacterForm()
         self.characterCreateForm:Clear()
     end
 
-    local factionData = ax.faction:Get(self.currentCreatePayload.faction)
+    local factionData = Parallax.Faction:Get(self.currentCreatePayload.faction)
     if ( !factionData ) then
-        ax.util:PrintError("No faction data found for faction ID: " .. tostring(self.currentCreatePayload.faction))
+        Parallax.Util:PrintError("No faction data found for faction ID: " .. tostring(self.currentCreatePayload.faction))
         return
     end
 
     local zPos = 0
-    for k, v in pairs(ax.character.variables) do
+    for k, v in pairs(Parallax.Character.variables) do
         if ( v.Editable != true ) then continue end
 
         local page = v.Page or 0
@@ -332,15 +332,15 @@ function PANEL:PopulateCreateCharacterForm()
             continue
         end
 
-        local translation = ax.localization:GetPhrase(v.Name)
+        local translation = Parallax.Localization:GetPhrase(v.Name)
         local bTranslated = translation != v.Name
 
-        if ( v.Type == ax.types.string ) then
+        if ( v.Type == Parallax.Types.string ) then
             zPos = zPos + 1 + v.ZPos
 
-            local label = self.characterCreateForm:Add("ax.text")
+            local label = self.characterCreateForm:Add("Parallax.text")
             label:Dock(TOP)
-            label:SetFont("parallax.large.bold")
+            label:SetFont("Parallax.large.bold")
 
             label:SetText(bTranslated and translation or v.Name or k)
 
@@ -348,7 +348,7 @@ function PANEL:PopulateCreateCharacterForm()
             label:SetZPos(zPos)
             zPos = zPos + 1
 
-            local entry = self.characterCreateForm:Add("ax.text.entry")
+            local entry = self.characterCreateForm:Add("Parallax.text.entry")
             entry:Dock(TOP)
             entry:DockMargin(0, 0, 0, ScreenScaleH(16))
             entry:SetFont("parallax")
@@ -370,7 +370,7 @@ function PANEL:PopulateCreateCharacterForm()
             end
 
             if ( factionData.GetDefaultName and k == "name" ) then
-                local defaultName, forced = factionData:GetDefaultName(ax.client)
+                local defaultName, forced = factionData:GetDefaultName(Parallax.Client)
                 if ( defaultName and defaultName != "" ) then
                     entry:SetValue(defaultName)
                     self:SetPayload(k, defaultName)
@@ -381,20 +381,20 @@ function PANEL:PopulateCreateCharacterForm()
                     end
                 end
             end
-        elseif ( v.Type == ax.types.text ) then
+        elseif ( v.Type == Parallax.Types.text ) then
             zPos = zPos + 1 + v.ZPos
 
-            local label = self.characterCreateForm:Add("ax.text")
+            local label = self.characterCreateForm:Add("Parallax.text")
             label:Dock(TOP)
             label:SetText(bTranslated and translation or v.Name or k)
-            label:SetFont("parallax.large.bold")
+            label:SetFont("Parallax.large.bold")
             label:SizeToContents()
 
             zPos = zPos - 1
             label:SetZPos(zPos)
             zPos = zPos + 1
 
-            local entry = self.characterCreateForm:Add("ax.text.entry")
+            local entry = self.characterCreateForm:Add("Parallax.text.entry")
             entry:Dock(TOP)
             entry:DockMargin(0, 0, 0, ScreenScaleH(16))
             entry:SetFont("parallax")
@@ -414,7 +414,7 @@ function PANEL:PopulateCreateCharacterForm()
             end
 
             if ( factionData.GetDefaultDescription and k == "description" ) then
-                local defaultDescription = factionData:GetDefaultDescription(ax.client)
+                local defaultDescription = factionData:GetDefaultDescription(Parallax.Client)
                 if ( defaultDescription and defaultDescription != "" ) then
                     entry:SetValue(defaultDescription)
                     self:SetPayload(k, defaultDescription)
@@ -424,4 +424,4 @@ function PANEL:PopulateCreateCharacterForm()
     end
 end
 
-vgui.Register("ax.mainmenu.create", PANEL, "EditablePanel")
+vgui.Register("Parallax.mainmenu.create", PANEL, "EditablePanel")

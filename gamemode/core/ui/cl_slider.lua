@@ -31,7 +31,7 @@ function PANEL:SetValue(value, bNoNotify)
 
     if ( !bNoNotify and self.value != value ) then
         local pitch = math.Clamp((self.value - self.min) / (self.max - self.min), 0, 1) * 100 + 50
-        ax.client:EmitSound("ui/buttonrollover.wav", 60, pitch, 0.05, CHAN_STATIC)
+        Parallax.Client:EmitSound("ui/buttonrollover.wav", 60, pitch, 0.05, CHAN_STATIC)
 
         if ( self.OnValueSet ) then
             self:OnValueSet(self.value)
@@ -48,10 +48,10 @@ function PANEL:OnValueChanged(value)
 end
 
 function PANEL:Paint(width, height)
-    draw.RoundedBox(0, 0, 0, width, height, ax.color:Get("background.slider"))
+    draw.RoundedBox(0, 0, 0, width, height, Parallax.Color:Get("background.slider"))
     local fraction = (self.value - self.min) / (self.max - self.min)
     local barWidth = math.Clamp(fraction * width, 0, width)
-    draw.RoundedBox(0, 0, 0, barWidth, height, ax.color:Get("white"))
+    draw.RoundedBox(0, 0, 0, barWidth, height, Parallax.Color:Get("white"))
 end
 
 function PANEL:OnMousePressed(mouseCode)
@@ -96,4 +96,4 @@ function PANEL:OnCursorMoved(x, y)
     self:SetValue(value)
 end
 
-vgui.Register("ax.slider", PANEL, "EditablePanel")
+vgui.Register("Parallax.slider", PANEL, "EditablePanel")

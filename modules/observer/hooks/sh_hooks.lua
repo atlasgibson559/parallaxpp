@@ -49,7 +49,7 @@ function MODULE:OnPlayerObserver(client, state)
     if ( CLIENT ) then return end
     if ( !IsValid(client) or !client:IsPlayer() ) then return end
 
-    local logging = ax.module:Get("logging")
+    local logging = Parallax.Module:Get("logging")
     if ( logging ) then
         logging:Send(client:Nick() .. " is now " .. (state and "observing" or "no longer observing") .. ".")
     end

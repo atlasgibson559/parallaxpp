@@ -16,13 +16,13 @@ local PANEL = {}
 function PANEL:Init()
     self:Dock(FILL)
 
-    local title = self:Add("ax.text")
+    local title = self:Add("Parallax.text")
     title:Dock(TOP)
-    title:SetFont("parallax.huge.bold")
+    title:SetFont("Parallax.huge.bold")
     title:SetText("SCOREBOARD")
 
-    local scoreboard = self:Add("ax.scoreboard")
+    local scoreboard = self:Add("Parallax.scoreboard")
     scoreboard:Dock(FILL)
 end
 
-vgui.Register("ax.tab.scoreboard", PANEL, "EditablePanel")
+vgui.Register("Parallax.tab.scoreboard", PANEL, "EditablePanel")

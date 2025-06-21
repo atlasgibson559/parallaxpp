@@ -13,78 +13,78 @@
     Character Networking
 -----------------------------------------------------------------------------]]--
 
-ax.net:Hook("character.cache.all", function(data)
+Parallax.Net:Hook("character.cache.all", function(data)
     if ( !istable(data) ) then
-        ax.util:PrintError("Invalid data received for character cache!")
+        Parallax.Util:PrintError("Invalid data received for character cache!")
         return
     end
 
-    if ( ax.config:Get("debug.developer", false) ) then
+    if ( Parallax.Config:Get("debug.developer", false) ) then
         print("Received character cache data:")
         PrintTable(data)
     end
 
-    local client = ax.client
+    local client = Parallax.Client
     local clientTable = client:GetTable()
 
     for k, v in pairs(data) do
-        local character = ax.character:CreateObject(v.ID, v, client)
+        local character = Parallax.Character:CreateObject(v.ID, v, client)
         local characterID = character:GetID()
 
-        ax.character.stored = ax.character.stored or {}
-        ax.character.stored[characterID] = character
+        Parallax.Character.stored = Parallax.Character.stored or {}
+        Parallax.Character.stored[characterID] = character
 
         clientTable.axCharacters = clientTable.axCharacters or {}
         clientTable.axCharacters[characterID] = character
     end
 
     -- Rebuild the main menu
-    if ( IsValid(ax.gui.mainmenu) ) then
-        ax.gui.mainmenu:Remove()
-        ax.gui.mainmenu = vgui.Create("ax.mainmenu")
+    if ( IsValid(Parallax.gui.mainmenu) ) then
+        Parallax.gui.mainmenu:Remove()
+        Parallax.gui.mainmenu = vgui.Create("Parallax.mainmenu")
     end
 
-    ax.client:Notify("All characters cached!", NOTIFY_HINT)
+    Parallax.Client:Notify("All characters cached!", NOTIFY_HINT)
 end)
 
-ax.net:Hook("character.cache", function(data)
+Parallax.Net:Hook("character.cache", function(data)
     if ( !istable(data) ) then return end
 
-    local client = ax.client
+    local client = Parallax.Client
     local clientTable = client:GetTable()
 
-    local character = ax.character:CreateObject(data.ID, data, client)
+    local character = Parallax.Character:CreateObject(data.ID, data, client)
     local characterID = character:GetID()
 
-    ax.character.stored = ax.character.stored or {}
-    ax.character.stored[characterID] = character
+    Parallax.Character.stored = Parallax.Character.stored or {}
+    Parallax.Character.stored[characterID] = character
 
     clientTable.axCharacters = clientTable.axCharacters or {}
     clientTable.axCharacters[characterID] = character
     clientTable.axCharacter = character
 
-    ax.client:Notify("Character " .. characterID .. " cached!", NOTIFY_HINT)
+    Parallax.Client:Notify("Character " .. characterID .. " cached!", NOTIFY_HINT)
 end)
 
-ax.net:Hook("character.create.failed", function(reason)
+Parallax.Net:Hook("character.create.failed", function(reason)
     if ( !reason ) then return end
 
-    ax.client:Notify(reason)
+    Parallax.Client:Notify(reason)
 end)
 
-ax.net:Hook("character.create", function()
+Parallax.Net:Hook("character.create", function()
     -- Do something here...
 end)
 
-ax.net:Hook("character.delete", function(characterID)
+Parallax.Net:Hook("character.delete", function(characterID)
     if ( !isnumber(characterID) ) then return end
 
-    local character = ax.character.stored[characterID]
+    local character = Parallax.Character.stored[characterID]
     if ( !character ) then return end
 
-    ax.character.stored[characterID] = nil
+    Parallax.Character.stored[characterID] = nil
 
-    local client = ax.client
+    local client = Parallax.Client
     local clientTable = client:GetTable()
     if ( clientTable.axCharacters ) then
         clientTable.axCharacters[characterID] = nil
@@ -92,39 +92,39 @@ ax.net:Hook("character.delete", function(characterID)
 
     clientTable.axCharacter = nil
 
-    if ( IsValid(ax.gui.mainmenu) ) then
-        ax.gui.mainmenu:Populate()
+    if ( IsValid(Parallax.gui.mainmenu) ) then
+        Parallax.gui.mainmenu:Populate()
     end
 
-    ax.notification:Add("Character " .. characterID .. " deleted!", 5, ax.config:Get("color.success"))
+    Parallax.Notification:Add("Character " .. characterID .. " deleted!", 5, Parallax.Config:Get("color.success"))
 end)
 
-ax.net:Hook("character.load.failed", function(reason)
+Parallax.Net:Hook("character.load.failed", function(reason)
     if ( !reason ) then return end
 
-    ax.client:Notify(reason)
+    Parallax.Client:Notify(reason)
 end)
 
-ax.net:Hook("character.load", function(characterID)
+Parallax.Net:Hook("character.load", function(characterID)
     if ( characterID == 0 ) then return end
 
-    if ( IsValid(ax.gui.mainmenu) ) then
-        ax.gui.mainmenu:Remove()
+    if ( IsValid(Parallax.gui.mainmenu) ) then
+        Parallax.gui.mainmenu:Remove()
     end
 
-    local client = ax.client
+    local client = Parallax.Client
 
-    local character, reason = ax.character:CreateObject(characterID, ax.character.stored[characterID], client)
+    local character, reason = Parallax.Character:CreateObject(characterID, Parallax.Character.stored[characterID], client)
     if ( !character ) then
-        ax.util:PrintError("Failed to load character ", characterID, ", ", reason, "!")
+        Parallax.Util:PrintError("Failed to load character ", characterID, ", ", reason, "!")
         return
     end
 
     local currentCharacter = client:GetCharacter()
     local clientTable = client:GetTable()
 
-    ax.character.stored = ax.character.stored or {}
-    ax.character.stored[characterID] = character
+    Parallax.Character.stored = Parallax.Character.stored or {}
+    Parallax.Character.stored[characterID] = character
 
     clientTable.axCharacters = clientTable.axCharacters or {}
     clientTable.axCharacters[characterID] = character
@@ -133,10 +133,10 @@ ax.net:Hook("character.load", function(characterID)
     hook.Run("PlayerLoadedCharacter", character, currentCharacter)
 end)
 
-ax.net:Hook("character.variable.set", function(characterID, key, value)
+Parallax.Net:Hook("character.variable.set", function(characterID, key, value)
     if ( !characterID or !key or !value ) then return end
 
-    local character = ax.character:Get(characterID)
+    local character = Parallax.Character:Get(characterID)
     if ( !character ) then return end
 
     character[key] = value
@@ -146,20 +146,20 @@ end)
     Chat Networking
 -----------------------------------------------------------------------------]]--
 
-ax.net:Hook("chat.send", function(data)
+Parallax.Net:Hook("chat.send", function(data)
     if ( !istable(data) ) then return end
 
     local speaker = data.Speaker and Entity(data.Speaker) or nil
     local uniqueID = data.UniqueID
     local text = data.Text
 
-    local chatData = ax.chat:Get(uniqueID)
+    local chatData = Parallax.Chat:Get(uniqueID)
     if ( istable(chatData) ) then
         chatData:OnChatAdd(speaker, text)
     end
 end)
 
-ax.net:Hook("chat.text", function(data)
+Parallax.Net:Hook("chat.text", function(data)
     if ( !istable(data) ) then return end
 
     chat.AddText(unpack(data))
@@ -169,41 +169,41 @@ end)
     Config Networking
 -----------------------------------------------------------------------------]]--
 
-ax.net:Hook("config.sync", function(data)
+Parallax.Net:Hook("config.sync", function(data)
     if ( !istable(data) ) then return end
 
     for key, value in pairs(data) do
-        ax.config:Set(key, value)
+        Parallax.Config:Set(key, value)
     end
 end)
 
-ax.net:Hook("config.set", function(key, value)
-    ax.config:Set(key, value)
+Parallax.Net:Hook("config.set", function(key, value)
+    Parallax.Config:Set(key, value)
 end)
 
 --[[-----------------------------------------------------------------------------
     Option Networking
 -----------------------------------------------------------------------------]]--
 
-ax.net:Hook("option.set", function(key, value)
-    local stored = ax.option.stored[key]
+Parallax.Net:Hook("option.set", function(key, value)
+    local stored = Parallax.Option.stored[key]
     if ( !istable(stored) ) then return end
 
-    ax.option:Set(key, value, true)
+    Parallax.Option:Set(key, value, true)
 end)
 
 --[[-----------------------------------------------------------------------------
     Inventory Networking
 -----------------------------------------------------------------------------]]--
 
-ax.net:Hook("inventory.cache", function(data)
+Parallax.Net:Hook("inventory.cache", function(data)
     if ( !istable(data) ) then return end
 
-    local inventory = ax.inventory:CreateObject(data)
+    local inventory = Parallax.Inventory:CreateObject(data)
     if ( inventory ) then
-        ax.inventory.stored[inventory:GetID()] = inventory
+        Parallax.Inventory.stored[inventory:GetID()] = inventory
 
-        local character = ax.character.stored[inventory.CharacterID]
+        local character = Parallax.Character.stored[inventory.CharacterID]
         if ( character ) then
             local inventories = character:GetInventories()
 
@@ -224,11 +224,11 @@ ax.net:Hook("inventory.cache", function(data)
     end
 end)
 
-ax.net:Hook("inventory.item.add", function(inventoryID, itemID, uniqueID, data)
-    local item = ax.item:Add(itemID, inventoryID, uniqueID, data)
+Parallax.Net:Hook("inventory.item.add", function(inventoryID, itemID, uniqueID, data)
+    local item = Parallax.Item:Add(itemID, inventoryID, uniqueID, data)
     if ( !item ) then return end
 
-    local inventory = ax.inventory:Get(inventoryID)
+    local inventory = Parallax.Inventory:Get(inventoryID)
     if ( inventory ) then
         local items = inventory:GetItems()
         local found = false
@@ -245,8 +245,8 @@ ax.net:Hook("inventory.item.add", function(inventoryID, itemID, uniqueID, data)
     end
 end)
 
-ax.net:Hook("inventory.item.remove", function(inventoryID, itemID)
-    local inventory = ax.inventory:Get(inventoryID)
+Parallax.Net:Hook("inventory.item.remove", function(inventoryID, itemID)
+    local inventory = Parallax.Inventory:Get(inventoryID)
     if ( !inventory ) then return end
 
     local items = inventory:GetItems()
@@ -262,25 +262,25 @@ ax.net:Hook("inventory.item.remove", function(inventoryID, itemID)
         table.RemoveByValue(items, itemID)
     end
 
-    local item = ax.item:Get(itemID)
+    local item = Parallax.Item:Get(itemID)
     if ( item ) then
         item:SetInventory(0)
     end
 end)
 
-ax.net:Hook("inventory.refresh", function(inventoryID)
-    local panel = ax.gui.inventory
+Parallax.Net:Hook("inventory.refresh", function(inventoryID)
+    local panel = Parallax.gui.inventory
     if ( IsValid(panel) ) then
         panel:SetInventory(inventoryID)
     end
 end)
 
-ax.net:Hook("inventory.register", function(data)
+Parallax.Net:Hook("inventory.register", function(data)
     if ( !istable(data) ) then return end
 
-    local inventory = ax.inventory:CreateObject(data)
+    local inventory = Parallax.Inventory:CreateObject(data)
     if ( inventory ) then
-        ax.inventory.stored[inventory.ID] = inventory
+        Parallax.Inventory.stored[inventory.ID] = inventory
     end
 end)
 
@@ -288,17 +288,17 @@ end)
     Item Networking
 -----------------------------------------------------------------------------]]--
 
-ax.net:Hook("item.add", function(itemID, inventoryID, uniqueID, data)
-    ax.item:Add(itemID, inventoryID, uniqueID, data)
+Parallax.Net:Hook("item.add", function(itemID, inventoryID, uniqueID, data)
+    Parallax.Item:Add(itemID, inventoryID, uniqueID, data)
 end)
 
-ax.net:Hook("item.cache", function(data)
+Parallax.Net:Hook("item.cache", function(data)
     if ( !istable(data) ) then return end
 
     for k, v in pairs(data) do
-        local item = ax.item:CreateObject(v)
+        local item = Parallax.Item:CreateObject(v)
         if ( item ) then
-            ax.item.instances[item.ID] = item
+            Parallax.Item.instances[item.ID] = item
 
             if ( item.OnCache ) then
                 item:OnCache()
@@ -307,17 +307,17 @@ ax.net:Hook("item.cache", function(data)
     end
 end)
 
-ax.net:Hook("item.data", function(itemID, key, value)
-    local item = ax.item:Get(itemID)
+Parallax.Net:Hook("item.data", function(itemID, key, value)
+    local item = Parallax.Item:Get(itemID)
     if ( !item ) then return end
 
     item:SetData(key, value)
 end)
 
-ax.net:Hook("item.entity", function(entity, itemID)
+Parallax.Net:Hook("item.entity", function(entity, itemID)
     if ( !IsValid(entity) ) then return end
 
-    local item = ax.item:Get(itemID)
+    local item = Parallax.Item:Get(itemID)
     if ( !item ) then return end
 
     item:SetEntity(entity)
@@ -327,51 +327,51 @@ end)
     Currency Networking
 -----------------------------------------------------------------------------]]--
 
-ax.net:Hook("currency.give", function(entity, amount)
+Parallax.Net:Hook("currency.give", function(entity, amount)
     if ( !IsValid(entity) ) then return end
 
-    local phrase = ax.localization:GetPhrase("currency.pickup")
-    phrase = string.format(phrase, amount .. ax.currency:GetSymbol())
+    local phrase = Parallax.Localization:GetPhrase("currency.pickup")
+    phrase = string.format(phrase, amount .. Parallax.Currency:GetSymbol())
 
-    ax.client:Notify(phrase)
+    Parallax.Client:Notify(phrase)
 end)
 
 --[[-----------------------------------------------------------------------------
     Miscellaneous Networking
 -----------------------------------------------------------------------------]]--
 
-ax.net:Hook("database.save", function(data)
-    ax.client:GetTable().axDatabase = data
+Parallax.Net:Hook("database.save", function(data)
+    Parallax.Client:GetTable().axDatabase = data
 end)
 
-ax.net:Hook("gesture.play", function(client, name)
+Parallax.Net:Hook("gesture.play", function(client, name)
     if ( !IsValid(client) ) then return end
 
     client:AddVCDSequenceToGestureSlot(GESTURE_SLOT_CUSTOM, client:LookupSequence(name), 0, true)
 end)
 
-ax.net:Hook("splash", function()
-    ax.gui.splash = vgui.Create("ax.splash")
+Parallax.Net:Hook("splash", function()
+    Parallax.gui.splash = vgui.Create("Parallax.splash")
 end)
 
-ax.net:Hook("mainmenu", function()
-    ax.gui.mainmenu = vgui.Create("ax.mainmenu")
+Parallax.Net:Hook("mainmenu", function()
+    Parallax.gui.mainmenu = vgui.Create("Parallax.mainmenu")
 end)
 
-ax.net:Hook("notification.send", function(text, type, duration)
+Parallax.Net:Hook("notification.send", function(text, type, duration)
     if ( !text ) then return end
 
     notification.AddLegacy(text, type, duration)
 end)
 
-ax.net:Hook("flag.list", function(target, hasFlags)
+Parallax.Net:Hook("flag.list", function(target, hasFlags)
     if ( !IsValid(target) or !target:IsPlayer() ) then return end
 
     local query = {}
     table.insert(query, "Select which flag you want to give to " .. target:Name() .. ".")
     table.insert(query, "Flag List")
 
-    local flags = ax.flag:GetAll()
+    local flags = Parallax.Flag:GetAll()
     local availableFlags = {}
     for key, data in pairs(flags) do
         if ( !isstring(key) or #key != 1 ) then continue end
@@ -379,14 +379,14 @@ ax.net:Hook("flag.list", function(target, hasFlags)
 
         table.insert(query, key)
         table.insert(query, function()
-            ax.command:Run("CharGiveFlags", target, key)
+            Parallax.Command:Run("CharGiveFlags", target, key)
         end)
 
         table.insert(availableFlags, key)
     end
 
     if ( availableFlags[1] == nil ) then
-        ax.client:Notify("The target player already has all flags, so you cannot give them any more!")
+        Parallax.Client:Notify("The target player already has all flags, so you cannot give them any more!")
         return
     end
 
@@ -491,9 +491,9 @@ local function PrintQueue(data, idx)
 end
 
 -- hook becomes trivial:
-ax.net:Hook("caption", function(arguments)
+Parallax.Net:Hook("caption", function(arguments)
     if ( !isstring(arguments) or arguments == "" ) then
-        ax.util:PrintError("Invalid arguments for caption!")
+        Parallax.Util:PrintError("Invalid arguments for caption!")
         return
     end
 

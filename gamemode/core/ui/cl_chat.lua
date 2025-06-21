@@ -14,22 +14,22 @@ local PANEL = {}
 DEFINE_BASECLASS("EditablePanel")
 
 function PANEL:Init()
-    if ( IsValid(ax.gui.chatbox) ) then
-        ax.gui.chatbox:Remove()
+    if ( IsValid(Parallax.gui.chatbox) ) then
+        Parallax.gui.chatbox:Remove()
     end
 
-    ax.gui.chatbox = self
+    Parallax.gui.chatbox = self
 
     self:SetSize(hook.Run("GetChatboxSize"))
     self:SetPos(hook.Run("GetChatboxPos"))
 
-    local label = self:Add("ax.text")
+    local label = self:Add("Parallax.text")
     label:Dock(TOP)
     label:SetTextInset(8, 0)
-    label:SetFont("parallax.small")
+    label:SetFont("Parallax.small")
     label:SetText(GetHostName(), true)
     label.Paint = function(this, width, height)
-        surface.SetDrawColor(ax.color:Get("background.transparent"))
+        surface.SetDrawColor(Parallax.Color:Get("background.transparent"))
         surface.DrawRect(0, 0, width, height)
     end
 
@@ -37,21 +37,21 @@ function PANEL:Init()
     bottom:Dock(BOTTOM)
     bottom:DockMargin(8, 8, 8, 8)
 
-    self.chatType = bottom:Add("ax.text.typewriter")
+    self.chatType = bottom:Add("Parallax.text.typewriter")
     self.chatType:Dock(LEFT)
     self.chatType:SetTextInset(8, 0)
-    self.chatType:SetFont("parallax.small")
+    self.chatType:SetFont("Parallax.small")
     self.chatType:SetText("IC", true, true)
     self.chatType:SetTypingSpeed(0.05)
     self.chatType.PostThink = function(this)
-        this:SetWide(ax.util:GetTextWidth(this:GetFont(), this:GetText()) + 16)
+        this:SetWide(Parallax.Util:GetTextWidth(this:GetFont(), this:GetText()) + 16)
     end
     self.chatType.Paint = function(this, width, height)
-        surface.SetDrawColor(ax.color:Get("background.transparent"))
+        surface.SetDrawColor(Parallax.Color:Get("background.transparent"))
         surface.DrawRect(0, 0, width, height)
     end
 
-    self.entry = bottom:Add("ax.text.entry")
+    self.entry = bottom:Add("Parallax.text.entry")
     self.entry:Dock(FILL)
     self.entry:DockMargin(8, 0, 0, 0)
     self.entry:SetPlaceholderText("Say something...")
@@ -75,7 +75,7 @@ function PANEL:Init()
         local text = this:GetValue()
         if ( string.sub(text, 1, 3) == ".//" ) then
             -- Check if it's a way of using local out of character chat using .// prefix
-            local data = ax.command:Get("looc")
+            local data = Parallax.Command:Get("looc")
             if ( data ) then
                 chatType = string.upper(data.UniqueID)
             end
@@ -83,7 +83,7 @@ function PANEL:Init()
             -- This is a command, so we need to parse it
             local arguments = string.Explode(" ", string.sub(text, 2))
             local command = arguments[1]
-            local data = ax.command:Get(command)
+            local data = Parallax.Command:Get(command)
             if ( data ) then
                 chatType = string.upper(data.UniqueID)
             end
@@ -96,7 +96,7 @@ function PANEL:Init()
         hook.Run("ChatboxOnTextChanged", text, chatType)
 
         -- Prevent the chat type from being set to the same value
-        if ( ax.util:FindString(self.chatType.fullText, chatType) ) then
+        if ( Parallax.Util:FindString(self.chatType.fullText, chatType) ) then
             return
         end
 
@@ -119,7 +119,7 @@ function PANEL:Init()
     self.history:SetPos(8, label:GetTall() + 8)
     self.history:GetVBar():SetWide(0)
 
-    self.recommendations = self:Add("ax.scroller.vertical")
+    self.recommendations = self:Add("Parallax.scroller.vertical")
     self.recommendations:SetSize(self.history:GetWide(), self.history:GetTall() - 8)
     self.recommendations:SetPos(8, self.history:GetY() + self.history:GetTall() - self.recommendations:GetTall() - 8)
     self.recommendations:SetAlpha(0)
@@ -129,9 +129,9 @@ function PANEL:Init()
     self.recommendations.indexSelect = 0
     self.recommendations.maxSelection = 0
     self.recommendations.Paint = function(this, width, height)
-        ax.util:DrawBlur(this)
+        Parallax.Util:DrawBlur(this)
 
-        surface.SetDrawColor(ax.color:Get("background.transparent"))
+        surface.SetDrawColor(Parallax.Color:Get("background.transparent"))
         surface.DrawRect(0, 0, width, height)
     end
 
@@ -169,8 +169,8 @@ function PANEL:PopulateRecommendations(text)
     self.recommendations.list = {}
     self.recommendations.panels = {}
 
-    for key, command in SortedPairsByMemberValue(ax.command:GetAll(), "UniqueID") do
-        if ( ax.util:FindString(command.UniqueID, text, true) or ( command.Prefixes and ax.util:FindInTable(command.Prefixes, text, true) ) ) then
+    for key, command in SortedPairsByMemberValue(Parallax.Command:GetAll(), "UniqueID") do
+        if ( Parallax.Util:FindString(command.UniqueID, text, true) or ( command.Prefixes and Parallax.Util:FindInTable(command.Prefixes, text, true) ) ) then
             table.insert(self.recommendations.list, command)
         end
     end
@@ -192,21 +192,21 @@ function PANEL:PopulateRecommendations(text)
             rec:DockMargin(4, 4, 4, 0)
             rec.index = i
             rec.Paint = function(_, width, height)
-                surface.SetDrawColor(ax.color:Get("background.transparent"))
+                surface.SetDrawColor(Parallax.Color:Get("background.transparent"))
                 surface.DrawRect(0, 0, width, height)
 
                 if ( self.recommendations.indexSelect == i ) then
-                    surface.SetDrawColor(ax.config:Get("color.schema"))
+                    surface.SetDrawColor(Parallax.Config:Get("color.schema"))
                     surface.DrawRect(0, 0, width, height)
                 end
             end
 
             local height = 0
 
-            local title = rec:Add("ax.text")
+            local title = rec:Add("Parallax.text")
             title:Dock(TOP)
             title:DockMargin(8, 0, 8, 0)
-            title:SetFont("parallax.small")
+            title:SetFont("Parallax.small")
             title:SetText(command.UniqueID, true)
             height = height + title:GetTall()
 
@@ -215,15 +215,15 @@ function PANEL:PopulateRecommendations(text)
                 descriptionWrapped = "No description provided."
             end
 
-            descriptionWrapped = ax.util:GetWrappedText(descriptionWrapped, "parallax.tiny", self.recommendations:GetWide() - 16)
+            descriptionWrapped = Parallax.Util:GetWrappedText(descriptionWrapped, "Parallax.tiny", self.recommendations:GetWide() - 16)
             for k = 1, #descriptionWrapped do
                 local v = descriptionWrapped[k]
-                local descLine = rec:Add("ax.text")
+                local descLine = rec:Add("Parallax.text")
                 descLine:Dock(TOP)
                 descLine:DockMargin(8, -2, 8, 0)
-                descLine:SetFont("parallax.tiny")
+                descLine:SetFont("Parallax.tiny")
                 descLine:SetText(v, true)
-                descLine:SetTextColor(ax.color:Get("text"))
+                descLine:SetTextColor(Parallax.Color:Get("text"))
                 height = height + descLine:GetTall()
             end
 
@@ -277,7 +277,7 @@ function PANEL:CycleRecommendations()
     self.chatType:SetText(data.UniqueID, true, true)
     self.chatType:RestartTyping()
 
-    surface.PlaySound("ax.button.enter")
+    surface.PlaySound("Parallax.button.enter")
 end
 
 function PANEL:SetVisible(visible)
@@ -319,16 +319,16 @@ function PANEL:OnKeyCodePressed(key)
 end
 
 function PANEL:Paint(width, height)
-    ax.util:DrawBlur(self)
+    Parallax.Util:DrawBlur(self)
 
-    surface.SetDrawColor(ax.color:Get("background.transparent"))
+    surface.SetDrawColor(Parallax.Color:Get("background.transparent"))
     surface.DrawRect(0, 0, width, height)
 end
 
-vgui.Register("ax.chatbox", PANEL, "EditablePanel")
+vgui.Register("Parallax.Chatbox", PANEL, "EditablePanel")
 
-if ( IsValid(ax.gui.chatbox) ) then
-    ax.gui.chatbox:Remove()
+if ( IsValid(Parallax.gui.chatbox) ) then
+    Parallax.gui.chatbox:Remove()
 
-    vgui.Create("ax.chatbox")
+    vgui.Create("Parallax.Chatbox")
 end

@@ -10,10 +10,10 @@
 ]]
 
 --- Font library.
--- @module ax.font
+-- @module Parallax.Font
 
-ax.font = {}
-ax.font.stored = {}
+Parallax.Font = {}
+Parallax.Font.stored = {}
 
 surface.CreateFontInternal = surface.CreateFontInternal or surface.CreateFont
 
@@ -23,7 +23,7 @@ surface.CreateFontInternal = surface.CreateFontInternal or surface.CreateFont
 -- @tab data The font data.
 function surface.CreateFont(name, data)
     if ( string.sub(name, 1, 8) == "parallax" ) then
-        ax.font.stored[name] = data
+        Parallax.Font.stored[name] = data
     end
 
     surface.CreateFontInternal(name, data)
@@ -33,13 +33,13 @@ end
 -- @realm shared
 -- @string name The name of the font.
 -- @return tab The font.
-function ax.font:Get(name)
+function Parallax.Font:Get(name)
     return self.stored[name]
 end
 
 concommand.Add("ax_list_font", function(client)
-    for name, data in pairs(ax.font.stored) do
-        ax.util:Print("Font: ", ax.color:Get("cyan"), name)
+    for name, data in pairs(Parallax.Font.stored) do
+        Parallax.Util:Print("Font: ", Parallax.Color:Get("cyan"), name)
         PrintTable(data)
     end
 end)

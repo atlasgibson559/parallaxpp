@@ -18,7 +18,7 @@ function MODULE:PostPlayerReady(client)
         client:SetDBVar("usergroup", "superadmin") -- Default usergroup
         client:SaveDB()
         client:SetUserGroup("superadmin")
-        ax.util:Print(tostring(client) .. " is assigned to usergroup '" .. client:GetUserGroup() .. "'.")
+        Parallax.Util:Print(tostring(client) .. " is assigned to usergroup '" .. client:GetUserGroup() .. "'.")
 
         return
     end
@@ -26,14 +26,14 @@ function MODULE:PostPlayerReady(client)
     local usergroup = client:GetDBVar("usergroup", "user")
     if ( !CAMI.GetUsergroup(usergroup) ) then
         usergroup = "user" -- Fallback to default user group if not found
-        ax.util:PrintWarning("Usergroup '" .. usergroup .. "' not found for " .. tostring(client) .. ". Defaulting to 'user'.")
+        Parallax.Util:PrintWarning("Usergroup '" .. usergroup .. "' not found for " .. tostring(client) .. ". Defaulting to 'user'.")
         client:SetDBVar("usergroup", usergroup)
         client:SaveDB()
     end
 
     client:SetUserGroup(usergroup)
 
-    ax.util:Print(tostring(client) .. " has been assigned to usergroup '" .. usergroup .. "'.")
+    Parallax.Util:Print(tostring(client) .. " has been assigned to usergroup '" .. usergroup .. "'.")
 end
 
 function MODULE:SaveData()
@@ -44,9 +44,9 @@ function MODULE:SaveData()
         if ( usergroup and CAMI.GetUsergroup(usergroup) ) then
             client:SetDBVar("usergroup", usergroup)
             client:SaveDB()
-            ax.util:Print("Saving usergroup '" .. usergroup .. "' for " .. tostring(client) .. "...")
+            Parallax.Util:Print("Saving usergroup '" .. usergroup .. "' for " .. tostring(client) .. "...")
         else
-            ax.util:PrintWarning("Invalid usergroup for " .. tostring(client) .. ". Not saving usergroup!")
+            Parallax.Util:PrintWarning("Invalid usergroup for " .. tostring(client) .. ". Not saving usergroup!")
         end
     end
 end

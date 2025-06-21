@@ -9,7 +9,7 @@
     Attribution is required. If you use or modify this file, you must retain this notice.
 ]]
 
-local TOOL = ax.tool or {}
+local TOOL = Parallax.Tool or {}
 
 function TOOL:Create()
     local tool = {}
@@ -116,4 +116,4 @@ function TOOL:CheckObjects()
     end
 end
 
-ax.tool = TOOL
+Parallax.Tool = TOOL

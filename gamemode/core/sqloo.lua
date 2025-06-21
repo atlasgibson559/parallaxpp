@@ -9,12 +9,12 @@
     Attribution is required. If you use or modify this file, you must retain this notice.
 ]]
 
-function ax.util:HasMysqlooBinary()
+function Parallax.Util:HasMysqlooBinary()
     return util.IsBinaryModuleInstalled("mysqloo")
 end
 
-if ( !ax.util:HasMysqlooBinary() ) then
-    ax.util:PrintWarning("MySQLOO binary not found in lua/bin/. ax.sqloo disabled.")
+if ( !Parallax.Util:HasMysqlooBinary() ) then
+    Parallax.Util:PrintWarning("MySQLOO binary not found in lua/bin/. Parallax.SQLOO disabled.")
     return
 end
 
@@ -23,17 +23,17 @@ require("mysqloo")
 
 --- Parallax MySQLOO Database Wrapper
 -- Provides a wrapper around the mysqloo module for async MySQL access
--- @module ax.sqloo
+-- @module Parallax.SQLOO
 
-ax.sqloo = ax.sqloo or {}
-ax.sqloo.config = nil
-ax.sqloo.db = nil
-ax.sqloo.tables = ax.sqloo.tables or {}
+Parallax.SQLOO = Parallax.SQLOO or {}
+Parallax.SQLOO.config = nil
+Parallax.SQLOO.db = nil
+Parallax.SQLOO.tables = Parallax.SQLOO.tables or {}
 
 --- Initializes the SQL database connection or environment.
 -- @realm server
--- @usage ax.sqloo:Initialize
-function ax.sqloo:Initialize(config, callback, fallback)
+-- @usage Parallax.SQLOO:Initialize
+function Parallax.SQLOO:Initialize(config, callback, fallback)
     self.config = config
 
     local db = mysqloo.connect(
@@ -64,8 +64,8 @@ end
 
 --- Registers a variable/column for the specified table and sets its default value.
 -- @realm server
--- @usage ax.sqloo:RegisterVar
-function ax.sqloo:RegisterVar(tableName, key, default)
+-- @usage Parallax.SQLOO:RegisterVar
+function Parallax.SQLOO:RegisterVar(tableName, key, default)
     self.tables[tableName] = self.tables[tableName] or {}
     self.tables[tableName][key] = default
 
@@ -79,8 +79,8 @@ end
 
 --- Creates a SQL table with the registered and extra schema fields.
 -- @realm server
--- @usage ax.sqloo:InitializeTable
-function ax.sqloo:InitializeTable(tableName, extraSchema)
+-- @usage Parallax.SQLOO:InitializeTable
+function Parallax.SQLOO:InitializeTable(tableName, extraSchema)
     local schema = {}
 
     -- Check if any primary key is defined in user schema
@@ -126,8 +126,8 @@ end
 
 --- Adds a column to a table if it doesn't exist already.
 -- @realm server
--- @usage ax.sqloo:AddColumn
-function ax.sqloo:AddColumn(tableName, columnName, columnType, defaultValue)
+-- @usage Parallax.SQLOO:AddColumn
+function Parallax.SQLOO:AddColumn(tableName, columnName, columnType, defaultValue)
     local query = string.format("SHOW COLUMNS FROM `%s` LIKE %s;", tableName, sql.SQLStr(columnName))
     self:Query(query, function(result)
         if ( !result or !result[1] ) then
@@ -146,15 +146,15 @@ function ax.sqloo:AddColumn(tableName, columnName, columnType, defaultValue)
 
             self:Query(alter)
         else
-            ax.util:PrintWarning("Column '" .. columnName .. "' already exists in table '" .. tableName .. "'.")
+            Parallax.Util:PrintWarning("Column '" .. columnName .. "' already exists in table '" .. tableName .. "'.")
         end
     end)
 end
 
 --- Returns a default row populated with the registered default values.
 -- @realm server
--- @usage ax.sqloo:GetDefaultRow
-function ax.sqloo:GetDefaultRow(tableName, override)
+-- @usage Parallax.SQLOO:GetDefaultRow
+function Parallax.SQLOO:GetDefaultRow(tableName, override)
     local data = table.Copy(self.tables[tableName] or {})
     for k, v in pairs(override or {}) do
         data[k] = v
@@ -165,8 +165,8 @@ end
 
 --- Loads a row based on a key/value match or inserts a default if not found.
 -- @realm server
--- @usage ax.sqloo:LoadRow
-function ax.sqloo:LoadRow(tableName, key, value, callback)
+-- @usage Parallax.SQLOO:LoadRow
+function Parallax.SQLOO:LoadRow(tableName, key, value, callback)
     local condition = string.format("`%s` = %s", key, self:Escape(value))
 
     self:Select(tableName, nil, condition, function(result)
@@ -183,7 +183,7 @@ function ax.sqloo:LoadRow(tableName, key, value, callback)
             local row = result[1]
             local vars = self.tables[tableName]
             if ( !vars ) then
-                ax.util:PrintError("No registered variables for table '" .. tableName .. "'")
+                Parallax.Util:PrintError("No registered variables for table '" .. tableName .. "'")
                 return
             end
 
@@ -202,16 +202,16 @@ end
 
 --- Saves a row of data into the table using the given key.
 -- @realm server
--- @usage ax.sqloo:SaveRow
-function ax.sqloo:SaveRow(tableName, data, key, callback)
+-- @usage Parallax.SQLOO:SaveRow
+function Parallax.SQLOO:SaveRow(tableName, data, key, callback)
     local condition = string.format("`%s` = %s", key, self:Escape(data[key]))
     self:Update(tableName, data, condition, callback)
 end
 
 --- Inserts a new row of data into the table.
 -- @realm server
--- @usage ax.sqloo:Insert
-function ax.sqloo:Insert(tableName, data, callback)
+-- @usage Parallax.SQLOO:Insert
+function Parallax.SQLOO:Insert(tableName, data, callback)
     local keys, values = {}, {}
 
     for k, v in pairs(data) do
@@ -232,8 +232,8 @@ end
 
 --- Updates existing data in the table matching a given condition.
 -- @realm server
--- @usage ax.sqloo:Update
-function ax.sqloo:Update(tableName, data, condition, callback)
+-- @usage Parallax.SQLOO:Update
+function Parallax.SQLOO:Update(tableName, data, condition, callback)
     local updates = {}
 
     for k, v in pairs(data) do
@@ -255,8 +255,8 @@ end
 
 --- Deletes rows from the table based on a condition.
 -- @realm server
--- @usage ax.sqloo:Delete
-function ax.sqloo:Delete(tableName, condition, callback)
+-- @usage Parallax.SQLOO:Delete
+function Parallax.SQLOO:Delete(tableName, condition, callback)
     local query = string.format("DELETE FROM `%s` WHERE %s;", tableName, condition)
     self:Query(query, function()
         if ( callback ) then
@@ -267,8 +267,8 @@ end
 
 --- Selects rows from the table matching the optional condition.
 -- @realm server
--- @usage ax.sqloo:Select
-function ax.sqloo:Select(tableName, columns, condition, callback)
+-- @usage Parallax.SQLOO:Select
+function Parallax.SQLOO:Select(tableName, columns, condition, callback)
     local cols = columns and table.concat(columns, ", ") or "*"
     local query = string.format("SELECT %s FROM `%s`", cols, tableName)
 
@@ -282,11 +282,11 @@ end
 --- Executes a SQL query asynchronously, queuing it if the database is not connected.
 -- This method allows you to run any SQL query and handle success or error callbacks.
 -- @realm server
--- @usage ax.sqloo:Query
-function ax.sqloo:Query(query, onSuccess, onError)
+-- @usage Parallax.SQLOO:Query
+function Parallax.SQLOO:Query(query, onSuccess, onError)
     if ( !self.db or self.db:status() != mysqloo.DATABASE_CONNECTED ) then
         local uniqueID = util.CRC(query .. tostring(onSuccess) .. tostring(onError))
-        ax.util:PrintWarning("Database not connected, queuing query. (" .. uniqueID .. ")")
+        Parallax.Util:PrintWarning("Database not connected, queuing query. (" .. uniqueID .. ")")
 
         self.queryQueue = self.queryQueue or {}
         table.insert(self.queryQueue, {query = query, onSuccess = onSuccess, onError = onError})
@@ -295,9 +295,9 @@ function ax.sqloo:Query(query, onSuccess, onError)
             self.queryTimerStarted = true
 
             local startTime = SysTime()
-            timer.Create("ax.sqloo.wait", 0.1, 0, function()
+            timer.Create("Parallax.SQLOO.wait", 0.1, 0, function()
                 if ( self.db and self.db:status() == mysqloo.DATABASE_CONNECTED ) then
-                    timer.Remove("ax.sqloo.wait")
+                    timer.Remove("Parallax.SQLOO.wait")
                     self.queryTimerStarted = false
 
                     for i = 1, #self.queryQueue do
@@ -305,18 +305,18 @@ function ax.sqloo:Query(query, onSuccess, onError)
                         self:Query(queuedQuery.query, queuedQuery.onSuccess, queuedQuery.onError)
 
                         uniqueID = util.CRC(queuedQuery.query .. tostring(queuedQuery.onSuccess) .. tostring(queuedQuery.onError))
-                        ax.util:PrintSuccess("Executing queued query: " .. uniqueID)
+                        Parallax.Util:PrintSuccess("Executing queued query: " .. uniqueID)
                     end
 
                     self.queryQueue = {}
                 elseif ( SysTime() - startTime > 5 ) then
-                    timer.Remove("ax.sqloo.wait")
+                    timer.Remove("Parallax.SQLOO.wait")
                     self.queryTimerStarted = false
 
-                    ax.util:PrintError("Database connection failed after 5 seconds. Aborting queued queries.")
+                    Parallax.Util:PrintError("Database connection failed after 5 seconds. Aborting queued queries.")
                     self.queryQueue = {}
                 else
-                    ax.util:PrintWarning("Waiting for database connection...")
+                    Parallax.Util:PrintWarning("Waiting for database connection...")
                 end
             end)
         end
@@ -326,7 +326,7 @@ function ax.sqloo:Query(query, onSuccess, onError)
 
     local q = self.db:query(query)
     if ( !q ) then
-        ax.util:PrintError("Failed to create query for: " .. query)
+        Parallax.Util:PrintError("Failed to create query for: " .. query)
 
         if ( onError ) then
             onError("Failed to create query")
@@ -342,8 +342,8 @@ function ax.sqloo:Query(query, onSuccess, onError)
     end
 
     q.onError = function(_, errString)
-        ax.util:PrintError("Query failed: " .. errString)
-        ax.util:PrintError("Query: " .. query)
+        Parallax.Util:PrintError("Query failed: " .. errString)
+        Parallax.Util:PrintError("Query: " .. query)
 
         if ( onError ) then
             onError(errString)
@@ -358,43 +358,43 @@ end
 
 --- Escape
 -- @realm server
--- @usage ax.sqloo:Escape
-function ax.sqloo:Escape(str)
+-- @usage Parallax.SQLOO:Escape
+function Parallax.SQLOO:Escape(str)
     return self.db and self.db:escape(str) or str
 end
 
 --- GetDB
 -- @realm server
--- @usage ax.sqloo:GetDB
-function ax.sqloo:GetDB()
+-- @usage Parallax.SQLOO:GetDB
+function Parallax.SQLOO:GetDB()
     return self.db
 end
 
 --- Status
 -- @realm server
--- @usage ax.sqloo:Status
-function ax.sqloo:Status()
+-- @usage Parallax.SQLOO:Status
+function Parallax.SQLOO:Status()
     return self.db and self.db:status() or mysqloo.DATABASE_NOT_CONNECTED
 end
 
 --- Reconnect
 -- @realm server
--- @usage ax.sqloo:Reconnect
-function ax.sqloo:Reconnect()
+-- @usage Parallax.SQLOO:Reconnect
+function Parallax.SQLOO:Reconnect()
     if ( self.db and self.db:status() == mysqloo.DATABASE_NOT_CONNECTED ) then
         self.db:connect()
     else
-        ax.util:PrintWarning("Database is already connected or not initialized.")
+        Parallax.Util:PrintWarning("Database is already connected or not initialized.")
     end
 end
 
 --- Counts the number of rows in a table.
 -- @realm server
--- @usage ax.sqloo:Count
+-- @usage Parallax.SQLOO:Count
 -- @tparam string tableName Table name
 -- @tparam string condition Optional WHERE clause
 -- @tparam function callback Optional callback with row count
-function ax.sqloo:Count(tableName, condition, callback)
+function Parallax.SQLOO:Count(tableName, condition, callback)
     local query = string.format("SELECT COUNT(*) AS count FROM `%s`", tableName)
     if ( condition ) then
         query = query .. " WHERE " .. condition
@@ -410,8 +410,8 @@ end
 
 --- Prints the current database status in a human-readable format.
 -- @realm server
--- @usage ax.sqloo:PrintStatus
-function ax.sqloo:PrintStatus()
+-- @usage Parallax.SQLOO:PrintStatus
+function Parallax.SQLOO:PrintStatus()
     local status = self:Status()
     local statusText = "Unknown"
 
@@ -425,12 +425,12 @@ function ax.sqloo:PrintStatus()
         statusText = "Connection failed"
     end
 
-    ax.util:Print("MySQL Status: " .. statusText)
+    Parallax.Util:Print("MySQL Status: " .. statusText)
 end
 
 --- Cheks if the database is connected.
 -- @realm server
--- @usage ax.sqloo:IsConnected
-function ax.sqloo:IsConnected()
+-- @usage Parallax.SQLOO:IsConnected
+function Parallax.SQLOO:IsConnected()
     return self.db and self.db:status() == mysqloo.DATABASE_CONNECTED
 end

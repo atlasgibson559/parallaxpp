@@ -10,15 +10,15 @@
 ]]
 
 -- Item management library.
--- @module ax.item
+-- @module Parallax.Item
 
-ax.item = ax.item or {}
-ax.item.base = ax.item.base or {}
-ax.item.meta = ax.item.meta or {}
-ax.item.stored = ax.item.stored or {}
-ax.item.instances = ax.item.instances or {}
+Parallax.Item = Parallax.Item or {}
+Parallax.Item.base = Parallax.Item.base or {}
+Parallax.Item.meta = Parallax.Item.meta or {}
+Parallax.Item.stored = Parallax.Item.stored or {}
+Parallax.Item.instances = Parallax.Item.instances or {}
 
-function ax.item:Load(path)
+function Parallax.Item:Load(path)
     if ( !path or !isstring(path) ) then return end
 
     local files, _ = file.Find(path .. "/*.lua", "LUA")
@@ -38,7 +38,7 @@ function ax.item:Load(path)
             self.base[ITEM.UniqueID] = ITEM
         end
 
-        -- If we are inside of a folder that is in the ax.item.base table, we need to set the base of the item to the base of the folder.
+        -- If we are inside of a folder that is in the Parallax.Item.base table, we need to set the base of the item to the base of the folder.
         -- This allows us to inherit from the base item.
         for k, _ in pairs(self.base) do
             if ( string.find(path, "/" .. k) and !ITEM.Base and !ITEM.IsBase ) then
@@ -67,11 +67,11 @@ function ax.item:Load(path)
                 local mergeTable = table.Copy(baseTable)
                 ITEM = table.Merge(mergeTable, ITEM)
             else
-                ax.util:PrintError("Item base '" .. ITEM.Base .. "' not found for item '" .. ITEM.UniqueID .. "'.")
+                Parallax.Util:PrintError("Item base '" .. ITEM.Base .. "' not found for item '" .. ITEM.UniqueID .. "'.")
             end
         end
 
-        ax.util:LoadFile(filePath, "shared")
+        Parallax.Util:LoadFile(filePath, "shared")
 
         self.stored[ITEM.UniqueID] = ITEM
 
@@ -84,7 +84,7 @@ function ax.item:Load(path)
     end
 end
 
-function ax.item:LoadFolder(path)
+function Parallax.Item:LoadFolder(path)
     if ( !path or !isstring(path) ) then return end
 
     local _, folders = file.Find(path .. "/*", "LUA")
@@ -114,7 +114,7 @@ function ax.item:LoadFolder(path)
     self:Load(path)
 end
 
-function ax.item:Get(identifier)
+function Parallax.Item:Get(identifier)
     if ( isstring(identifier) ) then
         return self.stored[identifier]
     elseif ( isnumber(identifier) ) then
@@ -124,22 +124,22 @@ function ax.item:Get(identifier)
     return nil
 end
 
-function ax.item:GetAll()
+function Parallax.Item:GetAll()
     return self.stored
 end
 
-function ax.item:GetInstances()
+function Parallax.Item:GetInstances()
     return self.instances
 end
 
-function ax.item:CreateObject(data)
+function Parallax.Item:CreateObject(data)
     if ( !istable(data) ) then return end
 
     local id = tonumber(data.ID or data.id)
     local uniqueID = data.UniqueID or data.unique_id
     local characterID = tonumber(data.CharacterID or data.character_id or 0)
     local inventoryID = tonumber(data.InventoryID or data.inventory_id or 0)
-    local itemData = ax.util:SafeParseTable(data.Data or data.data)
+    local itemData = Parallax.Util:SafeParseTable(data.Data or data.data)
 
     local base = self.stored[uniqueID]
     if ( !base ) then return end
@@ -161,7 +161,7 @@ end
 
 -- client-side addition
 if ( CLIENT ) then
-    function ax.item:Add(itemID, inventoryID, uniqueID, data, callback)
+    function Parallax.Item:Add(itemID, inventoryID, uniqueID, data, callback)
         if ( !itemID or !uniqueID or !self.stored[uniqueID] ) then return end
 
         data = data or {}
@@ -171,14 +171,14 @@ if ( CLIENT ) then
             UniqueID = uniqueID,
             Data = data,
             InventoryID = inventoryID,
-            CharacterID = ax.client and ax.client:GetCharacterID() or 0
+            CharacterID = Parallax.Client and Parallax.Client:GetCharacterID() or 0
         })
 
         if ( !item ) then return end
 
         self.instances[itemID] = item
 
-        local inventory = ax.inventory:Get(inventoryID)
+        local inventory = Parallax.Inventory:Get(inventoryID)
         if ( inventory ) then
             local items = inventory:GetItems()
             local found = false

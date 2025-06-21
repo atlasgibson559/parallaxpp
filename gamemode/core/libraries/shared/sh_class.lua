@@ -10,29 +10,29 @@
 ]]
 
 --- Class library
--- @module ax.class
+-- @module Parallax.Class
 
-ax.class = ax.class or {}
-ax.class.stored = {}
-ax.class.instances = {}
-ax.class.meta = ax.class.meta or {}
+Parallax.Class = Parallax.Class or {}
+Parallax.Class.stored = {}
+Parallax.Class.instances = {}
+Parallax.Class.meta = Parallax.Class.meta or {}
 
-function ax.class:Register(classData)
+function Parallax.Class:Register(classData)
     local CLASS = setmetatable(classData, self.meta)
     if ( !isnumber(CLASS.Faction) ) then
-        ax.util:PrintError("Attempted to register a class without a valid faction!")
+        Parallax.Util:PrintError("Attempted to register a class without a valid faction!")
         return false
     end
 
-    local faction = ax.faction:Get(CLASS.Faction)
+    local faction = Parallax.Faction:Get(CLASS.Faction)
     if ( faction == nil or !istable(faction) ) then
-        ax.util:PrintError("Attempted to register a class for an invalid faction!")
+        Parallax.Util:PrintError("Attempted to register a class for an invalid faction!")
         return false
     end
 
     local bResult = hook.Run("PreClassRegistered", CLASS)
     if ( bResult == false ) then
-        ax.util:PrintError("Attempted to register a class that was blocked by a hook!")
+        Parallax.Util:PrintError("Attempted to register a class that was blocked by a hook!")
         return false, "Attempted to register a class that was blocked by a hook!"
     end
 
@@ -64,9 +64,9 @@ function ax.class:Register(classData)
     return CLASS.ID
 end
 
-function ax.class:Get(identifier)
+function Parallax.Class:Get(identifier)
     if ( identifier == nil ) then
-        ax.util:PrintError("Attempted to get a faction with an invalid identifier!")
+        Parallax.Util:PrintError("Attempted to get a faction with an invalid identifier!")
         return false
     end
 
@@ -80,7 +80,7 @@ function ax.class:Get(identifier)
 
     for i = 1, #self.instances do
         local v = self.instances[i]
-        if ( ax.util:FindString(v.Name, identifier) or ax.util:FindString(v.UniqueID, identifier) ) then
+        if ( Parallax.Util:FindString(v.Name, identifier) or Parallax.Util:FindString(v.UniqueID, identifier) ) then
             return v
         end
     end
@@ -88,7 +88,7 @@ function ax.class:Get(identifier)
     return nil
 end
 
-function ax.class:CanSwitchTo(client, classID)
+function Parallax.Class:CanSwitchTo(client, classID)
     local class = self:Get(classID)
     if ( !class ) then return false end
 
@@ -106,13 +106,13 @@ function ax.class:CanSwitchTo(client, classID)
     return true
 end
 
-function ax.class:OnSwitch(client, classID)
+function Parallax.Class:OnSwitch(client, classID)
     local class = self:Get(classID)
     if ( !class ) then return false end
 
     local character = client:GetCharacter()
     if ( !character ) then
-        ax.util:PrintError("Attempted to switch class for a player without a character!")
+        Parallax.Util:PrintError("Attempted to switch class for a player without a character!")
         return false
     end
 
@@ -128,6 +128,6 @@ function ax.class:OnSwitch(client, classID)
     return true
 end
 
-function ax.class:GetAll()
+function Parallax.Class:GetAll()
     return self.instances
 end

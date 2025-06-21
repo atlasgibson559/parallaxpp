@@ -10,16 +10,16 @@
 ]]
 
 --- Options library
--- @module ax.option
+-- @module Parallax.Option
 
-ax.option = ax.option or {}
-ax.option.stored = ax.option.stored or {}
-ax.option.clients = ax.option.clients or {}
+Parallax.Option = Parallax.Option or {}
+Parallax.Option.stored = Parallax.Option.stored or {}
+Parallax.Option.clients = Parallax.Option.clients or {}
 
-function ax.option:Set(client, key, value, bNoNetworking)
+function Parallax.Option:Set(client, key, value, bNoNetworking)
     local stored = self.stored[key]
     if ( !istable(stored) ) then
-        ax.util:PrintError("Option \"" .. key .. "\" does not exist!")
+        Parallax.Util:PrintError("Option \"" .. key .. "\" does not exist!")
         return false
     end
 
@@ -30,15 +30,15 @@ function ax.option:Set(client, key, value, bNoNetworking)
 
     if ( stored.NoNetworking != true ) then
         if ( !bNoNetworking ) then
-            ax.net:Start(client, "option.set", key, value)
+            Parallax.Net:Start(client, "option.set", key, value)
         end
 
         local index = client:EntIndex()
-        if ( ax.option.clients[index] == nil ) then
-            ax.option.clients[index] = {}
+        if ( Parallax.Option.clients[index] == nil ) then
+            Parallax.Option.clients[index] = {}
         end
 
-        ax.option.clients[index][key] = value
+        Parallax.Option.clients[index][key] = value
     end
 
     if ( isfunction(stored.OnChange) ) then
@@ -48,21 +48,21 @@ function ax.option:Set(client, key, value, bNoNetworking)
     return true
 end
 
-function ax.option:Get(client, key, fallback)
+function Parallax.Option:Get(client, key, fallback)
     if ( !IsValid(client) ) then return default end
 
-    local stored = ax.option.stored[key]
+    local stored = Parallax.Option.stored[key]
     if ( !istable(stored) ) then
-        ax.util:PrintError("Option \"" .. key .. "\" does not exist!")
+        Parallax.Util:PrintError("Option \"" .. key .. "\" does not exist!")
         return default
     end
 
     if ( stored.NoNetworking ) then
-        ax.util:PrintWarning("Option \"" .. key .. "\" is not networked!")
+        Parallax.Util:PrintWarning("Option \"" .. key .. "\" is not networked!")
         return fallback
     end
 
-    local clientStored = ax.option.clients[client:EntIndex()]
+    local clientStored = Parallax.Option.clients[client:EntIndex()]
     if ( !istable(clientStored) ) then
         return fallback
     end

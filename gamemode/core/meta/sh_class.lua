@@ -9,7 +9,7 @@
     Attribution is required. If you use or modify this file, you must retain this notice.
 ]]
 
-local CLASS = ax.class.meta or {}
+local CLASS = Parallax.Class.meta or {}
 CLASS.__index = CLASS
 
 CLASS.Name = "Unknown"
@@ -64,7 +64,7 @@ end
 --- Gets the faction associated with the class.
 -- @treturn table The faction associated with the class.
 function CLASS:GetFaction()
-    return ax.faction:Get(self.Faction)
+    return Parallax.Faction:Get(self.Faction)
 end
 
 --- Checks if the class is the default class.

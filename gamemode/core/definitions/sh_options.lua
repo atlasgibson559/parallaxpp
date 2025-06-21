@@ -46,10 +46,10 @@ local languages = {
     ["zh-tw"] = "Chinese (Traditional)",
 }
 
-ax.option:Register("language", {
+Parallax.Option:Register("language", {
     Name = "options.language",
     Description = "options.language.help",
-    Type = ax.types.array,
+    Type = Parallax.Types.array,
     Default = "en",
     OnChange = function(self, value)
         -- GMOD blocks the console command gmod_language from being run in the console
@@ -61,10 +61,10 @@ ax.option:Register("language", {
 })
 ]]
 
-ax.option:Register("inventory.sort", {
+Parallax.Option:Register("inventory.sort", {
     Name = "options.inventory.sort",
     Description = "options.inventory.sort.help",
-    Type = ax.types.array,
+    Type = Parallax.Types.array,
     Default = "name",
     NoNetworking = true,
     Populate = function()
@@ -76,32 +76,32 @@ ax.option:Register("inventory.sort", {
     end
 })
 
-ax.option:Register("hud.crosshair", {
+Parallax.Option:Register("hud.crosshair", {
     Name = "options.hud.crosshair",
     Description = "options.hud.crosshair.help",
     Category = "category.hud",
     SubCategory = "category.crosshair",
-    Type = ax.types.bool,
+    Type = Parallax.Types.bool,
     Default = true,
     NoNetworking = true
 })
 
-ax.option:Register("hud.crosshair.color", {
+Parallax.Option:Register("hud.crosshair.color", {
     Name = "options.hud.crosshair.color",
     Description = "options.hud.crosshair.color.help",
     Category = "category.hud",
     SubCategory = "category.crosshair",
-    Type = ax.types.color,
+    Type = Parallax.Types.color,
     Default = color_white,
     NoNetworking = true
 })
 
-ax.option:Register("hud.crosshair.size", {
+Parallax.Option:Register("hud.crosshair.size", {
     Name = "options.hud.crosshair.size",
     Description = "options.hud.crosshair.size.help",
     Category = "category.hud",
     SubCategory = "category.crosshair",
-    Type = ax.types.number,
+    Type = Parallax.Types.number,
     Default = 1,
     NoNetworking = true,
     Min = 0.1,
@@ -109,12 +109,12 @@ ax.option:Register("hud.crosshair.size", {
     Decimals = 1
 })
 
-ax.option:Register("hud.crosshair.thickness", {
+Parallax.Option:Register("hud.crosshair.thickness", {
     Name = "options.hud.crosshair.thickness",
     Description = "options.hud.crosshair.thickness.help",
     Category = "category.hud",
     SubCategory = "category.crosshair",
-    Type = ax.types.number,
+    Type = Parallax.Types.number,
     Default = 1,
     NoNetworking = true,
     Min = 1,
@@ -122,12 +122,12 @@ ax.option:Register("hud.crosshair.thickness", {
     Decimals = 1
 })
 
-ax.option:Register("hud.crosshair.type", {
+Parallax.Option:Register("hud.crosshair.type", {
     Name = "options.hud.crosshair.type",
     Description = "options.hud.crosshair.type.help",
     Category = "category.hud",
     SubCategory = "category.crosshair",
-    Type = ax.types.array,
+    Type = Parallax.Types.array,
     Default = "cross",
     NoNetworking = true,
     Populate = function()
@@ -139,39 +139,39 @@ ax.option:Register("hud.crosshair.type", {
     end
 })
 
-ax.option:Register("hud.health.bar", {
+Parallax.Option:Register("hud.health.bar", {
     Name = "options.hud.health.bar",
     Description = "options.hud.health.bar.help",
     Category = "category.hud",
     SubCategory = "category.hud.health",
-    Type = ax.types.bool,
+    Type = Parallax.Types.bool,
     Default = true,
     NoNetworking = true
 })
 
-ax.option:Register("hud.health.bar.always", {
+Parallax.Option:Register("hud.health.bar.always", {
     Name = "options.hud.health.bar.always",
     Description = "options.hud.health.bar.always.help",
     Category = "category.hud",
     SubCategory = "category.hud.health",
-    Type = ax.types.bool,
+    Type = Parallax.Types.bool,
     Default = false,
     NoNetworking = true
 })
 
-ax.option:Register("hud.vignette", {
+Parallax.Option:Register("hud.vignette", {
     Name = "options.hud.vignette",
     Description = "options.hud.vignette.help",
     Category = "category.hud",
-    Type = ax.types.bool,
+    Type = Parallax.Types.bool,
     Default = true,
     NoNetworking = true
 })
 
-ax.option:Register("tab.fade.time", {
+Parallax.Option:Register("tab.fade.time", {
     Name = "options.tab.fade.time",
     Description = "options.tab.fade.time.help",
-    Type = ax.types.number,
+    Type = Parallax.Types.number,
     NoNetworking = true,
     Default = 0.4,
     Min = 0,
@@ -179,10 +179,10 @@ ax.option:Register("tab.fade.time", {
     Decimals = 2
 })
 
-ax.option:Register("tab.anchor.time", {
+Parallax.Option:Register("tab.anchor.time", {
     Name = "options.tab.anchor.time",
     Description = "options.tab.anchor.time.help",
-    Type = ax.types.number,
+    Type = Parallax.Types.number,
     Default = 0.4,
     NoNetworking = true,
     Min = 0,
@@ -190,20 +190,20 @@ ax.option:Register("tab.anchor.time", {
     Decimals = 2
 })
 
-ax.option:Register("mainmenu.music", {
+Parallax.Option:Register("mainmenu.music", {
     Name = "options.mainmenu.music",
     Description = "options.mainmenu.music.help",
     SubCategory = "category.mainmenu",
-    Type = ax.types.bool,
+    Type = Parallax.Types.bool,
     Default = true,
     NoNetworking = true
 })
 
-ax.option:Register("mainmenu.music.volume", {
+Parallax.Option:Register("mainmenu.music.volume", {
     Name = "options.mainmenu.music.volume",
     Description = "options.mainmenu.music.volume.help",
     SubCategory = "category.mainmenu",
-    Type = ax.types.number,
+    Type = Parallax.Types.number,
     Default = 50,
     NoNetworking = true,
     Min = 0,
@@ -211,38 +211,38 @@ ax.option:Register("mainmenu.music.volume", {
     Decimals = 0
 })
 
-ax.option:Register("mainmenu.music.loop", {
+Parallax.Option:Register("mainmenu.music.loop", {
     Name = "options.mainmenu.music.loop",
     Description = "options.mainmenu.music.loop.help",
     SubCategory = "category.mainmenu",
-    Type = ax.types.bool,
+    Type = Parallax.Types.bool,
     Default = true,
     NoNetworking = true
 })
 
-ax.option:Register("performance.blur", {
+Parallax.Option:Register("performance.blur", {
     Name = "options.performance.blur",
     Description = "options.performance.blur.help",
     Category = "category.performance",
-    Type = ax.types.bool,
+    Type = Parallax.Types.bool,
     Default = true,
     NoNetworking = true
 })
 
-ax.option:Register("performance.animations", {
+Parallax.Option:Register("performance.animations", {
     Name = "options.performance.animations",
     Description = "options.performance.animations.help",
     Category = "category.performance",
-    Type = ax.types.bool,
+    Type = Parallax.Types.bool,
     Default = true,
     NoNetworking = true
 })
 
-ax.option:Register("chat.size.font", {
+Parallax.Option:Register("chat.size.font", {
     Name = "options.chat.size.font",
     Description = "options.chat.size.font.help",
     Category = "category.chat",
-    Type = ax.types.number,
+    Type = Parallax.Types.number,
     Default = 1,
     NoNetworking = true,
     Min = 0,
@@ -251,8 +251,8 @@ ax.option:Register("chat.size.font", {
     OnChange = function(self, value)
         hook.Run("LoadFonts")
 
-        for i = 1, #ax.chat.messages do
-            local v = ax.chat.messages[i]
+        for i = 1, #Parallax.Chat.messages do
+            local v = Parallax.Chat.messages[i]
             if ( !IsValid(v) ) then continue end
 
             v:SizeToContents()

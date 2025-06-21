@@ -10,31 +10,31 @@
 ]]
 
 --- Chat library
--- @module ax.chat
+-- @module Parallax.Chat
 
-ax.chat = ax.chat or {}
-ax.chat.classes = ax.chat.classes or {}
+Parallax.Chat = Parallax.Chat or {}
+Parallax.Chat.classes = Parallax.Chat.classes or {}
 
-function ax.chat:Register(uniqueID, chatData)
+function Parallax.Chat:Register(uniqueID, chatData)
     if ( !isstring(uniqueID) ) then
-        ax.util:PrintError("Attempted to register a chat class without a unique ID!")
+        Parallax.Util:PrintError("Attempted to register a chat class without a unique ID!")
         return false
     end
 
     if ( !istable(chatData) ) then
-        ax.util:PrintError("Attempted to register a chat class without data!")
+        Parallax.Util:PrintError("Attempted to register a chat class without data!")
         return false
     end
 
     if ( !isfunction(chatData.OnChatAdd) ) then
         chatData.OnChatAdd = function(info, speaker, text)
-            chat.AddText(ax.color:Get("text"), speaker:Name() .. " says \"" .. text .. "\"")
+            chat.AddText(Parallax.Color:Get("text"), speaker:Name() .. " says \"" .. text .. "\"")
             chat.PlaySound()
         end
     end
 
     if ( chatData.Prefixes and chatData.Prefixes[1] != nil ) then
-        ax.command:Register(uniqueID, {
+        Parallax.Command:Register(uniqueID, {
             Description = chatData.Description or "",
             Prefixes = chatData.Prefixes,
             ChatType = uniqueID,
@@ -55,6 +55,6 @@ function ax.chat:Register(uniqueID, chatData)
     self.classes[uniqueID] = chatData
 end
 
-function ax.chat:Get(uniqueID)
+function Parallax.Chat:Get(uniqueID)
     return self.classes[uniqueID]
 end

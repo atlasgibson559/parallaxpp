@@ -121,7 +121,7 @@ end
 -- @realm shared
 -- @treturn bool Whether the entity has a spawn effect.
 function ENTITY:GetSpawnEffect()
-    return self:GetTable()["ax.m_bSpawnEffect"] or false
+    return self:GetTable()["Parallax.m_bSpawnEffect"] or false
 end
 
 --- Sets the model of the entity, with hooks for pre- and post-model setting.
@@ -145,7 +145,7 @@ function ENTITY:SetCooldown(action, cooldown)
     if ( !isstring(action) or !isnumber(cooldown) ) then return end
 
     local selfTable = self:GetTable()
-    selfTable["ax.cooldown." .. action] = CurTime() + cooldown
+    selfTable["Parallax.cooldown." .. action] = CurTime() + cooldown
 end
 
 --- Checks if a specific action is on cooldown for the entity.
@@ -156,10 +156,10 @@ function ENTITY:OnCooldown(action)
     if ( !isstring(action) ) then return false end
 
     local selfTable = self:GetTable()
-    local cooldown = selfTable["ax.cooldown." .. action]
+    local cooldown = selfTable["Parallax.cooldown." .. action]
 
     if ( !isnumber(cooldown) or cooldown <= CurTime() ) then
-        selfTable["ax.cooldown." .. action] = nil
+        selfTable["Parallax.cooldown." .. action] = nil
         return false
     end
 

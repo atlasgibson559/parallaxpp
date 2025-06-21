@@ -9,7 +9,7 @@
     Attribution is required. If you use or modify this file, you must retain this notice.
 ]]
 
-local FACTION = ax.faction.meta or {}
+local FACTION = Parallax.Faction.meta or {}
 FACTION.__index = FACTION
 
 local defaultModels = {
@@ -83,7 +83,7 @@ end
 --- Gets the faction's color.
 -- @treturn table The faction's color as a color table.
 function FACTION:GetColor()
-    return self.Color or ax.color:Get("white")
+    return self.Color or Parallax.Color:Get("white")
 end
 
 --- Gets the faction's models.
@@ -96,9 +96,9 @@ end
 -- @treturn table A table of class instances associated with the faction.
 function FACTION:GetClasses()
     local classes = {}
-    local instanceCount = #ax.class.instances
+    local instanceCount = #Parallax.Class.instances
     for i = 1, instanceCount do
-        local v = ax.class.instances[i]
+        local v = Parallax.Class.instances[i]
         if ( v.Faction == self:GetID() ) then
             table.insert(classes, v)
         end

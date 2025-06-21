@@ -11,12 +11,12 @@
 
 local MODULE = MODULE
 
-ax.net:Hook("logging.send", function(payload)
+Parallax.Net:Hook("logging.send", function(payload)
     if ( !payload ) then return end
 
-    ax.util:Print("[Logging] ", unpack(payload))
+    Parallax.Util:Print("[Logging] ", unpack(payload))
 end)
 
 function MODULE:Send(...)
-    ax.util:Print("[Logging] ", ...)
+    Parallax.Util:Print("[Logging] ", ...)
 end

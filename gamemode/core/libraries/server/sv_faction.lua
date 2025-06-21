@@ -10,12 +10,12 @@
 ]]
 
 --- Faction library
--- @module ax.faction
+-- @module Parallax.Faction
 
-function ax.faction:Join(client, factionID, bBypass)
+function Parallax.Faction:Join(client, factionID, bBypass)
     local faction = self:Get(factionID)
     if ( faction == nil or !istable(faction) ) then
-        ax.util:PrintError("Attempted to join an invalid faction!")
+        Parallax.Util:PrintError("Attempted to join an invalid faction!")
         return false
     end
 

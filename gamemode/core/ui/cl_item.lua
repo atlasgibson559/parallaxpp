@@ -9,7 +9,7 @@
     Attribution is required. If you use or modify this file, you must retain this notice.
 ]]
 
-DEFINE_BASECLASS("ax.button.flat")
+DEFINE_BASECLASS("Parallax.button.flat")
 
 local PANEL = {}
 
@@ -29,7 +29,7 @@ function PANEL:Init()
         -- Do not set this to nil, it will spew out errors
     end
 
-    self.weight = self:Add("ax.text")
+    self.weight = self:Add("Parallax.text")
     self.weight:Dock(RIGHT)
     self.weight:DockMargin(0, 0, ScreenScale(2), 0)
     self.weight:SetFont("parallax")
@@ -54,7 +54,7 @@ function PANEL:SetItem(id)
     if ( !id ) then return end
     self:SetID(id)
 
-    local item = ax.item:Get(id)
+    local item = Parallax.Item:Get(id)
     if ( !item ) then return end
 
     self.item = item
@@ -80,15 +80,15 @@ function PANEL:SetItem(id)
     if ( item.Actions.Equip or item.Actions.EquipUn ) then
         local equipped = item:GetData("equipped")
         if ( equipped ) then
-            self:SetBackgroundColor(ax.config:Get("color.success"))
+            self:SetBackgroundColor(Parallax.Config:Get("color.success"))
         else
-            self:SetBackgroundColor(ax.config:Get("color.warning"))
+            self:SetBackgroundColor(Parallax.Config:Get("color.warning"))
         end
     end
 end
 
 function PANEL:DoClick()
-    local inventoryPanel = ax.gui.inventory
+    local inventoryPanel = Parallax.gui.inventory
     if ( !IsValid(inventoryPanel) ) then return end
 
     inventoryPanel:SetInfo(self:GetID())
@@ -96,19 +96,19 @@ end
 
 function PANEL:DoRightClick()
     local itemID = self:GetID()
-    local item = ax.item:Get(itemID)
+    local item = Parallax.Item:Get(itemID)
     if ( !item ) then return end
 
-    local base = ax.item:Get(item:GetUniqueID())
+    local base = Parallax.Item:Get(item:GetUniqueID())
     if ( !base or !base.Actions ) then return end
 
     local menu = DermaMenu()
     for actionName, actionData in pairs(base.Actions) do
         if ( actionName == "Take" ) then continue end
-        if ( isfunction(actionData.OnCanRun) and actionData:OnCanRun(item, ax.client) == false ) then continue end
+        if ( isfunction(actionData.OnCanRun) and actionData:OnCanRun(item, Parallax.Client) == false ) then continue end
 
         menu:AddOption(actionData.Name or actionName, function()
-            ax.net:Start("item.perform", itemID, actionName)
+            Parallax.Net:Start("item.perform", itemID, actionName)
         end)
     end
 
@@ -123,4 +123,4 @@ function PANEL:Think()
     self.weight:SetTextColor(self:GetTextColor())
 end
 
-vgui.Register("ax.item", PANEL, "ax.button.flat")
+vgui.Register("Parallax.Item", PANEL, "Parallax.button.flat")

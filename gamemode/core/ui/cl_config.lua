@@ -16,7 +16,7 @@ local PANEL = {}
 function PANEL:Init()
     self:Dock(FILL)
 
-    self.buttons = self:Add("ax.scroller.horizontal")
+    self.buttons = self:Add("Parallax.scroller.horizontal")
     self.buttons:Dock(TOP)
     self.buttons:DockMargin(0, ScreenScaleH(4), 0, 0)
     self.buttons:SetTall(ScreenScaleH(24))
@@ -25,25 +25,25 @@ function PANEL:Init()
     self.buttons.btnLeft:SetAlpha(0)
     self.buttons.btnRight:SetAlpha(0)
 
-    self.container = self:Add("ax.scroller.vertical")
+    self.container = self:Add("Parallax.scroller.vertical")
     self.container:Dock(FILL)
     self.container:GetVBar():SetWide(0)
     self.container.Paint = nil
 
-    self.search = self:Add("ax.text.entry")
+    self.search = self:Add("Parallax.text.entry")
     self.search:Dock(TOP)
     self.search:SetUpdateOnType(true)
-    self.search:SetPlaceholderText(ax.localization:GetPhrase("search.description.config"))
+    self.search:SetPlaceholderText(Parallax.Localization:GetPhrase("search.description.config"))
     self.search.OnValueChange = function(this, value)
         if ( value and value != "" ) then
             self:PopulateCategory(nil, value)
         else
-            self:PopulateCategory(ax.gui.configLast)
+            self:PopulateCategory(Parallax.gui.configLast)
         end
     end
 
     local categories = {}
-    for k, v in pairs(ax.config.stored) do
+    for k, v in pairs(Parallax.Config.stored) do
         local found = false
         for i = 1, #categories do
             if ( categories[i] == v.Category ) then
@@ -58,7 +58,7 @@ function PANEL:Init()
     end
 
     for k, v in SortedPairs(categories) do
-        local button = self.buttons:Add("ax.button.flat")
+        local button = self.buttons:Add("Parallax.button.flat")
         button:Dock(LEFT)
         button:SetText(v)
         button:SizeToContents()
@@ -72,8 +72,8 @@ function PANEL:Init()
         self.buttons:AddPanel(button)
     end
 
-    if ( ax.gui.configLast ) then
-        self:PopulateCategory(ax.gui.configLast)
+    if ( Parallax.gui.configLast ) then
+        self:PopulateCategory(Parallax.gui.configLast)
     else
         self:PopulateCategory(categories[1])
     end
@@ -81,18 +81,18 @@ end
 
 function PANEL:PopulateCategory(category, toSearch)
     if ( category ) then
-        ax.gui.configLast = category
+        Parallax.gui.configLast = category
     end
 
     self.container:Clear()
 
     local config = {}
-    for k, v in pairs(ax.config.stored) do
-        if ( category and ax.util:FindString(v.Category, category) == false ) then
+    for k, v in pairs(Parallax.Config.stored) do
+        if ( category and Parallax.Util:FindString(v.Category, category) == false ) then
             continue
         end
 
-        if ( toSearch and ax.util:FindString(ax.localization:GetPhrase(v.Name), toSearch) == false ) then
+        if ( toSearch and Parallax.Util:FindString(Parallax.Localization:GetPhrase(v.Name), toSearch) == false ) then
             continue
         end
 
@@ -100,7 +100,7 @@ function PANEL:PopulateCategory(category, toSearch)
     end
 
     table.sort(config, function(a, b)
-        return ax.localization:GetPhrase(a.Name) < ax.localization:GetPhrase(b.Name)
+        return Parallax.Localization:GetPhrase(a.Name) < Parallax.Localization:GetPhrase(b.Name)
     end)
 
     local subCategories = {}
@@ -114,10 +114,10 @@ function PANEL:PopulateCategory(category, toSearch)
 
     if ( table.Count(subCategories) > 1 ) then
         for k, v in SortedPairs(subCategories) do
-            local label = self.container:Add("ax.text")
+            local label = self.container:Add("Parallax.text")
             label:Dock(TOP)
             label:DockMargin(0, 0, 0, ScreenScaleH(4))
-            label:SetFont("parallax.huge.bold")
+            label:SetFont("Parallax.huge.bold")
             label:SetText(string.upper(k))
 
             for k2, v2 in SortedPairs(config) do
@@ -134,29 +134,29 @@ function PANEL:PopulateCategory(category, toSearch)
 end
 
 function PANEL:AddConfig(configData)
-    local value = ax.config:Get(configData.UniqueID)
+    local value = Parallax.Config:Get(configData.UniqueID)
 
-    local panel = self.container:Add("ax.button.flat")
+    local panel = self.container:Add("Parallax.button.flat")
     panel:Dock(TOP)
     panel:SetText(configData.Name)
     panel:SetTall(ScreenScaleH(26))
     panel:SetContentAlignment(4)
     panel:SetTextInset(ScreenScale(6), 0)
 
-    local enabled = ax.localization:GetPhrase("enabled")
-    local enable = ax.localization:GetPhrase("enable")
-    local disabled = ax.localization:GetPhrase("disabled")
-    local disable = ax.localization:GetPhrase("disable")
-    local unknown = ax.localization:GetPhrase("unknown")
+    local enabled = Parallax.Localization:GetPhrase("enabled")
+    local enable = Parallax.Localization:GetPhrase("enable")
+    local disabled = Parallax.Localization:GetPhrase("disabled")
+    local disable = Parallax.Localization:GetPhrase("disable")
+    local unknown = Parallax.Localization:GetPhrase("unknown")
 
     local label
     local configs
-    if ( configData.Type == ax.types.bool ) then
-        label = panel:Add("ax.text")
+    if ( configData.Type == Parallax.Types.bool ) then
+        label = panel:Add("Parallax.text")
         label:Dock(RIGHT)
         label:DockMargin(0, 0, ScreenScale(8), 0)
         label:SetText(value and enabled or disabled, true)
-        label:SetFont("parallax.large")
+        label:SetFont("Parallax.large")
         label:SetWide(ScreenScale(128))
         label:SetContentAlignment(6)
         label.Think = function(this)
@@ -164,7 +164,7 @@ function PANEL:AddConfig(configData)
         end
 
         panel.DoClick = function()
-            ax.net:Start("config.set", configData.UniqueID, !value)
+            Parallax.Net:Start("config.set", configData.UniqueID, !value)
 
             value = !value
 
@@ -173,40 +173,40 @@ function PANEL:AddConfig(configData)
 
         panel.DoRightClick = function()
             local menu = DermaMenu()
-            menu:AddOption(ax.localization:GetPhrase("reset"), function()
-                ax.net:Start("config.reset", configData.UniqueID)
+            menu:AddOption(Parallax.Localization:GetPhrase("reset"), function()
+                Parallax.Net:Start("config.reset", configData.UniqueID)
 
-                value = ax.config:GetDefault(configData.UniqueID)
+                value = Parallax.Config:GetDefault(configData.UniqueID)
                 label:SetText(value and enabled or disabled, true)
             end):SetIcon("icon16/arrow_refresh.png")
             menu:AddSpacer()
             menu:AddOption(value and disable or enable, function()
-                ax.net:Start("config.set", configData.UniqueID, !value)
+                Parallax.Net:Start("config.set", configData.UniqueID, !value)
 
                 value = !value
 
                 label:SetText(value and "< " .. enabled .. " >" or "< " .. disabled .. " >", true)
             end):SetIcon(value and "icon16/cross.png" or "icon16/tick.png")
 
-            if ( ax.client:IsDeveloper() and ax.config:Get("debug.developer") ) then
+            if ( Parallax.Client:IsDeveloper() and Parallax.Config:Get("debug.developer") ) then
                 menu:AddSpacer()
-                menu:AddOption(ax.localization:GetPhrase("copy"), function()
+                menu:AddOption(Parallax.Localization:GetPhrase("copy"), function()
                     SetClipboardText(configData.UniqueID)
-                    ax.client:EmitSound("ui/buttonclickrelease.wav", 60, 100, 0.1, CHAN_STATIC)
+                    Parallax.Client:EmitSound("ui/buttonclickrelease.wav", 60, 100, 0.1, CHAN_STATIC)
                 end):SetIcon("icon16/pencil.png")
             end
 
             menu:Open()
         end
-    elseif ( configData.Type == ax.types.number ) then
-        local slider = panel:Add("ax.slider")
+    elseif ( configData.Type == Parallax.Types.number ) then
+        local slider = panel:Add("Parallax.slider")
         slider:Dock(RIGHT)
         slider:DockMargin(ScreenScale(8), ScreenScaleH(4), ScreenScale(8), ScreenScaleH(4))
         slider:SetWide(ScreenScale(128))
         slider:SetMouseInputEnabled(false)
 
         slider.Paint = function(this, width, height)
-            draw.RoundedBox(0, 0, 0, width, height, ax.color:Get("background.slider"))
+            draw.RoundedBox(0, 0, 0, width, height, Parallax.Color:Get("background.slider"))
             local fraction = (this.value - this.min) / (this.max - this.min)
             local barWidth = math.Clamp(fraction * width, 0, width)
             local inertia = panel:GetInertia()
@@ -229,11 +229,11 @@ function PANEL:AddConfig(configData)
         slider:SetDecimals(configData.Decimals or 0)
         slider:SetValue(value, true)
 
-        label = panel:Add("ax.text")
+        label = panel:Add("Parallax.text")
         label:Dock(RIGHT)
         label:DockMargin(0, 0, -ScreenScale(4), 8)
         label:SetText(value)
-        label:SetFont("parallax.large")
+        label:SetFont("Parallax.large")
         label:SetWide(ScreenScale(128))
         label:SetContentAlignment(6)
         label.Think = function(this)
@@ -242,15 +242,15 @@ function PANEL:AddConfig(configData)
         end
 
         slider.OnValueChanged = function(this, _)
-            ax.net:Start("config.set", configData.UniqueID, this:GetValue())
-            ax.client:EmitSound("ui/buttonrollover.wav", 100, 100, 1, CHAN_STATIC)
+            Parallax.Net:Start("config.set", configData.UniqueID, this:GetValue())
+            Parallax.Client:EmitSound("ui/buttonrollover.wav", 100, 100, 1, CHAN_STATIC)
         end
 
         panel.DoClick = function(this)
             if ( !slider.bCursorInside ) then
-                ax.net:Start("config.reset", configData.UniqueID)
+                Parallax.Net:Start("config.reset", configData.UniqueID)
 
-                value = ax.config:GetDefault(configData.UniqueID)
+                value = Parallax.Config:GetDefault(configData.UniqueID)
                 slider:SetValue(value)
                 label:SetText(value)
 
@@ -264,29 +264,29 @@ function PANEL:AddConfig(configData)
 
         panel.DoRightClick = function(this)
             local menu = DermaMenu()
-            menu:AddOption(ax.localization:GetPhrase("reset"), function()
-                ax.net:Start("config.reset", configData.UniqueID)
+            menu:AddOption(Parallax.Localization:GetPhrase("reset"), function()
+                Parallax.Net:Start("config.reset", configData.UniqueID)
 
-                value = ax.config:GetDefault(configData.UniqueID)
+                value = Parallax.Config:GetDefault(configData.UniqueID)
                 slider:SetValue(value)
                 label:SetText(value)
             end):SetIcon("icon16/arrow_refresh.png")
             menu:AddSpacer()
-            menu:AddOption(ax.localization:GetPhrase("set"), function()
+            menu:AddOption(Parallax.Localization:GetPhrase("set"), function()
                 Derma_StringRequest(
-                    ax.localization:GetPhrase("set", configData.Name),
-                    ax.localization:GetPhrase("set.description.config", configData.Name),
+                    Parallax.Localization:GetPhrase("set", configData.Name),
+                    Parallax.Localization:GetPhrase("set.description.config", configData.Name),
                     value,
                     function(text)
                         if ( text == "" ) then return end
 
                         local num = tonumber(text)
                         if ( !num ) then
-                            Derma_Message(ax.localization:GetPhrase("invalid.number"), "Error", "OK")
+                            Derma_Message(Parallax.Localization:GetPhrase("invalid.number"), "Error", "OK")
                             return
                         end
 
-                        ax.net:Start("config.set", configData.UniqueID, num)
+                        Parallax.Net:Start("config.set", configData.UniqueID, num)
 
                         value = num
                         slider:SetValue(value)
@@ -295,30 +295,30 @@ function PANEL:AddConfig(configData)
                 )
             end):SetIcon("icon16/pencil.png")
 
-            if ( ax.client:IsDeveloper() and ax.config:Get("debug.developer") ) then
+            if ( Parallax.Client:IsDeveloper() and Parallax.Config:Get("debug.developer") ) then
                 menu:AddSpacer()
-                menu:AddOption(ax.localization:GetPhrase("copy"), function()
+                menu:AddOption(Parallax.Localization:GetPhrase("copy"), function()
                     SetClipboardText(configData.UniqueID)
-                    ax.client:EmitSound("ui/buttonclickrelease.wav", 60, 100, 0.1, CHAN_STATIC)
+                    Parallax.Client:EmitSound("ui/buttonclickrelease.wav", 60, 100, 0.1, CHAN_STATIC)
                 end):SetIcon("icon16/pencil.png")
             end
 
             menu:Open()
         end
-    elseif ( configData.Type == ax.types.array ) then
+    elseif ( configData.Type == Parallax.Types.array ) then
         configs = configData:Populate()
         local keys = {}
         for k2, _ in pairs(configs) do
             table.insert(keys, k2)
         end
 
-        local phrase = (configs and configs[value]) and ax.localization:GetPhrase(configs[value]) or unknown
+        local phrase = (configs and configs[value]) and Parallax.Localization:GetPhrase(configs[value]) or unknown
 
-        label = panel:Add("ax.text")
+        label = panel:Add("Parallax.text")
         label:Dock(RIGHT)
         label:DockMargin(0, 0, ScreenScale(8), 0)
         label:SetText(phrase, true)
-        label:SetFont("parallax.large")
+        label:SetFont("Parallax.large")
         label:SetWide(ScreenScale(128))
         label:SetContentAlignment(6)
         label.Think = function(this)
@@ -341,7 +341,7 @@ function PANEL:AddConfig(configData)
             nextKey = nextKey or keys[1]
             nextKey = tostring(nextKey)
 
-            ax.net:Start("config.set", configData.UniqueID, nextKey)
+            Parallax.Net:Start("config.set", configData.UniqueID, nextKey)
 
             value = nextKey
 
@@ -350,35 +350,35 @@ function PANEL:AddConfig(configData)
 
         panel.DoRightClick = function()
             local menu = DermaMenu()
-            menu:AddOption(ax.localization:GetPhrase("reset"), function()
-                ax.net:Start("config.reset", configData.UniqueID)
+            menu:AddOption(Parallax.Localization:GetPhrase("reset"), function()
+                Parallax.Net:Start("config.reset", configData.UniqueID)
 
-                value = ax.config:GetDefault(configData.UniqueID)
+                value = Parallax.Config:GetDefault(configData.UniqueID)
                 label:SetText(configs and configs[value] or unknown, true)
             end):SetIcon("icon16/arrow_refresh.png")
             menu:AddSpacer()
             for k2, v2 in SortedPairs(configs) do
                 menu:AddOption(v2, function()
-                    ax.net:Start("config.set", configData.UniqueID, k2)
+                    Parallax.Net:Start("config.set", configData.UniqueID, k2)
 
                     value = k2
 
-                    phrase = (configs and configs[value]) and ax.localization:GetPhrase(configs[value]) or unknown
+                    phrase = (configs and configs[value]) and Parallax.Localization:GetPhrase(configs[value]) or unknown
                     label:SetText(panel:IsHovered() and "< " .. phrase .. " >" or phrase, true)
                 end):SetIcon("icon16/tick.png")
             end
 
-            if ( ax.client:IsDeveloper() and ax.config:Get("debug.developer") ) then
+            if ( Parallax.Client:IsDeveloper() and Parallax.Config:Get("debug.developer") ) then
                 menu:AddSpacer()
-                menu:AddOption(ax.localization:GetPhrase("copy"), function()
+                menu:AddOption(Parallax.Localization:GetPhrase("copy"), function()
                     SetClipboardText(configData.UniqueID)
-                    ax.client:EmitSound("ui/buttonclickrelease.wav", 60, 100, 0.1, CHAN_STATIC)
+                    Parallax.Client:EmitSound("ui/buttonclickrelease.wav", 60, 100, 0.1, CHAN_STATIC)
                 end):SetIcon("icon16/pencil.png")
             end
 
             menu:Open()
         end
-    elseif ( configData.Type == ax.types.color ) then
+    elseif ( configData.Type == Parallax.Types.color ) then
         local color = panel:Add("EditablePanel")
         color:Dock(RIGHT)
         color:DockMargin(ScreenScale(8), ScreenScaleH(4), ScreenScale(8), ScreenScaleH(4))
@@ -395,7 +395,7 @@ function PANEL:AddConfig(configData)
             blocker:SetPos(0, 0)
             blocker:MakePopup()
             blocker.Paint = function(this, width, height)
-                ax.util:DrawBlur(this, 2)
+                Parallax.Util:DrawBlur(this, 2)
                 draw.RoundedBox(0, 0, 0, width, height, Color(0, 0, 0, 200))
             end
             blocker.OnMousePressed = function(this, key)
@@ -412,7 +412,7 @@ function PANEL:AddConfig(configData)
                 end
             end
             blocker.OnRemove = function(this)
-                ax.net:Start("config.set", configData.UniqueID, value)
+                Parallax.Net:Start("config.set", configData.UniqueID, value)
             end
 
             local frame = blocker:Add("EditablePanel")
@@ -434,60 +434,60 @@ function PANEL:AddConfig(configData)
 
         panel.DoRightClick = function()
             local menu = DermaMenu()
-            menu:AddOption(ax.localization:GetPhrase("reset"), function()
-                ax.net:Start("config.reset", configData.UniqueID)
+            menu:AddOption(Parallax.Localization:GetPhrase("reset"), function()
+                Parallax.Net:Start("config.reset", configData.UniqueID)
 
-                value = ax.config:GetDefault(configData.UniqueID)
+                value = Parallax.Config:GetDefault(configData.UniqueID)
                 color.color = value
             end):SetIcon("icon16/arrow_refresh.png")
 
-            if ( ax.client:IsDeveloper() and ax.config:Get("debug.developer") ) then
+            if ( Parallax.Client:IsDeveloper() and Parallax.Config:Get("debug.developer") ) then
                 menu:AddSpacer()
-                menu:AddOption(ax.localization:GetPhrase("copy"), function()
+                menu:AddOption(Parallax.Localization:GetPhrase("copy"), function()
                     SetClipboardText(configData.UniqueID)
-                    ax.client:EmitSound("ui/buttonclickrelease.wav", 60, 100, 0.1, CHAN_STATIC)
+                    Parallax.Client:EmitSound("ui/buttonclickrelease.wav", 60, 100, 0.1, CHAN_STATIC)
                 end):SetIcon("icon16/pencil.png")
             end
 
             menu:Open()
         end
-    elseif ( configData.Type == ax.types.string ) then
-        local text = panel:Add("ax.text.entry")
+    elseif ( configData.Type == Parallax.Types.string ) then
+        local text = panel:Add("Parallax.text.entry")
         text:Dock(RIGHT)
         text:DockMargin(ScreenScale(8), ScreenScaleH(4), ScreenScale(8), ScreenScaleH(4))
         text:SetWide(ScreenScale(128))
-        text:SetFont("parallax.large")
+        text:SetFont("Parallax.large")
         text:SetText(value)
 
         text.OnEnter = function(this)
             local newValue = this:GetText()
             if ( newValue == value ) then return end
 
-            ax.net:Start("config.set", configData.UniqueID, newValue)
+            Parallax.Net:Start("config.set", configData.UniqueID, newValue)
 
             value = newValue
 
-            ax.client:EmitSound("ui/buttonclickrelease.wav", 60, pitch, 0.1, CHAN_STATIC)
+            Parallax.Client:EmitSound("ui/buttonclickrelease.wav", 60, pitch, 0.1, CHAN_STATIC)
         end
 
         panel.DoRightClick = function()
             local menu = DermaMenu()
-            menu:AddOption(ax.localization:GetPhrase("reset"), function()
-                ax.net:Start("config.reset", configData.UniqueID)
+            menu:AddOption(Parallax.Localization:GetPhrase("reset"), function()
+                Parallax.Net:Start("config.reset", configData.UniqueID)
 
-                value = ax.config:GetDefault(configData.UniqueID)
+                value = Parallax.Config:GetDefault(configData.UniqueID)
                 text:SetText(value)
             end):SetIcon("icon16/arrow_refresh.png")
             menu:AddSpacer()
-            menu:AddOption(ax.localization:GetPhrase("set"), function()
+            menu:AddOption(Parallax.Localization:GetPhrase("set"), function()
                 Derma_StringRequest(
-                    ax.localization:GetPhrase("set", configData.Name),
-                    ax.localization:GetPhrase("set.description.config", configData.Name),
+                    Parallax.Localization:GetPhrase("set", configData.Name),
+                    Parallax.Localization:GetPhrase("set.description.config", configData.Name),
                     value,
                     function(textString)
                         if ( textString == "" ) then return end
 
-                        ax.net:Start("config.set", configData.UniqueID, textString)
+                        Parallax.Net:Start("config.set", configData.UniqueID, textString)
 
                         value = textString
                         text:SetText(value)
@@ -495,11 +495,11 @@ function PANEL:AddConfig(configData)
                 )
             end):SetIcon("icon16/pencil.png")
 
-            if ( ax.client:IsDeveloper() and ax.config:Get("debug.developer") ) then
+            if ( Parallax.Client:IsDeveloper() and Parallax.Config:Get("debug.developer") ) then
                 menu:AddSpacer()
-                menu:AddOption(ax.localization:GetPhrase("copy"), function()
+                menu:AddOption(Parallax.Localization:GetPhrase("copy"), function()
                     SetClipboardText(configData.UniqueID)
-                    ax.client:EmitSound("ui/buttonclickrelease.wav", 60, 100, 0.1, CHAN_STATIC)
+                    Parallax.Client:EmitSound("ui/buttonclickrelease.wav", 60, 100, 0.1, CHAN_STATIC)
                 end):SetIcon("icon16/pencil.png")
             end
 
@@ -508,44 +508,44 @@ function PANEL:AddConfig(configData)
     end
 
     panel.OnHovered = function(this)
-        if ( configData.Type == ax.types.bool ) then
+        if ( configData.Type == Parallax.Types.bool ) then
             label:SetText(value and "< " .. enabled .. " >" or "< " .. disabled .. " >", true)
-        elseif ( configData.Type == ax.types.array ) then
-            local phrase = (configs and configs[value]) and ax.localization:GetPhrase(configs[value]) or unknown
+        elseif ( configData.Type == Parallax.Types.array ) then
+            local phrase = (configs and configs[value]) and Parallax.Localization:GetPhrase(configs[value]) or unknown
             label:SetText("< " .. phrase .. " >", true)
         end
 
-        if ( !IsValid(ax.gui.tooltip) ) then
-            ax.gui.tooltip = vgui.Create("ax.tooltip")
-            ax.gui.tooltip:SetText(configData.Name, configData.Description)
-            ax.gui.tooltip:SizeToContents()
-            ax.gui.tooltip:SetPanel(this)
+        if ( !IsValid(Parallax.gui.tooltip) ) then
+            Parallax.gui.tooltip = vgui.Create("Parallax.Tooltip")
+            Parallax.gui.tooltip:SetText(configData.Name, configData.Description)
+            Parallax.gui.tooltip:SizeToContents()
+            Parallax.gui.tooltip:SetPanel(this)
         else
-            ax.gui.tooltip:SetText(configData.Name, configData.Description)
-            ax.gui.tooltip:SizeToContents()
+            Parallax.gui.tooltip:SetText(configData.Name, configData.Description)
+            Parallax.gui.tooltip:SizeToContents()
 
             timer.Simple(0, function()
-                if ( IsValid(ax.gui.tooltip) ) then
-                    ax.gui.tooltip:SetPanel(this)
+                if ( IsValid(Parallax.gui.tooltip) ) then
+                    Parallax.gui.tooltip:SetPanel(this)
                 end
             end)
         end
     end
 
     panel.OnUnHovered = function(this)
-        if ( configData.Type == ax.types.bool ) then
+        if ( configData.Type == Parallax.Types.bool ) then
             label:SetText(value and enabled or disabled, true)
-        elseif ( configData.Type == ax.types.array ) then
-            local phrase = (configs and configs[value]) and ax.localization:GetPhrase(configs[value]) or unknown
+        elseif ( configData.Type == Parallax.Types.array ) then
+            local phrase = (configs and configs[value]) and Parallax.Localization:GetPhrase(configs[value]) or unknown
             label:SetText(phrase, true)
         end
 
-        if ( IsValid(ax.gui.tooltip) ) then
-            ax.gui.tooltip:SetPanel(nil)
+        if ( IsValid(Parallax.gui.tooltip) ) then
+            Parallax.gui.tooltip:SetPanel(nil)
         end
     end
 end
 
-vgui.Register("ax.config", PANEL, "EditablePanel")
+vgui.Register("Parallax.Config", PANEL, "EditablePanel")
 
-ax.gui.configLast = nil
+Parallax.gui.configLast = nil

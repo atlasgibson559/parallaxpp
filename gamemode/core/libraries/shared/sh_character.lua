@@ -10,17 +10,17 @@
 ]]
 
 --- Character library.
--- @module ax.character
+-- @module Parallax.Character
 
-ax.character = ax.character or {} -- Character library.
-ax.character.meta = ax.character.meta or {} -- All currently registered character meta functions.
-ax.character.variables = ax.character.variables or {} -- All currently registered variables.
-ax.character.fields = ax.character.fields or {} -- All currently registered fields.
-ax.character.stored = ax.character.stored or {} -- All currently stored characters which are in use.
+Parallax.Character = Parallax.Character or {} -- Character library.
+Parallax.Character.meta = Parallax.Character.meta or {} -- All currently registered character meta functions.
+Parallax.Character.variables = Parallax.Character.variables or {} -- All currently registered variables.
+Parallax.Character.fields = Parallax.Character.fields or {} -- All currently registered fields.
+Parallax.Character.stored = Parallax.Character.stored or {} -- All currently stored characters which are in use.
 
 --- Registers a variable for the character.
 -- @realm shared
-function ax.character:RegisterVariable(key, data)
+function Parallax.Character:RegisterVariable(key, data)
     data.Index = table.Count(self.variables) + 1
 
     if ( data.Alias != nil ) then
@@ -41,7 +41,7 @@ function ax.character:RegisterVariable(key, data)
 
                 local field = data.Field
                 if ( field ) then
-                    ax.database:RegisterVar("ax_characters", key, data.Default or nil)
+                    Parallax.Database:RegisterVar("ax_characters", key, data.Default or nil)
                     self.fields[key] = field
                 end
             end
@@ -60,7 +60,7 @@ function ax.character:RegisterVariable(key, data)
 
             local field = data.Field
             if ( field ) then
-                ax.database:RegisterVar("ax_characters", key, data.Default or nil)
+                Parallax.Database:RegisterVar("ax_characters", key, data.Default or nil)
                 self.fields[key] = field
             end
         end
@@ -69,15 +69,15 @@ function ax.character:RegisterVariable(key, data)
     self.variables[key] = data
 end
 
-function ax.character:SetVariable(id, key, value)
+function Parallax.Character:SetVariable(id, key, value)
     if ( !self.variables[key] ) then
-        ax.util:PrintError("Attempted to set a variable that does not exist!")
+        Parallax.Util:PrintError("Attempted to set a variable that does not exist!")
         return false, "Attempted to set a variable that does not exist!"
     end
 
     local character = self.stored[id]
     if ( !character ) then
-        ax.util:PrintError("Attempted to set a variable for a character that does not exist!")
+        Parallax.Util:PrintError("Attempted to set a variable for a character that does not exist!")
         return false, "Attempted to set a variable for a character that does not exist!"
     end
 
@@ -89,32 +89,32 @@ function ax.character:SetVariable(id, key, value)
     character[key] = value
 
     if ( SERVER ) then
-        ax.database:Update("ax_characters", { [key] = value }, "id = " .. id)
+        Parallax.Database:Update("ax_characters", { [key] = value }, "id = " .. id)
 
         if ( data.Field ) then
             local field = data.Field
             if ( field ) then
-                ax.database:Update("ax_characters", { [field] = value }, "id = " .. id)
+                Parallax.Database:Update("ax_characters", { [field] = value }, "id = " .. id)
             end
         end
 
         if ( !data.NoNetworking ) then
-            ax.net:Start(nil, "character.variable.set", id, key, value)
+            Parallax.Net:Start(nil, "character.variable.set", id, key, value)
         end
     end
 end
 
-function ax.character:GetVariable(id, key)
+function Parallax.Character:GetVariable(id, key)
     local character = self.stored[id]
     if ( !character ) then
-        ax.util:PrintError("Attempted to get a variable for a character that does not exist!")
+        Parallax.Util:PrintError("Attempted to get a variable for a character that does not exist!")
         return false, "Attempted to get a variable for a character that does not exist!"
     end
 
     local variable = self.variables[key]
     if ( !variable ) then return end
 
-    local output = ax.util:CoerceType(variable.Type, character[key])
+    local output = Parallax.Util:CoerceType(variable.Type, character[key])
     if ( variable.OnGet ) then
         return variable:OnGet(character, output)
     end
@@ -122,14 +122,14 @@ function ax.character:GetVariable(id, key)
     return output
 end
 
-function ax.character:CreateObject(characterID, data, client)
+function Parallax.Character:CreateObject(characterID, data, client)
     if ( !characterID or !data ) then
-        ax.util:PrintError("Attempted to create a character object with invalid data!")
+        Parallax.Util:PrintError("Attempted to create a character object with invalid data!")
         return false, "Invalid data provided"
     end
 
     if ( self.stored[characterID] ) then
-        ax.util:PrintWarning("Attempted to create a character object that already exists!")
+        Parallax.Util:PrintWarning("Attempted to create a character object that already exists!")
         return self.stored[characterID], "Character already exists"
     end
 
@@ -162,7 +162,7 @@ function ax.character:CreateObject(characterID, data, client)
     return character
 end
 
-function ax.character:GetPlayerByCharacter(id)
+function Parallax.Character:GetPlayerByCharacter(id)
     for _, client in player.Iterator() do
         if ( client:GetCharacterID() == tonumber(id) ) then
             return client
@@ -172,14 +172,14 @@ function ax.character:GetPlayerByCharacter(id)
     return false, "Player not found"
 end
 
-function ax.character:Get(id)
+function Parallax.Character:Get(id)
     return self.stored[id]
 end
 
-function ax.character:GetAll()
+function Parallax.Character:GetAll()
     return self.stored
 end
 
-function ax.character:GetAllVariables()
+function Parallax.Character:GetAllVariables()
     return self.variables
 end

@@ -10,19 +10,19 @@
 ]]
 
 --- Faction library
--- @module ax.faction
+-- @module Parallax.Faction
 
-ax.faction = ax.faction or {}
-ax.faction.stored = {}
-ax.faction.instances = {}
-ax.faction.meta = ax.faction.meta or {}
+Parallax.Faction = Parallax.Faction or {}
+Parallax.Faction.stored = {}
+Parallax.Faction.instances = {}
+Parallax.Faction.meta = Parallax.Faction.meta or {}
 
-function ax.faction:Register(factionData)
+function Parallax.Faction:Register(factionData)
     local FACTION = setmetatable(factionData, self.meta)
 
     local bResult = hook.Run("PreFactionRegistered", FACTION)
     if ( bResult == false ) then
-        ax.util:PrintError("Attempted to register a faction that was blocked by a hook!")
+        Parallax.Util:PrintError("Attempted to register a faction that was blocked by a hook!")
         return false, "Attempted to register a faction that was blocked by a hook!"
     end
 
@@ -46,14 +46,14 @@ function ax.faction:Register(factionData)
     return FACTION.ID
 end
 
-function ax.faction:Get(identifier)
+function Parallax.Faction:Get(identifier)
     if ( identifier == nil ) then
         return false, "Attempted to get a faction without an identifier!"
     end
 
     if ( isnumber(identifier) ) then
         if ( identifier < 1 ) then
-            ax.util:PrintError("Attempted to get a faction with an invalid ID!")
+            Parallax.Util:PrintError("Attempted to get a faction with an invalid ID!")
             return false, "Attempted to get a faction with an invalid ID!"
         end
 
@@ -65,7 +65,7 @@ function ax.faction:Get(identifier)
 
         for i = 1, #self.instances do
             local v = self.instances[i]
-            if ( ax.util:FindString(v.Name, identifier) or ax.util:FindString(v.UniqueID, identifier) ) then
+            if ( Parallax.Util:FindString(v.Name, identifier) or Parallax.Util:FindString(v.UniqueID, identifier) ) then
                 return v
             end
         end
@@ -74,9 +74,9 @@ function ax.faction:Get(identifier)
     return nil
 end
 
-function ax.faction:CanSwitchTo(client, factionID, oldFactionID)
+function Parallax.Faction:CanSwitchTo(client, factionID, oldFactionID)
     if ( !IsValid(client) ) then
-        ax.util:PrintError("Attempted to check if a player can switch to a faction without a client!")
+        Parallax.Util:PrintError("Attempted to check if a player can switch to a faction without a client!")
         return false, "Attempted to check if a player can switch to a faction without a client!"
     end
 
@@ -114,6 +114,6 @@ function ax.faction:CanSwitchTo(client, factionID, oldFactionID)
     return true
 end
 
-function ax.faction:GetAll()
+function Parallax.Faction:GetAll()
     return self.instances
 end

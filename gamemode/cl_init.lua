@@ -12,7 +12,7 @@
 DeriveGamemode("sandbox")
 GM.RefreshTimeStart = SysTime()
 
-ax = ax or {util = {}, meta = {}, config = {}, globals = {}, gui = {}}
+Parallax = Parallax or {util = {}, meta = {}, config = {}, globals = {}, gui = {}}
 
 include("core/types.lua")
 include("core/util.lua")
@@ -20,8 +20,8 @@ include("core/boot.lua")
 
 LocalPlayerInternal = LocalPlayer
 function LocalPlayer()
-    if ( IsValid(ax.client) ) then
-        return ax.client
+    if ( IsValid(ParallParallax.Client) ) then
+        return ParallParallax.Client
     end
 
     return LocalPlayerInternal()

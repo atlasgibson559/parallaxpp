@@ -10,23 +10,23 @@
 ]]
 
 -- Configuration for the gamemode
--- @module ax.config
+-- @module Parallax.Config
 
-ax.config = ax.config or {}
-ax.config.stored = ax.config.stored or {}
-ax.config.instances = ax.config.instances or {}
+Parallax.Config = Parallax.Config or {}
+Parallax.Config.stored = Parallax.Config.stored or {}
+Parallax.Config.instances = Parallax.Config.instances or {}
 
 --- Gets the current value of the specified configuration.
 -- @realm shared
 -- @param key The key of the configuration.
 -- @param default The default value of the configuration.
 -- @return The value of the configuration.
--- @usage local color = ax.config.Get("color.schema", Color(0, 100, 150))
+-- @usage local color = Parallax.Config.Get("color.schema", Color(0, 100, 150))
 -- print(color) -- Prints the color of the schema.
-function ax.config:Get(key, fallback)
+function Parallax.Config:Get(key, fallback)
     local configData = self.stored[key]
     if ( !istable(configData) ) then
-        ax.util:PrintError("Config \"" .. tostring(key) .. "\" does not exist!")
+        Parallax.Util:PrintError("Config \"" .. tostring(key) .. "\" does not exist!")
         return fallback
     end
 
@@ -48,12 +48,12 @@ end
 -- @realm shared
 -- @param key The key of the configuration.
 -- @return The default value of the configuration.
--- @usage local defaultColor = ax.config.GetDefault("color.schema")
+-- @usage local defaultColor = Parallax.Config.GetDefault("color.schema")
 -- print(defaultColor) -- Prints the default color of the schema.
-function ax.config:GetDefault(key)
+function Parallax.Config:GetDefault(key)
     local configData = self.stored[key]
     if ( !istable(configData) ) then
-        ax.util:PrintError("Config \"" .. tostring(key) .. "\" does not exist!")
+        Parallax.Util:PrintError("Config \"" .. tostring(key) .. "\" does not exist!")
         return nil
     end
 
@@ -68,11 +68,11 @@ end
 -- @param key The key of the configuration.
 -- @param value The value of the configuration.
 -- @treturn boolean Whether the configuration was successfully set.
--- @usage ax.config.Set("color.schema", Color(0, 100, 150)) -- Sets the color of the schema.
-function ax.config:Set(key, value)
+-- @usage Parallax.Config.Set("color.schema", Color(0, 100, 150)) -- Sets the color of the schema.
+function Parallax.Config:Set(key, value)
     local stored = self.stored[key]
     if ( !istable(stored) ) then
-        ax.util:PrintError("Config \"" .. tostring(key) .. "\" does not exist!")
+        Parallax.Util:PrintError("Config \"" .. tostring(key) .. "\" does not exist!")
         return false
     end
 
@@ -80,8 +80,8 @@ function ax.config:Set(key, value)
         value = stored.Default
     end
 
-    if ( ax.util:DetectType(value) != stored.Type ) then
-        ax.util:PrintError("Attempted to set config \"" .. key .. "\" with invalid type!")
+    if ( Parallax.Util:DetectType(value) != stored.Type ) then
+        Parallax.Util:PrintError("Attempted to set config \"" .. key .. "\" with invalid type!")
         return false
     end
 
@@ -94,7 +94,7 @@ function ax.config:Set(key, value)
     self.instances[key] = instance
 
     if ( SERVER and stored.NoNetworking != true ) then
-        ax.net:Start(nil, "config.set", key, value)
+        Parallax.Net:Start(nil, "config.set", key, value)
     end
 
     if ( isfunction(stored.OnChange) ) then
@@ -115,11 +115,11 @@ end
 -- @param key The key of the configuration.
 -- @param value The default value of the configuration.
 -- @treturn boolean Whether the default value of the configuration was successfully set.
--- @usage ax.config.SetDefault("color.schema", Color(0, 100, 150)) -- Sets the default color of the schema.
-function ax.config:SetDefault(key, value)
+-- @usage Parallax.Config.SetDefault("color.schema", Color(0, 100, 150)) -- Sets the default color of the schema.
+function Parallax.Config:SetDefault(key, value)
     local stored = self.stored[key]
     if ( !istable(stored) ) then
-        ax.util:PrintError("Config \"" .. tostring(key) .. "\" does not exist!")
+        Parallax.Util:PrintError("Config \"" .. tostring(key) .. "\" does not exist!")
         return false
     end
 
@@ -140,10 +140,10 @@ end
 -- @field Default The default value of the configuration.
 -- @field OnChange The function that is called when the configuration is changed.
 -- @treturn boolean Whether the configuration was successfully registered.
--- @usage ax.config:Register("color.schema", {
+-- @usage Parallax.Config:Register("color.schema", {
 --     Name = "Schema Color",
 --     Description = "The color of the schema.",
---     Type = ax.types.color,
+--     Type = Parallax.Types.color,
 --     Default = Color(0, 100, 150),
 --     OnChange = function(oldValue, newValue)
 --         print("Schema color changed from " .. tostring(oldValue) .. " to " .. tostring(newValue))
@@ -156,7 +156,7 @@ local requiredFields = {
     "Default"
 }
 
-function ax.config:Register(key, data)
+function Parallax.Config:Register(key, data)
     if ( !isstring(key) or !istable(data) ) then return false end
 
     local bResult = hook.Run("PreConfigRegistered", key, data)
@@ -164,16 +164,16 @@ function ax.config:Register(key, data)
 
     for _, v in pairs(requiredFields) do
         if ( data[v] == nil ) then
-            ax.util:PrintError("Configuration \"" .. key .. "\" is missing required field \"" .. v .. "\"!\n")
+            Parallax.Util:PrintError("Configuration \"" .. key .. "\" is missing required field \"" .. v .. "\"!\n")
             return false
         end
     end
 
     if ( data.Type == nil ) then
-        data.Type = ax.util:DetectType(data.Default)
+        data.Type = Parallax.Util:DetectType(data.Default)
 
         if ( data.Type == nil ) then
-            ax.util:PrintError("Config \"" .. key .. "\" has an invalid type!")
+            Parallax.Util:PrintError("Config \"" .. key .. "\" has an invalid type!")
             return false
         end
     end

@@ -1,6 +1,6 @@
-# ax.sqlite
+# Parallax.SQLite
 
-`ax.sqlite` is a utility library for managing structured SQLite tables in Garry's Mod. It allows dynamic variable registration, automatic schema creation, and safe row load/save operations.
+`Parallax.SQLite` is a utility library for managing structured SQLite tables in Garry's Mod. It allows dynamic variable registration, automatic schema creation, and safe row load/save operations.
 
 ---
 
@@ -9,8 +9,8 @@
 ### Register Variables
 
 ```lua
-ax.sqlite:RegisterVar("users", "credits", 0)
-ax.sqlite:RegisterVar("users", "rank", "citizen")
+Parallax.SQLite:RegisterVar("users", "credits", 0)
+Parallax.SQLite:RegisterVar("users", "rank", "citizen")
 ```
 
 ---
@@ -18,7 +18,7 @@ ax.sqlite:RegisterVar("users", "rank", "citizen")
 ### Initialize Table
 
 ```lua
-ax.sqlite:InitializeTable("users")
+Parallax.SQLite:InitializeTable("users")
 ```
 
 ---
@@ -26,7 +26,7 @@ ax.sqlite:InitializeTable("users")
 ### Load a Row
 
 ```lua
-ax.sqlite:LoadRow("users", "steamid", "STEAM_0:1:12345", function(row)
+Parallax.SQLite:LoadRow("users", "steamid", "STEAM_0:1:12345", function(row)
     print("Credits:", row.credits)
 end)
 ```
@@ -36,7 +36,7 @@ end)
 ### Save a Row
 
 ```lua
-ax.sqlite:SaveRow("users", {
+Parallax.SQLite:SaveRow("users", {
     steamid = "STEAM_0:1:12345",
     credits = 200,
     rank = "vip"
@@ -48,7 +48,7 @@ ax.sqlite:SaveRow("users", {
 ### Create a Table Manually
 
 ```lua
-ax.sqlite:CreateTable("bans", {
+Parallax.SQLite:CreateTable("bans", {
     steamid = "TEXT PRIMARY KEY",
     reason = "TEXT",
     time = "INTEGER"
@@ -76,4 +76,4 @@ ax.sqlite:CreateTable("bans", {
 
 - Automatically adds missing columns with correct type.
 - Works well with `users`, `characters`, `inventories`, etc.
-- Use `ax.util:PrintWarning` and `PrintTable` for debug info.
+- Use `Parallax.Util:PrintWarning` and `PrintTable` for debug info.

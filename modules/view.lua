@@ -15,17 +15,17 @@ MODULE.Name = "View"
 MODULE.Description = "Implements a swaying effect ported over from ARC9, while also adding own implementations for view bobbing and camera roll."
 MODULE.Author = "Riggs"
 
-ax.option:Register("view", {
+Parallax.Option:Register("view", {
     Name = "option.view",
-    Type = ax.types.bool,
+    Type = Parallax.Types.bool,
     Default = true,
     Description = "option.view.help",
     Category = "category.view"
 })
 
-ax.option:Register("view.multiplier", {
+Parallax.Option:Register("view.multiplier", {
     Name = "option.view.multiplier",
-    Type = ax.types.number,
+    Type = Parallax.Types.number,
     Default = 1,
     Min = 0,
     Max = 10,
@@ -35,9 +35,9 @@ ax.option:Register("view.multiplier", {
     Category = "category.view"
 })
 
-ax.option:Register("view.multiplier.sprint", {
+Parallax.Option:Register("view.multiplier.sprint", {
     Name = "option.view.multiplier.sprint",
-    Type = ax.types.number,
+    Type = Parallax.Types.number,
     Default = 1,
     Min = 0,
     Max = 10,
@@ -47,33 +47,33 @@ ax.option:Register("view.multiplier.sprint", {
     Category = "category.view"
 })
 
-ax.option:Register("view.max.roll", {
-    Name = "option.view.max.roll",
-    Type = ax.types.number,
+Parallax.Option:Register("view.mParallax.roll", {
+    Name = "option.view.mParallax.roll",
+    Type = Parallax.Types.number,
     Default = 10,
     Min = 0,
     Max = 45,
     Decimals = 1,
-    Description = "option.view.max.roll.help",
+    Description = "option.view.mParallax.roll.help",
     NoNetworking = true,
     Category = "category.view"
 })
 
-ax.option:Register("view.max.tilt", {
-    Name = "option.view.max.tilt",
-    Type = ax.types.number,
+Parallax.Option:Register("view.mParallax.tilt", {
+    Name = "option.view.mParallax.tilt",
+    Type = Parallax.Types.number,
     Default = 10,
     Min = 0,
     Max = 45,
     Decimals = 1,
-    Description = "option.view.max.tilt.help",
+    Description = "option.view.mParallax.tilt.help",
     NoNetworking = true,
     Category = "category.view"
 })
 
-ax.option:Register("view.roll.speed", {
+Parallax.Option:Register("view.roll.speed", {
     Name = "option.view.roll.speed",
-    Type = ax.types.number,
+    Type = Parallax.Types.number,
     Default = 5,
     Min = 0,
     Max = 20,
@@ -83,9 +83,9 @@ ax.option:Register("view.roll.speed", {
     Category = "category.view"
 })
 
-ax.option:Register("view.pitch.speed", {
+Parallax.Option:Register("view.pitch.speed", {
     Name = "option.view.pitch.speed",
-    Type = ax.types.number,
+    Type = Parallax.Types.number,
     Default = 5,
     Min = 0,
     Max = 20,
@@ -95,9 +95,9 @@ ax.option:Register("view.pitch.speed", {
     Category = "category.view"
 })
 
-ax.option:Register("view.intensity", {
+Parallax.Option:Register("view.intensity", {
     Name = "option.view.intensity",
-    Type = ax.types.number,
+    Type = Parallax.Types.number,
     Default = 1,
     Min = 0,
     Max = 5,
@@ -108,16 +108,16 @@ ax.option:Register("view.intensity", {
 })
 
 if ( CLIENT ) then
-    ax.localization:Register("en", {
+    Parallax.Localization:Register("en", {
         ["category.view"] = "View",
         ["option.view"] = "View Effects",
         ["option.view.help"] = "Enable or disable view effects such as sway and bobbing.",
         ["option.view.intensity"] = "Intensity",
         ["option.view.intensity.help"] = "Intensity of the view offset effect.",
-        ["option.view.max.roll"] = "Max Roll",
-        ["option.view.max.roll.help"] = "Maximum roll angle for the view.",
-        ["option.view.max.tilt"] = "Max Tilt",
-        ["option.view.max.tilt.help"] = "Maximum tilt angle for the view.",
+        ["option.view.mParallax.roll"] = "Max Roll",
+        ["option.view.mParallax.roll.help"] = "Maximum roll angle for the view.",
+        ["option.view.mParallax.tilt"] = "Max Tilt",
+        ["option.view.mParallax.tilt.help"] = "Maximum tilt angle for the view.",
         ["option.view.multiplier"] = "View Multiplier",
         ["option.view.multiplier.help"] = "Set the view multiplier.",
         ["option.view.multiplier.sprint"] = "View Multiplier Sprint",
@@ -128,16 +128,16 @@ if ( CLIENT ) then
         ["option.view.roll.speed.help"] = "Speed at which the view roll adjusts to mouse movement."
     })
 
-    ax.localization:Register("bg", {
+    Parallax.Localization:Register("bg", {
         ["category.view"] = "Изглед",
         ["option.view"] = "Ефекти на изгледа",
         ["option.view.help"] = "Включване или изключване на ефектите на изгледа, като трептене и наклони.",
         ["option.view.intensity"] = "Интензивност",
         ["option.view.intensity.help"] = "Интензивност на ефекта на изместване на изгледа.",
-        ["option.view.max.roll"] = "Максимален наклон",
-        ["option.view.max.roll.help"] = "Максимален ъгъл на наклона на изгледа.",
-        ["option.view.max.tilt"] = "Максимален наклон",
-        ["option.view.max.tilt.help"] = "Максимален ъгъл на наклона на изгледа.",
+        ["option.view.mParallax.roll"] = "Максимален наклон",
+        ["option.view.mParallax.roll.help"] = "Максимален ъгъл на наклона на изгледа.",
+        ["option.view.mParallax.tilt"] = "Максимален наклон",
+        ["option.view.mParallax.tilt.help"] = "Максимален ъгъл на наклона на изгледа.",
         ["option.view.multiplier"] = "Множител на изгледа",
         ["option.view.multiplier.help"] = "Множител за ефектите на изгледа.",
         ["option.view.multiplier.sprint"] = "Множител на изгледа при спринт",
@@ -148,16 +148,16 @@ if ( CLIENT ) then
         ["option.view.roll.speed.help"] = "Скорост, с която се променя наклонът на изгледа при движение с мишката."
     })
 
-    ax.localization:Register("ru", {
+    Parallax.Localization:Register("ru", {
         ["category.view"] = "Взгляд",
         ["option.view"] = "Эффекты взгляда",
         ["option.view.help"] = "Eвключить или отключить эффекты вгляда, такие как тряска и наклоны.",
         ["option.view.intensity"] = "Интенсивность",
         ["option.view.intensity.help"] = "Интенсивность эффекта смещения взгляда.",
-        ["option.view.max.roll"] = "Максимальное вращение",
-        ["option.view.max.roll.help"] = "Максимальный угол вращения взгляда.",
-        ["option.view.max.tilt"] = "Максимальный наклон",
-        ["option.view.max.tilt.help"] = "Максимальный угол наклона взгляда.",
+        ["option.view.mParallax.roll"] = "Максимальное вращение",
+        ["option.view.mParallax.roll.help"] = "Максимальный угол вращения взгляда.",
+        ["option.view.mParallax.tilt"] = "Максимальный наклон",
+        ["option.view.mParallax.tilt.help"] = "Максимальный угол наклона взгляда.",
         ["option.view.multiplier"] = "Множитель взгляда",
         ["option.view.multiplier.help"] = "Множитель эффектов взгляда.",
         ["option.view.multiplier.sprint"] = "Множитель взгляда при беге",
@@ -187,13 +187,13 @@ if ( CLIENT ) then
         local mag = 1
         local ts = 0
 
-        local swayEnabled = ax.option:Get("view")
+        local swayEnabled = Parallax.Option:Get("view")
         if ( !swayEnabled ) then return pos, ang end
 
-        local swayMult = ax.option:Get("view.multiplier")
-        local swayMultSprint = ax.option:Get("view.multiplier.sprint")
+        local swayMult = Parallax.Option:Get("view.multiplier")
+        local swayMultSprint = Parallax.Option:Get("view.multiplier.sprint")
 
-        local client = ax.client
+        local client = Parallax.Client
         local ft = FrameTime()
 
         Multiplier = Lerp(ft * 64, Multiplier, client:IsSprinting() and swayMultSprint or swayMult)
@@ -275,10 +275,10 @@ if ( CLIENT ) then
     local targetVerticalTilt = 0
     local sensitivityY = 0.1
     function MODULE:CreateMove(cmd)
-        if ( !ax.option:Get("view") ) then return end
+        if ( !Parallax.Option:Get("view") ) then return end
 
-        local maxRoll = ax.option:Get("view.max.roll", 10)
-        local maxTilt = ax.option:Get("view.max.tilt", 10)
+        local maxRoll = Parallax.Option:Get("view.mParallax.roll", 10)
+        local maxTilt = Parallax.Option:Get("view.mParallax.tilt", 10)
         local mouseX = cmd:GetMouseX()
         local mouseY = cmd:GetMouseY()
 
@@ -292,7 +292,7 @@ if ( CLIENT ) then
     local lerpPitch = 0
     local lerpFOV = 75
     function MODULE:CalcView(client, origin, angles, fov, znear, zfar)
-        if ( !ax.option:Get("view") ) then return end
+        if ( !Parallax.Option:Get("view") ) then return end
         if ( !IsValid(client) or client:InObserver() or !client:Alive() ) then return end
 
         local view = {
@@ -328,8 +328,8 @@ if ( CLIENT ) then
         -- Up and down pitch when moving forward or backward
         newAngles.pitch = newAngles.pitch + ( ( math.sin( CurTime() ) / 6 * lerpMultiplier ) + lerpPitch )
 
-        local rollSpeed = ax.option:Get("view.roll.speed", 5)
-        local pitchSpeed = ax.option:Get("view.pitch.speed", 5)
+        local rollSpeed = Parallax.Option:Get("view.roll.speed", 5)
+        local pitchSpeed = Parallax.Option:Get("view.pitch.speed", 5)
 
         -- Smoothly interpolate the current values toward the target values.
         horizontalRoll = Lerp(FrameTime() * rollSpeed, horizontalRoll, targetHorizontalRoll)
@@ -358,7 +358,7 @@ if ( CLIENT ) then
                     }
 
                     local offsetAngles = cameraAttachment.Ang - rootAttachment.Ang
-                    local intensity = ax.option:Get("view.intensity", 1)
+                    local intensity = Parallax.Option:Get("view.intensity", 1)
 
                     newAngles = newAngles + offsetAngles * intensity
                 end
@@ -373,9 +373,9 @@ if ( CLIENT ) then
     end
 
     function MODULE:CalcViewModelView(weapon, viewModel, oldEyePos, oldEyeAng, eyePos, eyeAng)
-        if ( !ax.option:Get("view") ) then return end
+        if ( !Parallax.Option:Get("view") ) then return end
         if ( !IsValid(weapon) or !IsValid(viewModel) ) then return end
-        if ( ax.client:InObserver() ) then return end
+        if ( Parallax.Client:InObserver() ) then return end
 
         local newOrigin, newAngles = GAMEMODE.BaseClass:CalcViewModelView(weapon, viewModel, oldEyePos, oldEyeAng, eyePos, eyeAng)
         newOrigin, newAngles = GetViewModelBob(newOrigin, newAngles)
@@ -392,9 +392,9 @@ end
 
 local function HandlePlayerStep(client, side)
     if ( SERVER ) then
-        if ( !ax.option:Get(client, "view") ) then return end
+        if ( !Parallax.Option:Get(client, "view") ) then return end
     else
-        if ( !ax.option:Get("view") ) then return end
+        if ( !Parallax.Option:Get("view") ) then return end
     end
 
     if ( !IsValid(client) or client:InObserver() ) then return end
@@ -415,11 +415,11 @@ end
 
 function MODULE:PlayerFootstep(client, pos, foot, sound, volume, filter)
     if ( SERVER ) then
-        if ( !ax.option:Get(client, "view") ) then
+        if ( !Parallax.Option:Get(client, "view") ) then
             return
         end
     else
-        if ( !ax.option:Get("view") ) then
+        if ( !Parallax.Option:Get("view") ) then
             return
         end
     end
