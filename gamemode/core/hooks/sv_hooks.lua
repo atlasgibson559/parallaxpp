@@ -111,8 +111,7 @@ function GM:PlayerSpawn(client)
 end
 
 function GM:PlayerLoadout(client)
-    client:StripAmmo()
-    client:StripWeapons()
+    client:RemoveAllItems()
 
     if ( hook.Run("PlayerGetToolgun", client) == true ) then client:Give("gmod_tool") end
     if ( hook.Run("PlayerGetPhysgun", client) == true ) then client:Give("weapon_physgun") end
