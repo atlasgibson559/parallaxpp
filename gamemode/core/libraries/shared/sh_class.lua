@@ -15,10 +15,10 @@
 Parallax.Class = Parallax.Class or {}
 Parallax.Class.stored = {}
 Parallax.Class.instances = {}
-Parallax.Class.meta = Parallax.Class.meta or {}
+Parallax.Class.Meta = Parallax.Class.Meta or {}
 
 function Parallax.Class:Register(classData)
-    local CLASS = setmetatable(classData, self.meta)
+    local CLASS = setmetatable(classData, self.Meta)
     if ( !isnumber(CLASS.Faction) ) then
         Parallax.Util:PrintError("Attempted to register a class without a valid faction!")
         return false

@@ -433,7 +433,7 @@ function GM:HUDPaint()
             local barWidth, barHeight = scrW / 6, ScreenScale(4)
             local barX, barY = scrW / 2 - barWidth / 2, scrH / 1.025 - barHeight / 2
 
-            if ( Parallax.globals.drawingStamina ) then
+            if ( Parallax.Globals.drawingStamina ) then
                 barY = barY - barHeight - padding
             end
 

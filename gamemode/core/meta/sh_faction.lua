@@ -9,7 +9,7 @@
     Attribution is required. If you use or modify this file, you must retain this notice.
 ]]
 
-local FACTION = Parallax.Faction.meta or {}
+local FACTION = Parallax.Faction.Meta or {}
 FACTION.__index = FACTION
 
 local defaultModels = {

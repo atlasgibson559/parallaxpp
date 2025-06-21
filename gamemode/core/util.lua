@@ -75,7 +75,7 @@ local checkTypeMap = {
     [Parallax.Types.color] = function(val)
         return IsColor(val) or ( istable(val) and isnumber(val.r) and isnumber(val.g) and isnumber(val.b) and isnumber(val.a) )
     end,
-    [Parallax.Types.character] = function(val) return getmetatable(val) == Parallax.Character.meta end,
+    [Parallax.Types.character] = function(val) return getmetatable(val) == Parallax.Character.Meta end,
     [Parallax.Types.steamid] = function(val) return isstring(val) and #val == 19 and string.match(val, "STEAM_%d:%d:%d+") != nil end,
     [Parallax.Types.steamid64] = function(val) return isstring(val) and #val == 17 and ( string.match(val, "7656119%d+") != nil or string.match(val, "9007199%d+") != nil ) end
 }
@@ -1148,17 +1148,17 @@ function Parallax.Util:VerifyVersion()
 end
 
 function Parallax.Util:IsFaction(object)
-    return getmetatable(object) == Parallax.Faction.meta
+    return getmetatable(object) == Parallax.Faction.Meta
 end
 
 function Parallax.Util:IsCharacter(object)
-    return getmetatable(object) == Parallax.Character.meta
+    return getmetatable(object) == Parallax.Character.Meta
 end
 
 function Parallax.Util:IsClass(object)
-    return getmetatable(object) == Parallax.Class.meta
+    return getmetatable(object) == Parallax.Class.Meta
 end
 
 function Parallax.Util:IsItem(object)
-    return getmetatable(object) == Parallax.Item.meta
+    return getmetatable(object) == Parallax.Item.Meta
 end

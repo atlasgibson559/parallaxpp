@@ -9,7 +9,7 @@
     Attribution is required. If you use or modify this file, you must retain this notice.
 ]]
 
-local ITEM = Parallax.Item.meta or {}
+local ITEM = Parallax.Item.Meta or {}
 ITEM.Category = ITEM.Category or "Miscellaneous"
 ITEM.CharacterID = ITEM.CharacterID or 0
 ITEM.Data = ITEM.Data or {}
@@ -369,4 +369,4 @@ function ITEM:AddDefaultActions()
     })
 end
 
-Parallax.Item.meta = ITEM
+Parallax.Item.Meta = ITEM

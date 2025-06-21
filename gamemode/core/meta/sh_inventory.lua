@@ -9,7 +9,7 @@
     Attribution is required. If you use or modify this file, you must retain this notice.
 ]]
 
-local INV = Parallax.Inventory.meta
+local INV = Parallax.Inventory.Meta
 INV.__index = INV
 INV.ID = 0
 INV.Items = {}

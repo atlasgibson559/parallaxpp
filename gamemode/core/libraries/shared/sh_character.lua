@@ -13,7 +13,7 @@
 -- @module Parallax.Character
 
 Parallax.Character = Parallax.Character or {} -- Character library.
-Parallax.Character.meta = Parallax.Character.meta or {} -- All currently registered character meta functions.
+Parallax.Character.Meta = Parallax.Character.Meta or {} -- All currently registered character meta functions.
 Parallax.Character.variables = Parallax.Character.variables or {} -- All currently registered variables.
 Parallax.Character.fields = Parallax.Character.fields or {} -- All currently registered fields.
 Parallax.Character.stored = Parallax.Character.stored or {} -- All currently stored characters which are in use.
@@ -30,12 +30,12 @@ function Parallax.Character:RegisterVariable(key, data)
 
         for i = 1, #data.Alias do
             local v = data.Alias[i]
-            self.meta["Get" .. v] = function(character)
+            self.Meta["Get" .. v] = function(character)
                 return self:GetVariable(character:GetID(), key)
             end
 
             if ( SERVER ) then
-                self.meta["Set" .. v] = function(character, value)
+                self.Meta["Set" .. v] = function(character, value)
                     self:SetVariable(character:GetID(), key, value)
                 end
 
@@ -49,12 +49,12 @@ function Parallax.Character:RegisterVariable(key, data)
     else
         local upperKey = string.upper(key:sub(1, 1)) .. key:sub(2)
 
-        self.meta["Get" .. upperKey] = function(character)
+        self.Meta["Get" .. upperKey] = function(character)
             return self:GetVariable(character:GetID(), key)
         end
 
         if ( SERVER ) then
-            self.meta["Set" .. upperKey] = function(character, value)
+            self.Meta["Set" .. upperKey] = function(character, value)
                 self:SetVariable(character:GetID(), key, value)
             end
 
@@ -135,7 +135,7 @@ function Parallax.Character:CreateObject(characterID, data, client)
 
     characterID = tonumber(characterID)
 
-    local character = setmetatable({}, self.meta)
+    local character = setmetatable({}, self.Meta)
     character.ID = characterID
     character.Player = client or NULL
     character.Schema = SCHEMA.Folder

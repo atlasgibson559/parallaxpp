@@ -13,7 +13,7 @@
 -- @module Parallax.Inventory
 
 Parallax.Inventory = Parallax.Inventory or {}
-Parallax.Inventory.meta = Parallax.Inventory.meta or {}
+Parallax.Inventory.Meta = Parallax.Inventory.Meta or {}
 Parallax.Inventory.stored = Parallax.Inventory.stored or {}
 
 -- Create an inventory object
@@ -23,7 +23,7 @@ function Parallax.Inventory:CreateObject(data)
         return
     end
 
-    local inventory = setmetatable({}, self.meta)
+    local inventory = setmetatable({}, self.Meta)
 
     inventory.ID = tonumber(data.ID or data.id or 0)
     inventory.CharacterID = tonumber(data.CharacterID or data.character_id or 0)

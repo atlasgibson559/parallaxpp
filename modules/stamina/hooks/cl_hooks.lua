@@ -25,7 +25,7 @@ local staminaLast = 0
 function MODULE:HUDPaint()
     local shouldDraw = hook.Run("ShouldDrawStamina")
     if ( shouldDraw == false ) then
-        Parallax.globals.drawingStamina = nil
+        Parallax.Globals.drawingStamina = nil
         return
     end
 
@@ -55,8 +55,8 @@ function MODULE:HUDPaint()
         surface.SetDrawColor(ColorAlpha(Parallax.Color:Get("white"), staminaAlpha))
         surface.DrawRect(barX, barY, barWidth * staminaLerp, barHeight)
 
-        Parallax.globals.drawingStamina = true
+        Parallax.Globals.drawingStamina = true
     else
-        Parallax.globals.drawingStamina = nil
+        Parallax.Globals.drawingStamina = nil
     end
 end

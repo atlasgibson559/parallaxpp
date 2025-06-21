@@ -9,7 +9,7 @@
     Attribution is required. If you use or modify this file, you must retain this notice.
 ]]
 
-local CHAR = Parallax.Character.meta or {}
+local CHAR = Parallax.Character.Meta or {}
 CHAR.__index = CHAR
 CHAR.ID = 0
 CHAR.Variables = {}

@@ -14,7 +14,7 @@
 
 Parallax.Item = Parallax.Item or {}
 Parallax.Item.base = Parallax.Item.base or {}
-Parallax.Item.meta = Parallax.Item.meta or {}
+Parallax.Item.Meta = Parallax.Item.Meta or {}
 Parallax.Item.stored = Parallax.Item.stored or {}
 Parallax.Item.instances = Parallax.Item.instances or {}
 
@@ -27,7 +27,7 @@ function Parallax.Item:Load(path)
     for i = 1, #files do
         local v = files[i]
         local filePath = path .. "/" .. v
-        ITEM = setmetatable({}, self.meta)
+        ITEM = setmetatable({}, self.Meta)
 
         ITEM.UniqueID = string.StripExtension(v):sub(4)
 
@@ -144,7 +144,7 @@ function Parallax.Item:CreateObject(data)
     local base = self.stored[uniqueID]
     if ( !base ) then return end
 
-    local item = setmetatable({}, self.meta)
+    local item = setmetatable({}, self.Meta)
 
     for k, v in pairs(base) do
         item[k] = v

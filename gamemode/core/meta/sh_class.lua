@@ -9,7 +9,7 @@
     Attribution is required. If you use or modify this file, you must retain this notice.
 ]]
 
-local CLASS = Parallax.Class.meta or {}
+local CLASS = Parallax.Class.Meta or {}
 CLASS.__index = CLASS
 
 CLASS.Name = "Unknown"

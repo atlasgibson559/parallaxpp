@@ -15,10 +15,10 @@
 Parallax.Faction = Parallax.Faction or {}
 Parallax.Faction.stored = {}
 Parallax.Faction.instances = {}
-Parallax.Faction.meta = Parallax.Faction.meta or {}
+Parallax.Faction.Meta = Parallax.Faction.Meta or {}
 
 function Parallax.Faction:Register(factionData)
-    local FACTION = setmetatable(factionData, self.meta)
+    local FACTION = setmetatable(factionData, self.Meta)
 
     local bResult = hook.Run("PreFactionRegistered", FACTION)
     if ( bResult == false ) then

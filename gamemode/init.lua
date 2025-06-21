@@ -12,7 +12,7 @@
 DeriveGamemode("sandbox")
 GM.RefreshTimeStart = SysTime()
 
-Parallax = Parallax or {util = {}, meta = {}, config = {}, globals = {}}
+Parallax = Parallax or {Util = {}, Meta = {}, Config = {}, Globals = {}}
 
 AddCSLuaFile("cl_init.lua")
 
