@@ -99,11 +99,6 @@ function ax.localization:GetPhrase(key, ...)
 end
 
 concommand.Add("ax_localization_check", function(client, command, arguments)
-    if ( IsValid(client) and !client:IsDeveloper() ) then
-        ax.util:PrintError("You do not have permission to use this command!")
-        return
-    end
-
     local enLocalisation = ax.localization.stored.en
     local enCount = table.Count(enLocalisation)
     ax.util:Print("English Localisation has " .. enCount .. " phrases.")
