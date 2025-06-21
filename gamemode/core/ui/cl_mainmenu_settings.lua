@@ -63,4 +63,4 @@ end
 
 vgui.Register("Parallax.Mainmenu.Options", PANEL, "EditablePanel")
 
-Parallax.GUI.optionsLast = nil
+Parallax.GUI.OptionsLast = nil

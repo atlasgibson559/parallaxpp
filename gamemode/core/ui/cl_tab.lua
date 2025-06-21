@@ -35,11 +35,11 @@ AccessorFunc(PANEL, "anchorTime", "AnchorTime", FORCE_NUMBER)
 AccessorFunc(PANEL, "anchorEnabled", "AnchorEnabled", FORCE_BOOL)
 
 function PANEL:Init()
-    if ( IsValid(Parallax.GUI.tab) ) then
-        Parallax.GUI.tab:Remove()
+    if ( IsValid(Parallax.GUI.Tab) ) then
+        Parallax.GUI.Tab:Remove()
     end
 
-    Parallax.GUI.tab = self
+    Parallax.GUI.Tab = self
 
     local client = Parallax.Client
     if ( IsValid(client) and client:IsTyping() ) then
@@ -127,7 +127,7 @@ function PANEL:Init()
         button:SetText(k)
 
         button.DoClick = function()
-            Parallax.GUI.tabLast = k
+            Parallax.GUI.TabLast = k
 
             self:Populate(v)
         end
@@ -147,8 +147,8 @@ function PANEL:Init()
         this:CenterVertical()
     end
 
-    if ( Parallax.GUI.tabLast and buttons[Parallax.GUI.tabLast] ) then
-        self:Populate(buttons[Parallax.GUI.tabLast])
+    if ( Parallax.GUI.TabLast and buttons[Parallax.GUI.TabLast] ) then
+        self:Populate(buttons[Parallax.GUI.TabLast])
     else
         for k, v in SortedPairs(buttons) do
             self:Populate(v)
@@ -298,8 +298,8 @@ end
 
 vgui.Register("Parallax.Tab", PANEL, "EditablePanel")
 
-if ( IsValid(Parallax.GUI.tab) ) then
-    Parallax.GUI.tab:Remove()
+if ( IsValid(Parallax.GUI.Tab) ) then
+    Parallax.GUI.Tab:Remove()
 end
 
-Parallax.GUI.tabLast = nil
+Parallax.GUI.TabLast = nil

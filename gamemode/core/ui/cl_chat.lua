@@ -14,11 +14,11 @@ local PANEL = {}
 DEFINE_BASECLASS("EditablePanel")
 
 function PANEL:Init()
-    if ( IsValid(Parallax.GUI.chatbox) ) then
-        Parallax.GUI.chatbox:Remove()
+    if ( IsValid(Parallax.GUI.Chatbox) ) then
+        Parallax.GUI.Chatbox:Remove()
     end
 
-    Parallax.GUI.chatbox = self
+    Parallax.GUI.Chatbox = self
 
     self:SetSize(hook.Run("GetChatboxSize"))
     self:SetPos(hook.Run("GetChatboxPos"))
@@ -327,8 +327,8 @@ end
 
 vgui.Register("Parallax.Chatbox", PANEL, "EditablePanel")
 
-if ( IsValid(Parallax.GUI.chatbox) ) then
-    Parallax.GUI.chatbox:Remove()
+if ( IsValid(Parallax.GUI.Chatbox) ) then
+    Parallax.GUI.Chatbox:Remove()
 
     vgui.Create("Parallax.Chatbox")
 end

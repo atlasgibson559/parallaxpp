@@ -39,9 +39,9 @@ Parallax.Net:Hook("character.cache.all", function(data)
     end
 
     -- Rebuild the main menu
-    if ( IsValid(Parallax.GUI.mainmenu) ) then
-        Parallax.GUI.mainmenu:Remove()
-        Parallax.GUI.mainmenu = vgui.Create("Parallax.Mainmenu")
+    if ( IsValid(Parallax.GUI.Mainmenu) ) then
+        Parallax.GUI.Mainmenu:Remove()
+        Parallax.GUI.Mainmenu = vgui.Create("Parallax.Mainmenu")
     end
 
     Parallax.Client:Notify("All characters cached!", NOTIFY_HINT)
@@ -92,8 +92,8 @@ Parallax.Net:Hook("character.delete", function(characterID)
 
     clientTable.axCharacter = nil
 
-    if ( IsValid(Parallax.GUI.mainmenu) ) then
-        Parallax.GUI.mainmenu:Populate()
+    if ( IsValid(Parallax.GUI.Mainmenu) ) then
+        Parallax.GUI.Mainmenu:Populate()
     end
 
     Parallax.Notification:Add("Character " .. characterID .. " deleted!", 5, Parallax.Config:Get("color.success"))
@@ -108,8 +108,8 @@ end)
 Parallax.Net:Hook("character.load", function(characterID)
     if ( characterID == 0 ) then return end
 
-    if ( IsValid(Parallax.GUI.mainmenu) ) then
-        Parallax.GUI.mainmenu:Remove()
+    if ( IsValid(Parallax.GUI.Mainmenu) ) then
+        Parallax.GUI.Mainmenu:Remove()
     end
 
     local client = Parallax.Client
@@ -269,7 +269,7 @@ Parallax.Net:Hook("inventory.item.remove", function(inventoryID, itemID)
 end)
 
 Parallax.Net:Hook("inventory.refresh", function(inventoryID)
-    local panel = Parallax.GUI.inventory
+    local panel = Parallax.GUI.Inventory
     if ( IsValid(panel) ) then
         panel:SetInventory(inventoryID)
     end
@@ -351,11 +351,11 @@ Parallax.Net:Hook("gesture.play", function(client, name)
 end)
 
 Parallax.Net:Hook("splash", function()
-    Parallax.GUI.splash = vgui.Create("Parallax.Splash")
+    Parallax.GUI.Splash = vgui.Create("Parallax.Splash")
 end)
 
 Parallax.Net:Hook("mainmenu", function()
-    Parallax.GUI.mainmenu = vgui.Create("Parallax.Mainmenu")
+    Parallax.GUI.Mainmenu = vgui.Create("Parallax.Mainmenu")
 end)
 
 Parallax.Net:Hook("notification.send", function(text, type, duration)

@@ -16,11 +16,11 @@ DEFINE_BASECLASS("EditablePanel")
 local PANEL = {}
 
 function PANEL:Init()
-    if ( IsValid(Parallax.GUI.splash) ) then
-        Parallax.GUI.splash:Remove()
+    if ( IsValid(Parallax.GUI.Splash) ) then
+        Parallax.GUI.Splash:Remove()
     end
 
-    Parallax.GUI.splash = self
+    Parallax.GUI.Splash = self
 
     if ( system.IsWindows() ) then
         system.FlashWindow()
@@ -74,11 +74,11 @@ function PANEL:Init()
 end
 
 function PANEL:OnRemove()
-    if ( IsValid(Parallax.GUI.splash) ) then
-        Parallax.GUI.splash = nil
+    if ( IsValid(Parallax.GUI.Splash) ) then
+        Parallax.GUI.Splash = nil
     end
 
-    if ( !IsValid(Parallax.GUI.mainmenu) ) then
+    if ( !IsValid(Parallax.GUI.Mainmenu) ) then
         vgui.Create("Parallax.Mainmenu")
     end
 end
@@ -91,8 +91,8 @@ end
 
 vgui.Register("Parallax.Splash", PANEL, "EditablePanel")
 
-if ( IsValid(Parallax.GUI.splash) ) then
-    Parallax.GUI.splash:Remove()
+if ( IsValid(Parallax.GUI.Splash) ) then
+    Parallax.GUI.Splash:Remove()
 end
 
 concommand.Add("ax_splash", function(client, command, arguments)
@@ -100,8 +100,8 @@ concommand.Add("ax_splash", function(client, command, arguments)
         return
     end
 
-    if ( IsValid(Parallax.GUI.splash) ) then
-        Parallax.GUI.splash:Remove()
+    if ( IsValid(Parallax.GUI.Splash) ) then
+        Parallax.GUI.Splash:Remove()
     end
 
     vgui.Create("Parallax.Splash")

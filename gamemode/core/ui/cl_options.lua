@@ -38,7 +38,7 @@ function PANEL:Init()
         if ( value and value != "" ) then
             self:PopulateCategory(nil, value)
         else
-            self:PopulateCategory(Parallax.GUI.optionsLast)
+            self:PopulateCategory(Parallax.GUI.OptionsLast)
         end
     end
 
@@ -70,8 +70,8 @@ function PANEL:Init()
         self.buttons:AddPanel(button)
     end
 
-    if ( Parallax.GUI.optionsLast ) then
-        self:PopulateCategory(Parallax.GUI.optionsLast)
+    if ( Parallax.GUI.OptionsLast ) then
+        self:PopulateCategory(Parallax.GUI.OptionsLast)
     else
         self:PopulateCategory(categories[1])
     end
@@ -79,7 +79,7 @@ end
 
 function PANEL:PopulateCategory(category, toSearch)
     if ( category ) then
-        Parallax.GUI.optionsLast = category
+        Parallax.GUI.OptionsLast = category
     end
 
     self.container:Clear()
@@ -552,18 +552,18 @@ function PANEL:AddOption(optionData)
             label:SetText("< " .. phrase .. " >", true)
         end
 
-        if ( !IsValid(Parallax.GUI.tooltip) ) then
-            Parallax.GUI.tooltip = vgui.Create("Parallax.Tooltip")
-            Parallax.GUI.tooltip:SetText(optionData.Name, optionData.Description)
-            Parallax.GUI.tooltip:SizeToContents()
-            Parallax.GUI.tooltip:SetPanel(this)
+        if ( !IsValid(Parallax.GUI.Tooltip) ) then
+            Parallax.GUI.Tooltip = vgui.Create("Parallax.Tooltip")
+            Parallax.GUI.Tooltip:SetText(optionData.Name, optionData.Description)
+            Parallax.GUI.Tooltip:SizeToContents()
+            Parallax.GUI.Tooltip:SetPanel(this)
         else
-            Parallax.GUI.tooltip:SetText(optionData.Name, optionData.Description)
-            Parallax.GUI.tooltip:SizeToContents()
+            Parallax.GUI.Tooltip:SetText(optionData.Name, optionData.Description)
+            Parallax.GUI.Tooltip:SizeToContents()
 
             timer.Simple(0, function()
-                if ( IsValid(Parallax.GUI.tooltip) ) then
-                    Parallax.GUI.tooltip:SetPanel(this)
+                if ( IsValid(Parallax.GUI.Tooltip) ) then
+                    Parallax.GUI.Tooltip:SetPanel(this)
                 end
             end)
         end
@@ -577,12 +577,12 @@ function PANEL:AddOption(optionData)
             label:SetText(phrase, true)
         end
 
-        if ( IsValid(Parallax.GUI.tooltip) ) then
-            Parallax.GUI.tooltip:SetPanel(nil)
+        if ( IsValid(Parallax.GUI.Tooltip) ) then
+            Parallax.GUI.Tooltip:SetPanel(nil)
         end
     end
 end
 
 vgui.Register("Parallax.Options", PANEL, "EditablePanel")
 
-Parallax.GUI.optionsLast = nil
+Parallax.GUI.OptionsLast = nil

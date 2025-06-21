@@ -18,7 +18,7 @@ Parallax.Chat.messages = Parallax.Chat.messages or {}
 chat.AddTextInternal = chat.AddTextInternal or chat.AddText
 
 function chat.AddText(...)
-    if ( !IsValid(Parallax.GUI.chatbox) ) then
+    if ( !IsValid(Parallax.GUI.Chatbox) ) then
         chat.AddTextInternal(...)
         return
     end
@@ -26,7 +26,7 @@ function chat.AddText(...)
     local arguments = {...}
     local currentColor = Parallax.Color:Get("text")
     local font = "Parallax.Chat"
-    local maxWidth = Parallax.GUI.chatbox:GetWide() - 20
+    local maxWidth = Parallax.GUI.Chatbox:GetWide() - 20
 
     local markupStr = ""
 
@@ -47,7 +47,7 @@ function chat.AddText(...)
 
     local rich = markup.Parse("<font=" .. font .. ">" .. markupStr .. "</font>", maxWidth)
 
-    local panel = Parallax.GUI.chatbox.history:Add("EditablePanel")
+    local panel = Parallax.GUI.Chatbox.history:Add("EditablePanel")
     panel:SetTall(rich:GetHeight())
     panel:Dock(TOP)
 
@@ -66,7 +66,7 @@ function chat.AddText(...)
     end
 
     function panel:Think()
-        if ( Parallax.GUI.chatbox:GetAlpha() != 255 ) then
+        if ( Parallax.GUI.Chatbox:GetAlpha() != 255 ) then
             local dt = CurTime() - self.created
             if ( dt >= 8 ) then
                 self.alpha = math.max(0, 1 - (dt - 8) / 4)
@@ -81,7 +81,7 @@ function chat.AddText(...)
     timer.Simple(0.1, function()
         if ( !IsValid(panel) ) then return end
 
-        local scrollBar = Parallax.GUI.chatbox.history:GetVBar()
+        local scrollBar = Parallax.GUI.Chatbox.history:GetVBar()
         if ( scrollBar ) then
             scrollBar:AnimateTo(scrollBar.CanvasSize, 0.2, 0, 0.2)
         end

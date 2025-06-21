@@ -14,7 +14,7 @@ DEFINE_BASECLASS("EditablePanel")
 local PANEL = {}
 
 function PANEL:Init()
-    Parallax.GUI.inventory = self
+    Parallax.GUI.Inventory = self
 
     self:Dock(FILL)
 
@@ -169,8 +169,8 @@ function PANEL:SetInventory(id)
         pnl:SetCount(group.count)
     end
 
-    if ( Parallax.GUI.inventoryItemIDLast and self:IsValidItemID(Parallax.GUI.inventoryItemIDLast) ) then
-        self:SetInfo(Parallax.GUI.inventoryItemIDLast)
+    if ( Parallax.GUI.InventoryItemIDLast and self:IsValidItemID(Parallax.GUI.InventoryItemIDLast) ) then
+        self:SetInfo(Parallax.GUI.InventoryItemIDLast)
     else
         self:SetInfo(sortedItems[1])
     end
@@ -195,7 +195,7 @@ function PANEL:SetInfo(id)
         return
     end
 
-    Parallax.GUI.inventoryItemIDLast = id
+    Parallax.GUI.InventoryItemIDLast = id
 
     local item = Parallax.Item:Get(id)
 
