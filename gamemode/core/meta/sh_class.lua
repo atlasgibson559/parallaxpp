@@ -12,23 +12,63 @@
 local CLASS = Parallax.Class.Meta or {}
 CLASS.__index = CLASS
 
-CLASS.Name = "Unknown"
-CLASS.Description = "No description available."
-CLASS.IsDefault = false
-CLASS.CanSwitchTo = nil
-CLASS.OnSwitch = nil
-
 --- Converts the class to a string representation.
 -- @treturn string The string representation of the class.
 function CLASS:__tostring()
-    return "class[" .. self:GetID() .. "][" .. self:GetUniqueID() .. "]"
+    return "class[" .. self:GetID() .. "][" .. self:GetUniqueID() .. "][" .. self:GetName() .. "]"
 end
 
 --- Compares the class with another class.
 -- @param other The other class to compare with.
 -- @treturn boolean Whether the classes are equal.
 function CLASS:__eq(other)
-    return self.ID == other.ID
+    return isnumber(other) and self:GetID() == other or
+            isstring(other) and self:GetUniqueID() == other or
+            istable(other) and self:GetID() == other:GetID() and self:GetUniqueID() == other:GetUniqueID()
+end
+
+CLASS.Name = "Unknown"
+CLASS.Description = "No description available."
+CLASS.IsDefault = false
+CLASS.CanSwitchTo = nil
+CLASS.OnSwitch = nil
+
+function CLASS:SetName(name)
+    if ( !isstring(name) or #name == 0 ) then
+        Parallax.Util:PrintError("Attempted to set a class's name to an invalid value: " .. tostring(name))
+        return false
+    end
+
+    self.Name = name
+end
+
+--- Sets the class's description.
+-- @param description The description to set.
+function CLASS:SetDescription(description)
+    if ( !isstring(description) ) then
+        Parallax.Util:PrintError("Attempted to set a class's description to an invalid value: " .. tostring(description))
+        return false
+    end
+
+    self.Description = description
+end
+
+--- Sets the class's faction by its identifier.
+-- @param identifier The identifier of the faction to set.
+-- @treturn boolean Whether the faction was set successfully.
+-- @realm shared
+function CLASS:SetFaction(identifier)
+    local factionTable = Parallax.Faction:Get(identifier)
+    if ( !Parallax.Util:IsFaction(factionTable) ) then
+        Parallax.Util:PrintError("Attempted to set a class's faction to an invalid faction: " .. tostring(identifier))
+        return false
+    end
+
+    self.Faction = factionTable.ID
+end
+
+function CLASS:MakeDefault()
+    self.IsDefault = true
 end
 
 --- Gets the class's ID.
@@ -39,8 +79,15 @@ end
 
 --- Gets the players in the class.
 -- @treturn table A table of players in the class.
-function CLASS:GetPlayer()
-    return team.GetPlayers(self:GetID())
+function CLASS:GetPlayers()
+    local players = {}
+    for _, client in player.Iterator() do
+        if ( client:Team() == self:GetFaction() and client:GetClass() == self:GetID() ) then
+            table.insert(players, client)
+        end
+    end
+
+    return players
 end
 
 --- Gets the class's name.
@@ -64,11 +111,59 @@ end
 --- Gets the faction associated with the class.
 -- @treturn table The faction associated with the class.
 function CLASS:GetFaction()
+    return self.Faction
+end
+
+--- Gets the faction table for the class.
+-- @treturn table The faction table for the class.
+function CLASS:GetFactionTable()
     return Parallax.Faction:Get(self.Faction)
 end
 
 --- Checks if the class is the default class.
 -- @treturn boolean Whether the class is the default class.
-function CLASS:GetIsDefault()
-    return self.IsDefault or false
+function CLASS:IsDefault()
+    return self.IsDefault
+end
+
+--- Registers the class.
+-- @treturn boolean Whether the class was registered successfully.
+-- @treturn string|nil An error message if the registration failed.
+-- @realm shared
+function CLASS:Register()
+    if ( !Parallax.Util:IsFaction(self:GetFactionTable()) ) then
+        Parallax.Util:PrintError("Attempted to register a class without a valid faction!")
+        return false
+    end
+
+    local bResult = hook.Run("PreClassRegistered", self)
+    if ( bResult == false ) then
+        Parallax.Util:PrintError("Attempted to register a class that was blocked by a hook!")
+        return false, "Attempted to register a class that was blocked by a hook!"
+    end
+
+    local uniqueID = string.lower(string.gsub(self:GetName(), "%s+", "_")) .. "_" .. self:GetFaction()
+    local instances = Parallax.Class.instances
+    for i = 1, #instances do
+        if ( instances[i].UniqueID == uniqueID ) then
+            return false, "Attempted to register a class that already exists!"
+        end
+    end
+
+    self.UniqueID = self.UniqueID or uniqueID
+    Parallax.Class.stored[self.UniqueID] = self
+
+    for i = 1, #instances do
+        if ( instances[i].UniqueID == self.UniqueID ) then
+            table.remove(instances, i)
+            break
+        end
+    end
+
+    self.ID = #instances + 1
+
+    table.insert(instances, self)
+    Parallax.Class.stored[self.UniqueID] = self
+
+    hook.Run("PostClassRegistered", self)
 end

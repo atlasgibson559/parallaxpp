@@ -17,51 +17,10 @@ Parallax.Class.stored = {}
 Parallax.Class.instances = {}
 Parallax.Class.Meta = Parallax.Class.Meta or {}
 
-function Parallax.Class:Register(classData)
-    local CLASS = setmetatable(classData, self.Meta)
-    if ( !isnumber(CLASS.Faction) ) then
-        Parallax.Util:PrintError("Attempted to register a class without a valid faction!")
-        return false
-    end
+function Parallax.Class:Instance()
+    local newInstance = setmetatable({}, self.Meta)
 
-    local faction = Parallax.Faction:Get(CLASS.Faction)
-    if ( faction == nil or !istable(faction) ) then
-        Parallax.Util:PrintError("Attempted to register a class for an invalid faction!")
-        return false
-    end
-
-    local bResult = hook.Run("PreClassRegistered", CLASS)
-    if ( bResult == false ) then
-        Parallax.Util:PrintError("Attempted to register a class that was blocked by a hook!")
-        return false, "Attempted to register a class that was blocked by a hook!"
-    end
-
-    local uniqueID = string.lower(string.gsub(CLASS.Name, "%s+", "_")) .. "_" .. CLASS.Faction
-    for i = 1, #self.instances do
-        if ( self.instances[i].UniqueID == uniqueID ) then
-            return false, "Attempted to register a class that already exists!"
-        end
-    end
-
-    CLASS.UniqueID = CLASS.UniqueID or uniqueID
-
-    self.stored[CLASS.UniqueID] = CLASS
-
-    for i = 1, #self.instances do
-        if ( self.instances[i].UniqueID == CLASS.UniqueID ) then
-            table.remove(self.instances, i)
-            break
-        end
-    end
-
-    CLASS.ID = #self.instances + 1
-
-    table.insert(self.instances, CLASS)
-    self.stored[CLASS.UniqueID] = CLASS
-
-    hook.Run("PostClassRegistered", CLASS)
-
-    return CLASS.ID
+    return newInstance
 end
 
 function Parallax.Class:Get(identifier)
