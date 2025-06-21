@@ -115,7 +115,7 @@ function PANEL:PopulateCategory(category, toSearch)
             local label = self.container:Add("Parallax.Text")
             label:Dock(TOP)
             label:DockMargin(0, 0, 0, ScreenScaleH(4))
-            label:SetFont("Parallax.Huge.bold")
+            label:SetFont("Parallax.Huge.Bold")
             label:SetText(string.upper(k))
 
             for k2, v2 in SortedPairs(options) do

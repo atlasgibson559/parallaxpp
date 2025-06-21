@@ -66,7 +66,7 @@ function PANEL:PopulateFactionSelect()
     local title = self:Add("Parallax.Text")
     title:Dock(TOP)
     title:DockMargin(ScreenScale(32), ScreenScaleH(32), 0, 0)
-    title:SetFont("Parallax.Huge.bold")
+    title:SetFont("Parallax.Huge.Bold")
     title:SetText(string.upper("mainmenu.create.character.faction"))
 
     local navigation = self:Add("EditablePanel")
@@ -220,7 +220,7 @@ function PANEL:PopulateCreateCharacter()
     local title = self:Add("Parallax.Text")
     title:Dock(TOP)
     title:DockMargin(ScreenScale(32), ScreenScaleH(32), 0, 0)
-    title:SetFont("Parallax.Huge.bold")
+    title:SetFont("Parallax.Huge.Bold")
     title:SetText(string.upper("mainmenu.create.character"))
 
     local navigation = self:Add("EditablePanel")
@@ -340,7 +340,7 @@ function PANEL:PopulateCreateCharacterForm()
 
             local label = self.characterCreateForm:Add("Parallax.Text")
             label:Dock(TOP)
-            label:SetFont("Parallax.Large.bold")
+            label:SetFont("Parallax.Large.Bold")
 
             label:SetText(bTranslated and translation or v.Name or k)
 
@@ -387,7 +387,7 @@ function PANEL:PopulateCreateCharacterForm()
             local label = self.characterCreateForm:Add("Parallax.Text")
             label:Dock(TOP)
             label:SetText(bTranslated and translation or v.Name or k)
-            label:SetFont("Parallax.Large.bold")
+            label:SetFont("Parallax.Large.Bold")
             label:SizeToContents()
 
             zPos = zPos - 1

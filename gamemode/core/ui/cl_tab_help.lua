@@ -19,7 +19,7 @@ function PANEL:Init()
 
     local title = self:Add("Parallax.Text")
     title:Dock(TOP)
-    title:SetFont("Parallax.Huge.bold")
+    title:SetFont("Parallax.Huge.Bold")
     title:SetText("HELP")
 
     self.buttons = self:Add("Parallax.Scroller.Horizontal")

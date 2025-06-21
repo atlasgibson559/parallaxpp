@@ -532,7 +532,7 @@ function GM:LoadFonts()
         antialias = true
     })
 
-    surface.CreateFont("Parallax.Tiny.bold", {
+    surface.CreateFont("Parallax.Tiny.Bold", {
         font = "GorDIN Bold",
         size = scale6,
         weight = 900,
@@ -546,14 +546,14 @@ function GM:LoadFonts()
         antialias = true
     })
 
-    surface.CreateFont("Parallax.Small.bold", {
+    surface.CreateFont("Parallax.Small.Bold", {
         font = "GorDIN Bold",
         size = scale8,
         weight = 900,
         antialias = true
     })
 
-    surface.CreateFont("Parallax.Small.italic", {
+    surface.CreateFont("Parallax.Small.Italic", {
         font = "GorDIN Regular",
         size = scale8,
         weight = 700,
@@ -561,7 +561,7 @@ function GM:LoadFonts()
         antialias = true
     })
 
-    surface.CreateFont("Parallax.Small.italic.bold", {
+    surface.CreateFont("Parallax.Small.Italic.Bold", {
         font = "GorDIN Bold",
         size = scale8,
         weight = 900,
@@ -591,7 +591,7 @@ function GM:LoadFonts()
         antialias = true
     })
 
-    surface.CreateFont("Parallax.Italic.bold", {
+    surface.CreateFont("Parallax.Italic.Bold", {
         font = "GorDIN Bold",
         size = scale10,
         weight = 900,
@@ -606,14 +606,14 @@ function GM:LoadFonts()
         antialias = true
     })
 
-    surface.CreateFont("Parallax.Large.bold", {
+    surface.CreateFont("Parallax.Large.Bold", {
         font = "GorDIN Bold",
         size = scale16,
         weight = 900,
         antialias = true
     })
 
-    surface.CreateFont("Parallax.Large.italic", {
+    surface.CreateFont("Parallax.Large.Italic", {
         font = "GorDIN Regular",
         size = scale16,
         weight = 700,
@@ -621,7 +621,7 @@ function GM:LoadFonts()
         antialias = true
     })
 
-    surface.CreateFont("Parallax.Large.italic.bold", {
+    surface.CreateFont("Parallax.Large.Italic.Bold", {
         font = "GorDIN Bold",
         size = scale16,
         weight = 900,
@@ -636,14 +636,14 @@ function GM:LoadFonts()
         antialias = true
     })
 
-    surface.CreateFont("Parallax.Massive.bold", {
+    surface.CreateFont("Parallax.Massive.Bold", {
         font = "GorDIN Bold",
         size = scale24,
         weight = 900,
         antialias = true
     })
 
-    surface.CreateFont("Parallax.Massive.italic", {
+    surface.CreateFont("Parallax.Massive.Italic", {
         font = "GorDIN Regular",
         size = scale24,
         weight = 700,
@@ -651,7 +651,7 @@ function GM:LoadFonts()
         antialias = true
     })
 
-    surface.CreateFont("Parallax.Massive.italic.bold", {
+    surface.CreateFont("Parallax.Massive.Italic.Bold", {
         font = "GorDIN Bold",
         size = scale24,
         weight = 900,
@@ -666,14 +666,14 @@ function GM:LoadFonts()
         antialias = true
     })
 
-    surface.CreateFont("Parallax.Huge.bold", {
+    surface.CreateFont("Parallax.Huge.Bold", {
         font = "GorDIN Bold",
         size = scale32,
         weight = 900,
         antialias = true
     })
 
-    surface.CreateFont("Parallax.Huge.italic", {
+    surface.CreateFont("Parallax.Huge.Italic", {
         font = "GorDIN",
         size = scale32,
         weight = 700,
@@ -681,7 +681,7 @@ function GM:LoadFonts()
         antialias = true
     })
 
-    surface.CreateFont("Parallax.Huge.italic.bold", {
+    surface.CreateFont("Parallax.Huge.Italic.Bold", {
         font = "GorDIN Bold",
         size = scale32,
         weight = 900,
@@ -868,7 +868,7 @@ function GM:PopulateHelpCategories(categories)
 
             local button = scroller:Add("Parallax.Button.Flat")
             button:Dock(TOP)
-            button:SetFont("Parallax.Large.bold")
+            button:SetFont("Parallax.Large.Bold")
             button:SetText("")
             button:SetBackgroundAlphaHovered(1)
             button:SetBackgroundAlphaUnHovered(0.5)
@@ -904,7 +904,7 @@ function GM:PopulateHelpCategories(categories)
             local key = button:Add("Parallax.Text")
             key:Dock(LEFT)
             key:DockMargin(ScreenScale(8), 0, 0, 0)
-            key:SetFont("Parallax.Large.bold")
+            key:SetFont("Parallax.Large.Bold")
             key:SetText(k)
 
             local seperator = button:Add("Parallax.Text")

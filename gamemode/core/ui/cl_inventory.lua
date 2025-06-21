@@ -217,7 +217,7 @@ function PANEL:SetInfo(id)
     local name = self.info:Add("Parallax.Text")
     name:Dock(TOP)
     name:DockMargin(0, 0, 0, -ScreenScaleH(4))
-    name:SetFont("Parallax.Large.bold")
+    name:SetFont("Parallax.Large.Bold")
     name:SetText(item:GetName(), true)
 
     local description = item:GetDescription()

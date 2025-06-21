@@ -111,7 +111,7 @@ function PANEL:Populate()
     local title = sideButtons:Add("DLabel")
     title:Dock(TOP)
     title:DockMargin(0, 0, padding, 0)
-    title:SetFont("Parallax.Huge.bold")
+    title:SetFont("Parallax.Huge.Bold")
     title:SetText("PARALLAX")
     title:SetTextColor(Parallax.Config:Get("color.framework"))
     title:SizeToContents()
@@ -119,7 +119,7 @@ function PANEL:Populate()
     local subtitle = sideButtons:Add("DLabel")
     subtitle:Dock(TOP)
     subtitle:DockMargin(padding / 4, -padding / 8, 0, 0)
-    subtitle:SetFont("Parallax.Large.bold")
+    subtitle:SetFont("Parallax.Large.Bold")
 
     local schemaName = "UNKNOWN SCHEMA"
     if ( SCHEMA ) then

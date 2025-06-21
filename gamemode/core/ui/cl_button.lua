@@ -86,7 +86,7 @@ function PANEL:Think()
     local hovering = self:IsHovered()
     if ( hovering and !self.wasHovered ) then
         surface.PlaySound("Parallax.Button.Enter")
-        self:SetFont("Parallax.Large.bold")
+        self:SetFont("Parallax.Large.Bold")
         self.wasHovered = true
 
         self:Motion(0.2, {
@@ -224,7 +224,7 @@ function PANEL:Think()
     local hovering = self:IsHovered()
     if ( hovering and !self.wasHovered ) then
         surface.PlaySound("Parallax.Button.Enter")
-        self:SetFont("Parallax.Large.bold")
+        self:SetFont("Parallax.Large.Bold")
         self.wasHovered = true
 
         self:Motion(0.2, {

@@ -57,14 +57,14 @@ function PANEL:SizeToContents()
     local descWrapped = Parallax.Util:GetWrappedText(desc, "parallax", ScreenScale(128))
 
     local width = 0
-    local titleWidth = Parallax.Util:GetTextWidth("Parallax.Large.bold", title)
+    local titleWidth = Parallax.Util:GetTextWidth("Parallax.Large.Bold", title)
     width = math.max(width, titleWidth)
     for i = 1, #descWrapped do
         local descWidth = Parallax.Util:GetTextWidth("parallax", descWrapped[i])
         width = math.max(width, descWidth)
     end
 
-    local height = Parallax.Util:GetTextHeight("Parallax.Large.bold")
+    local height = Parallax.Util:GetTextHeight("Parallax.Large.Bold")
     for i = 1, #descWrapped do
         height = height + Parallax.Util:GetTextHeight("parallax")
     end
@@ -109,7 +109,7 @@ function PANEL:Paint(width, height)
     Parallax.Util:DrawBlur(self)
     draw.RoundedBox(0, 0, 0, width, height, Color(0, 0, 0, 200))
     local title = Parallax.Localization:GetPhrase(self.title) or self.title
-    draw.SimpleText(title, "Parallax.Large.bold", 8, 0, Parallax.Color:Get("text.light"), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+    draw.SimpleText(title, "Parallax.Large.Bold", 8, 0, Parallax.Color:Get("text.light"), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
 
     local desc = Parallax.Localization:GetPhrase(self.description) or self.description
     local descWrapped = Parallax.Util:GetWrappedText(desc, "parallax", width - 32)
