@@ -88,7 +88,7 @@ function PANEL:SetItem(id)
 end
 
 function PANEL:DoClick()
-    local inventoryPanel = Parallax.gui.inventory
+    local inventoryPanel = Parallax.GUI.inventory
     if ( !IsValid(inventoryPanel) ) then return end
 
     inventoryPanel:SetInfo(self:GetID())

@@ -45,7 +45,7 @@ function PANEL:Init()
         button:SizeToContents()
 
         button.DoClick = function()
-            Parallax.gui.helpLast = k
+            Parallax.GUI.helpLast = k
 
             self:Populate(v)
         end
@@ -54,8 +54,8 @@ function PANEL:Init()
     end
 
     for k, v in SortedPairs(categories) do
-        if ( Parallax.gui.helpLast ) then
-            if ( Parallax.gui.helpLast == k ) then
+        if ( Parallax.GUI.helpLast ) then
+            if ( Parallax.GUI.helpLast == k ) then
                 self:Populate(v)
                 break
             end
@@ -88,4 +88,4 @@ end
 
 vgui.Register("Parallax.tab.help", PANEL, "EditablePanel")
 
-Parallax.gui.helpLast = nil
+Parallax.GUI.helpLast = nil

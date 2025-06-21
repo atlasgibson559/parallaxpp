@@ -12,8 +12,8 @@
 local MODULE = MODULE
 
 function MODULE:ShouldDrawStamina()
-    if ( IsValid(Parallax.gui.mainmenu) ) then return false end
-    if ( IsValid(Parallax.gui.tab) ) then return false end
+    if ( IsValid(Parallax.GUI.mainmenu) ) then return false end
+    if ( IsValid(Parallax.GUI.tab) ) then return false end
 
     return IsValid(Parallax.Client) and Parallax.Config:Get("stamina", true) and Parallax.Client:Alive() and istable(Parallax.Client:GetRelay("stamina"))
 end

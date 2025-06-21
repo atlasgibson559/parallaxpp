@@ -29,7 +29,7 @@ function GM:ShouldRenderMainMenu()
     local client = Parallax.Client
     if ( !IsValid(client) ) then return false end
 
-    return IsValid(Parallax.gui.splash) or IsValid(Parallax.gui.mainmenu)
+    return IsValid(Parallax.GUI.splash) or IsValid(Parallax.GUI.mainmenu)
 end
 
 function GM:GetMainMenuMusic()
@@ -49,7 +49,7 @@ function GM:ShouldPlayMainMenuMusic()
 
     local exists = false
     for i = 1, #panels do
-        if ( IsValid(Parallax.gui[panels[i]]) ) then
+        if ( IsValid(Parallax.GUI[panels[i]]) ) then
             exists = true
             break
         end
@@ -113,10 +113,10 @@ function GM:ScoreboardShow()
         return false
     end
 
-    if ( !IsValid(Parallax.gui.tab) ) then
+    if ( !IsValid(Parallax.GUI.tab) ) then
         vgui.Create("Parallax.tab")
     else
-        Parallax.gui.tab:Remove()
+        Parallax.GUI.tab:Remove()
     end
 
     return false
@@ -157,7 +157,7 @@ function GM:InitPostEntity()
     Parallax.Client = LocalPlayer()
     Parallax.Option:Load()
 
-    if ( !IsValid(Parallax.gui.chatbox) ) then
+    if ( !IsValid(Parallax.GUI.chatbox) ) then
         vgui.Create("Parallax.Chatbox")
     end
 end
@@ -707,21 +707,21 @@ function GM:LoadFonts()
 end
 
 function GM:OnPauseMenuShow()
-    if ( IsValid(Parallax.gui.tab) ) then
-        Parallax.gui.tab:Close()
+    if ( IsValid(Parallax.GUI.tab) ) then
+        Parallax.GUI.tab:Close()
         return false
     end
 
-    if ( IsValid(Parallax.gui.chatbox) and Parallax.gui.chatbox:GetAlpha() == 255 ) then
-        Parallax.gui.chatbox:SetVisible(false)
+    if ( IsValid(Parallax.GUI.chatbox) and Parallax.GUI.chatbox:GetAlpha() == 255 ) then
+        Parallax.GUI.chatbox:SetVisible(false)
         return false
     end
 
-    if ( !IsValid(Parallax.gui.mainmenu) ) then
+    if ( !IsValid(Parallax.GUI.mainmenu) ) then
         vgui.Create("Parallax.mainmenu")
     else
         if ( Parallax.Client:GetCharacter() ) then
-            Parallax.gui.mainmenu:Remove()
+            Parallax.GUI.mainmenu:Remove()
             return
         end
     end
@@ -736,15 +736,15 @@ function GM:PostHUDPaint()
 end
 
 function GM:ShouldDrawCrosshair()
-    if ( IsValid(Parallax.gui.mainmenu) ) then return false end
-    if ( IsValid(Parallax.gui.tab) ) then return false end
+    if ( IsValid(Parallax.GUI.mainmenu) ) then return false end
+    if ( IsValid(Parallax.GUI.tab) ) then return false end
 
     return true
 end
 
 function GM:ShouldDrawAmmoBox()
-    if ( IsValid(Parallax.gui.mainmenu) ) then return false end
-    if ( IsValid(Parallax.gui.tab) ) then return false end
+    if ( IsValid(Parallax.GUI.mainmenu) ) then return false end
+    if ( IsValid(Parallax.GUI.tab) ) then return false end
 
     local client = Parallax.Client
     local activeWeapon = client:GetActiveWeapon()
@@ -763,8 +763,8 @@ function GM:ShouldDrawAmmoBox()
 end
 
 function GM:ShouldDrawHealthBar()
-    if ( IsValid(Parallax.gui.mainmenu) ) then return false end
-    if ( IsValid(Parallax.gui.tab) ) then return false end
+    if ( IsValid(Parallax.GUI.mainmenu) ) then return false end
+    if ( IsValid(Parallax.GUI.tab) ) then return false end
 
     local client = Parallax.Client
     if ( !IsValid(client) or !client:Alive() ) then return false end
@@ -774,22 +774,22 @@ end
 
 function GM:ShouldDrawDebugHUD()
     if ( !Parallax.Config:Get("debug.developer") ) then return false end
-    if ( IsValid(Parallax.gui.mainmenu) ) then return false end
-    if ( IsValid(Parallax.gui.tab) ) then return false end
+    if ( IsValid(Parallax.GUI.mainmenu) ) then return false end
+    if ( IsValid(Parallax.GUI.tab) ) then return false end
 
     return Parallax.Client:IsDeveloper()
 end
 
 function GM:ShouldDrawPreviewHUD()
     if ( !Parallax.Config:Get("debug.preview") ) then return false end
-    if ( IsValid(Parallax.gui.mainmenu) ) then return false end
-    if ( IsValid(Parallax.gui.tab) ) then return false end
+    if ( IsValid(Parallax.GUI.mainmenu) ) then return false end
+    if ( IsValid(Parallax.GUI.tab) ) then return false end
 
     return !hook.Run("ShouldDrawDebugHUD")
 end
 
 function GM:ShouldDrawVignette()
-    if ( IsValid(Parallax.gui.mainmenu) ) then return false end
+    if ( IsValid(Parallax.GUI.mainmenu) ) then return false end
 
     return Parallax.Option:Get("hud.vignette", true)
 end
@@ -1027,13 +1027,13 @@ function GM:ChatboxOnTextChanged(text)
     Parallax.Net:Start("client.chatbox.text.changed", text)
 
     -- Notify the command system about the text change
-    local command = Parallax.Command:Get(Parallax.gui.chatbox:GetChatType())
+    local command = Parallax.Command:Get(Parallax.GUI.chatbox:GetChatType())
     if ( command and command.OnChatTextChanged ) then
         command:OnTextChanged(text)
     end
 
     -- Notify the chat system about the text change
-    local chat = Parallax.Chat:Get(Parallax.gui.chatbox:GetChatType())
+    local chat = Parallax.Chat:Get(Parallax.GUI.chatbox:GetChatType())
     if ( chat and chat.OnChatTextChanged ) then
         chat:OnTextChanged(text)
     end
@@ -1059,7 +1059,7 @@ function GM:PlayerBindPress(client, bind, pressed)
     bind = bind:lower()
 
     if ( string.find(bind, "messagemode") and pressed ) then
-        Parallax.gui.chatbox:SetVisible(true)
+        Parallax.GUI.chatbox:SetVisible(true)
 
         for i = 1, #Parallax.Chat.messages do
             local pnl = Parallax.Chat.messages[i]
@@ -1083,8 +1083,8 @@ function GM:ForceDermaSkin()
 end
 
 function GM:OnScreenSizeChanged(oldWidth, oldHeight, newWidth, newHeight)
-    for i = 1, #Parallax.gui do
-        local v = Parallax.gui[i]
+    for i = 1, #Parallax.GUI do
+        local v = Parallax.GUI[i]
         if ( ispanel(v) and IsValid(v) ) then
             local className = v:GetClassName()
             v:Remove()

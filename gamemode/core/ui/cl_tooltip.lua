@@ -14,11 +14,11 @@ DEFINE_BASECLASS("EditablePanel")
 local PANEL = {}
 
 function PANEL:Init()
-    if ( IsValid(Parallax.gui.tooltip) ) then
-        Parallax.gui.tooltip:Remove()
+    if ( IsValid(Parallax.GUI.tooltip) ) then
+        Parallax.GUI.tooltip:Remove()
     end
 
-    Parallax.gui.tooltip = self
+    Parallax.GUI.tooltip = self
 
     self:SetSize(ScreenScale(128), ScreenScale(24))
     self:SetMouseInputEnabled(false)
@@ -120,6 +120,6 @@ end
 
 vgui.Register("Parallax.Tooltip", PANEL, "EditablePanel")
 
-if ( IsValid(Parallax.gui.tooltip) ) then
-    Parallax.gui.tooltip:Remove()
+if ( IsValid(Parallax.GUI.tooltip) ) then
+    Parallax.GUI.tooltip:Remove()
 end

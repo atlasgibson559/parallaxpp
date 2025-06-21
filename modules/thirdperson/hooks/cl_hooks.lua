@@ -26,7 +26,7 @@ local fakeAngles
 local fakeFov
 
 function MODULE:PreRenderThirdpersonView(client, pos, angles, fov)
-    if ( IsValid(Parallax.gui.mainmenu) ) then
+    if ( IsValid(Parallax.GUI.mainmenu) ) then
         return false
     end
 

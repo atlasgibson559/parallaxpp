@@ -36,11 +36,11 @@ AccessorFunc(PANEL, "dim", "Dim", FORCE_NUMBER)
 AccessorFunc(PANEL, "dimTarget", "DimTarget", FORCE_NUMBER)
 
 function PANEL:Init()
-    if ( IsValid(Parallax.gui.mainmenu) ) then
-        Parallax.gui.mainmenu:Remove()
+    if ( IsValid(Parallax.GUI.mainmenu) ) then
+        Parallax.GUI.mainmenu:Remove()
     end
 
-    Parallax.gui.mainmenu = self
+    Parallax.GUI.mainmenu = self
 
     local client = Parallax.Client
     if ( IsValid(client) and client:IsTyping() ) then
@@ -250,8 +250,8 @@ end
 
 vgui.Register("Parallax.mainmenu", PANEL, "EditablePanel")
 
-if ( IsValid(Parallax.gui.mainmenu) ) then
-    Parallax.gui.mainmenu:Remove()
+if ( IsValid(Parallax.GUI.mainmenu) ) then
+    Parallax.GUI.mainmenu:Remove()
 
     timer.Simple(0.1, function()
         vgui.Create("Parallax.mainmenu")
@@ -263,8 +263,8 @@ concommand.Add("ax_mainmenu", function(client, command, arguments)
         return
     end
 
-    if ( IsValid(Parallax.gui.mainmenu) ) then
-        Parallax.gui.mainmenu:Remove()
+    if ( IsValid(Parallax.GUI.mainmenu) ) then
+        Parallax.GUI.mainmenu:Remove()
     end
 
     vgui.Create("Parallax.mainmenu")
