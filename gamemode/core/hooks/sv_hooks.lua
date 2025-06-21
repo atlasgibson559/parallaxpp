@@ -538,7 +538,7 @@ function GM:PlayerSpawnNPC(client, npc_type, weapon)
     return character:HasFlag("n") or client:IsAdmin()
 end
 
-function GM:PreCharacterCreate(client, payload)
+function GM:PrePlayerCreatedCharacter(client, payload)
     local maxCharacters = ax.config:Get("characters.maxCount")
     if ( table.Count(client:GetCharacters()) >= maxCharacters ) then
         return false, "You have reached the maximum number of characters! (" .. maxCharacters .. ")"

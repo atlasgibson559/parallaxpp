@@ -35,7 +35,7 @@ ax.net:Hook("character.create", function(client, payload)
         return
     end
 
-    local canCreate, reason = hook.Run("PreCharacterCreate", client, payload)
+    local canCreate, reason = hook.Run("PrePlayerCreatedCharacter", client, payload)
     if ( canCreate == false ) then
         ax.net:Start(client, "character.create.failed", reason or "Failed to create character!")
         return
@@ -69,7 +69,7 @@ ax.net:Hook("character.create", function(client, payload)
 
         ax.net:Start(client, "character.create")
 
-        hook.Run("PostCharacterCreate", client, character, payload)
+        hook.Run("PostPlayerCreatedCharacter", client, result, payload)
     end)
 end)
 

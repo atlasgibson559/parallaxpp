@@ -476,8 +476,8 @@ function GM:PostDrawTranslucentRenderables(bDrawingDepth, bDrawingSkybox)
     local x = -ScrW() * 0.5 + (ScrW() - textWidth) * 0.5
     local y = -ScrH() * 0.5 + (ScrH() - textHeight) * 0.5
 
-    local distance = pos:Distance(client:GetPos())
-    if ( distance > 1024 ) then
+    local distance = pos:DistToSqr(client:GetPos())
+    if ( distance > 1024 ^ 2 ) then
         return
     end
 
