@@ -52,6 +52,7 @@ function PLAYER:Nick()
 
     return self:SteamName()
 end
+PLAYER.Name = PLAYER.Nick
 
 --- Sends a chat message to the player.
 -- @realm shared
