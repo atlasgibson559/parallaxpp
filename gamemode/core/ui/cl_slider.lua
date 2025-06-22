@@ -31,7 +31,7 @@ function PANEL:SetValue(value, bNoNotify)
 
     if ( !bNoNotify and self.value != value ) then
         local pitch = math.Clamp((self.value - self.min) / (self.max - self.min), 0, 1) * 100 + 50
-        ax.Client:EmitSound("ui/buttonrollover.wav", 60, pitch, 0.05, CHAN_STATIC)
+        ax.client:EmitSound("ui/buttonrollover.wav", 60, pitch, 0.05, CHAN_STATIC)
 
         if ( self.OnValueSet ) then
             self:OnValueSet(self.value)

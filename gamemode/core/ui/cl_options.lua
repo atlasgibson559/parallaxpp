@@ -184,11 +184,11 @@ function PANEL:AddOption(optionData)
                 label:SetText(value and "< " .. enabled .. " >" or "< " .. disabled .. " >", true)
             end):SetIcon(value and "icon16/cross.png" or "icon16/tick.png")
 
-            if ( ax.Client:IsDeveloper() and ax.config:Get("debug.developer") ) then
+            if ( ax.client:IsDeveloper() and ax.config:Get("debug.developer") ) then
                 menu:AddSpacer()
                 menu:AddOption(ax.localization:GetPhrase("copy"), function()
                     SetClipboardText(configData.UniqueID)
-                    ax.Client:EmitSound("ui/buttonclickrelease.wav", 60, 100, 0.1, CHAN_STATIC)
+                    ax.client:EmitSound("ui/buttonclickrelease.wav", 60, 100, 0.1, CHAN_STATIC)
                 end):SetIcon("icon16/pencil.png")
             end
 
@@ -205,7 +205,7 @@ function PANEL:AddOption(optionData)
         bind.OnChange = function(this, newValue)
             ax.option:Set(optionData.UniqueID, newValue)
             value = newValue
-            ax.Client:EmitSound("ui/buttonclickrelease.wav", 60, pitch, 0.1, CHAN_STATIC)
+            ax.client:EmitSound("ui/buttonclickrelease.wav", 60, pitch, 0.1, CHAN_STATIC)
 
             ax.Binds[optionData.UniqueID] = newValue
         end
@@ -219,11 +219,11 @@ function PANEL:AddOption(optionData)
                 bind:SetSelectedNumber(value)
             end):SetIcon("icon16/arrow_refresh.png")
 
-            if ( ax.Client:IsDeveloper() and ax.config:Get("debug.developer") ) then
+            if ( ax.client:IsDeveloper() and ax.config:Get("debug.developer") ) then
                 menu:AddSpacer()
                 menu:AddOption(ax.localization:GetPhrase("copy"), function()
                     SetClipboardText(configData.UniqueID)
-                    ax.Client:EmitSound("ui/buttonclickrelease.wav", 60, 100, 0.1, CHAN_STATIC)
+                    ax.client:EmitSound("ui/buttonclickrelease.wav", 60, 100, 0.1, CHAN_STATIC)
                 end):SetIcon("icon16/pencil.png")
             end
 
@@ -274,7 +274,7 @@ function PANEL:AddOption(optionData)
 
         slider.OnValueChanged = function(this, _)
             ax.option:Set(optionData.UniqueID, this:GetValue())
-            ax.Client:EmitSound("ui/buttonrollover.wav", 100, 100, 1, CHAN_STATIC)
+            ax.client:EmitSound("ui/buttonrollover.wav", 100, 100, 1, CHAN_STATIC)
         end
 
         panel.DoClick = function(this)
@@ -333,11 +333,11 @@ function PANEL:AddOption(optionData)
                 )
             end):SetIcon("icon16/pencil.png")
 
-            if ( ax.Client:IsDeveloper() and ax.config:Get("debug.developer") ) then
+            if ( ax.client:IsDeveloper() and ax.config:Get("debug.developer") ) then
                 menu:AddSpacer()
                 menu:AddOption(ax.localization:GetPhrase("copy"), function()
                     SetClipboardText(configData.UniqueID)
-                    ax.Client:EmitSound("ui/buttonclickrelease.wav", 60, 100, 0.1, CHAN_STATIC)
+                    ax.client:EmitSound("ui/buttonclickrelease.wav", 60, 100, 0.1, CHAN_STATIC)
                 end):SetIcon("icon16/pencil.png")
             end
 
@@ -404,11 +404,11 @@ function PANEL:AddOption(optionData)
                 end):SetIcon("icon16/tick.png")
             end
 
-            if ( ax.Client:IsDeveloper() and ax.config:Get("debug.developer") ) then
+            if ( ax.client:IsDeveloper() and ax.config:Get("debug.developer") ) then
                 menu:AddSpacer()
                 menu:AddOption(ax.localization:GetPhrase("copy"), function()
                     SetClipboardText(configData.UniqueID)
-                    ax.Client:EmitSound("ui/buttonclickrelease.wav", 60, 100, 0.1, CHAN_STATIC)
+                    ax.client:EmitSound("ui/buttonclickrelease.wav", 60, 100, 0.1, CHAN_STATIC)
                 end):SetIcon("icon16/pencil.png")
             end
 
@@ -477,11 +477,11 @@ function PANEL:AddOption(optionData)
                 color.color = value
             end):SetIcon("icon16/arrow_refresh.png")
 
-            if ( ax.Client:IsDeveloper() and ax.config:Get("debug.developer") ) then
+            if ( ax.client:IsDeveloper() and ax.config:Get("debug.developer") ) then
                 menu:AddSpacer()
                 menu:AddOption(ax.localization:GetPhrase("copy"), function()
                     SetClipboardText(configData.UniqueID)
-                    ax.Client:EmitSound("ui/buttonclickrelease.wav", 60, 100, 0.1, CHAN_STATIC)
+                    ax.client:EmitSound("ui/buttonclickrelease.wav", 60, 100, 0.1, CHAN_STATIC)
                 end):SetIcon("icon16/pencil.png")
             end
 
@@ -502,7 +502,7 @@ function PANEL:AddOption(optionData)
             ax.option:Set(optionData.UniqueID, newValue)
             value = newValue
 
-            ax.Client:EmitSound("ui/buttonclickrelease.wav", 60, pitch, 0.1, CHAN_STATIC)
+            ax.client:EmitSound("ui/buttonclickrelease.wav", 60, pitch, 0.1, CHAN_STATIC)
         end
 
         panel.DoRightClick = function()
@@ -530,11 +530,11 @@ function PANEL:AddOption(optionData)
                 )
             end):SetIcon("icon16/pencil.png")
 
-            if ( ax.Client:IsDeveloper() and ax.config:Get("debug.developer") ) then
+            if ( ax.client:IsDeveloper() and ax.config:Get("debug.developer") ) then
                 menu:AddSpacer()
                 menu:AddOption(ax.localization:GetPhrase("copy"), function()
                     SetClipboardText(configData.UniqueID)
-                    ax.Client:EmitSound("ui/buttonclickrelease.wav", 60, 100, 0.1, CHAN_STATIC)
+                    ax.client:EmitSound("ui/buttonclickrelease.wav", 60, 100, 0.1, CHAN_STATIC)
                 end):SetIcon("icon16/pencil.png")
             end
 

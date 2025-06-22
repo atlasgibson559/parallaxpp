@@ -105,7 +105,7 @@ function PANEL:DoRightClick()
     local menu = DermaMenu()
     for actionName, actionData in pairs(base.Actions) do
         if ( actionName == "Take" ) then continue end
-        if ( isfunction(actionData.OnCanRun) and actionData:OnCanRun(item, ax.Client) == false ) then continue end
+        if ( isfunction(actionData.OnCanRun) and actionData:OnCanRun(item, ax.client) == false ) then continue end
 
         menu:AddOption(actionData.Name or actionName, function()
             ax.net:Start("item.perform", itemID, actionName)

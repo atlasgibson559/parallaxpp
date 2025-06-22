@@ -20,7 +20,7 @@ function PANEL:Init()
 end
 
 function PANEL:Populate()
-    local client = ax.Client
+    local client = ax.client
     if ( !IsValid(client) ) then return end
 
     local parent = self:GetParent()

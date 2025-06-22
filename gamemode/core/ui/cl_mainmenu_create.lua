@@ -112,7 +112,7 @@ function PANEL:PopulateFactionSelect()
 
     for i = 1, #factions do
         local v = factions[i]
-        if ( !ax.faction:CanSwitchTo(ax.Client, v:GetID()) ) then continue end
+        if ( !ax.faction:CanSwitchTo(ax.client, v:GetID()) ) then continue end
 
         local name = (v.Name and ax.utf8:Upper(v.Name)) or "UNKNOWN FACTION"
         local description = (v.Description and ax.utf8:Upper(v.Description)) or "UNKNOWN FACTION DESCRIPTION"
@@ -195,7 +195,7 @@ function PANEL:PopulateCreateCharacter()
         local factions = ax.faction:GetAll()
         if ( factions[1] != nil ) then
             for i = 1, #factions do
-                if ( ax.faction:CanSwitchTo(ax.Client, factions[i]:GetID()) ) then
+                if ( ax.faction:CanSwitchTo(ax.client, factions[i]:GetID()) ) then
                     self.currentCreatePayload.faction = factions[i]:GetID()
                     break
                 end
@@ -237,7 +237,7 @@ function PANEL:PopulateCreateCharacter()
             local availableFactions = 0
             for i = 1, #ax.faction:GetAll() do
                 local v = ax.faction:GetAll()[i]
-                if ( ax.faction:CanSwitchTo(ax.Client, v:GetID()) ) then
+                if ( ax.faction:CanSwitchTo(ax.client, v:GetID()) ) then
                     availableFactions = availableFactions + 1
                 end
             end
@@ -266,9 +266,9 @@ function PANEL:PopulateCreateCharacter()
             if ( v.Editable != true ) then continue end
 
             if ( isfunction(v.OnValidate) ) then
-                local isValid, errorMessage = v:OnValidate(self.characterCreateForm, self.currentCreatePayload, ax.Client)
+                local isValid, errorMessage = v:OnValidate(self.characterCreateForm, self.currentCreatePayload, ax.client)
                 if ( !isValid ) then
-                    ax.Client:Notify(errorMessage)
+                    ax.client:Notify(errorMessage)
                     return
                 end
             end
@@ -277,7 +277,7 @@ function PANEL:PopulateCreateCharacter()
             if ( page != self.currentCreatePage + 1 ) then continue end
 
             if ( isfunction(v.OnValidate) ) then
-                isNextEmpty = v:OnValidate(self.characterCreateForm, self.currentCreatePayload, ax.Client)
+                isNextEmpty = v:OnValidate(self.characterCreateForm, self.currentCreatePayload, ax.client)
                 if ( isNextEmpty ) then continue end
             end
 
@@ -370,7 +370,7 @@ function PANEL:PopulateCreateCharacterForm()
             end
 
             if ( factionData.GetDefaultName and k == "name" ) then
-                local defaultName, forced = factionData:GetDefaultName(ax.Client)
+                local defaultName, forced = factionData:GetDefaultName(ax.client)
                 if ( defaultName and defaultName != "" ) then
                     entry:SetValue(defaultName)
                     self:SetPayload(k, defaultName)
@@ -414,7 +414,7 @@ function PANEL:PopulateCreateCharacterForm()
             end
 
             if ( factionData.GetDefaultDescription and k == "description" ) then
-                local defaultDescription = factionData:GetDefaultDescription(ax.Client)
+                local defaultDescription = factionData:GetDefaultDescription(ax.client)
                 if ( defaultDescription and defaultDescription != "" ) then
                     entry:SetValue(defaultDescription)
                     self:SetPayload(k, defaultDescription)

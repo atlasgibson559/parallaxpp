@@ -81,7 +81,7 @@ if ( CLIENT ) then
         end
 
         local oldValue = stored.Value != nil and stored.Value or stored.Default
-        local bResult = hook.Run("PreOptionChanged", ax.Client, key, value, oldValue)
+        local bResult = hook.Run("PreOptionChanged", ax.client, key, value, oldValue)
         if ( bResult == false ) then return false end
 
         if ( !istable(self.instances[key]) ) then
@@ -97,12 +97,12 @@ if ( CLIENT ) then
         end
 
         if ( isfunction(stored.OnChange) ) then
-            stored:OnChange(value, oldValue, ax.Client)
+            stored:OnChange(value, oldValue, ax.client)
         end
 
         ax.data:Set("options", self:GetSaveData(), true, true)
 
-        hook.Run("PostOptionChanged", ax.Client, key, value, oldValue)
+        hook.Run("PostOptionChanged", ax.client, key, value, oldValue)
 
         return true
     end

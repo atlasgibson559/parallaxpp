@@ -41,7 +41,7 @@ function PANEL:Init()
 
     ax.gui.Tab = self
 
-    local client = ax.Client
+    local client = ax.client
     if ( IsValid(client) and client:IsTyping() ) then
         chat.Close()
     end

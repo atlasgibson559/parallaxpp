@@ -24,7 +24,7 @@ ax.net:Hook("character.cache.all", function(data)
         PrintTable(data)
     end
 
-    local client = ax.Client
+    local client = ax.client
     local clientTable = client:GetTable()
 
     for k, v in pairs(data) do
@@ -44,13 +44,13 @@ ax.net:Hook("character.cache.all", function(data)
         ax.gui.Mainmenu = vgui.Create("ax.Mainmenu")
     end
 
-    ax.Client:Notify("All characters cached!", NOTIFY_HINT)
+    ax.client:Notify("All characters cached!", NOTIFY_HINT)
 end)
 
 ax.net:Hook("character.cache", function(data)
     if ( !istable(data) ) then return end
 
-    local client = ax.Client
+    local client = ax.client
     local clientTable = client:GetTable()
 
     local character = ax.character:CreateObject(data.ID, data, client)
@@ -63,13 +63,13 @@ ax.net:Hook("character.cache", function(data)
     clientTable.axCharacters[characterID] = character
     clientTable.axCharacter = character
 
-    ax.Client:Notify("Character " .. characterID .. " cached!", NOTIFY_HINT)
+    ax.client:Notify("Character " .. characterID .. " cached!", NOTIFY_HINT)
 end)
 
 ax.net:Hook("character.create.failed", function(reason)
     if ( !reason ) then return end
 
-    ax.Client:Notify(reason)
+    ax.client:Notify(reason)
 end)
 
 ax.net:Hook("character.create", function()
@@ -84,7 +84,7 @@ ax.net:Hook("character.delete", function(characterID)
 
     ax.character.stored[characterID] = nil
 
-    local client = ax.Client
+    local client = ax.client
     local clientTable = client:GetTable()
     if ( clientTable.axCharacters ) then
         clientTable.axCharacters[characterID] = nil
@@ -102,7 +102,7 @@ end)
 ax.net:Hook("character.load.failed", function(reason)
     if ( !reason ) then return end
 
-    ax.Client:Notify(reason)
+    ax.client:Notify(reason)
 end)
 
 ax.net:Hook("character.load", function(characterID)
@@ -112,7 +112,7 @@ ax.net:Hook("character.load", function(characterID)
         ax.gui.Mainmenu:Remove()
     end
 
-    local client = ax.Client
+    local client = ax.client
 
     local character, reason = ax.character:CreateObject(characterID, ax.character.stored[characterID], client)
     if ( !character ) then
@@ -333,7 +333,7 @@ ax.net:Hook("currency.give", function(entity, amount)
     local phrase = ax.localization:GetPhrase("currency.pickup")
     phrase = string.format(phrase, amount .. ax.currency:GetSymbol())
 
-    ax.Client:Notify(phrase)
+    ax.client:Notify(phrase)
 end)
 
 --[[-----------------------------------------------------------------------------
@@ -341,7 +341,7 @@ end)
 -----------------------------------------------------------------------------]]--
 
 ax.net:Hook("database.save", function(data)
-    ax.Client:GetTable().axDatabase = data
+    ax.client:GetTable().axDatabase = data
 end)
 
 ax.net:Hook("gesture.play", function(client, name)
@@ -386,7 +386,7 @@ ax.net:Hook("flag.list", function(target, hasFlags)
     end
 
     if ( availableFlags[1] == nil ) then
-        ax.Client:Notify("The target player already has all flags, so you cannot give them any more!")
+        ax.client:Notify("The target player already has all flags, so you cannot give them any more!")
         return
     end
 

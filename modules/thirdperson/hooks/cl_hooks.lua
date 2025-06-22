@@ -115,11 +115,11 @@ function MODULE:ShouldDrawLocalPlayer(client)
 end
 
 function MODULE:PrePlayerDraw(client, flags)
-    if ( ax.config:Get("thirdperson.tracecheck") and ax.Client != client ) then
+    if ( ax.config:Get("thirdperson.tracecheck") and ax.client != client ) then
         local traceLine = util.TraceLine({
-            start = ax.Client:GetShootPos(),
+            start = ax.client:GetShootPos(),
             endpos = client:GetShootPos(),
-            filter = ax.Client
+            filter = ax.client
         })
 
         if ( !traceLine.Hit ) then

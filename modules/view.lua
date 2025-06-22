@@ -193,7 +193,7 @@ if ( CLIENT ) then
         local swayMult = ax.option:Get("view.multiplier")
         local swayMultSprint = ax.option:Get("view.multiplier.sprint")
 
-        local client = ax.Client
+        local client = ax.client
         local ft = FrameTime()
 
         Multiplier = Lerp(ft * 64, Multiplier, client:IsSprinting() and swayMultSprint or swayMult)
@@ -375,7 +375,7 @@ if ( CLIENT ) then
     function MODULE:CalcViewModelView(weapon, viewModel, oldEyePos, oldEyeAng, eyePos, eyeAng)
         if ( !ax.option:Get("view") ) then return end
         if ( !IsValid(weapon) or !IsValid(viewModel) ) then return end
-        if ( ax.Client:InObserver() ) then return end
+        if ( ax.client:InObserver() ) then return end
 
         local newOrigin, newAngles = GAMEMODE.BaseClass:CalcViewModelView(weapon, viewModel, oldEyePos, oldEyeAng, eyePos, eyeAng)
         newOrigin, newAngles = GetViewModelBob(newOrigin, newAngles)

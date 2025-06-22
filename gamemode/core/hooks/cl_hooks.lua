@@ -26,7 +26,7 @@ function GM:PlayerEndVoice(client)
 end
 
 function GM:ShouldRenderMainMenu()
-    local client = ax.Client
+    local client = ax.client
     if ( !IsValid(client) ) then return false end
 
     return IsValid(ax.gui.Splash) or IsValid(ax.gui.Mainmenu)
@@ -44,7 +44,7 @@ local panels = {
 function GM:ShouldPlayMainMenuMusic()
     if ( !ax.config:Get("mainmenu.music", true) ) then return false end
 
-    local client = ax.Client
+    local client = ax.client
     if ( !IsValid(client) ) then return false end
 
     local exists = false
@@ -154,7 +154,7 @@ function GM:OnReloaded()
 end
 
 function GM:InitPostEntity()
-    ax.Client = LocalPlayer()
+    ax.client = LocalPlayer()
     ax.option:Load()
 
     if ( !IsValid(ax.gui.Chatbox) ) then
@@ -182,7 +182,7 @@ function GM:CalcView(client, pos, angles, fov)
         }
     end
 
-    local ragdoll = !ax.Client:Alive() and ax.Client:GetRagdollEntity() or ax.Client:GetRelay("ragdoll", nil)
+    local ragdoll = !ax.client:Alive() and ax.client:GetRagdollEntity() or ax.client:GetRelay("ragdoll", nil)
     if ( IsValid(ragdoll) ) then
         local eyePos
         local eyeAng
@@ -224,7 +224,7 @@ local LOWERED_POS = Vector(0, 0, 0)
 local LOWERED_ANGLES = Angle(10, 10, 0)
 local LOWERED_LERP = {pos = Vector(0, 0, 0), angles = Angle(0, 0, 0)}
 function GM:CalcViewModelView(weapon, viewModel, oldPos, oldAng, pos, ang)
-    local client = ax.Client
+    local client = ax.client
     if ( !IsValid(client) ) then return end
 
     local targetPos = LOWERED_POS
@@ -257,7 +257,7 @@ local vignette = ax.util:GetMaterial("parallax/overlay_vignette.png", "noclamp s
 local vignetteColor = Color(0, 0, 0, 255)
 function GM:HUDPaintBackground()
     if ( tobool(hook.Run("ShouldDrawVignette")) ) then
-        local client = ax.Client
+        local client = ax.client
         if ( !IsValid(client) ) then return end
 
         local scrW, scrH = ScrW(), ScrH()
@@ -294,7 +294,7 @@ local healthAlpha = 0
 local healthTime = 0
 local healthLast = 0
 function GM:HUDPaint()
-    local client = ax.Client
+    local client = ax.client
     if ( !IsValid(client) ) then return end
 
     local shouldDraw = hook.Run("PreHUDPaint")
@@ -395,7 +395,7 @@ function GM:HUDPaint()
         else
             ax.util:PrintError("Unknown crosshair type: " .. crosshairType)
             ax.option:Reset("hud.crosshair.type")
-            ax.Client:Notify("Unknown crosshair type: " .. crosshairType .. ". Resetting!")
+            ax.client:Notify("Unknown crosshair type: " .. crosshairType .. ". Resetting!")
         end
     end
 
@@ -452,9 +452,9 @@ end
 
 function GM:PostDrawTranslucentRenderables(bDrawingDepth, bDrawingSkybox)
     if ( !ax.config:Get("debug.developer") ) then return end
-    if ( !ax.Client:IsDeveloper() ) then return end
+    if ( !ax.client:IsDeveloper() ) then return end
 
-    local client = ax.Client
+    local client = ax.client
     if ( !IsValid(client) ) then return end
 
     local trace = client:GetEyeTrace()
@@ -720,7 +720,7 @@ function GM:OnPauseMenuShow()
     if ( !IsValid(ax.gui.Mainmenu) ) then
         vgui.Create("ax.Mainmenu")
     else
-        if ( ax.Client:GetCharacter() ) then
+        if ( ax.client:GetCharacter() ) then
             ax.gui.Mainmenu:Remove()
             return
         end
@@ -746,7 +746,7 @@ function GM:ShouldDrawAmmoBox()
     if ( IsValid(ax.gui.Mainmenu) ) then return false end
     if ( IsValid(ax.gui.Tab) ) then return false end
 
-    local client = ax.Client
+    local client = ax.client
     local activeWeapon = client:GetActiveWeapon()
     if ( !IsValid(activeWeapon) ) then return false end
 
@@ -766,7 +766,7 @@ function GM:ShouldDrawHealthBar()
     if ( IsValid(ax.gui.Mainmenu) ) then return false end
     if ( IsValid(ax.gui.Tab) ) then return false end
 
-    local client = ax.Client
+    local client = ax.client
     if ( !IsValid(client) or !client:Alive() ) then return false end
 
     return ax.option:Get("hud.health.bar", true)
@@ -777,7 +777,7 @@ function GM:ShouldDrawDebugHUD()
     if ( IsValid(ax.gui.Mainmenu) ) then return false end
     if ( IsValid(ax.gui.Tab) ) then return false end
 
-    return ax.Client:IsDeveloper()
+    return ax.client:IsDeveloper()
 end
 
 function GM:ShouldDrawPreviewHUD()
@@ -807,7 +807,7 @@ function GM:GetCharacterName(client, target)
 end
 
 function GM:PopulateTabButtons(buttons)
-    if ( CAMI.PlayerHasAccess(ax.Client, "Parallax - Manage Config", nil) ) then
+    if ( CAMI.PlayerHasAccess(ax.client, "Parallax - Manage Config", nil) ) then
         buttons["tab.config"] = {
             Populate = function(this, container)
                 container:Add("ax.Tab.config")
@@ -861,7 +861,7 @@ function GM:PopulateHelpCategories(categories)
         scroller.Paint = nil
 
         for k, v in SortedPairs(ax.flag.stored) do
-            local char = ax.Client:GetCharacter()
+            local char = ax.client:GetCharacter()
             if ( !char ) then return end
 
             local hasFlag = char:HasFlag(k)
@@ -874,19 +874,19 @@ function GM:PopulateHelpCategories(categories)
             button:SetBackgroundAlphaUnHovered(0.5)
             button:SetBackgroundColor(hasFlag and ax.config:Get("color.success") or ax.config:Get("color.error"))
             button.DoRightClick = function(this)
-                if ( !CAMI.PlayerHasAccess(ax.Client, "Parallax - Manage Flags", nil) ) then return end
+                if ( !CAMI.PlayerHasAccess(ax.client, "Parallax - Manage Flags", nil) ) then return end
 
                 local menu = DermaMenu()
                 menu:AddOption("Give Flag", function()
-                    ax.command:Run("CharGiveFlags", ax.Client:SteamID64(), k)
+                    ax.command:Run("CharGiveFlags", ax.client:SteamID64(), k)
                 end)
 
                 menu:AddOption("Remove Flag", function()
-                    ax.command:Run("CharTakeFlags", ax.Client:SteamID64(), k)
+                    ax.command:Run("CharTakeFlags", ax.client:SteamID64(), k)
                 end)
 
                 for _, target in player.Iterator() do
-                    if ( target == ax.Client ) then continue end
+                    if ( target == ax.client ) then continue end
 
                     menu:AddSpacer()
 
@@ -1102,7 +1102,7 @@ function GM:OnScreenSizeChanged(oldWidth, oldHeight, newWidth, newHeight)
 end
 
 function GM:SpawnMenuOpen()
-    local character = ax.Client:GetCharacter()
+    local character = ax.client:GetCharacter()
     if ( !character ) then return end
 
     if ( !character:HasFlag("s") ) then

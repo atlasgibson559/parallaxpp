@@ -189,13 +189,13 @@ if ( CLIENT ) then
     --- Gets the local player's stamina from relay
     -- @return number
     function ax.Stamina:Get()
-        return ax.Client:GetRelay("stamina").current
+        return ax.client:GetRelay("stamina").current
     end
 
     --- Gets the local player's stamina as a fraction [0–1]
     -- @return number
     function ax.Stamina:GetFraction()
-        local max = ax.Client:GetRelay("stamina").max
+        local max = ax.client:GetRelay("stamina").max
         return self:Get() / max
     end
 end

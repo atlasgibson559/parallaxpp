@@ -42,7 +42,7 @@ function PANEL:Init()
 
     ax.gui.Mainmenu = self
 
-    local client = ax.Client
+    local client = ax.client
     if ( IsValid(client) and client:IsTyping() ) then
         chat.Close()
     end
@@ -141,7 +141,7 @@ function PANEL:Populate()
     buttons:Dock(FILL)
     buttons:DockMargin(0, padding / 4, 0, padding)
 
-    local client = ax.Client
+    local client = ax.client
     local clientTable = client:GetTable()
     if ( clientTable.axCharacter ) then -- client:GetCharacter() isn't validated yet, since it this panel is created before the meta tables are loaded
         local playButton = buttons:Add("ax.Button")
@@ -163,7 +163,7 @@ function PANEL:Populate()
         local availableFactions = 0
         for i = 1, #ax.faction:GetAll() do
             local v = ax.faction:GetAll()[i]
-            if ( ax.faction:CanSwitchTo(ax.Client, v:GetID()) ) then
+            if ( ax.faction:CanSwitchTo(ax.client, v:GetID()) ) then
                 availableFactions = availableFactions + 1
             end
         end
@@ -173,7 +173,7 @@ function PANEL:Populate()
         elseif ( availableFactions == 1 ) then
             self.createPanel:PopulateCreateCharacter()
         else
-            ax.Client:Notify("You do not have any factions available to create a character for.", NOTIFY_ERROR)
+            ax.client:Notify("You do not have any factions available to create a character for.", NOTIFY_ERROR)
             return
         end
     end

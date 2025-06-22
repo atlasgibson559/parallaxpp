@@ -37,7 +37,7 @@ function PANEL:Init()
         draw.RoundedBox(0, 0, 0, width, height, Color(0, 0, 0, 150))
     end
 
-    local inventories = ax.inventory:GetByCharacterID(ax.Client:GetCharacter():GetID())
+    local inventories = ax.inventory:GetByCharacterID(ax.client:GetCharacter():GetID())
     if ( #inventories == 0 ) then
         local label = self.buttons:Add("ax.Text")
         label:Dock(FILL)
@@ -182,7 +182,7 @@ function PANEL:IsValidItemID(id)
     local item = ax.item:Get(id)
     if ( !item ) then return false end
 
-    local inventory = ax.Client:GetInventoryByID(item:GetInventory())
+    local inventory = ax.client:GetInventoryByID(item:GetInventory())
     if ( !inventory ) then return false end
 
     return true
@@ -239,7 +239,7 @@ function PANEL:SetInfo(id)
     timer.Simple(0.1, function()
         for actionName, actionData in pairs(item.Actions or {}) do
             if ( actionName == "Take" ) then continue end
-            if ( isfunction(actionData.OnCanRun) and actionData:OnCanRun(item, ax.Client) == false ) then continue end
+            if ( isfunction(actionData.OnCanRun) and actionData:OnCanRun(item, ax.client) == false ) then continue end
 
             local button = actions:Add("ax.Button.Flat")
             button:SetText(actionData.Name or actionName)

@@ -18,7 +18,7 @@ function MODULE:DrawPhysgunBeam(client, physgun, enabled, target, physBone, hitP
 end
 
 function MODULE:HUDPaint()
-    local client = ax.Client
+    local client = ax.client
     if ( !IsValid(client) or !client:InObserver() or !client:Alive() or !client:GetNoDraw() ) then return end
 
     if ( hook.Run("ShouldDrawObserverHUD", client) == false ) then return end

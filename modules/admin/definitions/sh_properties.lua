@@ -39,7 +39,7 @@ properties.Add("ax.Admin.sethealth", {
         for i = 0, 100, 25 do
             local health = i
             subMenu:AddOption(health .. " HP", function()
-                if ( !self:Filter(ent, ax.Client) ) then return end
+                if ( !self:Filter(ent, ax.client) ) then return end
 
                 self:MsgStart()
                     net.WritePlayer(ent)

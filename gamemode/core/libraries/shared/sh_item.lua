@@ -171,7 +171,7 @@ if ( CLIENT ) then
             UniqueID = uniqueID,
             Data = data,
             InventoryID = inventoryID,
-            CharacterID = ax.Client and ax.Client:GetCharacterID() or 0
+            CharacterID = ax.client and ax.client:GetCharacterID() or 0
         })
 
         if ( !item ) then return end
