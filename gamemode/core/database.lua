@@ -14,7 +14,7 @@
 -- @module ax.database
 
 ax.database = ax.database or {}
-ax.database.backend = ax.database.backend or ax.SQLite -- Default to SQLite if MySQL is not available
+ax.database.backend = ax.database.backend or ax.sqlite -- Default to SQLite if MySQL is not available
 
 --- Initializes the hybrid database system.
 -- @tparam table[opt] config MySQL connection config
@@ -47,14 +47,14 @@ end
 -- @tparam string reason Reason for fallback
 -- @usage ax.database:Fallback("MySQL connection failed")
 function ax.database:Fallback(reason)
-    self.backend = ax.SQLite
+    self.backend = ax.sqlite
     ax.util:PrintWarning((reason or "MySQL unavailable") .. ". Falling back to SQLite.")
 
     hook.Run("DatabaseFallback", reason)
 end
 
 --- Returns current backend object.
--- @treturn table Either ax.SQLOO or ax.SQLite
+-- @treturn table Either ax.SQLOO or ax.sqlite
 function ax.database:GetBackend()
     return self.backend
 end
@@ -147,7 +147,7 @@ end
 function ax.database:PrintBackend()
     if ( self.backend == ax.SQLOO ) then
         ax.util:Print("Using MySQL backend.")
-    elseif ( self.backend == ax.SQLite ) then
+    elseif ( self.backend == ax.sqlite ) then
         ax.util:Print("Using SQLite backend.")
     else
         -- Quite unlikely, but just in case

@@ -1,6 +1,6 @@
-# ax.SQLite
+# ax.sqlite
 
-`ax.SQLite` is a utility library for managing structured SQLite tables in Garry's Mod. It allows dynamic variable registration, automatic schema creation, and safe row load/save operations.
+`ax.sqlite` is a utility library for managing structured SQLite tables in Garry's Mod. It allows dynamic variable registration, automatic schema creation, and safe row load/save operations.
 
 ---
 
@@ -9,8 +9,8 @@
 ### Register Variables
 
 ```lua
-ax.SQLite:RegisterVar("users", "credits", 0)
-ax.SQLite:RegisterVar("users", "rank", "citizen")
+ax.sqlite:RegisterVar("users", "credits", 0)
+ax.sqlite:RegisterVar("users", "rank", "citizen")
 ```
 
 ---
@@ -18,7 +18,7 @@ ax.SQLite:RegisterVar("users", "rank", "citizen")
 ### Initialize Table
 
 ```lua
-ax.SQLite:InitializeTable("users")
+ax.sqlite:InitializeTable("users")
 ```
 
 ---
@@ -26,7 +26,7 @@ ax.SQLite:InitializeTable("users")
 ### Load a Row
 
 ```lua
-ax.SQLite:LoadRow("users", "steamid", "STEAM_0:1:12345", function(row)
+ax.sqlite:LoadRow("users", "steamid", "STEAM_0:1:12345", function(row)
     print("Credits:", row.credits)
 end)
 ```
@@ -36,7 +36,7 @@ end)
 ### Save a Row
 
 ```lua
-ax.SQLite:SaveRow("users", {
+ax.sqlite:SaveRow("users", {
     steamid = "STEAM_0:1:12345",
     credits = 200,
     rank = "vip"
@@ -48,7 +48,7 @@ ax.SQLite:SaveRow("users", {
 ### Create a Table Manually
 
 ```lua
-ax.SQLite:CreateTable("bans", {
+ax.sqlite:CreateTable("bans", {
     steamid = "TEXT PRIMARY KEY",
     reason = "TEXT",
     time = "INTEGER"

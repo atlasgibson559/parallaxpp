@@ -59,7 +59,7 @@ This roadmap outlines completed, in-progress, and planned features for the Paral
 ## Framework Internals
 
 - [x] `ax.relay` (secure value distribution)
-- [x] `ax.SQLite` (dynamic SQLite abstraction)
+- [x] `ax.sqlite` (dynamic SQLite abstraction)
 - [ ] Test coverage for relay/event edge cases
 - [ ] Expand relay scope to support metadata flags
 - [ ] Add relay access control per scope
