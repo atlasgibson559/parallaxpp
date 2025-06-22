@@ -121,7 +121,7 @@ concommand.Add("ax_localization_check", function(client, command, arguments)
         if ( missingPhrases[1] != nil ) then
             ax.util:PrintWarning("Language \"" .. languageName .. "\" is missing the following phrases: (" .. #missingPhrases .. ")")
             for i = 1, #missingPhrases do
-                ax.util:PrintWarning("\t\t" .. missingPhrases[i])
+                ax.util:PrintWarning("\t" .. missingPhrases[i])
             end
         end
     end
