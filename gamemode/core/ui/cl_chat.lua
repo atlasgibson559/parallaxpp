@@ -23,10 +23,10 @@ function PANEL:Init()
     self:SetSize(hook.Run("GetChatboxSize"))
     self:SetPos(hook.Run("GetChatboxPos"))
 
-    local label = self:Add("ax.Text")
+    local label = self:Add("ax.text")
     label:Dock(TOP)
     label:SetTextInset(8, 0)
-    label:SetFont("ax.Small")
+    label:SetFont("ax.small")
     label:SetText(GetHostName(), true)
     label.Paint = function(this, width, height)
         surface.SetDrawColor(ax.color:Get("background.transparent"))
@@ -37,10 +37,10 @@ function PANEL:Init()
     bottom:Dock(BOTTOM)
     bottom:DockMargin(8, 8, 8, 8)
 
-    self.chatType = bottom:Add("ax.Text.Typewriter")
+    self.chatType = bottom:Add("ax.text.typewriter")
     self.chatType:Dock(LEFT)
     self.chatType:SetTextInset(8, 0)
-    self.chatType:SetFont("ax.Small")
+    self.chatType:SetFont("ax.small")
     self.chatType:SetText("IC", true, true)
     self.chatType:SetTypingSpeed(0.05)
     self.chatType.PostThink = function(this)
@@ -51,7 +51,7 @@ function PANEL:Init()
         surface.DrawRect(0, 0, width, height)
     end
 
-    self.entry = bottom:Add("ax.Text.Entry")
+    self.entry = bottom:Add("ax.text.entry")
     self.entry:Dock(FILL)
     self.entry:DockMargin(8, 0, 0, 0)
     self.entry:SetPlaceholderText("Say something...")
@@ -119,7 +119,7 @@ function PANEL:Init()
     self.history:SetPos(8, label:GetTall() + 8)
     self.history:GetVBar():SetWide(0)
 
-    self.recommendations = self:Add("ax.Scroller.Vertical")
+    self.recommendations = self:Add("ax.scroller.vertical")
     self.recommendations:SetSize(self.history:GetWide(), self.history:GetTall() - 8)
     self.recommendations:SetPos(8, self.history:GetY() + self.history:GetTall() - self.recommendations:GetTall() - 8)
     self.recommendations:SetAlpha(0)
@@ -203,10 +203,10 @@ function PANEL:PopulateRecommendations(text)
 
             local height = 0
 
-            local title = rec:Add("ax.Text")
+            local title = rec:Add("ax.text")
             title:Dock(TOP)
             title:DockMargin(8, 0, 8, 0)
-            title:SetFont("ax.Small")
+            title:SetFont("ax.small")
             title:SetText(command.UniqueID, true)
             height = height + title:GetTall()
 
@@ -215,13 +215,13 @@ function PANEL:PopulateRecommendations(text)
                 descriptionWrapped = "No description provided."
             end
 
-            descriptionWrapped = ax.util:GetWrappedText(descriptionWrapped, "ax.Tiny", self.recommendations:GetWide() - 16)
+            descriptionWrapped = ax.util:GetWrappedText(descriptionWrapped, "ax.tiny", self.recommendations:GetWide() - 16)
             for k = 1, #descriptionWrapped do
                 local v = descriptionWrapped[k]
-                local descLine = rec:Add("ax.Text")
+                local descLine = rec:Add("ax.text")
                 descLine:Dock(TOP)
                 descLine:DockMargin(8, -2, 8, 0)
-                descLine:SetFont("ax.Tiny")
+                descLine:SetFont("ax.tiny")
                 descLine:SetText(v, true)
                 descLine:SetTextColor(ax.color:Get("text"))
                 height = height + descLine:GetTall()
@@ -277,7 +277,7 @@ function PANEL:CycleRecommendations()
     self.chatType:SetText(data.UniqueID, true, true)
     self.chatType:RestartTyping()
 
-    surface.PlaySound("ax.Button.Enter")
+    surface.PlaySound("ax.button.Enter")
 end
 
 function PANEL:SetVisible(visible)

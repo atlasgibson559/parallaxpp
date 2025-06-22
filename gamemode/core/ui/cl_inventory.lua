@@ -18,13 +18,13 @@ function PANEL:Init()
 
     self:Dock(FILL)
 
-    self.buttons = self:Add("ax.Scroller.Horizontal")
+    self.buttons = self:Add("ax.scroller.horizontal")
     self.buttons:Dock(TOP)
     self.buttons:DockMargin(0, ScreenScaleH(4), 0, 0)
     self.buttons:SetTall(ScreenScaleH(24))
     self.buttons.Paint = nil
 
-    self.container = self:Add("ax.Scroller.Vertical")
+    self.container = self:Add("ax.scroller.vertical")
     self.container:Dock(FILL)
     self.container:GetVBar():SetWide(0)
     self.container.Paint = nil
@@ -39,9 +39,9 @@ function PANEL:Init()
 
     local inventories = ax.inventory:GetByCharacterID(ax.client:GetCharacter():GetID())
     if ( #inventories == 0 ) then
-        local label = self.buttons:Add("ax.Text")
+        local label = self.buttons:Add("ax.text")
         label:Dock(FILL)
-        label:SetFont("ax.Large")
+        label:SetFont("ax.large")
         label:SetText("inventory.empty")
         label:SetContentAlignment(5)
 
@@ -49,7 +49,7 @@ function PANEL:Init()
     end
 
     for _, inventory in pairs(inventories) do
-        local button = self.buttons:Add("ax.Button.Flat")
+        local button = self.buttons:Add("ax.button.flat")
         button:Dock(LEFT)
         button:SetText(inventory:GetName())
         button:SizeToContents()
@@ -91,7 +91,7 @@ function PANEL:SetInventory(id)
     local maxWeight = ax.config:Get("inventory.max.weight", 20)
     local weight = math.Round(maxWeight * progress:GetFraction(), 2)
 
-    local label = progress:Add("ax.Text")
+    local label = progress:Add("ax.text")
     label:Dock(FILL)
     label:SetFont("parallax")
     label:SetText(weight .. "kg / " .. maxWeight .. "kg")
@@ -99,9 +99,9 @@ function PANEL:SetInventory(id)
 
     local items = inventory:GetItems()
     if ( #items == 0 ) then
-        label = self.container:Add("ax.Text")
+        label = self.container:Add("ax.text")
         label:Dock(TOP)
-        label:SetFont("ax.Large")
+        label:SetFont("ax.large")
         label:SetText("inventory.empty")
         label:SetContentAlignment(5)
 
@@ -214,16 +214,16 @@ function PANEL:SetInfo(id)
         icon:SetLookAng(camData.angles)
     end
 
-    local name = self.info:Add("ax.Text")
+    local name = self.info:Add("ax.text")
     name:Dock(TOP)
     name:DockMargin(0, 0, 0, -ScreenScaleH(4))
-    name:SetFont("ax.Large.Bold")
+    name:SetFont("ax.large.bold")
     name:SetText(item:GetName(), true)
 
     local description = item:GetDescription()
     local descriptionWrapped = ax.util:GetWrappedText(description, "parallax", self.info:GetWide() - 32)
     for k, v in pairs(descriptionWrapped) do
-        local text = self.info:Add("ax.Text")
+        local text = self.info:Add("ax.text")
         text:Dock(TOP)
         text:DockMargin(0, 0, 0, -ScreenScaleH(4))
         text:SetText(v, true)
@@ -241,7 +241,7 @@ function PANEL:SetInfo(id)
             if ( actionName == "Take" ) then continue end
             if ( isfunction(actionData.OnCanRun) and actionData:OnCanRun(item, ax.client) == false ) then continue end
 
-            local button = actions:Add("ax.Button.Flat")
+            local button = actions:Add("ax.button.flat")
             button:SetText(actionData.Name or actionName)
             button:SizeToContents()
             button.DoClick = function()

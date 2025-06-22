@@ -23,7 +23,7 @@ AccessorFunc(PANEL, "textInsetY", "TextInsetY", FORCE_NUMBER)
 AccessorFunc(PANEL, "wasHovered", "WasHovered", FORCE_BOOL)
 
 function PANEL:Init()
-    self:SetFont("ax.Large")
+    self:SetFont("ax.large")
     self:SetTextColorProperty(ax.color:Get("white"))
     self:SetContentAlignment(4)
     self:SetTextInset(ScreenScale(2), 0)
@@ -85,8 +85,8 @@ end
 function PANEL:Think()
     local hovering = self:IsHovered()
     if ( hovering and !self.wasHovered ) then
-        surface.PlaySound("ax.Button.Enter")
-        self:SetFont("ax.Large.Bold")
+        surface.PlaySound("ax.button.Enter")
+        self:SetFont("ax.large.bold")
         self.wasHovered = true
 
         self:Motion(0.2, {
@@ -125,7 +125,7 @@ function PANEL:Think()
             self:OnHovered()
         end
     elseif ( !hovering and self.wasHovered ) then
-        self:SetFont("ax.Large")
+        self:SetFont("ax.large")
         self.wasHovered = false
 
         self:Motion(0.2, {
@@ -171,7 +171,7 @@ function PANEL:Think()
 end
 
 function PANEL:OnMousePressed(key)
-    surface.PlaySound("ax.Button.Click")
+    surface.PlaySound("ax.button.Click")
 
     if ( key == MOUSE_LEFT ) then
         self:DoClick()
@@ -180,9 +180,9 @@ function PANEL:OnMousePressed(key)
     end
 end
 
-vgui.Register("ax.Button", PANEL, "DButton")
+vgui.Register("ax.button", PANEL, "DButton")
 
-DEFINE_BASECLASS("ax.Button")
+DEFINE_BASECLASS("ax.button")
 
 PANEL = {}
 
@@ -191,7 +191,7 @@ AccessorFunc(PANEL, "backgroundAlphaUnHovered", "BackgroundAlphaUnHovered", FORC
 AccessorFunc(PANEL, "backgroundColor", "BackgroundColor")
 
 function PANEL:Init()
-    self:SetFont("ax.Large")
+    self:SetFont("ax.large")
     self:SetTextColorProperty(ax.color:Get("white"))
     self:SetContentAlignment(5)
     self:SetTall(ScreenScaleH(12))
@@ -223,8 +223,8 @@ end
 function PANEL:Think()
     local hovering = self:IsHovered()
     if ( hovering and !self.wasHovered ) then
-        surface.PlaySound("ax.Button.Enter")
-        self:SetFont("ax.Large.Bold")
+        surface.PlaySound("ax.button.Enter")
+        self:SetFont("ax.large.bold")
         self.wasHovered = true
 
         self:Motion(0.2, {
@@ -247,7 +247,7 @@ function PANEL:Think()
             self:OnHovered()
         end
     elseif ( !hovering and self.wasHovered ) then
-        self:SetFont("ax.Large")
+        self:SetFont("ax.large")
         self.wasHovered = false
 
         self:Motion(0.2, {
@@ -276,10 +276,10 @@ function PANEL:Think()
     end
 end
 
-vgui.Register("ax.Button.Flat", PANEL, "ax.Button")
+vgui.Register("ax.button.flat", PANEL, "ax.button")
 
 sound.Add({
-    name = "ax.Button.Click",
+    name = "ax.button.Click",
     channel = CHAN_STATIC,
     volume = 0.2,
     level = 80,
@@ -288,7 +288,7 @@ sound.Add({
 })
 
 sound.Add({
-    name = "ax.Button.Enter",
+    name = "ax.button.Enter",
     channel = CHAN_STATIC,
     volume = 0.1,
     level = 80,

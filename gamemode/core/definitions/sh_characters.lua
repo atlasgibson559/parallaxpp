@@ -123,16 +123,16 @@ ax.character:RegisterVariable("model", {
     end,
 
     OnPopulate = function(self, parent, payload, client)
-        local label = parent:Add("ax.Text")
+        local label = parent:Add("ax.text")
         label:Dock(TOP)
-        label:SetFont("ax.Large")
+        label:SetFont("ax.large")
 
         local translation = ax.localization:GetPhrase(self.Name)
         local bTranslated = translation != self.Name
 
         label:SetText(bTranslated and translation or self.Name or k)
 
-        local scroller = parent:Add("ax.Scroller.Vertical")
+        local scroller = parent:Add("ax.scroller.vertical")
         scroller:Dock(FILL)
 
         local layout = scroller:Add("DIconLayout")

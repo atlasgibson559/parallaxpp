@@ -16,9 +16,9 @@ local PANEL = {}
 function PANEL:Init()
     self:Dock(FILL)
 
-    local title = self:Add("ax.Text")
+    local title = self:Add("ax.text")
     title:Dock(TOP)
-    title:SetFont("ax.Huge.Bold")
+    title:SetFont("ax.huge.bold")
     title:SetText("INVENTORY")
 
     local inventory = self:Add("ax.inventory")
@@ -26,4 +26,4 @@ function PANEL:Init()
     inventory:SetInventory()
 end
 
-vgui.Register("ax.Tab.Inventory", PANEL, "EditablePanel")
+vgui.Register("ax.tab.inventory", PANEL, "EditablePanel")

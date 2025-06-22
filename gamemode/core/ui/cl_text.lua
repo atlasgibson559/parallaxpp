@@ -48,7 +48,7 @@ function PANEL:SizeToContents()
     self:SetSize(width + 8, height + 4)
 end
 
-vgui.Register("ax.Text", PANEL, "DLabel")
+vgui.Register("ax.text", PANEL, "DLabel")
 
 DEFINE_BASECLASS("DLabel")
 
@@ -122,7 +122,7 @@ function PANEL:SizeToContents()
     self:SetSize(width + 8, height + 4)
 end
 
-vgui.Register("ax.Text.Typewriter", PANEL, "DLabel")
+vgui.Register("ax.text.typewriter", PANEL, "DLabel")
 
 concommand.Add("parallax_showtypewriter", function()
     local frame = vgui.Create("DFrame")
@@ -131,7 +131,7 @@ concommand.Add("parallax_showtypewriter", function()
     frame:Center()
     frame:MakePopup()
 
-    local label = frame:Add("ax.Text.Typewriter")
+    local label = frame:Add("ax.text.typewriter")
     label:Dock(FILL)
     label:SetTypingSpeed(0.05)
     label:SetText("WELCOME TO SANTEGO BASE", true, true)

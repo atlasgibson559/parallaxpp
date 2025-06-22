@@ -29,7 +29,7 @@ function GM:ShouldRenderMainMenu()
     local client = ax.client
     if ( !IsValid(client) ) then return false end
 
-    return IsValid(ax.gui.Splash) or IsValid(ax.gui.Mainmenu)
+    return IsValid(ax.gui.splash) or IsValid(ax.gui.mainmenu)
 end
 
 function GM:GetMainMenuMusic()
@@ -114,7 +114,7 @@ function GM:ScoreboardShow()
     end
 
     if ( !IsValid(ax.gui.Tab) ) then
-        vgui.Create("ax.Tab")
+        vgui.Create("ax.tab")
     else
         ax.gui.Tab:Remove()
     end
@@ -307,7 +307,7 @@ function GM:HUDPaint()
     shouldDraw = hook.Run("ShouldDrawDebugHUD")
     if ( shouldDraw != false ) then
         local green = ax.config:Get("color.framework")
-        local width = math.max(ax.util:GetTextWidth("ax.Developer", "Pos: " .. tostring(client:GetPos())), ax.util:GetTextWidth("ax.Developer", "Ang: " .. tostring(client:EyeAngles())))
+        local width = math.max(ax.util:GetTextWidth("ax.developer", "Pos: " .. tostring(client:GetPos())), ax.util:GetTextWidth("ax.developer", "Ang: " .. tostring(client:EyeAngles())))
         local height = 16 * 6
 
         local character = client:GetCharacter()
@@ -320,15 +320,15 @@ function GM:HUDPaint()
         surface.SetDrawColor(backgroundColor)
         surface.DrawRect(x - padding, y - padding, width + padding * 2, height + padding * 2)
 
-        draw.SimpleText("[DEVELOPER HUD]", "ax.Developer", x, y, green, TEXT_ALIGN_LEFT)
+        draw.SimpleText("[DEVELOPER HUD]", "ax.developer", x, y, green, TEXT_ALIGN_LEFT)
 
-        draw.SimpleText("Pos: " .. tostring(client:GetPos()), "ax.Developer", x, y + 16 * 1, green, TEXT_ALIGN_LEFT)
-        draw.SimpleText("Ang: " .. tostring(client:EyeAngles()), "ax.Developer", x, y + 16 * 2, green, TEXT_ALIGN_LEFT)
-        draw.SimpleText("Health: " .. client:Health(), "ax.Developer", x, y + 16 * 3, green, TEXT_ALIGN_LEFT)
-        draw.SimpleText("Ping: " .. client:Ping(), "ax.Developer", x, y + 16 * 4, green, TEXT_ALIGN_LEFT)
+        draw.SimpleText("Pos: " .. tostring(client:GetPos()), "ax.developer", x, y + 16 * 1, green, TEXT_ALIGN_LEFT)
+        draw.SimpleText("Ang: " .. tostring(client:EyeAngles()), "ax.developer", x, y + 16 * 2, green, TEXT_ALIGN_LEFT)
+        draw.SimpleText("Health: " .. client:Health(), "ax.developer", x, y + 16 * 3, green, TEXT_ALIGN_LEFT)
+        draw.SimpleText("Ping: " .. client:Ping(), "ax.developer", x, y + 16 * 4, green, TEXT_ALIGN_LEFT)
 
         local fps = math.floor(1 / ft)
-        draw.SimpleText("FPS: " .. fps, "ax.Developer", x, y + 16 * 5, green, TEXT_ALIGN_LEFT)
+        draw.SimpleText("FPS: " .. fps, "ax.developer", x, y + 16 * 5, green, TEXT_ALIGN_LEFT)
 
         if ( character ) then
             local name = character:GetName()
@@ -339,11 +339,11 @@ function GM:HUDPaint()
             end
             local inventoryText = "Inventories: " .. table.concat(inventories, ", ")
 
-            draw.SimpleText("[CHARACTER INFO]", "ax.Developer", x, y + 16 * 7, green, TEXT_ALIGN_LEFT)
-            draw.SimpleText("Character: " .. tostring(character), "ax.Developer", x, y + 16 * 8, green, TEXT_ALIGN_LEFT)
-            draw.SimpleText("Name: " .. name, "ax.Developer", x, y + 16 * 9, green, TEXT_ALIGN_LEFT)
-            draw.SimpleText("Model: " .. charModel, "ax.Developer", x, y + 16 * 10, green, TEXT_ALIGN_LEFT)
-            draw.SimpleText(inventoryText, "ax.Developer", x, y + 16 * 11, green, TEXT_ALIGN_LEFT)
+            draw.SimpleText("[CHARACTER INFO]", "ax.developer", x, y + 16 * 7, green, TEXT_ALIGN_LEFT)
+            draw.SimpleText("Character: " .. tostring(character), "ax.developer", x, y + 16 * 8, green, TEXT_ALIGN_LEFT)
+            draw.SimpleText("Name: " .. name, "ax.developer", x, y + 16 * 9, green, TEXT_ALIGN_LEFT)
+            draw.SimpleText("Model: " .. charModel, "ax.developer", x, y + 16 * 10, green, TEXT_ALIGN_LEFT)
+            draw.SimpleText(inventoryText, "ax.developer", x, y + 16 * 11, green, TEXT_ALIGN_LEFT)
         end
     end
 
@@ -357,9 +357,9 @@ function GM:HUDPaint()
         surface.SetDrawColor(backgroundColor)
         surface.DrawRect(x - padding, y - padding, 410 + padding * 2, 45 + padding * 2)
 
-        draw.SimpleText("[PREVIEW MODE]", "ax.Developer", x, y, orange, TEXT_ALIGN_LEFT)
-        draw.SimpleText("Warning! Anything you witness is subject to change.", "ax.Developer", x, y + 16, red, TEXT_ALIGN_LEFT)
-        draw.SimpleText("This is not the final product.", "ax.Developer", x, y + 16 * 2, red, TEXT_ALIGN_LEFT)
+        draw.SimpleText("[PREVIEW MODE]", "ax.developer", x, y, orange, TEXT_ALIGN_LEFT)
+        draw.SimpleText("Warning! Anything you witness is subject to change.", "ax.developer", x, y + 16, red, TEXT_ALIGN_LEFT)
+        draw.SimpleText("This is not the final product.", "ax.developer", x, y + 16 * 2, red, TEXT_ALIGN_LEFT)
     end
 
     shouldDraw = hook.Run("ShouldDrawCrosshair")
@@ -408,7 +408,7 @@ function GM:HUDPaint()
         local clip = activeWeapon:Clip1()
         local ammoText = clip .. " / " .. ammo
 
-        draw.SimpleTextOutlined(ammoText, "ax.Bold", scrW - 16, scrH - 16, ax.color:Get("white"), TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, ax.color:Get("black"))
+        draw.SimpleTextOutlined(ammoText, "ax.bold", scrW - 16, scrH - 16, ax.color:Get("white"), TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, ax.color:Get("black"))
     end
 
     shouldDraw = hook.Run("ShouldDrawHealthBar")
@@ -469,7 +469,7 @@ function GM:PostDrawTranslucentRenderables(bDrawingDepth, bDrawingSkybox)
 
     local text = string.format("Entity: %s\nClass: %s\nModel: %s\nPosition: %s\nAngles: %s",
         tostring(entity), class, model, tostring(pos), tostring(ang))
-    local markedUp = markup.Parse("<font=ax.Developer>" .. text .. "</font>")
+    local markedUp = markup.Parse("<font=ax.developer>" .. text .. "</font>")
     if ( !markedUp ) then return end
 
     local textWidth, textHeight = markedUp:Size()
@@ -525,35 +525,35 @@ function GM:LoadFonts()
     local scale24 = ScreenScaleH(24)
     local scale32 = ScreenScaleH(32)
 
-    surface.CreateFont("ax.Tiny", {
+    surface.CreateFont("ax.tiny", {
         font = "GorDIN Regular",
         size = scale6,
         weight = 700,
         antialias = true
     })
 
-    surface.CreateFont("ax.Tiny.Bold", {
+    surface.CreateFont("ax.tiny.bold", {
         font = "GorDIN Bold",
         size = scale6,
         weight = 900,
         antialias = true
     })
 
-    surface.CreateFont("ax.Small", {
+    surface.CreateFont("ax.small", {
         font = "GorDIN Regular",
         size = scale8,
         weight = 700,
         antialias = true
     })
 
-    surface.CreateFont("ax.Small.Bold", {
+    surface.CreateFont("ax.small.bold", {
         font = "GorDIN Bold",
         size = scale8,
         weight = 900,
         antialias = true
     })
 
-    surface.CreateFont("ax.Small.Italic", {
+    surface.CreateFont("ax.small.italic", {
         font = "GorDIN Regular",
         size = scale8,
         weight = 700,
@@ -561,7 +561,7 @@ function GM:LoadFonts()
         antialias = true
     })
 
-    surface.CreateFont("ax.Small.Italic.Bold", {
+    surface.CreateFont("ax.small.italic.bold", {
         font = "GorDIN Bold",
         size = scale8,
         weight = 900,
@@ -576,14 +576,14 @@ function GM:LoadFonts()
         antialias = true
     })
 
-    surface.CreateFont("ax.Bold", {
+    surface.CreateFont("ax.bold", {
         font = "GorDIN Bold",
         size = scale10,
         weight = 900,
         antialias = true
     })
 
-    surface.CreateFont("ax.Italic", {
+    surface.CreateFont("ax.italic", {
         font = "GorDIN Regular",
         size = scale10,
         weight = 700,
@@ -591,7 +591,7 @@ function GM:LoadFonts()
         antialias = true
     })
 
-    surface.CreateFont("ax.Italic.Bold", {
+    surface.CreateFont("ax.italic.bold", {
         font = "GorDIN Bold",
         size = scale10,
         weight = 900,
@@ -599,21 +599,21 @@ function GM:LoadFonts()
         antialias = true
     })
 
-    surface.CreateFont("ax.Large", {
+    surface.CreateFont("ax.large", {
         font = "GorDIN Regular",
         size = scale16,
         weight = 700,
         antialias = true
     })
 
-    surface.CreateFont("ax.Large.Bold", {
+    surface.CreateFont("ax.large.bold", {
         font = "GorDIN Bold",
         size = scale16,
         weight = 900,
         antialias = true
     })
 
-    surface.CreateFont("ax.Large.Italic", {
+    surface.CreateFont("ax.large.italic", {
         font = "GorDIN Regular",
         size = scale16,
         weight = 700,
@@ -621,7 +621,7 @@ function GM:LoadFonts()
         antialias = true
     })
 
-    surface.CreateFont("ax.Large.Italic.Bold", {
+    surface.CreateFont("ax.large.italic.bold", {
         font = "GorDIN Bold",
         size = scale16,
         weight = 900,
@@ -629,21 +629,21 @@ function GM:LoadFonts()
         antialias = true
     })
 
-    surface.CreateFont("ax.Massive", {
+    surface.CreateFont("ax.massive", {
         font = "GorDIN Regular",
         size = scale24,
         weight = 700,
         antialias = true
     })
 
-    surface.CreateFont("ax.Massive.Bold", {
+    surface.CreateFont("ax.massive.bold", {
         font = "GorDIN Bold",
         size = scale24,
         weight = 900,
         antialias = true
     })
 
-    surface.CreateFont("ax.Massive.Italic", {
+    surface.CreateFont("ax.massive.italic", {
         font = "GorDIN Regular",
         size = scale24,
         weight = 700,
@@ -651,7 +651,7 @@ function GM:LoadFonts()
         antialias = true
     })
 
-    surface.CreateFont("ax.Massive.Italic.Bold", {
+    surface.CreateFont("ax.massive.italic.bold", {
         font = "GorDIN Bold",
         size = scale24,
         weight = 900,
@@ -659,21 +659,21 @@ function GM:LoadFonts()
         antialias = true
     })
 
-    surface.CreateFont("ax.Huge", {
+    surface.CreateFont("ax.huge", {
         font = "GorDIN Regular",
         size = scale32,
         weight = 700,
         antialias = true
     })
 
-    surface.CreateFont("ax.Huge.Bold", {
+    surface.CreateFont("ax.huge.bold", {
         font = "GorDIN Bold",
         size = scale32,
         weight = 900,
         antialias = true
     })
 
-    surface.CreateFont("ax.Huge.Italic", {
+    surface.CreateFont("ax.huge.italic", {
         font = "GorDIN",
         size = scale32,
         weight = 700,
@@ -681,7 +681,7 @@ function GM:LoadFonts()
         antialias = true
     })
 
-    surface.CreateFont("ax.Huge.Italic.Bold", {
+    surface.CreateFont("ax.huge.italic.bold", {
         font = "GorDIN Bold",
         size = scale32,
         weight = 900,
@@ -689,7 +689,7 @@ function GM:LoadFonts()
         antialias = true
     })
 
-    surface.CreateFont("ax.Developer", {
+    surface.CreateFont("ax.developer", {
         font = "Courier New",
         size = 16,
         weight = 700,
@@ -717,11 +717,11 @@ function GM:OnPauseMenuShow()
         return false
     end
 
-    if ( !IsValid(ax.gui.Mainmenu) ) then
-        vgui.Create("ax.Mainmenu")
+    if ( !IsValid(ax.gui.mainmenu) ) then
+        vgui.Create("ax.mainmenu")
     else
         if ( ax.client:GetCharacter() ) then
-            ax.gui.Mainmenu:Remove()
+            ax.gui.mainmenu:Remove()
             return
         end
     end
@@ -736,14 +736,14 @@ function GM:PostHUDPaint()
 end
 
 function GM:ShouldDrawCrosshair()
-    if ( IsValid(ax.gui.Mainmenu) ) then return false end
+    if ( IsValid(ax.gui.mainmenu) ) then return false end
     if ( IsValid(ax.gui.Tab) ) then return false end
 
     return true
 end
 
 function GM:ShouldDrawAmmoBox()
-    if ( IsValid(ax.gui.Mainmenu) ) then return false end
+    if ( IsValid(ax.gui.mainmenu) ) then return false end
     if ( IsValid(ax.gui.Tab) ) then return false end
 
     local client = ax.client
@@ -763,7 +763,7 @@ function GM:ShouldDrawAmmoBox()
 end
 
 function GM:ShouldDrawHealthBar()
-    if ( IsValid(ax.gui.Mainmenu) ) then return false end
+    if ( IsValid(ax.gui.mainmenu) ) then return false end
     if ( IsValid(ax.gui.Tab) ) then return false end
 
     local client = ax.client
@@ -774,7 +774,7 @@ end
 
 function GM:ShouldDrawDebugHUD()
     if ( !ax.config:Get("debug.developer") ) then return false end
-    if ( IsValid(ax.gui.Mainmenu) ) then return false end
+    if ( IsValid(ax.gui.mainmenu) ) then return false end
     if ( IsValid(ax.gui.Tab) ) then return false end
 
     return ax.client:IsDeveloper()
@@ -782,14 +782,14 @@ end
 
 function GM:ShouldDrawPreviewHUD()
     if ( !ax.config:Get("debug.preview") ) then return false end
-    if ( IsValid(ax.gui.Mainmenu) ) then return false end
+    if ( IsValid(ax.gui.mainmenu) ) then return false end
     if ( IsValid(ax.gui.Tab) ) then return false end
 
     return !hook.Run("ShouldDrawDebugHUD")
 end
 
 function GM:ShouldDrawVignette()
-    if ( IsValid(ax.gui.Mainmenu) ) then return false end
+    if ( IsValid(ax.gui.mainmenu) ) then return false end
 
     return ax.option:Get("hud.vignette", true)
 end
@@ -810,40 +810,40 @@ function GM:PopulateTabButtons(buttons)
     if ( CAMI.PlayerHasAccess(ax.client, "Parallax - Manage Config", nil) ) then
         buttons["tab.config"] = {
             Populate = function(this, container)
-                container:Add("ax.Tab.config")
+                container:Add("ax.tab.config")
             end
         }
     end
 
     buttons["tab.help"] = {
         Populate = function(this, container)
-            container:Add("ax.Tab.Help")
+            container:Add("ax.tab.help")
         end
     }
 
     if ( hook.Run("ShouldShowInventory") != false ) then
         buttons["tab.inventory"] = {
             Populate = function(this, container)
-                container:Add("ax.Tab.Inventory")
+                container:Add("ax.tab.inventory")
             end
         }
     end
 
     buttons["tab.inventory"] = {
         Populate = function(this, container)
-            container:Add("ax.Tab.Inventory")
+            container:Add("ax.tab.inventory")
         end
     }
 
     buttons["tab.scoreboard"] = {
         Populate = function(this, container)
-            container:Add("ax.Tab.Scoreboard")
+            container:Add("ax.tab.scoreboard")
         end
     }
 
     buttons["tab.options"] = {
         Populate = function(this, container)
-            container:Add("ax.Tab.Options")
+            container:Add("ax.tab.options")
         end
     }
 end
@@ -855,7 +855,7 @@ function GM:PopulateHelpCategories(categories)
     end
 
     categories["flags"] = function(container)
-        local scroller = container:Add("ax.Scroller.Vertical")
+        local scroller = container:Add("ax.scroller.vertical")
         scroller:Dock(FILL)
         scroller:GetVBar():SetWide(0)
         scroller.Paint = nil
@@ -866,9 +866,9 @@ function GM:PopulateHelpCategories(categories)
 
             local hasFlag = char:HasFlag(k)
 
-            local button = scroller:Add("ax.Button.Flat")
+            local button = scroller:Add("ax.button.flat")
             button:Dock(TOP)
-            button:SetFont("ax.Large.Bold")
+            button:SetFont("ax.large.bold")
             button:SetText("")
             button:SetBackgroundAlphaHovered(1)
             button:SetBackgroundAlphaUnHovered(0.5)
@@ -901,20 +901,20 @@ function GM:PopulateHelpCategories(categories)
                 menu:Open()
             end
 
-            local key = button:Add("ax.Text")
+            local key = button:Add("ax.text")
             key:Dock(LEFT)
             key:DockMargin(ScreenScale(8), 0, 0, 0)
-            key:SetFont("ax.Large.Bold")
+            key:SetFont("ax.large.bold")
             key:SetText(k)
 
-            local seperator = button:Add("ax.Text")
+            local seperator = button:Add("ax.text")
             seperator:Dock(LEFT)
-            seperator:SetFont("ax.Large")
+            seperator:SetFont("ax.large")
             seperator:SetText(" - ")
 
-            local description = button:Add("ax.Text")
+            local description = button:Add("ax.text")
             description:Dock(LEFT)
-            description:SetFont("ax.Large")
+            description:SetFont("ax.large")
             description:SetText(v.description)
 
             local function Think(this)
@@ -928,7 +928,7 @@ function GM:PopulateHelpCategories(categories)
     end
 
     categories["commands"] = function(container)
-        local scroller = container:Add("ax.Scroller.Vertical")
+        local scroller = container:Add("ax.scroller.vertical")
         scroller:Dock(FILL)
         scroller:GetVBar():SetWide(0)
         scroller.Paint = nil
@@ -951,8 +951,8 @@ function GM:PopulateHelpCategories(categories)
                 surface.DrawRect(0, 0, width, height)
             end
 
-            local nameLabel = panel:Add("ax.Text")
-            nameLabel:SetFont("ax.Bold")
+            local nameLabel = panel:Add("ax.text")
+            nameLabel:SetFont("ax.bold")
             nameLabel:SetText(commandName, true)
             nameLabel:Dock(TOP)
             nameLabel:DockMargin(8, 0, 8, 0)
@@ -962,15 +962,15 @@ function GM:PopulateHelpCategories(categories)
                 description = "No description provided."
             end
 
-            local descriptionLabel = panel:Add("ax.Text")
-            descriptionLabel:SetFont("ax.Small")
+            local descriptionLabel = panel:Add("ax.text")
+            descriptionLabel:SetFont("ax.small")
             descriptionLabel:SetText(description, true)
             descriptionLabel:Dock(TOP)
             descriptionLabel:DockMargin(8, -4, 8, 0)
 
             if ( istable(commandInfo.Arguments) ) then
-                local argumentsLabel = panel:Add("ax.Text")
-                argumentsLabel:SetFont("ax.Small")
+                local argumentsLabel = panel:Add("ax.text")
+                argumentsLabel:SetFont("ax.small")
                 argumentsLabel:SetText("Useable Arguments:", true)
                 argumentsLabel:Dock(TOP)
                 argumentsLabel:DockMargin(8, -4, 8, 0)
@@ -982,8 +982,8 @@ function GM:PopulateHelpCategories(categories)
                         data = { Type = "Unknown", ErrorMsg = "No error message provided." }
                     end
 
-                    local argLabel = panel:Add("ax.Text")
-                    argLabel:SetFont("ax.Small")
+                    local argLabel = panel:Add("ax.text")
+                    argLabel:SetFont("ax.small")
                     argLabel:SetText(i .. ": " .. ax.util:FormatType(data.Type) .. " - " .. (data.ErrorMsg or "No error message provided."), true)
                     if ( data.Optional ) then
                         argLabel:SetText(argLabel:GetText() .. " (Optional)", true)
@@ -1090,10 +1090,10 @@ function GM:OnScreenSizeChanged(oldWidth, oldHeight, newWidth, newHeight)
             v:Remove()
 
             -- Attempt to recreate the GUI element
-            if ( className == "ax.Mainmenu" ) then
-                vgui.Create("ax.Mainmenu")
-            elseif ( className == "ax.Tab" ) then
-                vgui.Create("ax.Tab")
+            if ( className == "ax.mainmenu" ) then
+                vgui.Create("ax.mainmenu")
+            elseif ( className == "ax.tab" ) then
+                vgui.Create("ax.tab")
             end
         end
     end

@@ -39,9 +39,9 @@ ax.net:Hook("character.cache.all", function(data)
     end
 
     -- Rebuild the main menu
-    if ( IsValid(ax.gui.Mainmenu) ) then
-        ax.gui.Mainmenu:Remove()
-        ax.gui.Mainmenu = vgui.Create("ax.Mainmenu")
+    if ( IsValid(ax.gui.mainmenu) ) then
+        ax.gui.mainmenu:Remove()
+        ax.gui.mainmenu = vgui.Create("ax.mainmenu")
     end
 
     ax.client:Notify("All characters cached!", NOTIFY_HINT)
@@ -92,8 +92,8 @@ ax.net:Hook("character.delete", function(characterID)
 
     clientTable.axCharacter = nil
 
-    if ( IsValid(ax.gui.Mainmenu) ) then
-        ax.gui.Mainmenu:Populate()
+    if ( IsValid(ax.gui.mainmenu) ) then
+        ax.gui.mainmenu:Populate()
     end
 
     ax.notification:Add("Character " .. characterID .. " deleted!", 5, ax.config:Get("color.success"))
@@ -108,8 +108,8 @@ end)
 ax.net:Hook("character.load", function(characterID)
     if ( characterID == 0 ) then return end
 
-    if ( IsValid(ax.gui.Mainmenu) ) then
-        ax.gui.Mainmenu:Remove()
+    if ( IsValid(ax.gui.mainmenu) ) then
+        ax.gui.mainmenu:Remove()
     end
 
     local client = ax.client
@@ -351,11 +351,11 @@ ax.net:Hook("gesture.play", function(client, name)
 end)
 
 ax.net:Hook("splash", function()
-    ax.gui.Splash = vgui.Create("ax.Splash")
+    ax.gui.splash = vgui.Create("ax.splash")
 end)
 
 ax.net:Hook("mainmenu", function()
-    ax.gui.Mainmenu = vgui.Create("ax.Mainmenu")
+    ax.gui.mainmenu = vgui.Create("ax.mainmenu")
 end)
 
 ax.net:Hook("notification.send", function(text, type, duration)

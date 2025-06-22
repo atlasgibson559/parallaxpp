@@ -33,10 +33,10 @@ function PANEL:Populate()
 
     self:SetVisible(true)
 
-    local title = self:Add("ax.Text")
+    local title = self:Add("ax.text")
     title:Dock(TOP)
     title:DockMargin(padding, padding, 0, 0)
-    title:SetFont("ax.Large.Bold")
+    title:SetFont("ax.large.bold")
     title:SetText("options")
 
     local navigation = self:Add("EditablePanel")
@@ -44,7 +44,7 @@ function PANEL:Populate()
     navigation:DockMargin(padding, 0, padding, padding)
     navigation:SetTall(ScreenScale(24))
 
-    local backButton = navigation:Add("ax.Button.Flat")
+    local backButton = navigation:Add("ax.button.flat")
     backButton:Dock(LEFT)
     backButton:SetText("back")
     backButton.DoClick = function()
@@ -61,6 +61,6 @@ function PANEL:Populate()
     options:DockMargin(padding, 0, padding, 0)
 end
 
-vgui.Register("ax.Mainmenu.Options", PANEL, "EditablePanel")
+vgui.Register("ax.mainmenu.options", PANEL, "EditablePanel")
 
 ax.gui.OptionsLast = nil

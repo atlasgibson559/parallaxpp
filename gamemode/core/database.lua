@@ -20,12 +20,12 @@ ax.database.backend = ax.database.backend or ax.sqlite -- Default to SQLite if M
 -- @tparam table[opt] config MySQL connection config
 -- @usage ax.database:Initialize({ host = "localhost", username = "root", password = "", database = "gmod", port = 3306 })
 function ax.database:Initialize(config)
-    if ( ax.util:HasMysqlooBinary() and ax.SQLOO ) then
+    if ( ax.util:HasMysqlooBinary() and ax.sqloo ) then
         if ( config ) then
             ax.util:Print("Initializing MySQL connection...")
-            ax.SQLOO:Initialize(config, function()
+            ax.sqloo:Initialize(config, function()
                 ax.util:PrintSuccess("MySQL connection established.")
-                self.backend = ax.SQLOO
+                self.backend = ax.sqloo
                 self:LoadTables()
 
                 hook.Run("DatabaseConnected")
@@ -54,7 +54,7 @@ function ax.database:Fallback(reason)
 end
 
 --- Returns current backend object.
--- @treturn table Either ax.SQLOO or ax.sqlite
+-- @treturn table Either ax.sqloo or ax.sqlite
 function ax.database:GetBackend()
     return self.backend
 end
@@ -145,7 +145,7 @@ end
 -- @usage ax.database:PrintBackend()
 -- @return "Using MySQL backend." or "Using SQLite backend."
 function ax.database:PrintBackend()
-    if ( self.backend == ax.SQLOO ) then
+    if ( self.backend == ax.sqloo ) then
         ax.util:Print("Using MySQL backend.")
     elseif ( self.backend == ax.sqlite ) then
         ax.util:Print("Using SQLite backend.")

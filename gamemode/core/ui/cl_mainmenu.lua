@@ -36,11 +36,11 @@ AccessorFunc(PANEL, "dim", "Dim", FORCE_NUMBER)
 AccessorFunc(PANEL, "dimTarget", "DimTarget", FORCE_NUMBER)
 
 function PANEL:Init()
-    if ( IsValid(ax.gui.Mainmenu) ) then
-        ax.gui.Mainmenu:Remove()
+    if ( IsValid(ax.gui.mainmenu) ) then
+        ax.gui.mainmenu:Remove()
     end
 
-    ax.gui.Mainmenu = self
+    ax.gui.mainmenu = self
 
     local client = ax.client
     if ( IsValid(client) and client:IsTyping() ) then
@@ -66,9 +66,9 @@ function PANEL:Init()
     self:SetPos(0, 0)
     self:MakePopup()
 
-    self.createPanel = self:Add("ax.Mainmenu.Create")
-    self.selectPanel = self:Add("ax.Mainmenu.Load")
-    self.optionsPanel = self:Add("ax.Mainmenu.Options")
+    self.createPanel = self:Add("ax.mainmenu.create")
+    self.selectPanel = self:Add("ax.mainmenu.load")
+    self.optionsPanel = self:Add("ax.mainmenu.options")
 
     self.container = self:Add("EditablePanel")
     self.container:SetSize(self:GetWide(), self:GetTall())
@@ -111,7 +111,7 @@ function PANEL:Populate()
     local title = sideButtons:Add("DLabel")
     title:Dock(TOP)
     title:DockMargin(0, 0, padding, 0)
-    title:SetFont("ax.Huge.Bold")
+    title:SetFont("ax.huge.bold")
     title:SetText("PARALLAX")
     title:SetTextColor(ax.config:Get("color.framework"))
     title:SizeToContents()
@@ -119,7 +119,7 @@ function PANEL:Populate()
     local subtitle = sideButtons:Add("DLabel")
     subtitle:Dock(TOP)
     subtitle:DockMargin(padding / 4, -padding / 8, 0, 0)
-    subtitle:SetFont("ax.Large.Bold")
+    subtitle:SetFont("ax.large.bold")
 
     local schemaName = "UNKNOWN SCHEMA"
     if ( SCHEMA ) then
@@ -144,7 +144,7 @@ function PANEL:Populate()
     local client = ax.client
     local clientTable = client:GetTable()
     if ( clientTable.axCharacter ) then -- client:GetCharacter() isn't validated yet, since it this panel is created before the meta tables are loaded
-        local playButton = buttons:Add("ax.Button")
+        local playButton = buttons:Add("ax.button")
         playButton:Dock(TOP)
         playButton:DockMargin(0, 0, 0, 16)
         playButton:SetText("mainmenu.play")
@@ -154,7 +154,7 @@ function PANEL:Populate()
         end
     end
 
-    local createButton = buttons:Add("ax.Button")
+    local createButton = buttons:Add("ax.button")
     createButton:Dock(TOP)
     createButton:DockMargin(0, 0, 0, 16)
     createButton:SetText("mainmenu.create.character")
@@ -180,7 +180,7 @@ function PANEL:Populate()
 
     local bHasCharacters = table.Count(clientTable.axCharacters or {}) > 0
     if ( bHasCharacters ) then
-        local selectButton = buttons:Add("ax.Button")
+        local selectButton = buttons:Add("ax.button")
         selectButton:Dock(TOP)
         selectButton:DockMargin(0, 0, 0, 16)
         selectButton:SetText("mainmenu.select.character")
@@ -190,7 +190,7 @@ function PANEL:Populate()
         end
     end
 
-    local optionsButton = buttons:Add("ax.Button")
+    local optionsButton = buttons:Add("ax.button")
     optionsButton:Dock(TOP)
     optionsButton:DockMargin(0, 0, 0, 16)
     optionsButton:SetText("mainmenu.options")
@@ -199,7 +199,7 @@ function PANEL:Populate()
         self.optionsPanel:Populate()
     end
 
-    local disconnectButton = buttons:Add("ax.Button")
+    local disconnectButton = buttons:Add("ax.button")
     disconnectButton:Dock(TOP)
     disconnectButton:DockMargin(0, 0, 0, 16)
     disconnectButton:SetText("mainmenu.leave")
@@ -248,13 +248,13 @@ function PANEL:Paint(width, height)
     surface.DrawTexturedRect(0, 0, width, height)
 end
 
-vgui.Register("ax.Mainmenu", PANEL, "EditablePanel")
+vgui.Register("ax.mainmenu", PANEL, "EditablePanel")
 
-if ( IsValid(ax.gui.Mainmenu) ) then
-    ax.gui.Mainmenu:Remove()
+if ( IsValid(ax.gui.mainmenu) ) then
+    ax.gui.mainmenu:Remove()
 
     timer.Simple(0.1, function()
-        vgui.Create("ax.Mainmenu")
+        vgui.Create("ax.mainmenu")
     end)
 end
 
@@ -263,9 +263,9 @@ concommand.Add("ax_mainmenu", function(client, command, arguments)
         return
     end
 
-    if ( IsValid(ax.gui.Mainmenu) ) then
-        ax.gui.Mainmenu:Remove()
+    if ( IsValid(ax.gui.mainmenu) ) then
+        ax.gui.mainmenu:Remove()
     end
 
-    vgui.Create("ax.Mainmenu")
+    vgui.Create("ax.mainmenu")
 end, nil, "Opens the main menu.", FCVAR_CLIENTCMD_CAN_EXECUTE)

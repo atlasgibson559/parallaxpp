@@ -16,13 +16,13 @@ local PANEL = {}
 function PANEL:Init()
     self:Dock(FILL)
 
-    local title = self:Add("ax.Text")
+    local title = self:Add("ax.text")
     title:Dock(TOP)
-    title:SetFont("ax.Huge.Bold")
+    title:SetFont("ax.huge.bold")
     title:SetText("OPTIONS")
 
     local options = self:Add("ax.options")
     options:Dock(FILL)
 end
 
-vgui.Register("ax.Tab.Options", PANEL, "EditablePanel")
+vgui.Register("ax.tab.options", PANEL, "EditablePanel")

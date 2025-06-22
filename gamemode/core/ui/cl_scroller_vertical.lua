@@ -9,9 +9,9 @@
     Attribution is required. If you use or modify this file, you must retain this notice.
 ]]
 
---- ax.Scroller.Vertical
+--- ax.scroller.vertical
 -- A vertical scroll panel with smooth scrolling and custom canvas.
--- @panel ax.Scroller.Vertical
+-- @panel ax.scroller.vertical
 
 local PANEL = {}
 
@@ -134,4 +134,4 @@ function PANEL:Clear()
     return self.pnlCanvas:Clear()
 end
 
-vgui.Register("ax.Scroller.Vertical", PANEL, "DPanel")
+vgui.Register("ax.scroller.vertical", PANEL, "DPanel")

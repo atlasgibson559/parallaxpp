@@ -17,7 +17,7 @@ DEFINE_BASECLASS("EditablePanel")
 local PANEL = {}
 
 function PANEL:Init()
-    self.container = self:Add("ax.Scroller.Vertical")
+    self.container = self:Add("ax.scroller.vertical")
     self.container:Dock(FILL)
     self.container:DockMargin(0, ScreenScaleH(4), 0, 0)
 
@@ -61,13 +61,13 @@ function PANEL:Populate()
         local players = teamData.players
 
         -- Create a new panel for the team
-        local teamPanel = self.container:Add("ax.Scoreboard.Team")
+        local teamPanel = self.container:Add("ax.scoreboard.team")
         teamPanel:SetTeam(teamID)
           -- Add each player to the team panel
         local teamPlayerCount = #players
         for j = 1, teamPlayerCount do
             local client = players[j]
-            local playerPanel = teamPanel.container:Add("ax.Scoreboard.Player")
+            local playerPanel = teamPanel.container:Add("ax.scoreboard.player")
             playerPanel:SetPlayer(client)
 
             teamPanel.players[client:SteamID64()] = playerPanel
@@ -75,7 +75,7 @@ function PANEL:Populate()
     end
 end
 
-vgui.Register("ax.Scoreboard", PANEL, "EditablePanel")
+vgui.Register("ax.scoreboard", PANEL, "EditablePanel")
 
 PANEL = {}
 
@@ -86,11 +86,11 @@ function PANEL:Init()
     self.teamID = 0
     self.players = {}
 
-    self.teamName = self:Add("ax.Text")
+    self.teamName = self:Add("ax.text")
     self.teamName:SetTall(ScreenScaleH(12))
     self.teamName:Dock(TOP)
     self.teamName:DockMargin(ScreenScale(2), 0, 0, 0)
-    self.teamName:SetFont("ax.Italic.Bold")
+    self.teamName:SetFont("ax.italic.bold")
     self.teamName:SetContentAlignment(7)
 
     self.container = self:Add("EditablePanel")
@@ -133,7 +133,7 @@ function PANEL:Paint(width, height)
     surface.DrawTexturedRect(0, 0, width, height)
 end
 
-vgui.Register("ax.Scoreboard.Team", PANEL, "EditablePanel")
+vgui.Register("ax.scoreboard.team", PANEL, "EditablePanel")
 
 PANEL = {}
 
@@ -145,12 +145,12 @@ function PANEL:Init()
     self.avatar:SetSize(self:GetTall(), self:GetTall())
     self.avatar:SetPos(0, 0)
 
-    self.name = self:Add("ax.Text")
-    self.name:SetFont("ax.Bold")
+    self.name = self:Add("ax.text")
+    self.name:SetFont("ax.bold")
 
-    self.ping = self:Add("ax.Text")
+    self.ping = self:Add("ax.text")
     self.ping:SetSize(ScreenScale(32), self:GetTall())
-    self.ping:SetFont("ax.Bold")
+    self.ping:SetFont("ax.bold")
     self.ping:SetContentAlignment(6)
 
     self:SetMouseInputEnabled(true)
@@ -199,4 +199,4 @@ function PANEL:OnMousePressed(keyCode)
     end
 end
 
-vgui.Register("ax.Scoreboard.Player", PANEL, "EditablePanel")
+vgui.Register("ax.scoreboard.player", PANEL, "EditablePanel")

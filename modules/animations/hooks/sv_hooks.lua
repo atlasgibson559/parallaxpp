@@ -26,7 +26,7 @@ function MODULE:PostEntitySetModel(ent, model)
 
     holdType = HOLDTYPE_TRANSLATOR[holdType] or holdType
 
-    local animTable = ax.Animations.stored[ax.Animations:GetModelClass(model)]
+    local animTable = ax.animations.stored[ax.animations:GetModelClass(model)]
     if ( animTable and animTable[holdType] ) then
         clientTable.axAnimations = animTable[holdType]
     else
@@ -49,7 +49,7 @@ function MODULE:PlayerSpawn(client)
 
     holdType = HOLDTYPE_TRANSLATOR[holdType] or holdType
 
-    local animTable = ax.Animations.stored[ax.Animations:GetModelClass(client:GetModel())]
+    local animTable = ax.animations.stored[ax.animations:GetModelClass(client:GetModel())]
     if ( animTable and animTable[holdType] ) then
         clientTable.axAnimations = animTable[holdType]
     else
@@ -70,7 +70,7 @@ function MODULE:PlayerSwitchWeapon(client, oldWeapon, newWeapon)
 
     holdType = HOLDTYPE_TRANSLATOR[holdType] or holdType
 
-    local animTable = ax.Animations.stored[ax.Animations:GetModelClass(client:GetModel())]
+    local animTable = ax.animations.stored[ax.animations:GetModelClass(client:GetModel())]
     if ( animTable and animTable[holdType] ) then
         clientTable.axAnimations = animTable[holdType]
     else

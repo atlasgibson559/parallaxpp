@@ -26,7 +26,7 @@ local fakeAngles
 local fakeFov
 
 function MODULE:PreRenderThirdpersonView(client, pos, angles, fov)
-    if ( IsValid(ax.gui.Mainmenu) ) then
+    if ( IsValid(ax.gui.mainmenu) ) then
         return false
     end
 

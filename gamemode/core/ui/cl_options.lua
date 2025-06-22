@@ -16,7 +16,7 @@ local PANEL = {}
 function PANEL:Init()
     self:Dock(FILL)
 
-    self.buttons = self:Add("ax.Scroller.Horizontal")
+    self.buttons = self:Add("ax.scroller.horizontal")
     self.buttons:Dock(TOP)
     self.buttons:DockMargin(0, ScreenScaleH(4), 0, 0)
     self.buttons:SetTall(ScreenScaleH(24))
@@ -25,12 +25,12 @@ function PANEL:Init()
     self.buttons.btnLeft:SetAlpha(0)
     self.buttons.btnRight:SetAlpha(0)
 
-    self.container = self:Add("ax.Scroller.Vertical")
+    self.container = self:Add("ax.scroller.vertical")
     self.container:Dock(FILL)
     self.container:GetVBar():SetWide(0)
     self.container.Paint = nil
 
-    self.search = self:Add("ax.Text.Entry")
+    self.search = self:Add("ax.text.entry")
     self.search:Dock(TOP)
     self.search:SetUpdateOnType(true)
     self.search:SetPlaceholderText(ax.localization:GetPhrase("search.description.options"))
@@ -58,7 +58,7 @@ function PANEL:Init()
     end
 
     for k, v in SortedPairs(categories) do
-        local button = self.buttons:Add("ax.Button.Flat")
+        local button = self.buttons:Add("ax.button.flat")
         button:Dock(LEFT)
         button:SetText(v)
         button:SizeToContents()
@@ -112,10 +112,10 @@ function PANEL:PopulateCategory(category, toSearch)
 
     if ( table.Count(subCategories) > 1 ) then
         for k, v in SortedPairs(subCategories) do
-            local label = self.container:Add("ax.Text")
+            local label = self.container:Add("ax.text")
             label:Dock(TOP)
             label:DockMargin(0, 0, 0, ScreenScaleH(4))
-            label:SetFont("ax.Huge.Bold")
+            label:SetFont("ax.huge.bold")
             label:SetText(string.upper(k))
 
             for k2, v2 in SortedPairs(options) do
@@ -134,7 +134,7 @@ end
 function PANEL:AddOption(optionData)
     local value = ax.option:Get(optionData.UniqueID)
 
-    local panel = self.container:Add("ax.Button.Flat")
+    local panel = self.container:Add("ax.button.flat")
     panel:Dock(TOP)
     panel:SetText(optionData.Name)
     panel:SetTall(ScreenScaleH(26))
@@ -150,11 +150,11 @@ function PANEL:AddOption(optionData)
     local label
     local options
     if ( optionData.Type == ax.types.bool ) then
-        label = panel:Add("ax.Text")
+        label = panel:Add("ax.text")
         label:Dock(RIGHT)
         label:DockMargin(0, 0, ScreenScale(8), 0)
         label:SetText(value and enabled or disabled, true)
-        label:SetFont("ax.Large")
+        label:SetFont("ax.large")
         label:SetWide(ScreenScale(128))
         label:SetContentAlignment(6)
         label.Think = function(this)
@@ -195,12 +195,11 @@ function PANEL:AddOption(optionData)
             menu:Open()
         end
     elseif ( optionData.Type == ax.types.number and optionData.IsKeybind ) then
-        local bind = panel:Add("ax.Binder")
+        local bind = panel:Add("ax.binder")
         bind:Dock(RIGHT)
         bind:DockMargin(ScreenScale(8), ScreenScaleH(4), ScreenScale(8), ScreenScaleH(4))
         bind:SetWide(ScreenScale(128))
-        bind:SetSelectedNumber(value)
-        bind:UpdateText()
+        bind:SetValue(value)
 
         bind.OnChange = function(this, newValue)
             ax.option:Set(optionData.UniqueID, newValue)
@@ -216,7 +215,8 @@ function PANEL:AddOption(optionData)
                 ax.option:Reset(optionData.UniqueID)
                 value = ax.option:Get(optionData.UniqueID)
 
-                bind:SetSelectedNumber(value)
+                bind:SetValue(value)
+                ax.Binds[optionData.UniqueID] = value
             end):SetIcon("icon16/arrow_refresh.png")
 
             if ( ax.client:IsDeveloper() and ax.config:Get("debug.developer") ) then
@@ -230,7 +230,7 @@ function PANEL:AddOption(optionData)
             menu:Open()
         end
     elseif ( optionData.Type == ax.types.number ) then
-        local slider = panel:Add("ax.Slider")
+        local slider = panel:Add("ax.slider")
         slider:Dock(RIGHT)
         slider:DockMargin(ScreenScale(8), ScreenScaleH(4), ScreenScale(8), ScreenScaleH(4))
         slider:SetWide(ScreenScale(128))
@@ -260,11 +260,11 @@ function PANEL:AddOption(optionData)
         slider:SetDecimals(optionData.Decimals or 0)
         slider:SetValue(value, true)
 
-        label = panel:Add("ax.Text")
+        label = panel:Add("ax.text")
         label:Dock(RIGHT)
         label:DockMargin(0, 0, -ScreenScale(4), 8)
         label:SetText(value, true, true, true)
-        label:SetFont("ax.Large")
+        label:SetFont("ax.large")
         label:SetWide(ScreenScale(128))
         label:SetContentAlignment(6)
         label.Think = function(this)
@@ -352,11 +352,11 @@ function PANEL:AddOption(optionData)
 
         local phrase = (options and options[value]) and ax.localization:GetPhrase(options[value]) or unknown
 
-        label = panel:Add("ax.Text")
+        label = panel:Add("ax.text")
         label:Dock(RIGHT)
         label:DockMargin(0, 0, ScreenScale(8), 0)
         label:SetText(phrase, true)
-        label:SetFont("ax.Large")
+        label:SetFont("ax.large")
         label:SetWide(ScreenScale(128))
         label:SetContentAlignment(6)
         label.Think = function(this)
@@ -488,11 +488,11 @@ function PANEL:AddOption(optionData)
             menu:Open()
         end
     elseif ( optionData.Type == ax.types.string ) then
-        local text = panel:Add("ax.Text.Entry")
+        local text = panel:Add("ax.text.entry")
         text:Dock(RIGHT)
         text:DockMargin(ScreenScale(8), ScreenScaleH(4), ScreenScale(8), ScreenScaleH(4))
         text:SetWide(ScreenScale(128))
-        text:SetFont("ax.Large")
+        text:SetFont("ax.large")
         text:SetText(value)
 
         text.OnEnter = function(this)

@@ -63,10 +63,10 @@ function PANEL:PopulateFactionSelect()
     self:Clear()
     self:SetVisible(true)
 
-    local title = self:Add("ax.Text")
+    local title = self:Add("ax.text")
     title:Dock(TOP)
     title:DockMargin(ScreenScale(32), ScreenScaleH(32), 0, 0)
-    title:SetFont("ax.Huge.Bold")
+    title:SetFont("ax.huge.bold")
     title:SetText(string.upper("mainmenu.create.character.faction"))
 
     local navigation = self:Add("EditablePanel")
@@ -74,7 +74,7 @@ function PANEL:PopulateFactionSelect()
     navigation:DockMargin(ScreenScale(32), 0, ScreenScale(32), ScreenScaleH(32))
     navigation:SetTall(ScreenScaleH(24))
 
-    local backButton = navigation:Add("ax.Button.Flat")
+    local backButton = navigation:Add("ax.button.flat")
     backButton:Dock(LEFT)
     backButton:SetText("back")
     backButton.DoClick = function()
@@ -88,7 +88,7 @@ function PANEL:PopulateFactionSelect()
 
     navigation:SetTall(backButton:GetTall())
 
-    local factionList = self:Add("ax.Scroller.Horizontal")
+    local factionList = self:Add("ax.scroller.horizontal")
     factionList:Dock(FILL)
     factionList:DockMargin(ScreenScale(32), ScreenScale(32) * 2, ScreenScale(32), ScreenScale(32))
     factionList:InvalidateParent(true)
@@ -118,9 +118,9 @@ function PANEL:PopulateFactionSelect()
         local description = (v.Description and ax.utf8:Upper(v.Description)) or "UNKNOWN FACTION DESCRIPTION"
         description = ax.util:CapTextWord(description, factionList:GetTall() / 3) -- Unreliable, but it works for now
 
-        local descriptionWrapped = ax.util:GetWrappedText(description, "ax.Bold", factionList:GetTall() * 1.25)
+        local descriptionWrapped = ax.util:GetWrappedText(description, "ax.bold", factionList:GetTall() * 1.25)
 
-        local factionButton = factionList:Add("ax.Button.Flat")
+        local factionButton = factionList:Add("ax.button.flat")
         factionButton:Dock(LEFT)
         factionButton:DockMargin(0, 0, 16, 0)
         factionButton:SetText(v.Name or "Unknown Faction")
@@ -161,11 +161,11 @@ function PANEL:PopulateFactionSelect()
 
             local textColor = factionButton:GetTextColor()
             local hovered = factionButton:IsHovered()
-            local font = "ax.Huge"
+            local font = "ax.huge"
             if ( v.Font ) then
                 font = v.Font
             elseif ( name:len() > 22 ) then
-                font = "ax.Massive"
+                font = "ax.massive"
             end
 
             if ( hovered ) then
@@ -174,9 +174,9 @@ function PANEL:PopulateFactionSelect()
 
             draw.SimpleText(name, font, ScreenScale(8), imageHeight - boxHeight + boxHeightStatic / 2, textColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 
-            local textHeight = ax.util:GetTextHeight("ax.Bold") / 1.5
+            local textHeight = ax.util:GetTextHeight("ax.bold") / 1.5
             for d = 1, #descriptionWrapped do
-                draw.SimpleText(descriptionWrapped[d], "ax.Bold", ScreenScale(8), imageHeight - boxHeight + boxHeightStatic + (d - 1) * textHeight, ColorAlpha(textColor, 255 * inertia), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                draw.SimpleText(descriptionWrapped[d], "ax.bold", ScreenScale(8), imageHeight - boxHeight + boxHeightStatic + (d - 1) * textHeight, ColorAlpha(textColor, 255 * inertia), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
             end
         end
 
@@ -217,10 +217,10 @@ function PANEL:PopulateCreateCharacter()
     self:Clear()
     self:SetVisible(true)
 
-    local title = self:Add("ax.Text")
+    local title = self:Add("ax.text")
     title:Dock(TOP)
     title:DockMargin(ScreenScale(32), ScreenScaleH(32), 0, 0)
-    title:SetFont("ax.Huge.Bold")
+    title:SetFont("ax.huge.bold")
     title:SetText(string.upper("mainmenu.create.character"))
 
     local navigation = self:Add("EditablePanel")
@@ -228,7 +228,7 @@ function PANEL:PopulateCreateCharacter()
     navigation:DockMargin(ScreenScale(32), 0, ScreenScale(32), ScreenScaleH(32))
     navigation:SetTall(ScreenScaleH(24))
 
-    local backButton = navigation:Add("ax.Button.Flat")
+    local backButton = navigation:Add("ax.button.flat")
     backButton:Dock(LEFT)
     backButton:SetText("back")
 
@@ -256,7 +256,7 @@ function PANEL:PopulateCreateCharacter()
         end
     end
 
-    local nextButton = navigation:Add("ax.Button.Flat")
+    local nextButton = navigation:Add("ax.button.flat")
     nextButton:Dock(RIGHT)
     nextButton:SetText("next")
 
@@ -338,9 +338,9 @@ function PANEL:PopulateCreateCharacterForm()
         if ( v.Type == ax.types.string ) then
             zPos = zPos + 1 + v.ZPos
 
-            local label = self.characterCreateForm:Add("ax.Text")
+            local label = self.characterCreateForm:Add("ax.text")
             label:Dock(TOP)
-            label:SetFont("ax.Large.Bold")
+            label:SetFont("ax.large.bold")
 
             label:SetText(bTranslated and translation or v.Name or k)
 
@@ -348,7 +348,7 @@ function PANEL:PopulateCreateCharacterForm()
             label:SetZPos(zPos)
             zPos = zPos + 1
 
-            local entry = self.characterCreateForm:Add("ax.Text.Entry")
+            local entry = self.characterCreateForm:Add("ax.text.entry")
             entry:Dock(TOP)
             entry:DockMargin(0, 0, 0, ScreenScaleH(16))
             entry:SetFont("parallax")
@@ -384,17 +384,17 @@ function PANEL:PopulateCreateCharacterForm()
         elseif ( v.Type == ax.types.text ) then
             zPos = zPos + 1 + v.ZPos
 
-            local label = self.characterCreateForm:Add("ax.Text")
+            local label = self.characterCreateForm:Add("ax.text")
             label:Dock(TOP)
             label:SetText(bTranslated and translation or v.Name or k)
-            label:SetFont("ax.Large.Bold")
+            label:SetFont("ax.large.bold")
             label:SizeToContents()
 
             zPos = zPos - 1
             label:SetZPos(zPos)
             zPos = zPos + 1
 
-            local entry = self.characterCreateForm:Add("ax.Text.Entry")
+            local entry = self.characterCreateForm:Add("ax.text.entry")
             entry:Dock(TOP)
             entry:DockMargin(0, 0, 0, ScreenScaleH(16))
             entry:SetFont("parallax")
@@ -424,4 +424,4 @@ function PANEL:PopulateCreateCharacterForm()
     end
 end
 
-vgui.Register("ax.Mainmenu.Create", PANEL, "EditablePanel")
+vgui.Register("ax.mainmenu.create", PANEL, "EditablePanel")

@@ -9,7 +9,7 @@
     Attribution is required. If you use or modify this file, you must retain this notice.
 ]]
 
-DEFINE_BASECLASS("ax.Button.Flat")
+DEFINE_BASECLASS("ax.button.flat")
 
 local PANEL = {}
 
@@ -29,7 +29,7 @@ function PANEL:Init()
         -- Do not set this to nil, it will spew out errors
     end
 
-    self.weight = self:Add("ax.Text")
+    self.weight = self:Add("ax.text")
     self.weight:Dock(RIGHT)
     self.weight:DockMargin(0, 0, ScreenScale(2), 0)
     self.weight:SetFont("parallax")
@@ -123,4 +123,4 @@ function PANEL:Think()
     self.weight:SetTextColor(self:GetTextColor())
 end
 
-vgui.Register("ax.item", PANEL, "ax.Button.Flat")
+vgui.Register("ax.item", PANEL, "ax.button.flat")

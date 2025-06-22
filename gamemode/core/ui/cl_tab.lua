@@ -121,7 +121,7 @@ function PANEL:Init()
     local buttons = {}
     hook.Run("PopulateTabButtons", buttons)
     for k, v in SortedPairs(buttons) do
-        local button = buttonSizeable:Add("ax.Button")
+        local button = buttonSizeable:Add("ax.button")
         button:Dock(TOP)
         button:DockMargin(0, 8, 0, 8)
         button:SetText(k)
@@ -173,7 +173,7 @@ function PANEL:Populate(data)
         end
 
         if ( data.OnClose ) then
-            self:CallOnRemove("ax.Tab." .. data.name, function()
+            self:CallOnRemove("ax.tab." .. data.name, function()
                 data.OnClose()
             end)
         end
@@ -296,7 +296,7 @@ function PANEL:Paint(width, height)
     surface.DrawTexturedRect(0, height / 2, width, height / 2)
 end
 
-vgui.Register("ax.Tab", PANEL, "EditablePanel")
+vgui.Register("ax.tab", PANEL, "EditablePanel")
 
 if ( IsValid(ax.gui.Tab) ) then
     ax.gui.Tab:Remove()

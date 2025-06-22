@@ -35,10 +35,10 @@ function PANEL:Populate()
     self:Clear()
     self:SetVisible(true)
 
-    local title = self:Add("ax.Text")
+    local title = self:Add("ax.text")
     title:Dock(TOP)
     title:DockMargin(ScreenScale(32), ScreenScaleH(32), 0, 0)
-    title:SetFont("ax.Huge.Bold")
+    title:SetFont("ax.huge.bold")
     title:SetText(string.upper("mainmenu.select.character"))
 
     local navigation = self:Add("EditablePanel")
@@ -46,7 +46,7 @@ function PANEL:Populate()
     navigation:DockMargin(ScreenScale(32), 0, ScreenScale(32), ScreenScaleH(32))
     navigation:SetTall(ScreenScaleH(24))
 
-    local backButton = navigation:Add("ax.Button.Flat")
+    local backButton = navigation:Add("ax.button.flat")
     backButton:Dock(LEFT)
     backButton:SetText("back")
     backButton.DoClick = function()
@@ -57,7 +57,7 @@ function PANEL:Populate()
 
     navigation:SetTall(backButton:GetTall())
 
-    local characterList = self:Add("ax.Scroller.Vertical")
+    local characterList = self:Add("ax.scroller.vertical")
     characterList:Dock(FILL)
     characterList:DockMargin(ScreenScale(32) * 4, ScreenScaleH(32), ScreenScale(32) * 4, ScreenScaleH(32))
     characterList:InvalidateParent(true)
@@ -66,7 +66,7 @@ function PANEL:Populate()
 
     local clientTable = client:GetTable()
     for k, v in pairs(clientTable.axCharacters) do
-        local button = characterList:Add("ax.Button.Flat")
+        local button = characterList:Add("ax.button.flat")
         button:Dock(TOP)
         button:DockMargin(0, 0, 0, ScreenScaleH(4))
         button:SetText("", true, true, true)
@@ -91,7 +91,7 @@ function PANEL:Populate()
             surface.DrawTexturedRect(0, 0, width, height)
         end
 
-        local deleteButton = button:Add("ax.Button.Flat")
+        local deleteButton = button:Add("ax.button.flat")
         deleteButton:Dock(RIGHT)
         deleteButton:DockMargin(ScreenScale(8), 0, 0, 0)
         deleteButton:SetText("X")
@@ -133,9 +133,9 @@ function PANEL:Populate()
             end
         end
 
-        local name = button:Add("ax.Text")
+        local name = button:Add("ax.text")
         name:Dock(TOP)
-        name:SetFont("ax.Huge.Bold")
+        name:SetFont("ax.huge.bold")
         name:SetText(v:GetName():upper())
         name.Think = function(this)
             this:SetTextColor(button:GetTextColor())
@@ -144,10 +144,10 @@ function PANEL:Populate()
         -- Example: Sat Feb 19 19:49:00 2022
         local lastPlayedDate = os.date("%a %b %d %H:%M:%S %Y", v:GetLastPlayed())
 
-        local lastPlayed = button:Add("ax.Text")
+        local lastPlayed = button:Add("ax.text")
         lastPlayed:Dock(BOTTOM)
         lastPlayed:DockMargin(0, 0, 0, ScreenScaleH(8))
-        lastPlayed:SetFont("ax.Large")
+        lastPlayed:SetFont("ax.large")
         lastPlayed:SetText(lastPlayedDate, true)
         lastPlayed.Think = function(this)
             this:SetTextColor(button:GetTextColor())
@@ -158,30 +158,30 @@ end
 function PANEL:PopulateDelete(characterID)
     self:Clear()
 
-    local title = self:Add("ax.Text")
+    local title = self:Add("ax.text")
     title:Dock(TOP)
     title:DockMargin(ScreenScale(32), ScreenScaleH(32), 0, 0)
-    title:SetFont("ax.Huge.Bold")
+    title:SetFont("ax.huge.bold")
     title:SetText(string.upper("mainmenu.delete.character"))
 
-    local confirmation = self:Add("ax.Text")
+    local confirmation = self:Add("ax.text")
     confirmation:Dock(TOP)
     confirmation:DockMargin(ScreenScale(64), ScreenScaleH(16), 0, 0)
-    confirmation:SetFont("ax.Large")
+    confirmation:SetFont("ax.large")
     confirmation:SetText("mainmenu.delete.character.confirm")
 
     local navigation = self:Add("EditablePanel")
     navigation:Dock(BOTTOM)
     navigation:DockMargin(ScreenScale(32), 0, ScreenScale(32), ScreenScaleH(32))
 
-    local cancelButton = navigation:Add("ax.Button.Flat")
+    local cancelButton = navigation:Add("ax.button.flat")
     cancelButton:Dock(LEFT)
     cancelButton:SetText("CANCEL")
     cancelButton.DoClick = function()
         self:Populate()
     end
 
-    local okButton = navigation:Add("ax.Button.Flat")
+    local okButton = navigation:Add("ax.button.flat")
     okButton:Dock(RIGHT)
     okButton:SetText("OK")
     okButton.DoClick = function()
@@ -198,4 +198,4 @@ function PANEL:PopulateDelete(characterID)
     navigation:SetTall(math.max(cancelButton:GetTall(), okButton:GetTall()))
 end
 
-vgui.Register("ax.Mainmenu.Load", PANEL, "EditablePanel")
+vgui.Register("ax.mainmenu.load", PANEL, "EditablePanel")

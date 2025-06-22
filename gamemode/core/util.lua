@@ -12,8 +12,6 @@
 --- Utility functions
 -- @module ax.util
 
-ax.util = ax.util or {}
-
 --- Converts and sanitizes input data into the specified type.
 -- This supports simple type coercion and fallback defaults.
 -- @param typeID number A type constant from ax.types

@@ -66,17 +66,17 @@ function Derma_Message(text, title, buttonText)
 
     table.insert(ax.Derma.open, frame)
 
-    local label = frame:Add("ax.Text")
+    local label = frame:Add("ax.text")
     label:Dock(TOP)
     label:DockMargin(0, ScreenScaleH(8), 0, 0)
-    label:SetFont("ax.Huge.Bold")
+    label:SetFont("ax.huge.bold")
     label:SetText(string.upper(title), true)
 
     local wrapped = ax.util:GetWrappedText(text, "parallax", frame:GetWide() - ScreenScale(16))
     local textHeight = 0
     for i = 1, #wrapped do
         local line = wrapped[i]
-        local textLabel = frame:Add("ax.Text")
+        local textLabel = frame:Add("ax.text")
         textLabel:Dock(TOP)
         textLabel:SetText(line, true)
         textHeight = textHeight + textLabel:GetTall()
@@ -85,7 +85,7 @@ function Derma_Message(text, title, buttonText)
     local btnPanel = frame:Add("EditablePanel")
     btnPanel:Dock(BOTTOM)
 
-    local btn = btnPanel:Add("ax.Button.Flat")
+    local btn = btnPanel:Add("ax.button.flat")
     btn:Dock(FILL)
     btn:SetText(buttonText)
     btn.DoClick = function()
@@ -125,17 +125,17 @@ function Derma_Query(text, title, ...)
 
     table.insert(ax.Derma.open, frame)
 
-    local label = frame:Add("ax.Text")
+    local label = frame:Add("ax.text")
     label:Dock(TOP)
     label:DockMargin(0, ScreenScaleH(8), 0, 0)
-    label:SetFont("ax.Huge.Bold")
+    label:SetFont("ax.huge.bold")
     label:SetText(string.upper(title), true)
 
     local wrapped = ax.util:GetWrappedText(text, "parallax", frame:GetWide() - ScreenScale(16))
     local textHeight = 0
     for i = 1, #wrapped do
         local line = wrapped[i]
-        local textLabel = frame:Add("ax.Text")
+        local textLabel = frame:Add("ax.text")
         textLabel:Dock(TOP)
         textLabel:SetText(line, true)
         textHeight = textHeight + textLabel:GetTall()
@@ -153,7 +153,7 @@ function Derma_Query(text, title, ...)
 
         local fn = select(i + 1, ...) or function() end
 
-        local btn = btnPanel:Add("ax.Button.Flat")
+        local btn = btnPanel:Add("ax.button.flat")
         btn:Dock(LEFT)
         btn:DockMargin(0, 0, ScreenScale(4), 0)
         btn:SetText(txt, true)
@@ -204,24 +204,24 @@ function Derma_StringRequest(title, text, defaultText, onEnter, onCancel, okText
 
     table.insert(ax.Derma.open, frame)
 
-    local label = frame:Add("ax.Text")
+    local label = frame:Add("ax.text")
     label:Dock(TOP)
     label:DockMargin(0, ScreenScaleH(8), 0, 0)
-    label:SetFont("ax.Huge.Bold")
+    label:SetFont("ax.huge.bold")
     label:SetText(string.upper(title), true)
 
     local wrapped = ax.util:GetWrappedText(text, "parallax", frame:GetWide() - ScreenScale(16))
     local textHeight = 0
     for i = 1, #wrapped do
         local line = wrapped[i]
-        local textLabel = frame:Add("ax.Text")
+        local textLabel = frame:Add("ax.text")
         textLabel:Dock(TOP)
         textLabel:SetText(line, true)
 
         textHeight = textHeight + textLabel:GetTall()
     end
 
-    local entry = frame:Add("ax.Text.Entry")
+    local entry = frame:Add("ax.text.entry")
     entry:Dock(TOP)
     entry:DockMargin(0, ScreenScaleH(8), 0, ScreenScaleH(8))
     entry:SetText(defaultText)
@@ -233,7 +233,7 @@ function Derma_StringRequest(title, text, defaultText, onEnter, onCancel, okText
     local btnPanel = frame:Add("EditablePanel")
     btnPanel:Dock(BOTTOM)
 
-    local btnOK = btnPanel:Add("ax.Button.Flat")
+    local btnOK = btnPanel:Add("ax.button.flat")
     btnOK:Dock(LEFT)
     btnOK:SetText(okText or "OK")
     btnOK.DoClick = function()
@@ -241,7 +241,7 @@ function Derma_StringRequest(title, text, defaultText, onEnter, onCancel, okText
         onEnter(entry:GetValue())
     end
 
-    local btnCancel = btnPanel:Add("ax.Button.Flat")
+    local btnCancel = btnPanel:Add("ax.button.flat")
     btnCancel:Dock(RIGHT)
     btnCancel:SetText(cancelText or "Cancel")
     btnCancel.DoClick = function()

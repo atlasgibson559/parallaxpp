@@ -17,12 +17,12 @@ function PANEL:Init()
     self:Dock(FILL)
     self:InvalidateParent(true)
 
-    local title = self:Add("ax.Text")
+    local title = self:Add("ax.text")
     title:Dock(TOP)
-    title:SetFont("ax.Huge.Bold")
+    title:SetFont("ax.huge.bold")
     title:SetText("HELP")
 
-    self.buttons = self:Add("ax.Scroller.Horizontal")
+    self.buttons = self:Add("ax.scroller.horizontal")
     self.buttons:Dock(TOP)
     self.buttons:DockMargin(0, ScreenScaleH(4), 0, 0)
     self.buttons:SetTall(ScreenScaleH(24))
@@ -39,7 +39,7 @@ function PANEL:Init()
     local categories = {}
     hook.Run("PopulateHelpCategories", categories)
     for k, v in SortedPairs(categories) do
-        local button = self.buttons:Add("ax.Button.Flat")
+        local button = self.buttons:Add("ax.button.flat")
         button:Dock(LEFT)
         button:SetText(k)
         button:SizeToContents()
@@ -77,7 +77,7 @@ function PANEL:Populate(data)
         end
 
         if ( data.OnClose ) then
-            self:CallOnRemove("ax.Tab.Help." .. data.name, function()
+            self:CallOnRemove("ax.tab.help." .. data.name, function()
                 data.OnClose()
             end)
         end
@@ -86,6 +86,6 @@ function PANEL:Populate(data)
     end
 end
 
-vgui.Register("ax.Tab.Help", PANEL, "EditablePanel")
+vgui.Register("ax.tab.help", PANEL, "EditablePanel")
 
 ax.gui.HelpLast = nil

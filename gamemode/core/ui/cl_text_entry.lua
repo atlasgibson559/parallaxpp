@@ -38,4 +38,4 @@ function PANEL:Paint(width, height)
     BaseClass.Paint(self, width, height)
 end
 
-vgui.Register("ax.Text.Entry", PANEL, "DTextEntry")
+vgui.Register("ax.text.entry", PANEL, "DTextEntry")

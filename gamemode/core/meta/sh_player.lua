@@ -140,10 +140,10 @@ function PLAYER:Notify(text, iType, duration)
     ax.notification:Send(self, text, iType, duration)
 end
 
-ax.AlwaysRaised = ax.AlwaysRaised or {}
-ax.AlwaysRaised["gmod_tool"] = true
-ax.AlwaysRaised["gmod_camera"] = true
-ax.AlwaysRaised["weapon_physgun"] = true
+ax.alwaysRaised = ax.alwaysRaised or {}
+ax.alwaysRaised["gmod_tool"] = true
+ax.alwaysRaised["gmod_camera"] = true
+ax.alwaysRaised["weapon_physgun"] = true
 
 --- Checks if the player's weapon is raised.
 -- @realm shared
@@ -152,7 +152,7 @@ function PLAYER:IsWeaponRaised()
     if ( ax.config:Get("weapon.raise.alwaysraised", false) ) then return true end
 
     local weapon = self:GetActiveWeapon()
-    if ( IsValid(weapon) and ( ax.AlwaysRaised[weapon:GetClass()] or weapon.AlwaysRaised ) ) then return true end
+    if ( IsValid(weapon) and ( ax.alwaysRaised[weapon:GetClass()] or weapon.AlwaysRaised ) ) then return true end
 
     return self:GetRelay("bWeaponRaised", false)
 end

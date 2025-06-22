@@ -11,13 +11,13 @@
 
 local MODULE = MODULE
 
-properties.Add("ax.Admin.sethealth", {
+properties.Add("ax.admin.sethealth", {
     MenuLabel = "Set Health",
     Order = 100,
     MenuIcon = "icon16/heart.png",
     Filter = function(self, ent, client)
         if ( !IsValid(ent) or !ent:IsPlayer() ) then return false end
-        if ( !hook.Run( "CanProperty", client, "ax.Admin.sethealth", ent) ) then return false end
+        if ( !hook.Run( "CanProperty", client, "ax.admin.sethealth", ent) ) then return false end
 
         return MODULE:HasPermission(client, "Parallax - Manage Health", nil)
     end,

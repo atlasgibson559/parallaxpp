@@ -32,11 +32,11 @@ HOLDTYPE_TRANSLATOR["camera"] = "smg"
 HOLDTYPE_TRANSLATOR["magic"] = "normal"
 HOLDTYPE_TRANSLATOR["revolver"] = "pistol"
 
-ax.Animations = ax.Animations or {}
-ax.Animations.stored = ax.Animations.stored or {}
-ax.Animations.translations = ax.Animations.translations or {}
+ax.animations = ax.animations or {}
+ax.animations.stored = ax.animations.stored or {}
+ax.animations.translations = ax.animations.translations or {}
 
-ax.Animations.stored["citizen_male"] = {
+ax.animations.stored["citizen_male"] = {
     normal = {
         [ACT_MP_STAND_IDLE] = {ACT_IDLE, ACT_IDLE_ANGRY_SMG1},
         [ACT_MP_WALK] = {ACT_WALK, ACT_WALK_AIM_RIFLE_STIMULATED},
@@ -96,7 +96,7 @@ ax.Animations.stored["citizen_male"] = {
     }
 }
 
-ax.Animations.stored["citizen_female"] = {
+ax.animations.stored["citizen_female"] = {
     normal = {
         [ACT_MP_STAND_IDLE] = {ACT_IDLE, ACT_IDLE_ANGRY_SMG1},
         [ACT_MP_WALK] = {ACT_WALK, ACT_WALK_AIM_RIFLE_STIMULATED},
@@ -156,7 +156,7 @@ ax.Animations.stored["citizen_female"] = {
     }
 }
 
-ax.Animations.stored["overwatch"] = {
+ax.animations.stored["overwatch"] = {
     normal = {
         [ACT_MP_STAND_IDLE] = {"idle_unarmed", ACT_IDLE_ANGRY},
         [ACT_MP_WALK] = {"walkunarmed_all", ACT_WALK_RIFLE},
@@ -216,7 +216,7 @@ ax.Animations.stored["overwatch"] = {
     }
 }
 
-ax.Animations.stored["metrocop"] = {
+ax.animations.stored["metrocop"] = {
     normal = {
         [ACT_MP_STAND_IDLE] = {ACT_IDLE, ACT_IDLE_ANGRY_SMG1},
         [ACT_MP_WALK] = {ACT_WALK, ACT_WALK_ANGRY},
@@ -277,7 +277,7 @@ ax.Animations.stored["metrocop"] = {
     }
 }
 
-ax.Animations.stored["vortigaunt"] = {
+ax.animations.stored["vortigaunt"] = {
     normal = {
         [ACT_MP_STAND_IDLE] = {ACT_IDLE, ACT_IDLE_ANGRY},
         [ACT_MP_WALK] = {ACT_WALK, ACT_WALK_AIM},
@@ -329,7 +329,7 @@ ax.Animations.stored["vortigaunt"] = {
     }
 }
 
-function ax.Animations:SetModelClass(model, class)
+function ax.animations:SetModelClass(model, class)
     if ( !model or !class ) then return end
 
     class = string.lower(class)
@@ -344,7 +344,7 @@ function ax.Animations:SetModelClass(model, class)
     self.translations[model] = class
 end
 
-function ax.Animations:GetModelClass(model)
+function ax.animations:GetModelClass(model)
     if ( !model ) then return end
 
     model = string.lower(model)
@@ -365,20 +365,20 @@ function ax.Animations:GetModelClass(model)
     return "citizen_male"
 end
 
-ax.Animations:SetModelClass("models/combine_soldier.mdl", "overwatch")
-ax.Animations:SetModelClass("models/combine_soldier_prisonGuard.mdl", "overwatch")
-ax.Animations:SetModelClass("models/combine_super_soldier.mdl", "overwatch")
-ax.Animations:SetModelClass("models/police.mdl", "metrocop")
-ax.Animations:SetModelClass("models/vortigaunt.mdl", "vortigaunt")
-ax.Animations:SetModelClass("models/vortigaunt_blue.mdl", "vortigaunt")
-ax.Animations:SetModelClass("models/vortigaunt_doctor.mdl", "vortigaunt")
-ax.Animations:SetModelClass("models/vortigaunt_slave.mdl", "vortigaunt")
+ax.animations:SetModelClass("models/combine_soldier.mdl", "overwatch")
+ax.animations:SetModelClass("models/combine_soldier_prisonGuard.mdl", "overwatch")
+ax.animations:SetModelClass("models/combine_super_soldier.mdl", "overwatch")
+ax.animations:SetModelClass("models/police.mdl", "metrocop")
+ax.animations:SetModelClass("models/vortigaunt.mdl", "vortigaunt")
+ax.animations:SetModelClass("models/vortigaunt_blue.mdl", "vortigaunt")
+ax.animations:SetModelClass("models/vortigaunt_doctor.mdl", "vortigaunt")
+ax.animations:SetModelClass("models/vortigaunt_slave.mdl", "vortigaunt")
 
 local playerMeta = FindMetaTable("Player")
 local _isFemale = playerMeta.IsFemale
 
 function playerMeta:IsFemale()
-    local modelClass = ax.Animations:GetModelClass(self:GetModel())
+    local modelClass = ax.animations:GetModelClass(self:GetModel())
     if ( !isstring(modelClass) or modelClass == "" ) then
         return _isFemale(self)
     end

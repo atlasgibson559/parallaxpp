@@ -57,14 +57,14 @@ function PANEL:SizeToContents()
     local descWrapped = ax.util:GetWrappedText(desc, "parallax", ScreenScale(128))
 
     local width = 0
-    local titleWidth = ax.util:GetTextWidth("ax.Large.Bold", title)
+    local titleWidth = ax.util:GetTextWidth("ax.large.bold", title)
     width = math.max(width, titleWidth)
     for i = 1, #descWrapped do
         local descWidth = ax.util:GetTextWidth("parallax", descWrapped[i])
         width = math.max(width, descWidth)
     end
 
-    local height = ax.util:GetTextHeight("ax.Large.Bold")
+    local height = ax.util:GetTextHeight("ax.large.bold")
     for i = 1, #descWrapped do
         height = height + ax.util:GetTextHeight("parallax")
     end
@@ -109,7 +109,7 @@ function PANEL:Paint(width, height)
     ax.util:DrawBlur(self)
     draw.RoundedBox(0, 0, 0, width, height, Color(0, 0, 0, 200))
     local title = ax.localization:GetPhrase(self.title) or self.title
-    draw.SimpleText(title, "ax.Large.Bold", 8, 0, ax.color:Get("text.light"), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+    draw.SimpleText(title, "ax.large.bold", 8, 0, ax.color:Get("text.light"), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
 
     local desc = ax.localization:GetPhrase(self.description) or self.description
     local descWrapped = ax.util:GetWrappedText(desc, "parallax", width - 32)

@@ -16,11 +16,11 @@ DEFINE_BASECLASS("EditablePanel")
 local PANEL = {}
 
 function PANEL:Init()
-    if ( IsValid(ax.gui.Splash) ) then
-        ax.gui.Splash:Remove()
+    if ( IsValid(ax.gui.splash) ) then
+        ax.gui.splash:Remove()
     end
 
-    ax.gui.Splash = self
+    ax.gui.splash = self
 
     if ( system.IsWindows() ) then
         system.FlashWindow()
@@ -34,7 +34,7 @@ function PANEL:Init()
     title:Dock(TOP)
     title:DockMargin(0, ScreenScaleH(32), 0, 0)
     title:SetContentAlignment(5)
-    title:SetFont("ax.Huge.Bold")
+    title:SetFont("ax.huge.bold")
     title:SetText("PARALLAX")
     title:SetTextColor(ax.config:Get("color.framework"))
     title:SizeToContents()
@@ -43,7 +43,7 @@ function PANEL:Init()
     subtitle:Dock(TOP)
     subtitle:DockMargin(0, -ScreenScaleH(4), 0, 0)
     subtitle:SetContentAlignment(5)
-    subtitle:SetFont("ax.Large.Bold")
+    subtitle:SetFont("ax.large.bold")
 
     local schemaName = "UNKNOWN SCHEMA"
     if ( SCHEMA ) then
@@ -61,7 +61,7 @@ function PANEL:Init()
     subtitle:SetTextColor(ax.config:Get("color.schema"))
     subtitle:SizeToContents()
 
-    local button = self:Add("ax.Button.Flat")
+    local button = self:Add("ax.button.flat")
     button:SetText("splash.continue")
     button:Center()
     button.DoClick = function()
@@ -69,17 +69,17 @@ function PANEL:Init()
             self:Remove()
         end)
 
-        vgui.Create("ax.Mainmenu")
+        vgui.Create("ax.mainmenu")
     end
 end
 
 function PANEL:OnRemove()
-    if ( IsValid(ax.gui.Splash) ) then
-        ax.gui.Splash = nil
+    if ( IsValid(ax.gui.splash) ) then
+        ax.gui.splash = nil
     end
 
-    if ( !IsValid(ax.gui.Mainmenu) ) then
-        vgui.Create("ax.Mainmenu")
+    if ( !IsValid(ax.gui.mainmenu) ) then
+        vgui.Create("ax.mainmenu")
     end
 end
 
@@ -89,10 +89,10 @@ function PANEL:Paint(width, height)
     surface.DrawTexturedRect(0, 0, width, height / 2)
 end
 
-vgui.Register("ax.Splash", PANEL, "EditablePanel")
+vgui.Register("ax.splash", PANEL, "EditablePanel")
 
-if ( IsValid(ax.gui.Splash) ) then
-    ax.gui.Splash:Remove()
+if ( IsValid(ax.gui.splash) ) then
+    ax.gui.splash:Remove()
 end
 
 concommand.Add("ax_splash", function(client, command, arguments)
@@ -100,9 +100,9 @@ concommand.Add("ax_splash", function(client, command, arguments)
         return
     end
 
-    if ( IsValid(ax.gui.Splash) ) then
-        ax.gui.Splash:Remove()
+    if ( IsValid(ax.gui.splash) ) then
+        ax.gui.splash:Remove()
     end
 
-    vgui.Create("ax.Splash")
+    vgui.Create("ax.splash")
 end, nil, "Open the splash screen", FCVAR_CLIENTCMD_CAN_EXECUTE)

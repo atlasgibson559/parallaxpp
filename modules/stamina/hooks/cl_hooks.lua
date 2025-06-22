@@ -12,7 +12,7 @@
 local MODULE = MODULE
 
 function MODULE:ShouldDrawStamina()
-    if ( IsValid(ax.gui.Mainmenu) ) then return false end
+    if ( IsValid(ax.gui.mainmenu) ) then return false end
     if ( IsValid(ax.gui.Tab) ) then return false end
 
     return IsValid(ax.client) and ax.config:Get("stamina", true) and ax.client:Alive() and istable(ax.client:GetRelay("stamina"))

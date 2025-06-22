@@ -384,7 +384,7 @@ function MODULE:TranslateActivity(client, act)
         return IdleActivityTranslate[act]
     end
 
-    local class = ax.Animations:GetModelClass(client:GetModel())
+    local class = ax.animations:GetModelClass(client:GetModel())
     if ( !class or class == "player" ) then
         if ( client:InVehicle() ) then
             return
