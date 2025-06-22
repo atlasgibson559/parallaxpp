@@ -205,8 +205,6 @@ function PANEL:AddOption(optionData)
             ax.option:Set(optionData.UniqueID, newValue)
             value = newValue
             ax.client:EmitSound("ui/buttonclickrelease.wav", 60, pitch, 0.1, CHAN_STATIC)
-
-            ax.binds[newValue] = optionData.UniqueID
         end
 
         panel.DoRightClick = function()
@@ -216,7 +214,6 @@ function PANEL:AddOption(optionData)
                 value = ax.option:Get(optionData.UniqueID)
 
                 bind:SetValue(value)
-                ax.binds[value] = optionData.UniqueID
             end):SetIcon("icon16/arrow_refresh.png")
 
             if ( ax.client:IsDeveloper() and ax.config:Get("debug.developer") ) then

@@ -103,6 +103,15 @@ function GM:PreOptionChanged(client, key, value)
 end
 
 function GM:PostOptionChanged(client, key, value)
+    local optionData = ax.option.stored[key]
+    if ( !istable(optionData) ) then
+        ax.util:PrintError("Attempted to set unknown option \"" .. tostring(key) .. "\"!")
+        return false
+    end
+
+    if ( optionData.Type == ax.types.number and optionData.IsKeybind ) then
+        ax.binds[value] = key
+    end
 end
 
 function GM:PlayerCanHearChat(client, listener, uniqueID, text)
