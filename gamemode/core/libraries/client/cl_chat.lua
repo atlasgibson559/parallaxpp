@@ -32,7 +32,7 @@ function chat.AddText(...)
 
     for i = 1, #arguments do
         local v = arguments[i]
-        if ( ax.util:CoerceType(ax.Types.color, v) ) then
+        if ( ax.util:CoerceType(ax.types.color, v) ) then
             currentColor = v
         elseif ( IsValid(v) and v:IsPlayer() ) then
             local c = team.GetColor(v:Team())

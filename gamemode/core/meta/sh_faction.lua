@@ -142,7 +142,7 @@ end
 -- @param color The color of the faction.
 -- @treturn boolean True if the color was set successfully, false otherwise.
 function FACTION:SetColor(color)
-    if ( !ax.util:CoerceType(ax.Types.color, color) ) then
+    if ( !ax.util:CoerceType(ax.types.color, color) ) then
         ax.util:PrintError("Attempted to set a faction's color without a valid color!")
         return false, "Attempted to set a faction's color without a valid color!"
     end

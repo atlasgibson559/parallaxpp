@@ -14,7 +14,7 @@ ax.command:Register("PlyRespawn", {
     AdminOnly = true,
     Arguments = {
         {
-            Type = ax.Types.player,
+            Type = ax.types.player,
             ErrorMsg = "You must provide a valid player to respawn!"
         }
     },
@@ -38,11 +38,11 @@ ax.command:Register("PlyWhitelist", {
     AdminOnly = true,
     Arguments = {
         {
-            Type = ax.Types.player,
+            Type = ax.types.player,
             ErrorMsg = "You must provide a valid player to whitelist!"
         },
         {
-            Type = ax.Types.string,
+            Type = ax.types.string,
             ErrorMsg = "You must provide a valid faction to whitelist the player to!"
         }
     },
@@ -70,11 +70,11 @@ ax.command:Register("PlyUnWhitelist", {
     AdminOnly = true,
     Arguments = {
         {
-            Type = ax.Types.player,
+            Type = ax.types.player,
             ErrorMsg = "You must provide a valid player to unwhitelist!"
         },
         {
-            Type = ax.Types.string,
+            Type = ax.types.string,
             ErrorMsg = "You must provide a valid faction to unwhitelist the player from!"
         }
     },
@@ -102,11 +102,11 @@ ax.command:Register("CharSetModel", {
     AdminOnly = true,
     Arguments = {
         {
-            Type = ax.Types.player,
+            Type = ax.types.player,
             ErrorMsg = "You must provide a valid player to set the model of!"
         },
         {
-            Type = ax.Types.string,
+            Type = ax.types.string,
             ErrorMsg = "You must provide a valid model!"
         }
     },
@@ -136,11 +136,11 @@ ax.command:Register("CharSetFaction", {
     AdminOnly = true,
     Arguments = {
         {
-            Type = ax.Types.player,
+            Type = ax.types.player,
             ErrorMsg = "You must provide a valid player to set the faction of!"
         },
         {
-            Type = ax.Types.string,
+            Type = ax.types.string,
             ErrorMsg = "You must provide a valid faction to set!"
         }
     },
@@ -171,11 +171,11 @@ ax.command:Register("CharGiveFlags", {
     AdminOnly = true,
     Arguments = {
         {
-            Type = ax.Types.player,
+            Type = ax.types.player,
             ErrorMsg = "You must provide a valid player to give a flag to!"
         },
         {
-            Type = ax.Types.string,
+            Type = ax.types.string,
             Optional = true
         }
     },
@@ -252,11 +252,11 @@ ax.command:Register("CharTakeFlags", {
     AdminOnly = true,
     Arguments = {
         {
-            Type = ax.Types.player,
+            Type = ax.types.player,
             ErrorMsg = "You must provide a valid player to take a flag from!"
         },
         {
-            Type = ax.Types.string,
+            Type = ax.types.string,
             ErrorMsg = "You must provide either single flag or a set of flags!"
         }
     },
@@ -325,7 +325,7 @@ ax.command:Register("ToggleRaise", {
 ax.command:Register("FallOver", {
     Arguments = {
         {
-            Type = ax.Types.number,
+            Type = ax.types.number,
             ErrorMsg = "You must provide a valid player to make fall over!",
             Optional = true
         }

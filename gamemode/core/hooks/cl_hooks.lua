@@ -1117,7 +1117,7 @@ function GM:PostOptionsLoad(instancesTable)
         local optionData = ax.option.stored[optionName]
         if ( !istable(optionData) ) then continue end
 
-        if ( optionData.Type == ax.Types.number and optionData.IsKeybind ) then
+        if ( optionData.Type == ax.types.number and optionData.IsKeybind ) then
             ax.Binds[optionName] = value
         end
     end

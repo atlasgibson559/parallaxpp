@@ -143,7 +143,7 @@ end
 -- @usage ax.config:Register("color.schema", {
 --     Name = "Schema Color",
 --     Description = "The color of the schema.",
---     Type = ax.Types.color,
+--     Type = ax.types.color,
 --     Default = Color(0, 100, 150),
 --     OnChange = function(oldValue, newValue)
 --         print("Schema color changed from " .. tostring(oldValue) .. " to " .. tostring(newValue))

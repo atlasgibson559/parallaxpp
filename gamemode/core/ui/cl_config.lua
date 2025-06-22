@@ -151,7 +151,7 @@ function PANEL:AddConfig(configData)
 
     local label
     local configs
-    if ( configData.Type == ax.Types.bool ) then
+    if ( configData.Type == ax.types.bool ) then
         label = panel:Add("ax.Text")
         label:Dock(RIGHT)
         label:DockMargin(0, 0, ScreenScale(8), 0)
@@ -198,7 +198,7 @@ function PANEL:AddConfig(configData)
 
             menu:Open()
         end
-    elseif ( configData.Type == ax.Types.number ) then
+    elseif ( configData.Type == ax.types.number ) then
         local slider = panel:Add("ax.Slider")
         slider:Dock(RIGHT)
         slider:DockMargin(ScreenScale(8), ScreenScaleH(4), ScreenScale(8), ScreenScaleH(4))
@@ -305,7 +305,7 @@ function PANEL:AddConfig(configData)
 
             menu:Open()
         end
-    elseif ( configData.Type == ax.Types.array ) then
+    elseif ( configData.Type == ax.types.array ) then
         configs = configData:Populate()
         local keys = {}
         for k2, _ in pairs(configs) do
@@ -378,7 +378,7 @@ function PANEL:AddConfig(configData)
 
             menu:Open()
         end
-    elseif ( configData.Type == ax.Types.color ) then
+    elseif ( configData.Type == ax.types.color ) then
         local color = panel:Add("EditablePanel")
         color:Dock(RIGHT)
         color:DockMargin(ScreenScale(8), ScreenScaleH(4), ScreenScale(8), ScreenScaleH(4))
@@ -451,7 +451,7 @@ function PANEL:AddConfig(configData)
 
             menu:Open()
         end
-    elseif ( configData.Type == ax.Types.string ) then
+    elseif ( configData.Type == ax.types.string ) then
         local text = panel:Add("ax.Text.Entry")
         text:Dock(RIGHT)
         text:DockMargin(ScreenScale(8), ScreenScaleH(4), ScreenScale(8), ScreenScaleH(4))
@@ -508,9 +508,9 @@ function PANEL:AddConfig(configData)
     end
 
     panel.OnHovered = function(this)
-        if ( configData.Type == ax.Types.bool ) then
+        if ( configData.Type == ax.types.bool ) then
             label:SetText(value and "< " .. enabled .. " >" or "< " .. disabled .. " >", true)
-        elseif ( configData.Type == ax.Types.array ) then
+        elseif ( configData.Type == ax.types.array ) then
             local phrase = (configs and configs[value]) and ax.localization:GetPhrase(configs[value]) or unknown
             label:SetText("< " .. phrase .. " >", true)
         end
@@ -533,9 +533,9 @@ function PANEL:AddConfig(configData)
     end
 
     panel.OnUnHovered = function(this)
-        if ( configData.Type == ax.Types.bool ) then
+        if ( configData.Type == ax.types.bool ) then
             label:SetText(value and enabled or disabled, true)
-        elseif ( configData.Type == ax.Types.array ) then
+        elseif ( configData.Type == ax.types.array ) then
             local phrase = (configs and configs[value]) and ax.localization:GetPhrase(configs[value]) or unknown
             label:SetText(phrase, true)
         end

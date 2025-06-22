@@ -45,7 +45,7 @@ ax.net:Hook("character.create", function(client, payload)
         if ( v.Editable != true ) then continue end
 
         -- This is a bit of a hack, but it works for now.
-        if ( v.Type == ax.Types.string or v.Type == ax.Types.text ) then
+        if ( v.Type == ax.types.string or v.Type == ax.types.text ) then
             payload[k] = string.Trim(payload[k] or "")
         end
 

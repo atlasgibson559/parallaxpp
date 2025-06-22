@@ -16,7 +16,7 @@ ax.command:Register("ChangeVoiceMode", {
     AdminOnly = false,
     Arguments = {
         {
-            Type = ax.Types.number,
+            Type = ax.types.number,
             ErrorMsg = "You must provide a valid player to take a flag from!"
         }
     },

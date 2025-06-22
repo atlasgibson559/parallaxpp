@@ -28,7 +28,7 @@ function PANEL:ResetPayload()
         if ( v.Editable != true ) then continue end
 
         -- This is a bit of a hack, but it works for now.
-        if ( v.Type == ax.Types.string or v.Type == ax.Types.text ) then
+        if ( v.Type == ax.types.string or v.Type == ax.types.text ) then
             self:SetPayload(k, "")
         end
     end
@@ -281,7 +281,7 @@ function PANEL:PopulateCreateCharacter()
                 if ( isNextEmpty ) then continue end
             end
 
-            if ( v.Type == ax.Types.string or v.Type == ax.Types.text ) then
+            if ( v.Type == ax.types.string or v.Type == ax.types.text ) then
                 local entry = self.characterCreateForm:GetChild(k)
                 if ( entry and entry:GetValue() != "" ) then
                     self:SetPayload(k, entry:GetValue())
@@ -335,7 +335,7 @@ function PANEL:PopulateCreateCharacterForm()
         local translation = ax.localization:GetPhrase(v.Name)
         local bTranslated = translation != v.Name
 
-        if ( v.Type == ax.Types.string ) then
+        if ( v.Type == ax.types.string ) then
             zPos = zPos + 1 + v.ZPos
 
             local label = self.characterCreateForm:Add("ax.Text")
@@ -381,7 +381,7 @@ function PANEL:PopulateCreateCharacterForm()
                     end
                 end
             end
-        elseif ( v.Type == ax.Types.text ) then
+        elseif ( v.Type == ax.types.text ) then
             zPos = zPos + 1 + v.ZPos
 
             local label = self.characterCreateForm:Add("ax.Text")

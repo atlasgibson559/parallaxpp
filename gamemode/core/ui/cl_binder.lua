@@ -32,7 +32,7 @@ hook.Add("Think", "ax.Keybinds.logic", function()
 
     for optionName, keyCode in pairs(ax.Binds) do
         local optionData = ax.option.stored[optionName]
-        if ( !istable(optionData) or optionData.Type != ax.Types.number or !optionData.IsKeybind ) then continue end
+        if ( !istable(optionData) or optionData.Type != ax.types.number or !optionData.IsKeybind ) then continue end
         if ( !isnumber(keyCode) ) then continue end
 
         if ( input.IsKeyDown(keyCode) ) then

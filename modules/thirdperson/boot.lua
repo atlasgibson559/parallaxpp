@@ -17,7 +17,7 @@ MODULE.Author = "Riggs"
 
 ax.option:Register("thirdperson", {
     Name = "option.thirdperson",
-    Type = ax.Types.bool,
+    Type = ax.types.bool,
     Default = false,
     Description = "option.thirdperson.enable.help",
     NoNetworking = true,
@@ -26,7 +26,7 @@ ax.option:Register("thirdperson", {
 
 ax.option:Register("thirdperson.follax.Head", {
     Name = "options.thirdperson.follax.Head",
-    Type = ax.Types.bool,
+    Type = ax.types.bool,
     Default = false,
     Description = "options.thirdperson.follax.Head.help",
     NoNetworking = true,
@@ -35,7 +35,7 @@ ax.option:Register("thirdperson.follax.Head", {
 
 ax.option:Register("thirdperson.follax.Hit.angles", {
     Name = "options.thirdperson.follax.Hit.angles",
-    Type = ax.Types.bool,
+    Type = ax.types.bool,
     Default = true,
     Description = "options.thirdperson.follax.Hit.angles.help",
     NoNetworking = true,
@@ -44,7 +44,7 @@ ax.option:Register("thirdperson.follax.Hit.angles", {
 
 ax.option:Register("thirdperson.follax.Hit.fov", {
     Name = "options.thirdperson.follax.Hit.fov",
-    Type = ax.Types.bool,
+    Type = ax.types.bool,
     Default = true,
     Description = "options.thirdperson.follax.Hit.fov.help",
     NoNetworking = true,
@@ -53,7 +53,7 @@ ax.option:Register("thirdperson.follax.Hit.fov", {
 
 ax.option:Register("thirdperson.position.x", {
     Name = "options.thirdperson.position.x",
-    Type = ax.Types.number,
+    Type = ax.types.number,
     Default = 50,
     Min = -100,
     Max = 100,
@@ -65,7 +65,7 @@ ax.option:Register("thirdperson.position.x", {
 
 ax.option:Register("thirdperson.position.y", {
     Name = "options.thirdperson.position.y",
-    Type = ax.Types.number,
+    Type = ax.types.number,
     Default = 25,
     Min = -100,
     Max = 100,
@@ -77,7 +77,7 @@ ax.option:Register("thirdperson.position.y", {
 
 ax.option:Register("thirdperson.position.z", {
     Name = "options.thirdperson.position.z",
-    Type = ax.Types.number,
+    Type = ax.types.number,
     Default = 0,
     Min = -100,
     Max = 100,
@@ -89,7 +89,7 @@ ax.option:Register("thirdperson.position.z", {
 
 ax.config:Register("thirdperson.tracecheck", {
     Name = "options.thirdperson.traceplayercheck",
-    Type = ax.Types.bool,
+    Type = ax.types.bool,
     Default = false,
     Description = "options.thirdperson.traceplayercheck.help",
     Category = "category.thirdperson"
@@ -99,7 +99,7 @@ ax.option:Register("thirdperson.toggle", {
     Name = "options.thirdperson.toggle",
     Description = "options.thirdperson.toggle.help",
     Category = "category.thirdperson",
-    Type = ax.Types.number,
+    Type = ax.types.number,
     Default = KEY_K,
     NoNetworking = true,
     IsKeybind = true,

@@ -68,7 +68,7 @@ function GM:PreOptionChanged(client, key, value)
         return false
     end
 
-    if ( stored.Type == ax.Types.array ) then
+    if ( stored.Type == ax.types.array ) then
         local populate = stored.Populate
         if ( isfunction(populate) ) then
             local options = populate()

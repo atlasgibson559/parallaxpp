@@ -18,7 +18,7 @@ MODULE.Author = "Riggs"
 ax.config:Register("logging", {
     Name = "Logging",
     Description = "Enable or disable the logging system.",
-    Type = ax.Types.bool,
+    Type = ax.types.bool,
     Default = true
 })
 

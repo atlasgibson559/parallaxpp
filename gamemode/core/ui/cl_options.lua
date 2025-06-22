@@ -149,7 +149,7 @@ function PANEL:AddOption(optionData)
 
     local label
     local options
-    if ( optionData.Type == ax.Types.bool ) then
+    if ( optionData.Type == ax.types.bool ) then
         label = panel:Add("ax.Text")
         label:Dock(RIGHT)
         label:DockMargin(0, 0, ScreenScale(8), 0)
@@ -194,7 +194,7 @@ function PANEL:AddOption(optionData)
 
             menu:Open()
         end
-    elseif ( optionData.Type == ax.Types.number and optionData.IsKeybind ) then
+    elseif ( optionData.Type == ax.types.number and optionData.IsKeybind ) then
         local bind = panel:Add("ax.Binder")
         bind:Dock(RIGHT)
         bind:DockMargin(ScreenScale(8), ScreenScaleH(4), ScreenScale(8), ScreenScaleH(4))
@@ -229,7 +229,7 @@ function PANEL:AddOption(optionData)
 
             menu:Open()
         end
-    elseif ( optionData.Type == ax.Types.number ) then
+    elseif ( optionData.Type == ax.types.number ) then
         local slider = panel:Add("ax.Slider")
         slider:Dock(RIGHT)
         slider:DockMargin(ScreenScale(8), ScreenScaleH(4), ScreenScale(8), ScreenScaleH(4))
@@ -343,7 +343,7 @@ function PANEL:AddOption(optionData)
 
             menu:Open()
         end
-    elseif ( optionData.Type == ax.Types.array ) then
+    elseif ( optionData.Type == ax.types.array ) then
         options = optionData:Populate()
         local keys = {}
         for k2, _ in pairs(options) do
@@ -414,7 +414,7 @@ function PANEL:AddOption(optionData)
 
             menu:Open()
         end
-    elseif ( optionData.Type == ax.Types.color ) then
+    elseif ( optionData.Type == ax.types.color ) then
         local color = panel:Add("EditablePanel")
         color:Dock(RIGHT)
         color:DockMargin(ScreenScale(8), ScreenScaleH(4), ScreenScale(8), ScreenScaleH(4))
@@ -487,7 +487,7 @@ function PANEL:AddOption(optionData)
 
             menu:Open()
         end
-    elseif ( optionData.Type == ax.Types.string ) then
+    elseif ( optionData.Type == ax.types.string ) then
         local text = panel:Add("ax.Text.Entry")
         text:Dock(RIGHT)
         text:DockMargin(ScreenScale(8), ScreenScaleH(4), ScreenScale(8), ScreenScaleH(4))
@@ -545,9 +545,9 @@ function PANEL:AddOption(optionData)
     end
 
     panel.OnHovered = function(this)
-        if ( optionData.Type == ax.Types.bool ) then
+        if ( optionData.Type == ax.types.bool ) then
             label:SetText(value and "< " .. enabled .. " >" or "< " .. disabled .. " >", true)
-        elseif ( optionData.Type == ax.Types.array ) then
+        elseif ( optionData.Type == ax.types.array ) then
             local phrase = (options and options[value]) and ax.localization:GetPhrase(options[value]) or unknown
             label:SetText("< " .. phrase .. " >", true)
         end
@@ -570,9 +570,9 @@ function PANEL:AddOption(optionData)
     end
 
     panel.OnUnHovered = function(this)
-        if ( optionData.Type == ax.Types.bool ) then
+        if ( optionData.Type == ax.types.bool ) then
             label:SetText(value and enabled or disabled, true)
-        elseif ( optionData.Type == ax.Types.array ) then
+        elseif ( optionData.Type == ax.types.array ) then
             local phrase = (options and options[value]) and ax.localization:GetPhrase(options[value]) or unknown
             label:SetText(phrase, true)
         end

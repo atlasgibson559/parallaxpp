@@ -16,29 +16,29 @@ ax.util = ax.util or {}
 
 --- Converts and sanitizes input data into the specified type.
 -- This supports simple type coercion and fallback defaults.
--- @param typeID number A type constant from ax.Types
+-- @param typeID number A type constant from ax.types
 -- @param value any The raw value to sanitize
 -- @return any A validated and converted result
--- @usage ax.util:CoerceType(ax.Types.number, "123") -- returns 123
+-- @usage ax.util:CoerceType(ax.types.number, "123") -- returns 123
 function ax.util:CoerceType(typeID, value)
     if ( typeID == nil or value == nil ) then
         ax.util:PrintError("Attempted to coerce a type with no type ID or value! (" .. tostring(typeID) .. ", " .. tostring(value) .. ")")
         return nil
     end
 
-    if ( typeID == ax.Types.string or typeID == ax.Types.text ) then
+    if ( typeID == ax.types.string or typeID == ax.types.text ) then
         return tostring(value)
-    elseif ( typeID == ax.Types.number ) then
+    elseif ( typeID == ax.types.number ) then
         return tonumber(value) or 0
-    elseif ( typeID == ax.Types.bool ) then
+    elseif ( typeID == ax.types.bool ) then
         return tobool(value)
-    elseif ( typeID == ax.Types.vector ) then
+    elseif ( typeID == ax.types.vector ) then
         return isvector(value) and value
-    elseif ( typeID == ax.Types.angle ) then
+    elseif ( typeID == ax.types.angle ) then
         return isangle(value) and value
-    elseif ( typeID == ax.Types.color ) then
+    elseif ( typeID == ax.types.color ) then
         return ( IsColor(value) or ( istable(value) and isnumber(value.r) and isnumber(value.g) and isnumber(value.b) and isnumber(value.a) ) ) and value
-    elseif ( typeID == ax.Types.player ) then
+    elseif ( typeID == ax.types.player ) then
         if ( isstring(value) ) then
             return ax.util:FindPlayer(value)
         elseif ( isnumber(value) ) then
@@ -46,15 +46,15 @@ function ax.util:CoerceType(typeID, value)
         elseif ( IsValid(value) and value:IsPlayer() ) then
             return value
         end
-    elseif ( typeID == ax.Types.character ) then
+    elseif ( typeID == ax.types.character ) then
         if ( istable(value) and ax.util:IsCharacter(value) ) then
             return value
         end
-    elseif ( typeID == ax.Types.steamid ) then
+    elseif ( typeID == ax.types.steamid ) then
         if ( isstring(value) and #value == 19 and string.match(value, "STEAM_%d:%d:%d+") ) then
             return value
         end
-    elseif ( typeID == ax.Types.steamid64 ) then
+    elseif ( typeID == ax.types.steamid64 ) then
         if ( isstring(value) and #value == 17 and ( string.match(value, "7656119%d+") != nil or string.match(value, "9007199%d+") != nil ) ) then
             return value
         end
@@ -64,26 +64,26 @@ function ax.util:CoerceType(typeID, value)
 end
 
 local basicTypeMap = {
-    string  = ax.Types.string,
-    number  = ax.Types.number,
-    boolean = ax.Types.bool,
-    Vector  = ax.Types.vector,
-    Angle   = ax.Types.angle
+    string  = ax.types.string,
+    number  = ax.types.number,
+    boolean = ax.types.bool,
+    Vector  = ax.types.vector,
+    Angle   = ax.types.angle
 }
 
 local checkTypeMap = {
-    [ax.Types.color] = function(val)
+    [ax.types.color] = function(val)
         return IsColor(val) or ( istable(val) and isnumber(val.r) and isnumber(val.g) and isnumber(val.b) and isnumber(val.a) )
     end,
-    [ax.Types.character] = function(val) return getmetatable(val) == ax.character.meta end,
-    [ax.Types.steamid] = function(val) return isstring(val) and #val == 19 and string.match(val, "STEAM_%d:%d:%d+") != nil end,
-    [ax.Types.steamid64] = function(val) return isstring(val) and #val == 17 and ( string.match(val, "7656119%d+") != nil or string.match(val, "9007199%d+") != nil ) end
+    [ax.types.character] = function(val) return getmetatable(val) == ax.character.meta end,
+    [ax.types.steamid] = function(val) return isstring(val) and #val == 19 and string.match(val, "STEAM_%d:%d:%d+") != nil end,
+    [ax.types.steamid64] = function(val) return isstring(val) and #val == 17 and ( string.match(val, "7656119%d+") != nil or string.match(val, "9007199%d+") != nil ) end
 }
 
 --- Attempts to identify the framework type of a given value.
 -- @param value any The value to analyze
--- @return number|nil A type constant from ax.Types or nil if unknown
--- @usage local t = ax.util:DetectType(Color(255,0,0)) -- returns ax.Types.color
+-- @return number|nil A type constant from ax.types or nil if unknown
+-- @usage local t = ax.util:DetectType(Color(255,0,0)) -- returns ax.types.color
 function ax.util:DetectType(value)
     local luaType = type(value)
     local mapped = basicTypeMap[luaType]
@@ -97,28 +97,28 @@ function ax.util:DetectType(value)
     end
 
     if ( IsValid(value) and value:IsPlayer() ) then
-        return ax.Types.player
+        return ax.types.player
     end
 end
 
 local typeNames = {
-    [ax.Types.string] = "String",
-    [ax.Types.number] = "Number",
-    [ax.Types.bool] = "Boolean",
-    [ax.Types.vector] = "Vector",
-    [ax.Types.angle] = "Angle",
-    [ax.Types.color] = "Color",
-    [ax.Types.player] = "Player",
-    [ax.Types.character] = "Character",
-    [ax.Types.steamid] = "SteamID",
-    [ax.Types.steamid64] = "SteamID64",
-    [ax.Types.array] = "Array"
+    [ax.types.string] = "String",
+    [ax.types.number] = "Number",
+    [ax.types.bool] = "Boolean",
+    [ax.types.vector] = "Vector",
+    [ax.types.angle] = "Angle",
+    [ax.types.color] = "Color",
+    [ax.types.player] = "Player",
+    [ax.types.character] = "Character",
+    [ax.types.steamid] = "SteamID",
+    [ax.types.steamid64] = "SteamID64",
+    [ax.types.array] = "Array"
 }
 
 --- Formats a type ID into a human-readable string.
 -- @param typeID number The type ID to format.
 -- @return string The formatted type name.
--- @usage local typeName = ax.util:FormatType(ax.Types.color) -- returns "Color"
+-- @usage local typeName = ax.util:FormatType(ax.types.color) -- returns "Color"
 function ax.util:FormatType(typeID)
     if ( typeID == nil ) then
         ax.util:PrintError("Attempted to format a type with no type ID!", typeID)
@@ -426,9 +426,9 @@ function ax.util:FindPlayer(identifier)
     end
 
     if ( isstring(identifier) ) then
-        if ( ax.util:CoerceType(ax.Types.steamid, identifier) ) then
+        if ( ax.util:CoerceType(ax.types.steamid, identifier) ) then
             return player.GetBySteamID(identifier)
-        elseif ( ax.util:CoerceType(ax.Types.steamid64, identifier) ) then
+        elseif ( ax.util:CoerceType(ax.types.steamid64, identifier) ) then
             return player.GetBySteamID64(identifier)
         end
 

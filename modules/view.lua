@@ -17,7 +17,7 @@ MODULE.Author = "Riggs"
 
 ax.option:Register("view", {
     Name = "option.view",
-    Type = ax.Types.bool,
+    Type = ax.types.bool,
     Default = true,
     Description = "option.view.help",
     Category = "category.view"
@@ -25,7 +25,7 @@ ax.option:Register("view", {
 
 ax.option:Register("view.multiplier", {
     Name = "option.view.multiplier",
-    Type = ax.Types.number,
+    Type = ax.types.number,
     Default = 1,
     Min = 0,
     Max = 10,
@@ -37,7 +37,7 @@ ax.option:Register("view.multiplier", {
 
 ax.option:Register("view.multiplier.sprint", {
     Name = "option.view.multiplier.sprint",
-    Type = ax.Types.number,
+    Type = ax.types.number,
     Default = 1,
     Min = 0,
     Max = 10,
@@ -49,7 +49,7 @@ ax.option:Register("view.multiplier.sprint", {
 
 ax.option:Register("view.max.roll", {
     Name = "option.view.max.roll",
-    Type = ax.Types.number,
+    Type = ax.types.number,
     Default = 10,
     Min = 0,
     Max = 45,
@@ -61,7 +61,7 @@ ax.option:Register("view.max.roll", {
 
 ax.option:Register("view.max.tilt", {
     Name = "option.view.max.tilt",
-    Type = ax.Types.number,
+    Type = ax.types.number,
     Default = 10,
     Min = 0,
     Max = 45,
@@ -73,7 +73,7 @@ ax.option:Register("view.max.tilt", {
 
 ax.option:Register("view.roll.speed", {
     Name = "option.view.roll.speed",
-    Type = ax.Types.number,
+    Type = ax.types.number,
     Default = 5,
     Min = 0,
     Max = 20,
@@ -85,7 +85,7 @@ ax.option:Register("view.roll.speed", {
 
 ax.option:Register("view.pitch.speed", {
     Name = "option.view.pitch.speed",
-    Type = ax.Types.number,
+    Type = ax.types.number,
     Default = 5,
     Min = 0,
     Max = 20,
@@ -97,7 +97,7 @@ ax.option:Register("view.pitch.speed", {
 
 ax.option:Register("view.intensity", {
     Name = "option.view.intensity",
-    Type = ax.Types.number,
+    Type = ax.types.number,
     Default = 1,
     Min = 0,
     Max = 5,

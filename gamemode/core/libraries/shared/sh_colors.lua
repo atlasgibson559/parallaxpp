@@ -24,7 +24,7 @@ function ax.color:Register(name, color)
         return false
     end
 
-    if ( !ax.util:CoerceType(ax.Types.color, color) ) then
+    if ( !ax.util:CoerceType(ax.types.color, color) ) then
         ax.util:PrintError("Attempted to register a color without a color!")
         return false
     end
@@ -42,7 +42,7 @@ end
 -- @return The color.
 function ax.color:Get(name)
     local storedColor = self.stored[name]
-    if ( ax.util:CoerceType(ax.Types.color, storedColor) ) then
+    if ( ax.util:CoerceType(ax.types.color, storedColor) ) then
         return Color(storedColor.r, storedColor.g, storedColor.b, storedColor.a or 255)
     end
 
@@ -65,7 +65,7 @@ end
 -- @return boolean True if the color is dark, false otherwise.
 -- @note A color is considered dark if its luminance is less than 0.5.
 function ax.color:IsDark(col)
-    if ( !ax.util:CoerceType(ax.Types.color, col) ) then
+    if ( !ax.util:CoerceType(ax.types.color, col) ) then
         ax.util:PrintError("Attempted to check if a color is dark without a valid color!")
         return false
     end
@@ -118,7 +118,7 @@ function HexToColor(hex)
 end
 
 function ax.color:ToHex(color)
-    if ( !ax.util:CoerceType(ax.Types.color, color) ) then
+    if ( !ax.util:CoerceType(ax.types.color, color) ) then
         ax.util:PrintError("Attempted to convert a color to hex without a valid color!")
         return "#FFFFFF"
     end

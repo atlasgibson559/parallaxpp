@@ -10,19 +10,19 @@
 ]]
 
 ax.character:RegisterVariable("steamid", {
-    Type = ax.Types.string,
+    Type = ax.types.string,
     Field = "steamid",
     Default = ""
 })
 
 ax.character:RegisterVariable("schema", {
-    Type = ax.Types.string,
+    Type = ax.types.string,
     Field = "schema",
     Default = "parallax"
 })
 
 ax.character:RegisterVariable("data", {
-    Type = ax.Types.string,
+    Type = ax.types.string,
     Field = "data",
     Default = "[]",
 
@@ -30,7 +30,7 @@ ax.character:RegisterVariable("data", {
 })
 
 ax.character:RegisterVariable("name", {
-    Type = ax.Types.string,
+    Type = ax.types.string,
     Field = "name",
     Default = "John Doe",
 
@@ -66,7 +66,7 @@ ax.character:RegisterVariable("name", {
 })
 
 ax.character:RegisterVariable("description", {
-    Type = ax.Types.text,
+    Type = ax.types.text,
     Field = "description",
     Default = "A mysterious person.",
 
@@ -93,7 +93,7 @@ ax.character:RegisterVariable("description", {
 })
 
 ax.character:RegisterVariable("model", {
-    Type = ax.Types.string,
+    Type = ax.types.string,
     Field = "model",
     Default = "models/player/kleiner.mdl",
 
@@ -180,19 +180,19 @@ ax.character:RegisterVariable("model", {
 })
 
 ax.character:RegisterVariable("skin", {
-    Type = ax.Types.number,
+    Type = ax.types.number,
     Field = "skin",
     Default = 0
 })
 
 ax.character:RegisterVariable("money", {
-    Type = ax.Types.number,
+    Type = ax.types.number,
     Field = "money",
     Default = 0
 })
 
 ax.character:RegisterVariable("faction", {
-    Type = ax.Types.number,
+    Type = ax.types.number,
     Field = "faction",
     Default = 0,
 
@@ -212,26 +212,26 @@ ax.character:RegisterVariable("faction", {
 })
 
 ax.character:RegisterVariable("class", {
-    Type = ax.Types.number,
+    Type = ax.types.number,
     Field = "class",
     Default = 0
 })
 
 ax.character:RegisterVariable("flags", {
-    Type = ax.Types.string,
+    Type = ax.types.string,
     Field = "flags",
     Default = "",
 })
 
 ax.character:RegisterVariable("play_time", {
-    Type = ax.Types.number,
+    Type = ax.types.number,
     Field = "play_time",
     Alias = "PlayTime",
     Default = 0
 })
 
 ax.character:RegisterVariable("last_played", {
-    Type = ax.Types.number,
+    Type = ax.types.number,
     Field = "last_played",
     Alias = "LastPlayed",
     Default = 0
