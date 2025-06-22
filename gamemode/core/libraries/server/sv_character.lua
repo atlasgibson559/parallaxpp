@@ -10,9 +10,9 @@
 ]]
 
 --- Character library.
--- @module ax.Character
+-- @module ax.character
 
-function ax.Character:Create(client, query, callback)
+function ax.character:Create(client, query, callback)
     if ( !IsValid(client) or !client:IsPlayer() ) then
         return callback(false, "Invalid player!")
     end
@@ -66,9 +66,9 @@ function ax.Character:Create(client, query, callback)
     end)
 end
 
-function ax.Character:Load(client, characterID)
+function ax.character:Load(client, characterID)
     if ( !IsValid(client) or !client:IsPlayer() ) then
-        ax.Util:PrintError("Attempted to load character for invalid player (" .. tostring(client) .. ")")
+        ax.util:PrintError("Attempted to load character for invalid player (" .. tostring(client) .. ")")
         return false
     end
 
@@ -122,21 +122,21 @@ function ax.Character:Load(client, characterID)
 
             return character
         else
-            ax.Util:PrintError("Failed to load character with ID " .. characterID .. " for player " .. tostring(client))
+            ax.util:PrintError("Failed to load character with ID " .. characterID .. " for player " .. tostring(client))
             return
         end
     end)
 end
 
-function ax.Character:Delete(characterID, callback)
+function ax.character:Delete(characterID, callback)
     if ( !isnumber(characterID) ) then
-        ax.Util:PrintError("Attempted to delete character with invalid ID (" .. tostring(characterID) .. ")")
+        ax.util:PrintError("Attempted to delete character with invalid ID (" .. tostring(characterID) .. ")")
         return false
     end
 
     local character = self.stored[characterID]
     if ( !character ) then
-        ax.Util:PrintError("Attempted to delete character that does not exist (" .. characterID .. ")")
+        ax.util:PrintError("Attempted to delete character that does not exist (" .. characterID .. ")")
         return false
     end
 
@@ -172,16 +172,16 @@ function ax.Character:Delete(characterID, callback)
     end)
 end
 
-function ax.Character:Cache(client, characterID, callback)
+function ax.character:Cache(client, characterID, callback)
     if ( !IsValid(client) or !client:IsPlayer() ) then
-        ax.Util:PrintError("Attempted to cache character for invalid player (" .. tostring(client) .. ")")
+        ax.util:PrintError("Attempted to cache character for invalid player (" .. tostring(client) .. ")")
         return false
     end
 
     local condition = string.format("steamid = %s AND id = %s", sql.SQLStr(client:SteamID64()), sql.SQLStr(characterID))
     ax.database:Select("ax_characters", nil, condition, function(result)
         if ( !result or !result[1] ) then
-            ax.Util:PrintError("Failed to cache character with ID " .. characterID .. " for player " .. tostring(client))
+            ax.util:PrintError("Failed to cache character with ID " .. characterID .. " for player " .. tostring(client))
 
             if ( callback ) then
                 callback(false)
@@ -192,7 +192,7 @@ function ax.Character:Cache(client, characterID, callback)
 
         characterID = tonumber(characterID)
         if ( !characterID ) then
-            ax.Util:PrintError("Failed to convert character ID " .. characterID .. " to number for player " .. tostring(client))
+            ax.util:PrintError("Failed to convert character ID " .. characterID .. " to number for player " .. tostring(client))
             return false
         end
 
@@ -214,9 +214,9 @@ function ax.Character:Cache(client, characterID, callback)
     end)
 end
 
-function ax.Character:CacheAll(client, callback)
+function ax.character:CacheAll(client, callback)
     if ( !IsValid(client) or !client:IsPlayer() ) then
-        ax.Util:PrintError("Attempted to load characters for invalid player (" .. tostring(client) .. ")")
+        ax.util:PrintError("Attempted to load characters for invalid player (" .. tostring(client) .. ")")
 
         if ( callback ) then
             callback(false)
@@ -236,19 +236,19 @@ function ax.Character:CacheAll(client, callback)
                 local row = result[i]
                 local id = tonumber(row.id)
                 if ( !id ) then
-                    ax.Util:PrintError("Failed to convert character ID " .. tostring(row.id) .. " to number for player " .. tostring(client))
+                    ax.util:PrintError("Failed to convert character ID " .. tostring(row.id) .. " to number for player " .. tostring(client))
                     continue
                 end
 
                 -- Make sure we are not loading a character from a different schema
                 if ( row.schema != SCHEMA.Folder ) then
-                    ax.Util:PrintWarning("Character with ID " .. id .. " does not belong to the current schema (" .. SCHEMA.Folder .. ") for player " .. tostring(client))
+                    ax.util:PrintWarning("Character with ID " .. id .. " does not belong to the current schema (" .. SCHEMA.Folder .. ") for player " .. tostring(client))
                     continue
                 end
 
                 local character = self:CreateObject(id, row, client)
                 if ( !character ) then
-                    ax.Util:PrintError("Failed to create character object for ID " .. id .. " for player " .. tostring(client))
+                    ax.util:PrintError("Failed to create character object for ID " .. id .. " for player " .. tostring(client))
                     continue
                 end
 
@@ -264,7 +264,7 @@ function ax.Character:CacheAll(client, callback)
 
             hook.Run("PlayerLoadedAllCharacters", client, clientTable.axCharacters)
         else
-            ax.Util:PrintError("Failed to load characters for player " .. tostring(client) .. "\n")
+            ax.util:PrintError("Failed to load characters for player " .. tostring(client) .. "\n")
 
             if ( callback ) then
                 callback(false)
@@ -274,9 +274,9 @@ function ax.Character:CacheAll(client, callback)
 end
 
 concommand.Add("ax_character_test_create", function(client, cmd, arguments)
-    ax.Character:Create(client, {
+    ax.character:Create(client, {
         name = "Test Character"
     })
 end)
 
-ax.character = ax.Character
+ax.character = ax.character

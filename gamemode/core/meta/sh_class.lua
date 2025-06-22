@@ -35,7 +35,7 @@ CLASS.OnSwitch      = nil
 
 function CLASS:SetName(name)
     if ( !isstring(name) or #name == 0 ) then
-        ax.Util:PrintError("Attempted to set a class's name to an invalid value: " .. tostring(name))
+        ax.util:PrintError("Attempted to set a class's name to an invalid value: " .. tostring(name))
         return false
     end
 
@@ -46,7 +46,7 @@ end
 -- @param description The description to set.
 function CLASS:SetDescription(description)
     if ( !isstring(description) ) then
-        ax.Util:PrintError("Attempted to set a class's description to an invalid value: " .. tostring(description))
+        ax.util:PrintError("Attempted to set a class's description to an invalid value: " .. tostring(description))
         return false
     end
 
@@ -59,8 +59,8 @@ end
 -- @realm shared
 function CLASS:SetFaction(identifier)
     local factionTable = ax.faction:Get(identifier)
-    if ( !ax.Util:IsFaction(factionTable) ) then
-        ax.Util:PrintError("Attempted to set a class's faction to an invalid faction: " .. tostring(identifier))
+    if ( !ax.util:IsFaction(factionTable) ) then
+        ax.util:PrintError("Attempted to set a class's faction to an invalid faction: " .. tostring(identifier))
         return false
     end
 
@@ -131,14 +131,14 @@ end
 -- @treturn string|nil An error message if the registration failed.
 -- @realm shared
 function CLASS:Register()
-    if ( !ax.Util:IsFaction(self:GetFactionTable()) ) then
-        ax.Util:PrintError("Attempted to register a class without a valid faction!")
+    if ( !ax.util:IsFaction(self:GetFactionTable()) ) then
+        ax.util:PrintError("Attempted to register a class without a valid faction!")
         return false
     end
 
     local bResult = hook.Run("PreClassRegistered", self)
     if ( bResult == false ) then
-        ax.Util:PrintError("Attempted to register a class that was blocked by a hook!")
+        ax.util:PrintError("Attempted to register a class that was blocked by a hook!")
         return false, "Attempted to register a class that was blocked by a hook!"
     end
 

@@ -23,7 +23,7 @@ end
 
 function ax.class:Get(identifier)
     if ( identifier == nil ) then
-        ax.Util:PrintError("Attempted to get a faction with an invalid identifier!")
+        ax.util:PrintError("Attempted to get a faction with an invalid identifier!")
         return false
     end
 
@@ -37,7 +37,7 @@ function ax.class:Get(identifier)
 
     for i = 1, #self.instances do
         local v = self.instances[i]
-        if ( ax.Util:FindString(v.Name, identifier) or ax.Util:FindString(v.UniqueID, identifier) ) then
+        if ( ax.util:FindString(v.Name, identifier) or ax.util:FindString(v.UniqueID, identifier) ) then
             return v
         end
     end
@@ -69,7 +69,7 @@ function ax.class:OnSwitch(client, classID)
 
     local character = client:GetCharacter()
     if ( !character ) then
-        ax.Util:PrintError("Attempted to switch class for a player without a character!")
+        ax.util:PrintError("Attempted to switch class for a player without a character!")
         return false
     end
 

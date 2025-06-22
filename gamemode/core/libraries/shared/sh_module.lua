@@ -22,7 +22,7 @@ ax.module.disabled = {}
 -- @return table The module.
 function ax.module:Get(identifier)
     if ( identifier == nil or !isstring(identifier) ) then
-        ax.Util:PrintError("Attempted to get an invalid module!")
+        ax.util:PrintError("Attempted to get an invalid module!")
         return false
     end
 
@@ -31,7 +31,7 @@ function ax.module:Get(identifier)
     end
 
     for k, v in pairs(self.stored) do
-        if ( ax.Util:FindString(v.Name, identifier) ) then
+        if ( ax.util:FindString(v.Name, identifier) ) then
             return v
         end
     end
@@ -41,13 +41,13 @@ end
 
 function ax.module:LoadFolder(path)
     if ( !path or path == "" ) then
-        ax.Util:PrintError("Attempted to load an invalid module folder!")
+        ax.util:PrintError("Attempted to load an invalid module folder!")
         return false
     end
 
     hook.Run("PreInitializeModules")
 
-    ax.Util:Print("Loading modules from \"" .. path .. "\"...")
+    ax.util:Print("Loading modules from \"" .. path .. "\"...")
 
     local files, folders = file.Find(path .. "/*", "LUA")
     local folderCount = #folders
@@ -56,28 +56,28 @@ function ax.module:LoadFolder(path)
         if ( file.Exists(path .. "/" .. v .. "/boot.lua", "LUA") ) then
             MODULE = { UniqueID = v }
                 hook.Run("PreInitializeModule", MODULE)
-                ax.Util:LoadFile(path .. "/" .. v .. "/boot.lua", "shared")
-                ax.Util:LoadFolder(path .. "/" .. v .. "/ui", true)
-                ax.Util:LoadFolder(path .. "/" .. v .. "/libraries/external", true)
-                ax.Util:LoadFolder(path .. "/" .. v .. "/libraries/client", true)
-                ax.Util:LoadFolder(path .. "/" .. v .. "/libraries/shared", true)
-                ax.Util:LoadFolder(path .. "/" .. v .. "/libraries/server", true)
-                ax.Util:LoadFolder(path .. "/" .. v .. "/factions", true)
-                ax.Util:LoadFolder(path .. "/" .. v .. "/classes", true)
-                ax.Util:LoadFolder(path .. "/" .. v .. "/definitions", true)
-                ax.Util:LoadFolder(path .. "/" .. v .. "/meta", true)
-                ax.Util:LoadFolder(path .. "/" .. v .. "/ui", true)
-                ax.Util:LoadFolder(path .. "/" .. v .. "/hooks", true)
-                ax.Util:LoadFolder(path .. "/" .. v .. "/net", true)
-                ax.Util:LoadFolder(path .. "/" .. v .. "/languages", true)
+                ax.util:LoadFile(path .. "/" .. v .. "/boot.lua", "shared")
+                ax.util:LoadFolder(path .. "/" .. v .. "/ui", true)
+                ax.util:LoadFolder(path .. "/" .. v .. "/libraries/external", true)
+                ax.util:LoadFolder(path .. "/" .. v .. "/libraries/client", true)
+                ax.util:LoadFolder(path .. "/" .. v .. "/libraries/shared", true)
+                ax.util:LoadFolder(path .. "/" .. v .. "/libraries/server", true)
+                ax.util:LoadFolder(path .. "/" .. v .. "/factions", true)
+                ax.util:LoadFolder(path .. "/" .. v .. "/classes", true)
+                ax.util:LoadFolder(path .. "/" .. v .. "/definitions", true)
+                ax.util:LoadFolder(path .. "/" .. v .. "/meta", true)
+                ax.util:LoadFolder(path .. "/" .. v .. "/ui", true)
+                ax.util:LoadFolder(path .. "/" .. v .. "/hooks", true)
+                ax.util:LoadFolder(path .. "/" .. v .. "/net", true)
+                ax.util:LoadFolder(path .. "/" .. v .. "/languages", true)
                 ax.item:LoadFolder(path .. "/" .. v .. "/items")
-                ax.Util:LoadFolder(path .. "/" .. v .. "/config", true)
-                ax.Util:LoadEntities(path .. "/" .. v .. "/entities")
+                ax.util:LoadFolder(path .. "/" .. v .. "/config", true)
+                ax.util:LoadEntities(path .. "/" .. v .. "/entities")
                 self.stored[v] = MODULE
                 hook.Run("PostInitializeModule", MODULE)
             MODULE = nil
         else
-            ax.Util:PrintError("Module " .. v .. " is missing a shared module file.")
+            ax.util:PrintError("Module " .. v .. " is missing a shared module file.")
         end
     end
 
@@ -98,14 +98,14 @@ function ax.module:LoadFolder(path)
 
         MODULE = { UniqueID = ModuleUniqueID }
             hook.Run("PreInitializeModule", MODULE)
-            ax.Util:LoadFile(path .. "/" .. v, realm)
+            ax.util:LoadFile(path .. "/" .. v, realm)
             self.stored[ModuleUniqueID] = MODULE
             hook.Run("PostInitializeModule", MODULE)
         MODULE = nil
     end
 
     if ( files[1] != nil or folders[1] != nil ) then
-        ax.Util:Print("Loaded " .. #files .. " files and " .. #folders .. " folders from \"" .. path .. "\", total " .. (#files + #folders) .. " modules.")
+        ax.util:Print("Loaded " .. #files .. " files and " .. #folders .. " folders from \"" .. path .. "\", total " .. (#files + #folders) .. " modules.")
     end
 
     hook.Run("PostInitializeModules")

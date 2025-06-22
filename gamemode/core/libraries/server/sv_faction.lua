@@ -15,7 +15,7 @@
 function ax.faction:Join(client, factionID, bBypass)
     local faction = self:Get(factionID)
     if ( faction == nil or !istable(faction) ) then
-        ax.Util:PrintError("Attempted to join an invalid faction!")
+        ax.util:PrintError("Attempted to join an invalid faction!")
         return false
     end
 

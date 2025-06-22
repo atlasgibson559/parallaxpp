@@ -35,7 +35,7 @@ end
 if ( SERVER ) then
     function ax.currency:Spawn(amount, pos, ang)
         if ( !isvector(pos) ) then
-            ax.Util:PrintError("ax.currency:Spawn - Invalid position provided!")
+            ax.util:PrintError("ax.currency:Spawn - Invalid position provided!")
             return
         end
 

@@ -45,7 +45,7 @@ function PANEL:Init()
         button:SizeToContents()
 
         button.DoClick = function()
-            ax.GUI.HelpLast = k
+            ax.gui.HelpLast = k
 
             self:Populate(v)
         end
@@ -54,8 +54,8 @@ function PANEL:Init()
     end
 
     for k, v in SortedPairs(categories) do
-        if ( ax.GUI.HelpLast ) then
-            if ( ax.GUI.HelpLast == k ) then
+        if ( ax.gui.HelpLast ) then
+            if ( ax.gui.HelpLast == k ) then
                 self:Populate(v)
                 break
             end
@@ -88,4 +88,4 @@ end
 
 vgui.Register("ax.Tab.Help", PANEL, "EditablePanel")
 
-ax.GUI.HelpLast = nil
+ax.gui.HelpLast = nil

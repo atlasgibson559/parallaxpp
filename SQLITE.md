@@ -76,4 +76,4 @@ ax.SQLite:CreateTable("bans", {
 
 - Automatically adds missing columns with correct type.
 - Works well with `users`, `characters`, `inventories`, etc.
-- Use `ax.Util:PrintWarning` and `PrintTable` for debug info.
+- Use `ax.util:PrintWarning` and `PrintTable` for debug info.

@@ -26,7 +26,7 @@ ax.config.instances = ax.config.instances or {}
 function ax.config:Get(key, fallback)
     local configData = self.stored[key]
     if ( !istable(configData) ) then
-        ax.Util:PrintError("Config \"" .. tostring(key) .. "\" does not exist!")
+        ax.util:PrintError("Config \"" .. tostring(key) .. "\" does not exist!")
         return fallback
     end
 
@@ -53,7 +53,7 @@ end
 function ax.config:GetDefault(key)
     local configData = self.stored[key]
     if ( !istable(configData) ) then
-        ax.Util:PrintError("Config \"" .. tostring(key) .. "\" does not exist!")
+        ax.util:PrintError("Config \"" .. tostring(key) .. "\" does not exist!")
         return nil
     end
 
@@ -72,7 +72,7 @@ end
 function ax.config:Set(key, value)
     local stored = self.stored[key]
     if ( !istable(stored) ) then
-        ax.Util:PrintError("Config \"" .. tostring(key) .. "\" does not exist!")
+        ax.util:PrintError("Config \"" .. tostring(key) .. "\" does not exist!")
         return false
     end
 
@@ -80,8 +80,8 @@ function ax.config:Set(key, value)
         value = stored.Default
     end
 
-    if ( ax.Util:DetectType(value) != stored.Type ) then
-        ax.Util:PrintError("Attempted to set config \"" .. key .. "\" with invalid type!")
+    if ( ax.util:DetectType(value) != stored.Type ) then
+        ax.util:PrintError("Attempted to set config \"" .. key .. "\" with invalid type!")
         return false
     end
 
@@ -119,7 +119,7 @@ end
 function ax.config:SetDefault(key, value)
     local stored = self.stored[key]
     if ( !istable(stored) ) then
-        ax.Util:PrintError("Config \"" .. tostring(key) .. "\" does not exist!")
+        ax.util:PrintError("Config \"" .. tostring(key) .. "\" does not exist!")
         return false
     end
 
@@ -164,16 +164,16 @@ function ax.config:Register(key, data)
 
     for _, v in pairs(requiredFields) do
         if ( data[v] == nil ) then
-            ax.Util:PrintError("Configuration \"" .. key .. "\" is missing required field \"" .. v .. "\"!\n")
+            ax.util:PrintError("Configuration \"" .. key .. "\" is missing required field \"" .. v .. "\"!\n")
             return false
         end
     end
 
     if ( data.Type == nil ) then
-        data.Type = ax.Util:DetectType(data.Default)
+        data.Type = ax.util:DetectType(data.Default)
 
         if ( data.Type == nil ) then
-            ax.Util:PrintError("Config \"" .. key .. "\" has an invalid type!")
+            ax.util:PrintError("Config \"" .. key .. "\" has an invalid type!")
             return false
         end
     end

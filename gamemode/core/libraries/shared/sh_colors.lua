@@ -20,12 +20,12 @@ ax.color.stored = {}
 -- @param info A table containing information about the color.
 function ax.color:Register(name, color)
     if ( !isstring(name) or #name == 0 ) then
-        ax.Util:PrintError("Attempted to register a color without a name!")
+        ax.util:PrintError("Attempted to register a color without a name!")
         return false
     end
 
-    if ( !ax.Util:CoerceType(ax.Types.color, color) ) then
-        ax.Util:PrintError("Attempted to register a color without a color!")
+    if ( !ax.util:CoerceType(ax.Types.color, color) ) then
+        ax.util:PrintError("Attempted to register a color without a color!")
         return false
     end
 
@@ -42,11 +42,11 @@ end
 -- @return The color.
 function ax.color:Get(name)
     local storedColor = self.stored[name]
-    if ( ax.Util:CoerceType(ax.Types.color, storedColor) ) then
+    if ( ax.util:CoerceType(ax.Types.color, storedColor) ) then
         return Color(storedColor.r, storedColor.g, storedColor.b, storedColor.a or 255)
     end
 
-    ax.Util:PrintError("Attempted to get a color that does not exist: " .. tostring(name))
+    ax.util:PrintError("Attempted to get a color that does not exist: " .. tostring(name))
     return Color(255, 255, 255, 255)
 end
 
@@ -65,8 +65,8 @@ end
 -- @return boolean True if the color is dark, false otherwise.
 -- @note A color is considered dark if its luminance is less than 0.5.
 function ax.color:IsDark(col)
-    if ( !ax.Util:CoerceType(ax.Types.color, col) ) then
-        ax.Util:PrintError("Attempted to check if a color is dark without a valid color!")
+    if ( !ax.util:CoerceType(ax.Types.color, col) ) then
+        ax.util:PrintError("Attempted to check if a color is dark without a valid color!")
         return false
     end
 
@@ -95,7 +95,7 @@ function HexToColor(hex)
         a = a and hex_to_dec[a] or 15
 
         if ( !r and !g and !b and !a ) then
-            return ax.Util:PrintError("invalid hex input: " .. hex)
+            return ax.util:PrintError("invalid hex input: " .. hex)
         end
 
         return Color(r * 16 + r, g * 16 + g, b * 16 + b, a * 16 + a)
@@ -108,18 +108,18 @@ function HexToColor(hex)
         a1, a2 = a1 and hex_to_dec[a1] or 15, a2 and hex_to_dec[a2] or 15
 
         if ( !r1 and !r2 and !g1 and !g2 and !b1 and !b2 and !a1 and !a2 ) then
-            return ax.Util:PrintError("invalid hex input: " .. hex)
+            return ax.util:PrintError("invalid hex input: " .. hex)
         end
 
         return Color(r1 * 16 + r2, g1 * 16 + g2, b1 * 16 + b2, a1 * 16 + a2)
     end
 
-    return ax.Util:PrintError("invalid hex input: " .. hex)
+    return ax.util:PrintError("invalid hex input: " .. hex)
 end
 
 function ax.color:ToHex(color)
-    if ( !ax.Util:CoerceType(ax.Types.color, color) ) then
-        ax.Util:PrintError("Attempted to convert a color to hex without a valid color!")
+    if ( !ax.util:CoerceType(ax.Types.color, color) ) then
+        ax.util:PrintError("Attempted to convert a color to hex without a valid color!")
         return "#FFFFFF"
     end
 
@@ -133,7 +133,7 @@ end
 if ( CLIENT ) then
     concommand.Add("ax_list_colors", function(client, cmd, arguments)
         for k, v in pairs(ax.color.stored) do
-            ax.Util:Print("Color: " .. k .. " >> ", ax.color:Get("cyan"), v, " Sample")
+            ax.util:Print("Color: " .. k .. " >> ", ax.color:Get("cyan"), v, " Sample")
         end
     end)
 end

@@ -12,7 +12,7 @@
 local time = CurTime()
 function GM:PlayerInitialSpawn(client)
     time = CurTime()
-    ax.Util:Print("Starting to load player " .. client:SteamName() .. " (" .. client:SteamID64() .. ")")
+    ax.util:Print("Starting to load player " .. client:SteamName() .. " (" .. client:SteamID64() .. ")")
 
     if ( client:IsBot() ) then
         local factionBot = math.random(#ax.faction.instances)
@@ -42,13 +42,13 @@ function GM:PlayerReady(client)
     local activeGamemode = engine.ActiveGamemode()
     if ( activeGamemode == "parallax" ) then
         -- Sometimes people might forget to actually set their startup gamemode to their schema rather than the actual framework... so we check for that
-        ax.Util:PrintError("You are running Parallax without a schema! Please set your startup gamemode to your schema (e.g. 'parallax-skeleton' instead of 'parallax').")
+        ax.util:PrintError("You are running Parallax without a schema! Please set your startup gamemode to your schema (e.g. 'parallax-skeleton' instead of 'parallax').")
         ax.net:Start(client, "splash")
         return
     end
 
-    ax.Character:CacheAll(client, function()
-        ax.Util:SendChatText(nil, Color(25, 75, 150), client:SteamName() .. " has joined the server.")
+    ax.character:CacheAll(client, function()
+        ax.util:SendChatText(nil, Color(25, 75, 150), client:SteamName() .. " has joined the server.")
         ax.net:Start(client, "splash")
 
         client:SetNoDraw(true)
@@ -57,7 +57,7 @@ function GM:PlayerReady(client)
 
         hook.Run("PostPlayerInitialSpawn", client)
 
-        ax.Util:Print("Finished loading player " .. client:SteamName() .. " (" .. client:SteamID64() .. ") in " .. math.Round(CurTime() - time, 2) .. " seconds.")
+        ax.util:Print("Finished loading player " .. client:SteamName() .. " (" .. client:SteamID64() .. ") in " .. math.Round(CurTime() - time, 2) .. " seconds.")
         time = CurTime()
     end)
 end
@@ -75,7 +75,7 @@ function GM:PostPlayerInitialSpawn(client)
         client:SetDBVar("data", data != nil and data.data or "[]")
         client:SaveDB()
 
-        ax.Util:Print("Loaded player " .. client:SteamName() .. " (" .. client:SteamID64() .. ") in " .. math.Round(CurTime() - time, 2) .. " seconds.")
+        ax.util:Print("Loaded player " .. client:SteamName() .. " (" .. client:SteamID64() .. ") in " .. math.Round(CurTime() - time, 2) .. " seconds.")
         time = CurTime()
 
         ax.config:Synchronize(client)
@@ -274,7 +274,7 @@ function GM:Initialize()
         RunConsoleCommand("sv_allowcslua", "1")
     end
 
-    ax.Util:VerifyVersion()
+    ax.util:VerifyVersion()
 end
 
 local _reloaded = false
@@ -286,10 +286,10 @@ function GM:OnReloaded()
     ax.module:LoadFolder("parallax/modules")
     ax.schema:Initialize()
 
-    ax.Util:Print("Core reloaded in " .. math.Round(SysTime() - GM.RefreshTimeStart, 2) .. " seconds.")
+    ax.util:Print("Core reloaded in " .. math.Round(SysTime() - GM.RefreshTimeStart, 2) .. " seconds.")
 
     ax.config:Synchronize()
-    ax.Util:VerifyVersion()
+    ax.util:VerifyVersion()
 end
 
 function GM:DatabaseConnected()
@@ -302,13 +302,13 @@ local maxRetries = 5
 function GM:DatabaseConnectionFailed()
     if ( retryCount < maxRetries ) then
         retryCount = retryCount + 1
-        ax.Util:PrintWarning("Database connection failed, retrying... (" .. retryCount .. "/" .. maxRetries .. ")")
+        ax.util:PrintWarning("Database connection failed, retrying... (" .. retryCount .. "/" .. maxRetries .. ")")
 
         timer.Simple(2, function()
             ax.database:Initialize()
         end)
     else
-        ax.Util:PrintError("Database connection failed after " .. maxRetries .. " retries, falling back to SQLite.")
+        ax.util:PrintError("Database connection failed after " .. maxRetries .. " retries, falling back to SQLite.")
         ax.database:Fallback()
     end
 end
@@ -373,7 +373,7 @@ function GM:Think()
 end
 
 function GM:ShutDown()
-    ax.Util:Print("Shutting down ax...")
+    ax.util:Print("Shutting down ax...")
     ax.ShutDown = true
 
     hook.Run("SaveData")
@@ -455,7 +455,7 @@ function GM:PlayerDeath(client, inflictor, attacker)
         local deathSound = hook.Run("GetPlayerDeathSound", client, inflictor, attacker)
         if ( deathSound and deathSound != "" and !client:InObserver() ) then
             if ( !file.Exists("sound/" .. deathSound, "GAME") ) then
-                ax.Util:PrintWarning("PlayerDeathSound: Sound file does not exist! " .. deathSound)
+                ax.util:PrintWarning("PlayerDeathSound: Sound file does not exist! " .. deathSound)
                 return false
             end
 

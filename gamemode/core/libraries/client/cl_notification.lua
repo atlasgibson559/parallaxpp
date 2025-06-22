@@ -35,7 +35,7 @@ function ax.notification:Add(text, duration, bgColor)
     local phrase = ax.localization:GetPhrase(text)
     if ( isstring(phrase) ) then text = phrase end
 
-    local lines = ax.Util:GetWrappedText(text, FONT_NAME, maxTextWidth)
+    local lines = ax.util:GetWrappedText(text, FONT_NAME, maxTextWidth)
     surface.SetFont(FONT_NAME)
     local _, lineHeight = surface.GetTextSize("Ay")
     local totalHeight = #lines * lineHeight + PANEL_MARGIN * 2

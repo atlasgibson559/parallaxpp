@@ -14,11 +14,11 @@ DEFINE_BASECLASS("EditablePanel")
 local PANEL = {}
 
 function PANEL:Init()
-    if ( IsValid(ax.GUI.Tooltip) ) then
-        ax.GUI.Tooltip:Remove()
+    if ( IsValid(ax.gui.Tooltip) ) then
+        ax.gui.Tooltip:Remove()
     end
 
-    ax.GUI.Tooltip = self
+    ax.gui.Tooltip = self
 
     self:SetSize(ScreenScale(128), ScreenScale(24))
     self:SetMouseInputEnabled(false)
@@ -54,19 +54,19 @@ end
 function PANEL:SizeToContents()
     local title = ax.localization:GetPhrase(self.title) or self.title
     local desc = ax.localization:GetPhrase(self.description) or self.description
-    local descWrapped = ax.Util:GetWrappedText(desc, "parallax", ScreenScale(128))
+    local descWrapped = ax.util:GetWrappedText(desc, "parallax", ScreenScale(128))
 
     local width = 0
-    local titleWidth = ax.Util:GetTextWidth("ax.Large.Bold", title)
+    local titleWidth = ax.util:GetTextWidth("ax.Large.Bold", title)
     width = math.max(width, titleWidth)
     for i = 1, #descWrapped do
-        local descWidth = ax.Util:GetTextWidth("parallax", descWrapped[i])
+        local descWidth = ax.util:GetTextWidth("parallax", descWrapped[i])
         width = math.max(width, descWidth)
     end
 
-    local height = ax.Util:GetTextHeight("ax.Large.Bold")
+    local height = ax.util:GetTextHeight("ax.Large.Bold")
     for i = 1, #descWrapped do
-        height = height + ax.Util:GetTextHeight("parallax")
+        height = height + ax.util:GetTextHeight("parallax")
     end
 
     self:SetSize(width + 32, height + 8)
@@ -106,20 +106,20 @@ end
 function PANEL:Paint(width, height)
     self.alpha = Lerp(FrameTime() * 5, self.alpha, self.fading and 0 or 255)
 
-    ax.Util:DrawBlur(self)
+    ax.util:DrawBlur(self)
     draw.RoundedBox(0, 0, 0, width, height, Color(0, 0, 0, 200))
     local title = ax.localization:GetPhrase(self.title) or self.title
     draw.SimpleText(title, "ax.Large.Bold", 8, 0, ax.color:Get("text.light"), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
 
     local desc = ax.localization:GetPhrase(self.description) or self.description
-    local descWrapped = ax.Util:GetWrappedText(desc, "parallax", width - 32)
+    local descWrapped = ax.util:GetWrappedText(desc, "parallax", width - 32)
     for i = 1, #descWrapped do
-        draw.SimpleText(descWrapped[i], "parallax", 16, 48 + (i - 1) * ax.Util:GetTextHeight("parallax"), ax.color:Get("text"), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+        draw.SimpleText(descWrapped[i], "parallax", 16, 48 + (i - 1) * ax.util:GetTextHeight("parallax"), ax.color:Get("text"), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
     end
 end
 
-vgui.Register("ax.Tooltip", PANEL, "EditablePanel")
+vgui.Register("ax.tooltip", PANEL, "EditablePanel")
 
-if ( IsValid(ax.GUI.Tooltip) ) then
-    ax.GUI.Tooltip:Remove()
+if ( IsValid(ax.gui.Tooltip) ) then
+    ax.gui.Tooltip:Remove()
 end

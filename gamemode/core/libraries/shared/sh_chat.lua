@@ -17,12 +17,12 @@ ax.chat.classes = ax.chat.classes or {}
 
 function ax.chat:Register(uniqueID, chatData)
     if ( !isstring(uniqueID) ) then
-        ax.Util:PrintError("Attempted to register a chat class without a unique ID!")
+        ax.util:PrintError("Attempted to register a chat class without a unique ID!")
         return false
     end
 
     if ( !istable(chatData) ) then
-        ax.Util:PrintError("Attempted to register a chat class without data!")
+        ax.util:PrintError("Attempted to register a chat class without data!")
         return false
     end
 

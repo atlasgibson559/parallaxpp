@@ -9,8 +9,8 @@
     Attribution is required. If you use or modify this file, you must retain this notice.
 ]]
 
-local gradientLeft = ax.Util:GetMaterial("vgui/gradient-l")
-local gradientBottom = ax.Util:GetMaterial("vgui/gradient-d")
+local gradientLeft = ax.util:GetMaterial("vgui/gradient-l")
+local gradientBottom = ax.util:GetMaterial("vgui/gradient-d")
 
 DEFINE_BASECLASS("EditablePanel")
 

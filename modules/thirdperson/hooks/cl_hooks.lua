@@ -26,7 +26,7 @@ local fakeAngles
 local fakeFov
 
 function MODULE:PreRenderThirdpersonView(client, pos, angles, fov)
-    if ( IsValid(ax.GUI.Mainmenu) ) then
+    if ( IsValid(ax.gui.Mainmenu) ) then
         return false
     end
 
@@ -53,7 +53,7 @@ function MODULE:CalcView(client, pos, angles, fov)
 
         for i = 0, client:GetBoneCount() do
             local bone = client:GetBoneName(i)
-            if ( ax.Util:FindString(bone, "head") ) then
+            if ( ax.util:FindString(bone, "head") ) then
                 head = i
                 break
             end

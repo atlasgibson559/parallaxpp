@@ -68,7 +68,7 @@ if ( SERVER ) then
         end
 
         if ( ax.config:Get("debug.networking") ) then
-            ax.Util:Print("[Networking] Sent '" .. name .. "' to " .. (SERVER and #recipients .. " players" or "server"))
+            ax.util:Print("[Networking] Sent '" .. name .. "' to " .. (SERVER and #recipients .. " players" or "server"))
         end
     end
 else
@@ -90,19 +90,19 @@ net.Receive("ax.net.msg", function(len, client)
 
     local ok, decoded = pcall(sfs.decode, raw)
     if ( !ok or type(decoded) != "table" ) then
-        ax.Util:PrintError("[Networking] Decode failed for '" .. name .. "'")
+        ax.util:PrintError("[Networking] Decode failed for '" .. name .. "'")
         return
     end
 
     local stored = ax.net.stored[name]
     if ( !istable(stored) or #stored < 1 ) then
-        ax.Util:PrintError("[Networking] No handler for '" .. name .. "'")
+        ax.util:PrintError("[Networking] No handler for '" .. name .. "'")
         return
     end
 
     local callback = stored[1]
     if ( !isfunction(callback) ) then
-        ax.Util:PrintError("[Networking] No handler for '" .. name .. "'")
+        ax.util:PrintError("[Networking] No handler for '" .. name .. "'")
         return
     end
 
@@ -115,7 +115,7 @@ net.Receive("ax.net.msg", function(len, client)
 
             local coolDown = ax.net.cooldown[steam64][name]
             if ( isnumber(coolDown) and coolDown > CurTime() ) then
-                ax.Util:PrintWarning("[Networking] '" .. name .. "' is on cooldown for " .. math.ceil(coolDown - CurTime()) .. " seconds, ignoring request from " .. (tostring(client) or "unknown"))
+                ax.util:PrintWarning("[Networking] '" .. name .. "' is on cooldown for " .. math.ceil(coolDown - CurTime()) .. " seconds, ignoring request from " .. (tostring(client) or "unknown"))
 
                 return
             end
@@ -129,7 +129,7 @@ net.Receive("ax.net.msg", function(len, client)
     end
 
     if ( ax.config:Get("debug.networking") ) then
-        ax.Util:Print("[Networking] Received '" .. name .. "' from " .. (SERVER and client:Nick() or "server"))
+        ax.util:Print("[Networking] Received '" .. name .. "' from " .. (SERVER and client:Nick() or "server"))
     end
 end)
 

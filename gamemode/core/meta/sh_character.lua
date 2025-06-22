@@ -9,7 +9,7 @@
     Attribution is required. If you use or modify this file, you must retain this notice.
 ]]
 
-local CHAR = ax.Character.meta or {}
+local CHAR = ax.character.meta or {}
 CHAR.__index = CHAR
 CHAR.ID = 0
 CHAR.Variables = {}
@@ -105,7 +105,7 @@ end
 function CHAR:GiveMoney(amount)
     if ( amount < 0 ) then
         amount = math.abs(amount)
-        ax.Util:PrintWarning("Character " .. self:GetID() .. " tried to give negative amount, converted to positive number. Call :TakeMoney instead!")
+        ax.util:PrintWarning("Character " .. self:GetID() .. " tried to give negative amount, converted to positive number. Call :TakeMoney instead!")
     end
 
     self:SetMoney(self:GetMoney() + amount)
@@ -117,7 +117,7 @@ end
 function CHAR:TakeMoney(amount)
     if ( amount < 0 ) then
         amount = math.abs(amount)
-        ax.Util:PrintWarning("Character " .. self:GetID() .. " tried to take negative amount, converted to positive number. Call :GiveMoney instead!")
+        ax.util:PrintWarning("Character " .. self:GetID() .. " tried to take negative amount, converted to positive number. Call :GiveMoney instead!")
     end
 
     self:SetMoney(self:GetMoney() - amount)

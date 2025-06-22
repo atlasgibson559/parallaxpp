@@ -29,13 +29,13 @@ function ax.config:Load()
         if ( !istable(storedData) ) then continue end
 
         self.instances[k] = {}
-        self.instances[k].Value = ax.Util:CoerceType(storedData.Type, v)
+        self.instances[k].Value = ax.util:CoerceType(storedData.Type, v)
     end
 
     local tableToSend = self:GetNetworkData()
     ax.net:Start(nil, "config.sync", tableToSend)
 
-    ax.Util:Print("Configuration loaded.")
+    ax.util:Print("Configuration loaded.")
     hook.Run("PostConfigLoad", config, tableToSend)
 
     return true
@@ -81,7 +81,7 @@ function ax.config:Save()
     ax.data:Set("config", values, false, false)
 
     hook.Run("PostConfigSave", values)
-    ax.Util:Print("Configuration saved.")
+    ax.util:Print("Configuration saved.")
 
     return true
 end
@@ -94,7 +94,7 @@ end
 function ax.config:Reset(key)
     local configData = self.stored[key]
     if ( !istable(configData) ) then
-        ax.Util:PrintError("Config \"" .. key .. "\" does not exist!")
+        ax.util:PrintError("Config \"" .. key .. "\" does not exist!")
         return false
     end
 

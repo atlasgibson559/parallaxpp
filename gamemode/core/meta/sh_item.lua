@@ -169,7 +169,7 @@ if ( SERVER ) then
     -- @tparam string key The key of the data to send.
     -- @param value The value of the data to send.
     function ITEM:SendData(key, value)
-        local client = ax.Character:GetPlayerByCharacter(self:GetOwner())
+        local client = ax.character:GetPlayerByCharacter(self:GetOwner())
         if ( !IsValid(client) ) then return end
 
         ax.net:Start(client, "item.data", self:GetID(), key, value)
@@ -202,7 +202,7 @@ end
 -- @tparam Vector position The position to spawn the item at.
 -- @tparam Angle angles The angles to spawn the item with.
 function ITEM:Spawn(position, angles)
-    local client = ax.Character:GetPlayerByCharacter(self:GetOwner())
+    local client = ax.character:GetPlayerByCharacter(self:GetOwner())
     if ( !IsValid(client) ) then return end
 
     position = position or client:GetDropPosition()
@@ -337,7 +337,7 @@ function ITEM:AddDefaultActions()
         OnRun = function(this, item, client)
             if ( !IsValid(client) ) then return end
 
-            local char = ax.Character:Get(item:GetOwner())
+            local char = ax.character:Get(item:GetOwner())
             local inventoryMain = char and char:GetInventory()
             if ( !inventoryMain ) then return end
 

@@ -12,10 +12,10 @@
 local padding = ScreenScale(32)
 local paddingSmall = ScreenScale(16)
 local paddingTiny = ScreenScale(8)
-local gradientLeft = ax.Util:GetMaterial("vgui/gradient-l")
-local gradientRight = ax.Util:GetMaterial("vgui/gradient-r")
-local gradientTop = ax.Util:GetMaterial("vgui/gradient-u")
-local gradientBottom = ax.Util:GetMaterial("vgui/gradient-d")
+local gradientLeft = ax.util:GetMaterial("vgui/gradient-l")
+local gradientRight = ax.util:GetMaterial("vgui/gradient-r")
+local gradientTop = ax.util:GetMaterial("vgui/gradient-u")
+local gradientBottom = ax.util:GetMaterial("vgui/gradient-d")
 
 DEFINE_BASECLASS("EditablePanel")
 
@@ -35,11 +35,11 @@ AccessorFunc(PANEL, "anchorTime", "AnchorTime", FORCE_NUMBER)
 AccessorFunc(PANEL, "anchorEnabled", "AnchorEnabled", FORCE_BOOL)
 
 function PANEL:Init()
-    if ( IsValid(ax.GUI.Tab) ) then
-        ax.GUI.Tab:Remove()
+    if ( IsValid(ax.gui.Tab) ) then
+        ax.gui.Tab:Remove()
     end
 
-    ax.GUI.Tab = self
+    ax.gui.Tab = self
 
     local client = ax.Client
     if ( IsValid(client) and client:IsTyping() ) then
@@ -127,7 +127,7 @@ function PANEL:Init()
         button:SetText(k)
 
         button.DoClick = function()
-            ax.GUI.TabLast = k
+            ax.gui.TabLast = k
 
             self:Populate(v)
         end
@@ -147,8 +147,8 @@ function PANEL:Init()
         this:CenterVertical()
     end
 
-    if ( ax.GUI.TabLast and buttons[ax.GUI.TabLast] ) then
-        self:Populate(buttons[ax.GUI.TabLast])
+    if ( ax.gui.TabLast and buttons[ax.gui.TabLast] ) then
+        self:Populate(buttons[ax.gui.TabLast])
     else
         for k, v in SortedPairs(buttons) do
             self:Populate(v)
@@ -272,7 +272,7 @@ function PANEL:Paint(width, height)
     end
 
     local fraction = self:GetAlpha() / 255
-    ax.Util:DrawBlur(self, 1 * fraction, 0.5 * fraction, 255 * fraction)
+    ax.util:DrawBlur(self, 1 * fraction, 0.5 * fraction, 255 * fraction)
 
     self:SetGradientLeft(Lerp(time, self:GetGradientLeft(), self:GetGradientLeftTarget()))
     self:SetGradientRight(Lerp(time, self:GetGradientRight(), self:GetGradientRightTarget()))
@@ -298,8 +298,8 @@ end
 
 vgui.Register("ax.Tab", PANEL, "EditablePanel")
 
-if ( IsValid(ax.GUI.Tab) ) then
-    ax.GUI.Tab:Remove()
+if ( IsValid(ax.gui.Tab) ) then
+    ax.gui.Tab:Remove()
 end
 
-ax.GUI.TabLast = nil
+ax.gui.TabLast = nil

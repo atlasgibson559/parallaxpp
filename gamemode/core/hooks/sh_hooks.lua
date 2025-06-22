@@ -64,7 +64,7 @@ end
 function GM:PreOptionChanged(client, key, value)
     local stored = ax.option.stored[key]
     if ( !istable(stored) ) then
-        ax.Util:PrintError("Attempted to set unknown option \"" .. key .. "\"!")
+        ax.util:PrintError("Attempted to set unknown option \"" .. key .. "\"!")
         return false
     end
 
@@ -73,28 +73,28 @@ function GM:PreOptionChanged(client, key, value)
         if ( isfunction(populate) ) then
             local options = populate()
             if ( !istable(options) or !options[value] ) then
-                ax.Util:PrintError("Attempted to set option \"" .. key .. "\" with invalid value!")
+                ax.util:PrintError("Attempted to set option \"" .. key .. "\" with invalid value!")
                 return false
             end
         elseif ( !istable(stored.Values) or !stored.Values[value] ) then
-            ax.Util:PrintError("Attempted to set option \"" .. key .. "\" with invalid value!")
+            ax.util:PrintError("Attempted to set option \"" .. key .. "\" with invalid value!")
             return false
         end
     else
-        if ( ax.Util:DetectType(value) != stored.Type ) then
-            ax.Util:PrintError("Attempted to set option \"" .. key .. "\" with invalid type!")
+        if ( ax.util:DetectType(value) != stored.Type ) then
+            ax.util:PrintError("Attempted to set option \"" .. key .. "\" with invalid type!")
             return false
         end
     end
 
     if ( isnumber(value) ) then
         if ( isnumber(stored.Min) and value < stored.Min ) then
-            ax.Util:PrintError("Option \"" .. key .. "\" is below minimum value!")
+            ax.util:PrintError("Option \"" .. key .. "\" is below minimum value!")
             return false
         end
 
         if ( isnumber(stored.Max) and value > stored.Max ) then
-            ax.Util:PrintError("Option \"" .. key .. "\" is above maximum value!")
+            ax.util:PrintError("Option \"" .. key .. "\" is above maximum value!")
             return false
         end
     end

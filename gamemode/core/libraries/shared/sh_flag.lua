@@ -14,7 +14,7 @@ ax.flag.stored = {}
 
 function ax.flag:Register(flag, description, callback)
     if ( !isstring(flag) or #flag != 1 ) then
-        ax.Util:PrintError("Attempted to register a flag without a flag character!")
+        ax.util:PrintError("Attempted to register a flag without a flag character!")
         return false
     end
 

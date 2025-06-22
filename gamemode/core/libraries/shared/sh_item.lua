@@ -67,11 +67,11 @@ function ax.item:Load(path)
                 local mergeTable = table.Copy(baseTable)
                 ITEM = table.Merge(mergeTable, ITEM)
             else
-                ax.Util:PrintError("Item base '" .. ITEM.Base .. "' not found for item '" .. ITEM.UniqueID .. "'.")
+                ax.util:PrintError("Item base '" .. ITEM.Base .. "' not found for item '" .. ITEM.UniqueID .. "'.")
             end
         end
 
-        ax.Util:LoadFile(filePath, "shared")
+        ax.util:LoadFile(filePath, "shared")
 
         self.stored[ITEM.UniqueID] = ITEM
 
@@ -139,7 +139,7 @@ function ax.item:CreateObject(data)
     local uniqueID = data.UniqueID or data.unique_id
     local characterID = tonumber(data.CharacterID or data.character_id or 0)
     local inventoryID = tonumber(data.InventoryID or data.inventory_id or 0)
-    local itemData = ax.Util:SafeParseTable(data.Data or data.data)
+    local itemData = ax.util:SafeParseTable(data.Data or data.data)
 
     local base = self.stored[uniqueID]
     if ( !base ) then return end

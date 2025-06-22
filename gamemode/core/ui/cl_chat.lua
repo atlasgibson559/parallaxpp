@@ -14,11 +14,11 @@ local PANEL = {}
 DEFINE_BASECLASS("EditablePanel")
 
 function PANEL:Init()
-    if ( IsValid(ax.GUI.Chatbox) ) then
-        ax.GUI.Chatbox:Remove()
+    if ( IsValid(ax.gui.Chatbox) ) then
+        ax.gui.Chatbox:Remove()
     end
 
-    ax.GUI.Chatbox = self
+    ax.gui.Chatbox = self
 
     self:SetSize(hook.Run("GetChatboxSize"))
     self:SetPos(hook.Run("GetChatboxPos"))
@@ -44,7 +44,7 @@ function PANEL:Init()
     self.chatType:SetText("IC", true, true)
     self.chatType:SetTypingSpeed(0.05)
     self.chatType.PostThink = function(this)
-        this:SetWide(ax.Util:GetTextWidth(this:GetFont(), this:GetText()) + 16)
+        this:SetWide(ax.util:GetTextWidth(this:GetFont(), this:GetText()) + 16)
     end
     self.chatType.Paint = function(this, width, height)
         surface.SetDrawColor(ax.color:Get("background.transparent"))
@@ -96,7 +96,7 @@ function PANEL:Init()
         hook.Run("ChatboxOnTextChanged", text, chatType)
 
         -- Prevent the chat type from being set to the same value
-        if ( ax.Util:FindString(self.chatType.fullText, chatType) ) then
+        if ( ax.util:FindString(self.chatType.fullText, chatType) ) then
             return
         end
 
@@ -129,7 +129,7 @@ function PANEL:Init()
     self.recommendations.indexSelect = 0
     self.recommendations.maxSelection = 0
     self.recommendations.Paint = function(this, width, height)
-        ax.Util:DrawBlur(this)
+        ax.util:DrawBlur(this)
 
         surface.SetDrawColor(ax.color:Get("background.transparent"))
         surface.DrawRect(0, 0, width, height)
@@ -170,7 +170,7 @@ function PANEL:PopulateRecommendations(text)
     self.recommendations.panels = {}
 
     for key, command in SortedPairsByMemberValue(ax.command:GetAll(), "UniqueID") do
-        if ( ax.Util:FindString(command.UniqueID, text, true) or ( command.Prefixes and ax.Util:FindInTable(command.Prefixes, text, true) ) ) then
+        if ( ax.util:FindString(command.UniqueID, text, true) or ( command.Prefixes and ax.util:FindInTable(command.Prefixes, text, true) ) ) then
             table.insert(self.recommendations.list, command)
         end
     end
@@ -215,7 +215,7 @@ function PANEL:PopulateRecommendations(text)
                 descriptionWrapped = "No description provided."
             end
 
-            descriptionWrapped = ax.Util:GetWrappedText(descriptionWrapped, "ax.Tiny", self.recommendations:GetWide() - 16)
+            descriptionWrapped = ax.util:GetWrappedText(descriptionWrapped, "ax.Tiny", self.recommendations:GetWide() - 16)
             for k = 1, #descriptionWrapped do
                 local v = descriptionWrapped[k]
                 local descLine = rec:Add("ax.Text")
@@ -319,7 +319,7 @@ function PANEL:OnKeyCodePressed(key)
 end
 
 function PANEL:Paint(width, height)
-    ax.Util:DrawBlur(self)
+    ax.util:DrawBlur(self)
 
     surface.SetDrawColor(ax.color:Get("background.transparent"))
     surface.DrawRect(0, 0, width, height)
@@ -327,8 +327,8 @@ end
 
 vgui.Register("ax.chatbox", PANEL, "EditablePanel")
 
-if ( IsValid(ax.GUI.Chatbox) ) then
-    ax.GUI.Chatbox:Remove()
+if ( IsValid(ax.gui.Chatbox) ) then
+    ax.gui.Chatbox:Remove()
 
     vgui.Create("ax.chatbox")
 end

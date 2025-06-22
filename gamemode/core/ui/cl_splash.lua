@@ -9,18 +9,18 @@
     Attribution is required. If you use or modify this file, you must retain this notice.
 ]]
 
-local gradientTop = ax.Util:GetMaterial("vgui/gradient-u")
+local gradientTop = ax.util:GetMaterial("vgui/gradient-u")
 
 DEFINE_BASECLASS("EditablePanel")
 
 local PANEL = {}
 
 function PANEL:Init()
-    if ( IsValid(ax.GUI.Splash) ) then
-        ax.GUI.Splash:Remove()
+    if ( IsValid(ax.gui.Splash) ) then
+        ax.gui.Splash:Remove()
     end
 
-    ax.GUI.Splash = self
+    ax.gui.Splash = self
 
     if ( system.IsWindows() ) then
         system.FlashWindow()
@@ -54,7 +54,7 @@ function PANEL:Init()
 
         schemaName = ax.utf8:Upper(schemaName)
     else
-        ax.Util:PrintError("SCHEMA is not defined! Please ensure that your schema is properly set up.")
+        ax.util:PrintError("SCHEMA is not defined! Please ensure that your schema is properly set up.")
     end
 
     subtitle:SetText(schemaName)
@@ -74,11 +74,11 @@ function PANEL:Init()
 end
 
 function PANEL:OnRemove()
-    if ( IsValid(ax.GUI.Splash) ) then
-        ax.GUI.Splash = nil
+    if ( IsValid(ax.gui.Splash) ) then
+        ax.gui.Splash = nil
     end
 
-    if ( !IsValid(ax.GUI.Mainmenu) ) then
+    if ( !IsValid(ax.gui.Mainmenu) ) then
         vgui.Create("ax.Mainmenu")
     end
 end
@@ -91,8 +91,8 @@ end
 
 vgui.Register("ax.Splash", PANEL, "EditablePanel")
 
-if ( IsValid(ax.GUI.Splash) ) then
-    ax.GUI.Splash:Remove()
+if ( IsValid(ax.gui.Splash) ) then
+    ax.gui.Splash:Remove()
 end
 
 concommand.Add("ax_splash", function(client, command, arguments)
@@ -100,8 +100,8 @@ concommand.Add("ax_splash", function(client, command, arguments)
         return
     end
 
-    if ( IsValid(ax.GUI.Splash) ) then
-        ax.GUI.Splash:Remove()
+    if ( IsValid(ax.gui.Splash) ) then
+        ax.gui.Splash:Remove()
     end
 
     vgui.Create("ax.Splash")

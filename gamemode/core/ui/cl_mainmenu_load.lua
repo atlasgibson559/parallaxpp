@@ -78,7 +78,7 @@ function PANEL:Populate()
 
         local banner = hook.Run("GetCharacterBanner", v:GetID()) or "gamepadui/hl2/chapter14"
         if ( type(banner) == "string" ) then
-            banner = ax.Util:GetMaterial(banner)
+            banner = ax.util:GetMaterial(banner)
         end
 
         local image = button:Add("DPanel")

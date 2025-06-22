@@ -189,7 +189,7 @@ function PLAYER:IsFemale()
     local model = string.lower(self:GetModel())
     if ( !isstring(model) or model == "" ) then return false end
 
-    if ( ax.Util:FindString(model, "female") or ax.Util:FindString(model, "alyx") or ax.Util:FindString(model, "mossman") ) then
+    if ( ax.util:FindString(model, "female") or ax.util:FindString(model, "alyx") or ax.util:FindString(model, "mossman") ) then
         return true
     end
 

@@ -25,7 +25,7 @@ function ax.SQLite:Query(query, onSuccess, onError)
     local result = sql.Query(query)
     if ( result == false ) then
         local err = sql.LastError()
-        ax.Util:PrintError("SQLite query failed: " .. query .. " :: " .. (err or "unknown"))
+        ax.util:PrintError("SQLite query failed: " .. query .. " :: " .. (err or "unknown"))
         if ( onError ) then onError(err) end
     else
         if ( onSuccess ) then onSuccess(result) end
@@ -148,10 +148,10 @@ function ax.SQLite:LoadRow(query, key, value, callback)
 
         if ( callback ) then
             if ( isfunction(callback) ) then
-                ax.Util:PrintWarning("Database Row not found, inserting default row")
+                ax.util:PrintWarning("Database Row not found, inserting default row")
                 callback(row)
             else
-                ax.Util:PrintError("Database LoadRow Callback must be a function")
+                ax.util:PrintError("Database LoadRow Callback must be a function")
             end
         end
 
@@ -225,7 +225,7 @@ function ax.SQLite:Update(query, data, condition, callback)
     local insertQuery = string.format("UPDATE %s SET %s WHERE %s;", query, table.concat(updates, ", "), condition)
     local result = self:Query(insertQuery)
     if ( result == false ) then
-        ax.Util:PrintError("Database Failed to update row: ", insertQuery, sql.LastError())
+        ax.util:PrintError("Database Failed to update row: ", insertQuery, sql.LastError())
         return false
     end
 
@@ -243,7 +243,7 @@ function ax.SQLite:Delete(query, condition, callback)
     local insertQuery = string.format("DELETE FROM %s WHERE %s;", query, condition)
     local result = self:Query(insertQuery)
     if ( result == false ) then
-        ax.Util:PrintError("Database Failed to delete row: ", insertQuery, sql.LastError())
+        ax.util:PrintError("Database Failed to delete row: ", insertQuery, sql.LastError())
         return false
     end
 
@@ -267,7 +267,7 @@ function ax.SQLite:Select(query, columns, condition, callback)
 
     local result = self:Query(insertQuery)
     if ( result == false ) then
-        ax.Util:PrintError("Database Failed to select rows: ", insertQuery, " ", sql.LastError())
+        ax.util:PrintError("Database Failed to select rows: ", insertQuery, " ", sql.LastError())
         return nil
     end
 

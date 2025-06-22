@@ -58,7 +58,7 @@ properties.Add("ax.Property.currency.setamount", {
         if ( !isnumber(amount) ) then return end
 
         if ( amount < 0 ) then
-            ax.Util:PrintWarning(Format("Admin %s (%s) tried to set the amount of currency to a negative value!", client:SteamName(), client:SteamID64()))
+            ax.util:PrintWarning(Format("Admin %s (%s) tried to set the amount of currency to a negative value!", client:SteamName(), client:SteamID64()))
             return
         end
 

@@ -9,19 +9,19 @@
     Attribution is required. If you use or modify this file, you must retain this notice.
 ]]
 
-ax.Character:RegisterVariable("steamid", {
+ax.character:RegisterVariable("steamid", {
     Type = ax.Types.string,
     Field = "steamid",
     Default = ""
 })
 
-ax.Character:RegisterVariable("schema", {
+ax.character:RegisterVariable("schema", {
     Type = ax.Types.string,
     Field = "schema",
     Default = "parallax"
 })
 
-ax.Character:RegisterVariable("data", {
+ax.character:RegisterVariable("data", {
     Type = ax.Types.string,
     Field = "data",
     Default = "[]",
@@ -29,7 +29,7 @@ ax.Character:RegisterVariable("data", {
     Alias = "DataInternal"
 })
 
-ax.Character:RegisterVariable("name", {
+ax.character:RegisterVariable("name", {
     Type = ax.Types.string,
     Field = "name",
     Default = "John Doe",
@@ -65,7 +65,7 @@ ax.Character:RegisterVariable("name", {
     end
 })
 
-ax.Character:RegisterVariable("description", {
+ax.character:RegisterVariable("description", {
     Type = ax.Types.text,
     Field = "description",
     Default = "A mysterious person.",
@@ -92,7 +92,7 @@ ax.Character:RegisterVariable("description", {
     end
 })
 
-ax.Character:RegisterVariable("model", {
+ax.character:RegisterVariable("model", {
     Type = ax.Types.string,
     Field = "model",
     Default = "models/player/kleiner.mdl",
@@ -179,19 +179,19 @@ ax.Character:RegisterVariable("model", {
     end
 })
 
-ax.Character:RegisterVariable("skin", {
+ax.character:RegisterVariable("skin", {
     Type = ax.Types.number,
     Field = "skin",
     Default = 0
 })
 
-ax.Character:RegisterVariable("money", {
+ax.character:RegisterVariable("money", {
     Type = ax.Types.number,
     Field = "money",
     Default = 0
 })
 
-ax.Character:RegisterVariable("faction", {
+ax.character:RegisterVariable("faction", {
     Type = ax.Types.number,
     Field = "faction",
     Default = 0,
@@ -211,26 +211,26 @@ ax.Character:RegisterVariable("faction", {
     end,
 })
 
-ax.Character:RegisterVariable("class", {
+ax.character:RegisterVariable("class", {
     Type = ax.Types.number,
     Field = "class",
     Default = 0
 })
 
-ax.Character:RegisterVariable("flags", {
+ax.character:RegisterVariable("flags", {
     Type = ax.Types.string,
     Field = "flags",
     Default = "",
 })
 
-ax.Character:RegisterVariable("play_time", {
+ax.character:RegisterVariable("play_time", {
     Type = ax.Types.number,
     Field = "play_time",
     Alias = "PlayTime",
     Default = 0
 })
 
-ax.Character:RegisterVariable("last_played", {
+ax.character:RegisterVariable("last_played", {
     Type = ax.Types.number,
     Field = "last_played",
     Alias = "LastPlayed",

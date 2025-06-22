@@ -14,17 +14,17 @@
 -----------------------------------------------------------------------------]]--
 
 ax.net:Hook("character.load", function(client, characterID)
-    ax.Character:Load(client, characterID)
+    ax.character:Load(client, characterID)
 end)
 
 ax.net:Hook("character.delete", function(client, characterID)
-    local character = ax.Character:Get(characterID)
+    local character = ax.character:Get(characterID)
     if ( !character ) then return end
 
     local bResult = hook.Run("PrePlayerDeletedCharacter", client, characterID)
     if ( bResult == false ) then return end
 
-    ax.Character:Delete(characterID)
+    ax.character:Delete(characterID)
 
     hook.Run("PostPlayerDeletedCharacter", client, characterID)
 end)
@@ -41,7 +41,7 @@ ax.net:Hook("character.create", function(client, payload)
         return
     end
 
-    for k, v in pairs(ax.Character.variables) do
+    for k, v in pairs(ax.character.variables) do
         if ( v.Editable != true ) then continue end
 
         -- This is a bit of a hack, but it works for now.
@@ -58,14 +58,14 @@ ax.net:Hook("character.create", function(client, payload)
         end
     end
 
-    ax.Character:Create(client, payload, function(success, result)
+    ax.character:Create(client, payload, function(success, result)
         if ( !success ) then
-            ax.Util:PrintError("Failed to create character: " .. result)
+            ax.util:PrintError("Failed to create character: " .. result)
             ax.net:Start(client, "character.create.failed", result or "Failed to create character!")
             return
         end
 
-        ax.Character:Load(client, result:GetID())
+        ax.character:Load(client, result:GetID())
 
         ax.net:Start(client, "character.create")
 
@@ -134,15 +134,15 @@ ax.net:Hook("option.sync", function(client, data)
     for k, v in pairs(ax.option.stored) do
         local stored = ax.option.stored[k]
         if ( !istable(stored) ) then
-            ax.Util:PrintError("Option \"" .. k .. "\" does not exist!")
+            ax.util:PrintError("Option \"" .. k .. "\" does not exist!")
             continue
         end
 
         if ( stored.NoNetworking ) then continue end
 
         if ( data[k] != nil ) then
-            if ( ax.Util:DetectType(data[k]) != stored.Type ) then
-                ax.Util:PrintError("Option \"" .. k .. "\" is not of type \"" .. stored.Type .. "\"!")
+            if ( ax.util:DetectType(data[k]) != stored.Type ) then
+                ax.util:PrintError("Option \"" .. k .. "\" is not of type \"" .. stored.Type .. "\"!")
                 continue
             end
 

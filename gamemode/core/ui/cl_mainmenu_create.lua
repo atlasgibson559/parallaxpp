@@ -24,7 +24,7 @@ end
 function PANEL:ResetPayload()
     self.currentCreatePage = 0
 
-    for k, v in pairs(ax.Character.variables) do
+    for k, v in pairs(ax.character.variables) do
         if ( v.Editable != true ) then continue end
 
         -- This is a bit of a hack, but it works for now.
@@ -116,9 +116,9 @@ function PANEL:PopulateFactionSelect()
 
         local name = (v.Name and ax.utf8:Upper(v.Name)) or "UNKNOWN FACTION"
         local description = (v.Description and ax.utf8:Upper(v.Description)) or "UNKNOWN FACTION DESCRIPTION"
-        description = ax.Util:CapTextWord(description, factionList:GetTall() / 3) -- Unreliable, but it works for now
+        description = ax.util:CapTextWord(description, factionList:GetTall() / 3) -- Unreliable, but it works for now
 
-        local descriptionWrapped = ax.Util:GetWrappedText(description, "ax.Bold", factionList:GetTall() * 1.25)
+        local descriptionWrapped = ax.util:GetWrappedText(description, "ax.Bold", factionList:GetTall() * 1.25)
 
         local factionButton = factionList:Add("ax.Button.Flat")
         factionButton:Dock(LEFT)
@@ -136,7 +136,7 @@ function PANEL:PopulateFactionSelect()
 
         local banner = v.Image or hook.Run("GetFactionBanner", v:GetID()) or "gamepadui/hl2/chapter14"
         if ( type(banner) == "string" ) then
-            banner = ax.Util:GetMaterial(banner)
+            banner = ax.util:GetMaterial(banner)
         end
 
         local image = factionButton:Add("DPanel")
@@ -174,7 +174,7 @@ function PANEL:PopulateFactionSelect()
 
             draw.SimpleText(name, font, ScreenScale(8), imageHeight - boxHeight + boxHeightStatic / 2, textColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 
-            local textHeight = ax.Util:GetTextHeight("ax.Bold") / 1.5
+            local textHeight = ax.util:GetTextHeight("ax.Bold") / 1.5
             for d = 1, #descriptionWrapped do
                 draw.SimpleText(descriptionWrapped[d], "ax.Bold", ScreenScale(8), imageHeight - boxHeight + boxHeightStatic + (d - 1) * textHeight, ColorAlpha(textColor, 255 * inertia), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
             end
@@ -201,7 +201,7 @@ function PANEL:PopulateCreateCharacter()
                 end
             end
         else
-            ax.Util:PrintError("No factions available for character creation!")
+            ax.util:PrintError("No factions available for character creation!")
             return
         end
     end
@@ -262,7 +262,7 @@ function PANEL:PopulateCreateCharacter()
 
     nextButton.DoClick = function()
         local isNextEmpty = true
-        for k, v in pairs(ax.Character.variables) do
+        for k, v in pairs(ax.character.variables) do
             if ( v.Editable != true ) then continue end
 
             if ( isfunction(v.OnValidate) ) then
@@ -316,12 +316,12 @@ function PANEL:PopulateCreateCharacterForm()
 
     local factionData = ax.faction:Get(self.currentCreatePayload.faction)
     if ( !factionData ) then
-        ax.Util:PrintError("No faction data found for faction ID: " .. tostring(self.currentCreatePayload.faction))
+        ax.util:PrintError("No faction data found for faction ID: " .. tostring(self.currentCreatePayload.faction))
         return
     end
 
     local zPos = 0
-    for k, v in pairs(ax.Character.variables) do
+    for k, v in pairs(ax.character.variables) do
         if ( v.Editable != true ) then continue end
 
         local page = v.Page or 0

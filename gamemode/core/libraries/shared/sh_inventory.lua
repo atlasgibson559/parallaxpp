@@ -19,7 +19,7 @@ ax.inventory.stored = ax.inventory.stored or {}
 -- Create an inventory object
 function ax.inventory:CreateObject(data)
     if ( !data or !istable(data) ) then
-        ax.Util:PrintError("Invalid data passed to CreateObject")
+        ax.util:PrintError("Invalid data passed to CreateObject")
         return
     end
 
@@ -29,9 +29,9 @@ function ax.inventory:CreateObject(data)
     inventory.CharacterID = tonumber(data.CharacterID or data.character_id or 0)
     inventory.Name = data.Name or data.name or "Inventory"
     inventory.MaxWeight = tonumber(data.MaxWeight or data.max_weight) or ax.config:Get("inventory.max.weight", 20)
-    inventory.Items = ax.Util:SafeParseTable(data.Items or data.items)
-    inventory.Data = ax.Util:SafeParseTable(data.Data or data.data)
-    inventory.Receivers = ax.Util:SafeParseTable(data.Receivers or data.receivers)
+    inventory.Items = ax.util:SafeParseTable(data.Items or data.items)
+    inventory.Data = ax.util:SafeParseTable(data.Data or data.data)
+    inventory.Receivers = ax.util:SafeParseTable(data.Receivers or data.receivers)
 
     self.stored[inventory.ID] = inventory
 

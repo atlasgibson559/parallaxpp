@@ -116,7 +116,7 @@ end
 -- @treturn string|nil An error message if the name was not set successfully.
 function FACTION:SetName(name)
     if ( !isstring(name) ) then
-        ax.Util:PrintError("Attempted to set a faction's name without a valid name!")
+        ax.util:PrintError("Attempted to set a faction's name without a valid name!")
         return false, "Attempted to set a faction's name without a valid name!"
     end
 
@@ -130,7 +130,7 @@ end
 -- @treturn string|nil An error message if the description was not set successfully.
 function FACTION:SetDescription(description)
     if ( !isstring(description) ) then
-        ax.Util:PrintError("Attempted to set a faction's description without a valid description!")
+        ax.util:PrintError("Attempted to set a faction's description without a valid description!")
         return false, "Attempted to set a faction's description without a valid description!"
     end
 
@@ -142,8 +142,8 @@ end
 -- @param color The color of the faction.
 -- @treturn boolean True if the color was set successfully, false otherwise.
 function FACTION:SetColor(color)
-    if ( !ax.Util:CoerceType(ax.Types.color, color) ) then
-        ax.Util:PrintError("Attempted to set a faction's color without a valid color!")
+    if ( !ax.util:CoerceType(ax.Types.color, color) ) then
+        ax.util:PrintError("Attempted to set a faction's color without a valid color!")
         return false, "Attempted to set a faction's color without a valid color!"
     end
 
@@ -158,7 +158,7 @@ FACTION.SetColour = FACTION.SetColor
 -- @treturn boolean True if the models were set successfully, false otherwise.
 function FACTION:SetModels(models)
     if ( !istable(models) and !isstring(models) ) then
-        ax.Util:PrintError("Attempted to set a faction's models without a valid table or string!")
+        ax.util:PrintError("Attempted to set a faction's models without a valid table or string!")
         return false, "Attempted to set a faction's models without a valid table or string!"
     end
 
@@ -173,7 +173,7 @@ end
 function FACTION:Register()
     local bResult = hook.Run("PreFactionRegistered", self)
     if ( bResult == false ) then
-        ax.Util:PrintError("Attempted to register a faction that was blocked by a hook!")
+        ax.util:PrintError("Attempted to register a faction that was blocked by a hook!")
         return false, "Attempted to register a faction that was blocked by a hook!"
     end
 

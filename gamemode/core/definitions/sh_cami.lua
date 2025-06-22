@@ -10,7 +10,7 @@
 ]]
 
 if ( !tobool(CAMI) ) then
-    ax.Util:PrintError("CAMI is not installed.")
+    ax.util:PrintError("CAMI is not installed.")
     return
 end
 

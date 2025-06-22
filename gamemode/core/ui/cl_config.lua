@@ -38,7 +38,7 @@ function PANEL:Init()
         if ( value and value != "" ) then
             self:PopulateCategory(nil, value)
         else
-            self:PopulateCategory(ax.GUI.ConfigLast)
+            self:PopulateCategory(ax.gui.ConfigLast)
         end
     end
 
@@ -72,8 +72,8 @@ function PANEL:Init()
         self.buttons:AddPanel(button)
     end
 
-    if ( ax.GUI.ConfigLast ) then
-        self:PopulateCategory(ax.GUI.ConfigLast)
+    if ( ax.gui.ConfigLast ) then
+        self:PopulateCategory(ax.gui.ConfigLast)
     else
         self:PopulateCategory(categories[1])
     end
@@ -81,18 +81,18 @@ end
 
 function PANEL:PopulateCategory(category, toSearch)
     if ( category ) then
-        ax.GUI.ConfigLast = category
+        ax.gui.ConfigLast = category
     end
 
     self.container:Clear()
 
     local config = {}
     for k, v in pairs(ax.config.stored) do
-        if ( category and ax.Util:FindString(v.Category, category) == false ) then
+        if ( category and ax.util:FindString(v.Category, category) == false ) then
             continue
         end
 
-        if ( toSearch and ax.Util:FindString(ax.localization:GetPhrase(v.Name), toSearch) == false ) then
+        if ( toSearch and ax.util:FindString(ax.localization:GetPhrase(v.Name), toSearch) == false ) then
             continue
         end
 
@@ -395,7 +395,7 @@ function PANEL:AddConfig(configData)
             blocker:SetPos(0, 0)
             blocker:MakePopup()
             blocker.Paint = function(this, width, height)
-                ax.Util:DrawBlur(this, 2)
+                ax.util:DrawBlur(this, 2)
                 draw.RoundedBox(0, 0, 0, width, height, Color(0, 0, 0, 200))
             end
             blocker.OnMousePressed = function(this, key)
@@ -515,18 +515,18 @@ function PANEL:AddConfig(configData)
             label:SetText("< " .. phrase .. " >", true)
         end
 
-        if ( !IsValid(ax.GUI.Tooltip) ) then
-            ax.GUI.Tooltip = vgui.Create("ax.Tooltip")
-            ax.GUI.Tooltip:SetText(configData.Name, configData.Description)
-            ax.GUI.Tooltip:SizeToContents()
-            ax.GUI.Tooltip:SetPanel(this)
+        if ( !IsValid(ax.gui.Tooltip) ) then
+            ax.gui.Tooltip = vgui.Create("ax.tooltip")
+            ax.gui.Tooltip:SetText(configData.Name, configData.Description)
+            ax.gui.Tooltip:SizeToContents()
+            ax.gui.Tooltip:SetPanel(this)
         else
-            ax.GUI.Tooltip:SetText(configData.Name, configData.Description)
-            ax.GUI.Tooltip:SizeToContents()
+            ax.gui.Tooltip:SetText(configData.Name, configData.Description)
+            ax.gui.Tooltip:SizeToContents()
 
             timer.Simple(0, function()
-                if ( IsValid(ax.GUI.Tooltip) ) then
-                    ax.GUI.Tooltip:SetPanel(this)
+                if ( IsValid(ax.gui.Tooltip) ) then
+                    ax.gui.Tooltip:SetPanel(this)
                 end
             end)
         end
@@ -540,12 +540,12 @@ function PANEL:AddConfig(configData)
             label:SetText(phrase, true)
         end
 
-        if ( IsValid(ax.GUI.Tooltip) ) then
-            ax.GUI.Tooltip:SetPanel(nil)
+        if ( IsValid(ax.gui.Tooltip) ) then
+            ax.gui.Tooltip:SetPanel(nil)
         end
     end
 end
 
 vgui.Register("ax.config", PANEL, "EditablePanel")
 
-ax.GUI.ConfigLast = nil
+ax.gui.ConfigLast = nil

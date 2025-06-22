@@ -10,10 +10,10 @@
 ]]
 
 local padding = ScreenScale(32)
-local gradientLeft = ax.Util:GetMaterial("vgui/gradient-l")
-local gradientRight = ax.Util:GetMaterial("vgui/gradient-r")
-local gradientTop = ax.Util:GetMaterial("vgui/gradient-u")
-local gradientBottom = ax.Util:GetMaterial("vgui/gradient-d")
+local gradientLeft = ax.util:GetMaterial("vgui/gradient-l")
+local gradientRight = ax.util:GetMaterial("vgui/gradient-r")
+local gradientTop = ax.util:GetMaterial("vgui/gradient-u")
+local gradientBottom = ax.util:GetMaterial("vgui/gradient-d")
 
 DEFINE_BASECLASS("EditablePanel")
 
@@ -36,11 +36,11 @@ AccessorFunc(PANEL, "dim", "Dim", FORCE_NUMBER)
 AccessorFunc(PANEL, "dimTarget", "DimTarget", FORCE_NUMBER)
 
 function PANEL:Init()
-    if ( IsValid(ax.GUI.Mainmenu) ) then
-        ax.GUI.Mainmenu:Remove()
+    if ( IsValid(ax.gui.Mainmenu) ) then
+        ax.gui.Mainmenu:Remove()
     end
 
-    ax.GUI.Mainmenu = self
+    ax.gui.Mainmenu = self
 
     local client = ax.Client
     if ( IsValid(client) and client:IsTyping() ) then
@@ -130,7 +130,7 @@ function PANEL:Populate()
 
         schemaName = ax.utf8:Upper(schemaName)
     else
-        ax.Util:PrintError("SCHEMA is not defined! Please ensure that your schema is properly set up.")
+        ax.util:PrintError("SCHEMA is not defined! Please ensure that your schema is properly set up.")
     end
 
     subtitle:SetText(schemaName)
@@ -250,8 +250,8 @@ end
 
 vgui.Register("ax.Mainmenu", PANEL, "EditablePanel")
 
-if ( IsValid(ax.GUI.Mainmenu) ) then
-    ax.GUI.Mainmenu:Remove()
+if ( IsValid(ax.gui.Mainmenu) ) then
+    ax.gui.Mainmenu:Remove()
 
     timer.Simple(0.1, function()
         vgui.Create("ax.Mainmenu")
@@ -263,8 +263,8 @@ concommand.Add("ax_mainmenu", function(client, command, arguments)
         return
     end
 
-    if ( IsValid(ax.GUI.Mainmenu) ) then
-        ax.GUI.Mainmenu:Remove()
+    if ( IsValid(ax.gui.Mainmenu) ) then
+        ax.gui.Mainmenu:Remove()
     end
 
     vgui.Create("ax.Mainmenu")

@@ -19,7 +19,7 @@
 -- @tab arguments The arguments of the command.
 function ax.command:Run(client, command, arguments)
     if ( !IsValid(client) ) then
-        ax.Util:PrintError("Attempted to run a command with no player!")
+        ax.util:PrintError("Attempted to run a command with no player!")
         return false
     end
 
@@ -64,8 +64,8 @@ function ax.command:Run(client, command, arguments)
     if ( info.Arguments ) then
         for i = 1, #info.Arguments do
             local v = info.Arguments[i]
-            local value = ax.Util:CoerceType(v.Type, arguments[i])
-            if ( ax.Util:DetectType(value) != v.Type and !v.Optional ) then
+            local value = ax.util:CoerceType(v.Type, arguments[i])
+            if ( ax.util:DetectType(value) != v.Type and !v.Optional ) then
                 client:Notify(v.ErrorMsg or "Invalid argument type provided!", NOTIFY_ERROR)
 
                 return false
@@ -84,7 +84,7 @@ end
 
 concommand.Add("ax_command_run", function(client, cmd, arguments)
     if ( !IsValid(client) ) then
-        ax.Util:PrintError("Attempted to run a command with no player!")
+        ax.util:PrintError("Attempted to run a command with no player!")
         return
     end
 
@@ -100,20 +100,20 @@ end)
 
 concommand.Add("ax_command", function(client, cmd, arguments)
     if ( !IsValid(client) ) then
-        ax.Util:PrintError("Attempted to list commands with no player!")
+        ax.util:PrintError("Attempted to list commands with no player!")
         return
     end
 
     if ( client:OnCooldown("command") ) then return end
 
-    ax.Util:Print("Commands:")
+    ax.util:Print("Commands:")
 
     for k, v in pairs(ax.command.stored) do
         if ( !CAMI.PlayerHasAccess(client, "Parallax - Commands - " .. k) ) then
             continue
         end
 
-        ax.Util:Print("/" .. v.Name .. (v.Description and " - " .. v.Description or ""))
+        ax.util:Print("/" .. v.Name .. (v.Description and " - " .. v.Description or ""))
     end
 
     client:SetCooldown("command", 1)

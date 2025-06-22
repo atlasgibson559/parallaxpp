@@ -28,7 +28,7 @@ function ax.faction:Get(identifier)
 
     if ( isnumber(identifier) ) then
         if ( identifier < 1 ) then
-            ax.Util:PrintError("Attempted to get a faction with an invalid ID!")
+            ax.util:PrintError("Attempted to get a faction with an invalid ID!")
             return false, "Attempted to get a faction with an invalid ID!"
         end
 
@@ -40,11 +40,11 @@ function ax.faction:Get(identifier)
 
         for i = 1, #self.instances do
             local v = self.instances[i]
-            if ( ax.Util:FindString(v.Name, identifier) or ax.Util:FindString(v.UniqueID, identifier) ) then
+            if ( ax.util:FindString(v.Name, identifier) or ax.util:FindString(v.UniqueID, identifier) ) then
                 return v
             end
         end
-    elseif ( ax.Util:IsFaction(identifier) ) then
+    elseif ( ax.util:IsFaction(identifier) ) then
         return identifier
     end
 
@@ -53,7 +53,7 @@ end
 
 function ax.faction:CanSwitchTo(client, factionID, oldFactionID)
     if ( !IsValid(client) ) then
-        ax.Util:PrintError("Attempted to check if a player can switch to a faction without a client!")
+        ax.util:PrintError("Attempted to check if a player can switch to a faction without a client!")
         return false, "Attempted to check if a player can switch to a faction without a client!"
     end
 

@@ -71,13 +71,13 @@ end
 
 function ax.character:SetVariable(id, key, value)
     if ( !self.variables[key] ) then
-        ax.Util:PrintError("Attempted to set a variable that does not exist!")
+        ax.util:PrintError("Attempted to set a variable that does not exist!")
         return false, "Attempted to set a variable that does not exist!"
     end
 
     local character = self.stored[id]
     if ( !character ) then
-        ax.Util:PrintError("Attempted to set a variable for a character that does not exist!")
+        ax.util:PrintError("Attempted to set a variable for a character that does not exist!")
         return false, "Attempted to set a variable for a character that does not exist!"
     end
 
@@ -107,14 +107,14 @@ end
 function ax.character:GetVariable(id, key)
     local character = self.stored[id]
     if ( !character ) then
-        ax.Util:PrintError("Attempted to get a variable for a character that does not exist!")
+        ax.util:PrintError("Attempted to get a variable for a character that does not exist!")
         return false, "Attempted to get a variable for a character that does not exist!"
     end
 
     local variable = self.variables[key]
     if ( !variable ) then return end
 
-    local output = ax.Util:CoerceType(variable.Type, character[key])
+    local output = ax.util:CoerceType(variable.Type, character[key])
     if ( variable.OnGet ) then
         return variable:OnGet(character, output)
     end
@@ -124,12 +124,12 @@ end
 
 function ax.character:CreateObject(characterID, data, client)
     if ( !characterID or !data ) then
-        ax.Util:PrintError("Attempted to create a character object with invalid data!")
+        ax.util:PrintError("Attempted to create a character object with invalid data!")
         return false, "Invalid data provided"
     end
 
     if ( self.stored[characterID] ) then
-        ax.Util:PrintWarning("Attempted to create a character object that already exists!")
+        ax.util:PrintWarning("Attempted to create a character object that already exists!")
         return self.stored[characterID], "Character already exists"
     end
 

@@ -29,7 +29,7 @@ function GM:ShouldRenderMainMenu()
     local client = ax.Client
     if ( !IsValid(client) ) then return false end
 
-    return IsValid(ax.GUI.Splash) or IsValid(ax.GUI.Mainmenu)
+    return IsValid(ax.gui.Splash) or IsValid(ax.gui.Mainmenu)
 end
 
 function GM:GetMainMenuMusic()
@@ -49,7 +49,7 @@ function GM:ShouldPlayMainMenuMusic()
 
     local exists = false
     for i = 1, #panels do
-        if ( IsValid(ax.GUI[panels[i]]) ) then
+        if ( IsValid(ax.gui[panels[i]]) ) then
             exists = true
             break
         end
@@ -77,7 +77,7 @@ local function PlayTrack()
 
                 currentStation = station
             else
-                ax.Util:PrintError("Failed to play main menu music: " .. errorName)
+                ax.util:PrintError("Failed to play main menu music: " .. errorName)
             end
         end)
     elseif ( IsValid(currentStation) and shouldPlay ) then
@@ -113,10 +113,10 @@ function GM:ScoreboardShow()
         return false
     end
 
-    if ( !IsValid(ax.GUI.Tab) ) then
+    if ( !IsValid(ax.gui.Tab) ) then
         vgui.Create("ax.Tab")
     else
-        ax.GUI.Tab:Remove()
+        ax.gui.Tab:Remove()
     end
 
     return false
@@ -149,7 +149,7 @@ function GM:OnReloaded()
     ax.schema:Initialize()
     ax.option:Load()
 
-    ax.Util:Print("Core reloaded in " .. math.Round(SysTime() - GM.RefreshTimeStart, 2) .. " seconds.")
+    ax.util:Print("Core reloaded in " .. math.Round(SysTime() - GM.RefreshTimeStart, 2) .. " seconds.")
     hook.Run("LoadFonts")
 end
 
@@ -157,7 +157,7 @@ function GM:InitPostEntity()
     ax.Client = LocalPlayer()
     ax.option:Load()
 
-    if ( !IsValid(ax.GUI.Chatbox) ) then
+    if ( !IsValid(ax.gui.Chatbox) ) then
         vgui.Create("ax.chatbox")
     end
 end
@@ -253,7 +253,7 @@ function GM:CalcViewModelView(weapon, viewModel, oldPos, oldAng, pos, ang)
     return self.BaseClass:CalcViewModelView(weapon, viewModel, oldPos, oldAng, pos, ang)
 end
 
-local vignette = ax.Util:GetMaterial("parallax/overlay_vignette.png", "noclamp smooth")
+local vignette = ax.util:GetMaterial("parallax/overlay_vignette.png", "noclamp smooth")
 local vignetteColor = Color(0, 0, 0, 255)
 function GM:HUDPaintBackground()
     if ( tobool(hook.Run("ShouldDrawVignette")) ) then
@@ -307,7 +307,7 @@ function GM:HUDPaint()
     shouldDraw = hook.Run("ShouldDrawDebugHUD")
     if ( shouldDraw != false ) then
         local green = ax.config:Get("color.framework")
-        local width = math.max(ax.Util:GetTextWidth("ax.Developer", "Pos: " .. tostring(client:GetPos())), ax.Util:GetTextWidth("ax.Developer", "Ang: " .. tostring(client:EyeAngles())))
+        local width = math.max(ax.util:GetTextWidth("ax.Developer", "Pos: " .. tostring(client:GetPos())), ax.util:GetTextWidth("ax.Developer", "Ang: " .. tostring(client:EyeAngles())))
         local height = 16 * 6
 
         local character = client:GetCharacter()
@@ -315,7 +315,7 @@ function GM:HUDPaint()
             height = height + 16 * 6
         end
 
-        ax.Util:DrawBlurRect(x - padding, y - padding, width + padding * 2, height + padding * 2)
+        ax.util:DrawBlurRect(x - padding, y - padding, width + padding * 2, height + padding * 2)
 
         surface.SetDrawColor(backgroundColor)
         surface.DrawRect(x - padding, y - padding, width + padding * 2, height + padding * 2)
@@ -352,7 +352,7 @@ function GM:HUDPaint()
         local orange = ax.color:Get("orange")
         local red = ax.color:Get("red")
 
-        ax.Util:DrawBlurRect(x - padding, y - padding, 410 + padding * 2, 45 + padding * 2)
+        ax.util:DrawBlurRect(x - padding, y - padding, 410 + padding * 2, 45 + padding * 2)
 
         surface.SetDrawColor(backgroundColor)
         surface.DrawRect(x - padding, y - padding, 410 + padding * 2, 45 + padding * 2)
@@ -391,9 +391,9 @@ function GM:HUDPaint()
             surface.SetDrawColor(crosshairColor)
             surface.DrawRect(centerX - size / 2, centerY - size / 2, size, size)
         elseif ( crosshairType == "circle" ) then
-            ax.Util:DrawCircleScaled(centerX, centerY, size / 2, 32, crosshairColor)
+            ax.util:DrawCircleScaled(centerX, centerY, size / 2, 32, crosshairColor)
         else
-            ax.Util:PrintError("Unknown crosshair type: " .. crosshairType)
+            ax.util:PrintError("Unknown crosshair type: " .. crosshairType)
             ax.option:Reset("hud.crosshair.type")
             ax.Client:Notify("Unknown crosshair type: " .. crosshairType .. ". Resetting!")
         end
@@ -433,11 +433,11 @@ function GM:HUDPaint()
             local barWidth, barHeight = scrW / 6, ScreenScale(4)
             local barX, barY = scrW / 2 - barWidth / 2, scrH / 1.025 - barHeight / 2
 
-            if ( ax.Globals.drawingStamina ) then
+            if ( ax.globals.drawingStamina ) then
                 barY = barY - barHeight - padding
             end
 
-            ax.Util:DrawBlurRect(barX, barY, barWidth, barHeight, 2, nil, healthAlpha)
+            ax.util:DrawBlurRect(barX, barY, barWidth, barHeight, 2, nil, healthAlpha)
 
             surface.SetDrawColor(ColorAlpha(ax.color:Get("background.transparent"), healthAlpha / 2))
             surface.DrawRect(barX, barY, barWidth, barHeight)
@@ -707,21 +707,21 @@ function GM:LoadFonts()
 end
 
 function GM:OnPauseMenuShow()
-    if ( IsValid(ax.GUI.Tab) ) then
-        ax.GUI.Tab:Close()
+    if ( IsValid(ax.gui.Tab) ) then
+        ax.gui.Tab:Close()
         return false
     end
 
-    if ( IsValid(ax.GUI.Chatbox) and ax.GUI.Chatbox:GetAlpha() == 255 ) then
-        ax.GUI.Chatbox:SetVisible(false)
+    if ( IsValid(ax.gui.Chatbox) and ax.gui.Chatbox:GetAlpha() == 255 ) then
+        ax.gui.Chatbox:SetVisible(false)
         return false
     end
 
-    if ( !IsValid(ax.GUI.Mainmenu) ) then
+    if ( !IsValid(ax.gui.Mainmenu) ) then
         vgui.Create("ax.Mainmenu")
     else
         if ( ax.Client:GetCharacter() ) then
-            ax.GUI.Mainmenu:Remove()
+            ax.gui.Mainmenu:Remove()
             return
         end
     end
@@ -736,15 +736,15 @@ function GM:PostHUDPaint()
 end
 
 function GM:ShouldDrawCrosshair()
-    if ( IsValid(ax.GUI.Mainmenu) ) then return false end
-    if ( IsValid(ax.GUI.Tab) ) then return false end
+    if ( IsValid(ax.gui.Mainmenu) ) then return false end
+    if ( IsValid(ax.gui.Tab) ) then return false end
 
     return true
 end
 
 function GM:ShouldDrawAmmoBox()
-    if ( IsValid(ax.GUI.Mainmenu) ) then return false end
-    if ( IsValid(ax.GUI.Tab) ) then return false end
+    if ( IsValid(ax.gui.Mainmenu) ) then return false end
+    if ( IsValid(ax.gui.Tab) ) then return false end
 
     local client = ax.Client
     local activeWeapon = client:GetActiveWeapon()
@@ -763,8 +763,8 @@ function GM:ShouldDrawAmmoBox()
 end
 
 function GM:ShouldDrawHealthBar()
-    if ( IsValid(ax.GUI.Mainmenu) ) then return false end
-    if ( IsValid(ax.GUI.Tab) ) then return false end
+    if ( IsValid(ax.gui.Mainmenu) ) then return false end
+    if ( IsValid(ax.gui.Tab) ) then return false end
 
     local client = ax.Client
     if ( !IsValid(client) or !client:Alive() ) then return false end
@@ -774,22 +774,22 @@ end
 
 function GM:ShouldDrawDebugHUD()
     if ( !ax.config:Get("debug.developer") ) then return false end
-    if ( IsValid(ax.GUI.Mainmenu) ) then return false end
-    if ( IsValid(ax.GUI.Tab) ) then return false end
+    if ( IsValid(ax.gui.Mainmenu) ) then return false end
+    if ( IsValid(ax.gui.Tab) ) then return false end
 
     return ax.Client:IsDeveloper()
 end
 
 function GM:ShouldDrawPreviewHUD()
     if ( !ax.config:Get("debug.preview") ) then return false end
-    if ( IsValid(ax.GUI.Mainmenu) ) then return false end
-    if ( IsValid(ax.GUI.Tab) ) then return false end
+    if ( IsValid(ax.gui.Mainmenu) ) then return false end
+    if ( IsValid(ax.gui.Tab) ) then return false end
 
     return !hook.Run("ShouldDrawDebugHUD")
 end
 
 function GM:ShouldDrawVignette()
-    if ( IsValid(ax.GUI.Mainmenu) ) then return false end
+    if ( IsValid(ax.gui.Mainmenu) ) then return false end
 
     return ax.option:Get("hud.vignette", true)
 end
@@ -935,7 +935,7 @@ function GM:PopulateHelpCategories(categories)
 
         for commandName, commandInfo in SortedPairs(ax.command:GetAll()) do
             if ( !istable(commandInfo) ) then
-                ax.Util:PrintError("Command '" .. commandName .. "' is not a valid table.")
+                ax.util:PrintError("Command '" .. commandName .. "' is not a valid table.")
                 continue
             end
 
@@ -978,13 +978,13 @@ function GM:PopulateHelpCategories(categories)
                 for i = 1, #commandInfo.Arguments do
                     local data = commandInfo.Arguments[i]
                     if ( !istable(data) ) then
-                        ax.Util:PrintError("Command argument at index " .. i .. " from command '" .. commandName .. "' is not a table. Expected a table with 'Type' and 'ErrorMsg' fields.")
+                        ax.util:PrintError("Command argument at index " .. i .. " from command '" .. commandName .. "' is not a table. Expected a table with 'Type' and 'ErrorMsg' fields.")
                         data = { Type = "Unknown", ErrorMsg = "No error message provided." }
                     end
 
                     local argLabel = panel:Add("ax.Text")
                     argLabel:SetFont("ax.Small")
-                    argLabel:SetText(i .. ": " .. ax.Util:FormatType(data.Type) .. " - " .. (data.ErrorMsg or "No error message provided."), true)
+                    argLabel:SetText(i .. ": " .. ax.util:FormatType(data.Type) .. " - " .. (data.ErrorMsg or "No error message provided."), true)
                     if ( data.Optional ) then
                         argLabel:SetText(argLabel:GetText() .. " (Optional)", true)
                     end
@@ -1027,13 +1027,13 @@ function GM:ChatboxOnTextChanged(text)
     ax.net:Start("client.chatbox.text.changed", text)
 
     -- Notify the command system about the text change
-    local command = ax.command:Get(ax.GUI.Chatbox:GetChatType())
+    local command = ax.command:Get(ax.gui.Chatbox:GetChatType())
     if ( command and command.OnChatTextChanged ) then
         command:OnTextChanged(text)
     end
 
     -- Notify the chat system about the text change
-    local chat = ax.chat:Get(ax.GUI.Chatbox:GetChatType())
+    local chat = ax.chat:Get(ax.gui.Chatbox:GetChatType())
     if ( chat and chat.OnChatTextChanged ) then
         chat:OnTextChanged(text)
     end
@@ -1059,7 +1059,7 @@ function GM:PlayerBindPress(client, bind, pressed)
     bind = bind:lower()
 
     if ( string.find(bind, "messagemode") and pressed ) then
-        ax.GUI.Chatbox:SetVisible(true)
+        ax.gui.Chatbox:SetVisible(true)
 
         for i = 1, #ax.chat.messages do
             local pnl = ax.chat.messages[i]
@@ -1083,8 +1083,8 @@ function GM:ForceDermaSkin()
 end
 
 function GM:OnScreenSizeChanged(oldWidth, oldHeight, newWidth, newHeight)
-    for i = 1, #ax.GUI do
-        local v = ax.GUI[i]
+    for i = 1, #ax.gui do
+        local v = ax.gui[i]
         if ( ispanel(v) and IsValid(v) ) then
             local className = v:GetClassName()
             v:Remove()

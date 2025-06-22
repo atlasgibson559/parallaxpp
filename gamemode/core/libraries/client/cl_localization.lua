@@ -21,12 +21,12 @@ ax.localization.stored = {}
 -- @param data The language data.
 function ax.localization:Register(languageName, data)
     if ( !isstring(languageName) ) then
-        ax.Util:PrintError("Attempted to register a language without a language code!")
+        ax.util:PrintError("Attempted to register a language without a language code!")
         return false
     end
 
     if ( !istable(data) ) then
-        ax.Util:PrintError("Attempted to register a language without data!")
+        ax.util:PrintError("Attempted to register a language without data!")
         return false
     end
 
@@ -49,7 +49,7 @@ end
 function ax.localization:Get(languageName)
     local stored = self.stored[languageName]
     if ( !istable(stored) ) then
-        ax.Util:PrintError("Attempted to get localisation data that doesn't exist! Language: " .. languageName)
+        ax.util:PrintError("Attempted to get localisation data that doesn't exist! Language: " .. languageName)
         return false
     end
 
@@ -101,7 +101,7 @@ end
 concommand.Add("ax_localization_check", function(client, command, arguments)
     local enLocalisation = ax.localization.stored.en
     local enCount = table.Count(enLocalisation)
-    ax.Util:Print("English Localisation has " .. enCount .. " phrases.")
+    ax.util:Print("English Localisation has " .. enCount .. " phrases.")
 
     for languageName, data in pairs(ax.localization.stored) do
         if ( languageName == "en" ) then continue end
@@ -115,13 +115,13 @@ concommand.Add("ax_localization_check", function(client, command, arguments)
 
         local dataCount = table.Count(data)
         if ( dataCount != enCount ) then
-            ax.Util:Print("Language '" .. languageName .. "' has " .. ( dataCount > enCount and "more" or "less" ) .. " phrases (" .. dataCount .. ") than English! (" .. enCount .. ")")
+            ax.util:Print("Language '" .. languageName .. "' has " .. ( dataCount > enCount and "more" or "less" ) .. " phrases (" .. dataCount .. ") than English! (" .. enCount .. ")")
         end
 
         if ( missingPhrases[1] != nil ) then
-            ax.Util:PrintWarning("Language \"" .. languageName .. "\" is missing the following phrases: (" .. #missingPhrases .. ")")
+            ax.util:PrintWarning("Language \"" .. languageName .. "\" is missing the following phrases: (" .. #missingPhrases .. ")")
             for i = 1, #missingPhrases do
-                ax.Util:PrintWarning("\t\t" .. missingPhrases[i])
+                ax.util:PrintWarning("\t\t" .. missingPhrases[i])
             end
         end
     end

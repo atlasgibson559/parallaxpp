@@ -10,19 +10,19 @@
 ]]
 
 --- Utility functions
--- @module ax.Util
+-- @module ax.util
 
-ax.Util = ax.Util or {}
+ax.util = ax.util or {}
 
 --- Converts and sanitizes input data into the specified type.
 -- This supports simple type coercion and fallback defaults.
 -- @param typeID number A type constant from ax.Types
 -- @param value any The raw value to sanitize
 -- @return any A validated and converted result
--- @usage ax.Util:CoerceType(ax.Types.number, "123") -- returns 123
-function ax.Util:CoerceType(typeID, value)
+-- @usage ax.util:CoerceType(ax.Types.number, "123") -- returns 123
+function ax.util:CoerceType(typeID, value)
     if ( typeID == nil or value == nil ) then
-        ax.Util:PrintError("Attempted to coerce a type with no type ID or value! (" .. tostring(typeID) .. ", " .. tostring(value) .. ")")
+        ax.util:PrintError("Attempted to coerce a type with no type ID or value! (" .. tostring(typeID) .. ", " .. tostring(value) .. ")")
         return nil
     end
 
@@ -40,14 +40,14 @@ function ax.Util:CoerceType(typeID, value)
         return ( IsColor(value) or ( istable(value) and isnumber(value.r) and isnumber(value.g) and isnumber(value.b) and isnumber(value.a) ) ) and value
     elseif ( typeID == ax.Types.player ) then
         if ( isstring(value) ) then
-            return ax.Util:FindPlayer(value)
+            return ax.util:FindPlayer(value)
         elseif ( isnumber(value) ) then
             return Player(value)
         elseif ( IsValid(value) and value:IsPlayer() ) then
             return value
         end
     elseif ( typeID == ax.Types.character ) then
-        if ( istable(value) and ax.Util:IsCharacter(value) ) then
+        if ( istable(value) and ax.util:IsCharacter(value) ) then
             return value
         end
     elseif ( typeID == ax.Types.steamid ) then
@@ -75,7 +75,7 @@ local checkTypeMap = {
     [ax.Types.color] = function(val)
         return IsColor(val) or ( istable(val) and isnumber(val.r) and isnumber(val.g) and isnumber(val.b) and isnumber(val.a) )
     end,
-    [ax.Types.character] = function(val) return getmetatable(val) == ax.Character.meta end,
+    [ax.Types.character] = function(val) return getmetatable(val) == ax.character.meta end,
     [ax.Types.steamid] = function(val) return isstring(val) and #val == 19 and string.match(val, "STEAM_%d:%d:%d+") != nil end,
     [ax.Types.steamid64] = function(val) return isstring(val) and #val == 17 and ( string.match(val, "7656119%d+") != nil or string.match(val, "9007199%d+") != nil ) end
 }
@@ -83,8 +83,8 @@ local checkTypeMap = {
 --- Attempts to identify the framework type of a given value.
 -- @param value any The value to analyze
 -- @return number|nil A type constant from ax.Types or nil if unknown
--- @usage local t = ax.Util:DetectType(Color(255,0,0)) -- returns ax.Types.color
-function ax.Util:DetectType(value)
+-- @usage local t = ax.util:DetectType(Color(255,0,0)) -- returns ax.Types.color
+function ax.util:DetectType(value)
     local luaType = type(value)
     local mapped = basicTypeMap[luaType]
 
@@ -118,10 +118,10 @@ local typeNames = {
 --- Formats a type ID into a human-readable string.
 -- @param typeID number The type ID to format.
 -- @return string The formatted type name.
--- @usage local typeName = ax.Util:FormatType(ax.Types.color) -- returns "Color"
-function ax.Util:FormatType(typeID)
+-- @usage local typeName = ax.util:FormatType(ax.Types.color) -- returns "Color"
+function ax.util:FormatType(typeID)
     if ( typeID == nil ) then
-        ax.Util:PrintError("Attempted to format a type with no type ID!", typeID)
+        ax.util:PrintError("Attempted to format a type with no type ID!", typeID)
         return "Unknown"
     end
 
@@ -132,7 +132,7 @@ end
 -- @realm shared
 -- @param client Player The player to send the message to.
 -- @param ... any The message to send.
-function ax.Util:SendChatText(client, ...)
+function ax.util:SendChatText(client, ...)
     if ( SERVER ) then
         ax.net:Start(client, "chat.text", {...})
     else
@@ -144,7 +144,7 @@ end
 -- @realm shared
 -- @param ... any The package to prepare.
 -- @return any The prepared package.
-function ax.Util:PreparePackage(...)
+function ax.util:PreparePackage(...)
     local arguments = {...}
     local package = {}
 
@@ -176,7 +176,7 @@ local successColor = Color(120, 255, 120)
 --- Prints a message to the console.
 -- @realm shared
 -- @param ... any The message to print.
-function ax.Util:Print(...)
+function ax.util:Print(...)
     local arguments = self:PreparePackage(...)
 
     local bConfigInit = istable(ax.config) and isfunction(ax.config.Get)
@@ -199,7 +199,7 @@ end
 -- @realm shared
 -- @param ... any The message to print.
 local _printingError = false
-function ax.Util:PrintError(...)
+function ax.util:PrintError(...)
     if ( _printingError ) then return end
     _printingError = true
 
@@ -262,7 +262,7 @@ end
 --- Prints a warning message to the console.
 -- @realm shared
 -- @param ... any The message to print.
-function ax.Util:PrintWarning(...)
+function ax.util:PrintWarning(...)
     local arguments = self:PreparePackage(...)
 
     local bConfigInit = istable(ax.config) and isfunction(ax.config.Get)
@@ -282,7 +282,7 @@ end
 --- Prints a success message to the console.
 -- @realm shared
 -- @param ... any The message to print.
-function ax.Util:PrintSuccess(...)
+function ax.util:PrintSuccess(...)
     local arguments = self:PreparePackage(...)
 
     local bConfigInit = istable(ax.config) and isfunction(ax.config.Get)
@@ -303,7 +303,7 @@ end
 -- @realm shared
 -- @param path string The path to the file.
 -- @param realm string The realm to load the file in.
-function ax.Util:LoadFile(path, realm)
+function ax.util:LoadFile(path, realm)
     if ( !isstring(path) ) then
         self:PrintError("Failed to load file " .. path .. "!")
         return
@@ -330,7 +330,7 @@ end
 -- @realm shared
 -- @param directory string The directory to load the files from.
 -- @param bFromLua boolean Whether or not the files are being loaded from Lua.
-function ax.Util:LoadFolder(directory, bFromLua)
+function ax.util:LoadFolder(directory, bFromLua)
     local baseDir = debug.getinfo(2).source
     baseDir = string.sub(baseDir, 2, string.find(baseDir, "/[^/]*$"))
     baseDir = string.gsub(baseDir, "gamemodes/", "")
@@ -358,9 +358,9 @@ end
 -- @string str The value to get the type of.
 -- @string find The type to search for.
 -- @return string The type of the value.
-function ax.Util:FindString(str, find)
+function ax.util:FindString(str, find)
     if ( str == nil or find == nil ) then
-        ax.Util:PrintError("Attempted to find a string with no value to find for! (" .. tostring(str) .. ", " .. tostring(find) .. ")")
+        ax.util:PrintError("Attempted to find a string with no value to find for! (" .. tostring(str) .. ", " .. tostring(find) .. ")")
         return false
     end
 
@@ -375,9 +375,9 @@ end
 -- @string txt The text to search in.
 -- @string find The value to search for.
 -- @return boolean Whether or not the value was found.
-function ax.Util:FindText(txt, find)
+function ax.util:FindText(txt, find)
     if ( txt == nil or find == nil ) then
-        ax.Util:PrintError("Attempted to find a string with no value to find for! (" .. txt .. ", " .. find .. ")")
+        ax.util:PrintError("Attempted to find a string with no value to find for! (" .. txt .. ", " .. find .. ")")
         return false
     end
 
@@ -395,9 +395,9 @@ end
 -- @realm shared
 -- @param tbl table The table to search in.
 -- @param find string The string to search for.
-function ax.Util:FindInTable(tbl, find)
+function ax.util:FindInTable(tbl, find)
     if ( !istable(tbl) or !isstring(find) ) then
-        ax.Util:PrintError("Attempted to find a string in a table with no value to find for! (" .. tostring(tbl) .. ", " .. tostring(find) .. ")")
+        ax.util:PrintError("Attempted to find a string in a table with no value to find for! (" .. tostring(tbl) .. ", " .. tostring(find) .. ")")
         return false
     end
 
@@ -414,7 +414,7 @@ end
 -- @realm shared
 -- @param identifier any The identifier to search for.
 -- @return Player The player that was found.
-function ax.Util:FindPlayer(identifier)
+function ax.util:FindPlayer(identifier)
     if ( identifier == nil ) then return NULL end
 
     if ( type(identifier) == "Player" ) then
@@ -426,9 +426,9 @@ function ax.Util:FindPlayer(identifier)
     end
 
     if ( isstring(identifier) ) then
-        if ( ax.Util:CoerceType(ax.Types.steamid, identifier) ) then
+        if ( ax.util:CoerceType(ax.Types.steamid, identifier) ) then
             return player.GetBySteamID(identifier)
-        elseif ( ax.Util:CoerceType(ax.Types.steamid64, identifier) ) then
+        elseif ( ax.util:CoerceType(ax.Types.steamid64, identifier) ) then
             return player.GetBySteamID64(identifier)
         end
 
@@ -459,10 +459,10 @@ end
 -- @param font string Font name to use.
 -- @param maxWidth number Maximum allowed width in pixels.
 -- @return table Table of wrapped lines.
--- @usage local lines = ax.Util:GetWrappedText("Long example string", "DermaDefault", 250)
-function ax.Util:GetWrappedText(text, font, maxWidth)
+-- @usage local lines = ax.util:GetWrappedText("Long example string", "DermaDefault", 250)
+function ax.util:GetWrappedText(text, font, maxWidth)
     if ( !isstring(text) or !isstring(font) or !isnumber(maxWidth) ) then
-        ax.Util:PrintError("Attempted to wrap text with no value", text, font, maxWidth)
+        ax.util:PrintError("Attempted to wrap text with no value", text, font, maxWidth)
         return false
     end
 
@@ -520,9 +520,9 @@ end
 -- @return Vector center The center point of the box.
 -- @return Vector min The minimum corner of the box.
 -- @return Vector max The maximum corner of the box.
-function ax.Util:GetBounds(startpos, endpos)
+function ax.util:GetBounds(startpos, endpos)
     if ( !isvector(startpos) or !isvector(endpos) ) then
-        ax.Util:PrintError("Attempted to get bounds with invalid positions", startpos, endpos)
+        ax.util:PrintError("Attempted to get bounds with invalid positions", startpos, endpos)
         return vector_origin, vector_origin, vector_origin
     end
 
@@ -548,17 +548,17 @@ do
         return value, character
     end
 
-    function ax.Util:GetCharacters()
+    function ax.util:GetCharacters()
         i = 0
         return iterator, select(2, player.Iterator())
     end
 end
 
-function ax.Util:IsPlayerReceiver(obj)
+function ax.util:IsPlayerReceiver(obj)
     return IsValid(obj) and obj:IsPlayer()
 end
 
-function ax.Util:SafeParseTable(input)
+function ax.util:SafeParseTable(input)
     if ( istable(input) ) then
         return input
     elseif ( isstring(input) and input != "" and input != "[]" ) then
@@ -583,8 +583,8 @@ local directions = {
 --- Returns the compass direction from a yaw angle using a lookup table.
 -- @param ang Angle The angle to interpret.
 -- @return string Compass heading (e.g., "N", "SW")
--- @usage local heading = ax.Util:GetHeadingFromAngle(client:EyeAngles())
-function ax.Util:GetHeadingFromAngle(ang)
+-- @usage local heading = ax.util:GetHeadingFromAngle(client:EyeAngles())
+function ax.util:GetHeadingFromAngle(ang)
     local yaw = ang.yaw or ang[2]
 
     for i = 1, #directions do
@@ -597,7 +597,7 @@ function ax.Util:GetHeadingFromAngle(ang)
     return "N" -- Default to North if no match is found
 end
 
-ax.Util.activeSoundQueues = ax.Util.activeSoundQueues or {}
+ax.util.activeSoundQueues = ax.util.activeSoundQueues or {}
 
 --- Queues and plays a sound sequence with controlled pacing.
 -- Uses a polling step interval instead of chained timers.
@@ -605,7 +605,7 @@ ax.Util.activeSoundQueues = ax.Util.activeSoundQueues or {}
 -- @param queue table Table of sounds or {path, preDelay, postDelay}
 -- @param volume number Volume to play at.
 -- @param pitch number Pitch to play at.
-function ax.Util:QueueSounds(ent, queue, volume, pitch)
+function ax.util:QueueSounds(ent, queue, volume, pitch)
     if ( !IsValid(ent) or !istable(queue) or queue[1] == nil ) then return end
 
     local data = {
@@ -618,12 +618,12 @@ function ax.Util:QueueSounds(ent, queue, volume, pitch)
     }
 
     local id = tostring(ent) .. "_" .. CurTime()
-    ax.Util.activeSoundQueues[id] = data
+    ax.util.activeSoundQueues[id] = data
 
     timer.Create("ax.Sound.queue." .. id, 0.1, 0, function()
         if ( !IsValid(data.entity) or !data.sounds[data.current] ) then
             timer.Remove("ax.Sound.queue." .. id)
-            ax.Util.activeSoundQueues[id] = nil
+            ax.util.activeSoundQueues[id] = nil
             return
         end
 
@@ -660,17 +660,17 @@ end
 -- @param path string Path to the entity directory.
 -- @param clientOnly boolean Whether inclusion should be client-only.
 -- @return boolean True if any file was included successfully.
-function ax.Util:LoadEntityFile(path, clientOnly)
+function ax.util:LoadEntityFile(path, clientOnly)
     if ( SERVER and file.Exists(path .. "init.lua", "LUA") ) or ( CLIENT and file.Exists(path .. "cl_init.lua", "LUA") ) then
-        ax.Util:LoadFile(path .. "init.lua", clientOnly and "client" or "server")
+        ax.util:LoadFile(path .. "init.lua", clientOnly and "client" or "server")
 
         if ( file.Exists(path .. "cl_init.lua", "LUA") ) then
-            ax.Util:LoadFile(path .. "cl_init.lua", "client")
+            ax.util:LoadFile(path .. "cl_init.lua", "client")
         end
 
         return true
     elseif ( file.Exists(path .. "shared.lua", "LUA") ) then
-        ax.Util:LoadFile(path .. "shared.lua", "shared")
+        ax.util:LoadFile(path .. "shared.lua", "shared")
         return true
     end
 
@@ -684,7 +684,7 @@ end
 -- @param registerFn function Function to register the entity.
 -- @param default table? Default values for the global table.
 -- @param clientOnly boolean? Whether registration should only happen on client.
-function ax.Util:LoadEntityFolder(basePath, folder, globalKey, registerFn, default, clientOnly)
+function ax.util:LoadEntityFolder(basePath, folder, globalKey, registerFn, default, clientOnly)
     local fullPath = basePath .. "/" .. folder .. "/"
     local files, folders = file.Find(fullPath .. "*", "LUA")
     default = default or {}
@@ -724,15 +724,15 @@ end
 -- Mimics GMod's native behavior for loading from stools/ folder.
 -- @param path string Path to the folder containing tool files.
 -- @realm shared
-function ax.Util:LoadTools(path)
+function ax.util:LoadTools(path)
     for _, val in ipairs(file.Find(path .. "/*.lua", "LUA")) do
         local _, _, toolmode = string.find(val, "([%w_]*).lua")
         toolmode = toolmode:lower()
 
-        TOOL = ax.Tool:Create()
+        TOOL = ax.tool:Create()
         TOOL.Mode = toolmode
 
-        ax.Util:LoadFile(path .. "/" .. val, "shared")
+        ax.util:LoadFile(path .. "/" .. val, "shared")
 
         TOOL:CreateConVars()
 
@@ -747,7 +747,7 @@ end
 --- Loads all entities, weapons, and effects from a module or schema directory.
 -- @param path string Path to module or schema folder.
 -- @realm shared
-function ax.Util:LoadEntities(path)
+function ax.util:LoadEntities(path)
     self:LoadEntityFolder(path, "entities", "ENT", scripted_ents.Register, {
         Type = "anim",
         Base = "base_gmodentity",
@@ -768,8 +768,8 @@ end
 --- Returns the current difference between local time and UTC in seconds.
 -- @realm shared
 -- @return number Time difference to UTC in seconds
--- @usage local utcOffset = ax.Util:GetUTCTime()
-function ax.Util:GetUTCTime()
+-- @usage local utcOffset = ax.util:GetUTCTime()
+function ax.util:GetUTCTime()
     local utcTable = os.date("!*t")
     local localTable = os.date("*t")
 
@@ -793,8 +793,8 @@ local time = {
 -- @string input Text to interpret (e.g., "5y2d7w")
 -- @return number Time in seconds
 -- @return boolean True if format was valid, false otherwise
--- @usage local seconds = ax.Util:GetStringTime("2h30m")
-function ax.Util:GetStringTime(input)
+-- @usage local seconds = ax.util:GetStringTime("2h30m")
+function ax.util:GetStringTime(input)
     local rawMinutes = tonumber(input)
     if ( rawMinutes ) then
         return math.abs(rawMinutes * 60), true
@@ -823,11 +823,11 @@ local stored = {}
 -- @param path string The path to the material.
 -- @param parameters string The parameters to apply to the material.
 -- @return Material The material that was created.
--- @usage local vignette = ax.Util:GetMaterial("parallax/overlay_vignette.png")
+-- @usage local vignette = ax.util:GetMaterial("parallax/overlay_vignette.png")
 -- surface.SetMaterial(vignette)
-function ax.Util:GetMaterial(path, parameters)
+function ax.util:GetMaterial(path, parameters)
     if ( !tostring(path) ) then
-        ax.Util:PrintError("Attempted to get a material with no path", path, parameters)
+        ax.util:PrintError("Attempted to get a material with no path", path, parameters)
         return false
     end
 
@@ -849,8 +849,8 @@ end
 -- @param number number The number to pad.
 -- @param digits number The total number of digits to pad to.
 -- @return string The padded number as a string.
--- @usage local padded = ax.Util:ZeroNumber(5, 3) -- returns "005"
-function ax.Util:ZeroNumber(number, digits)
+-- @usage local padded = ax.util:ZeroNumber(5, 3) -- returns "005"
+function ax.util:ZeroNumber(number, digits)
     local str = tostring(number)
     return string.rep("0", digits - #str) .. str
 end
@@ -860,9 +860,9 @@ end
 -- @param text string The text to cap.
 -- @param maxLength number The maximum length of the text.
 -- @return string The capped text.
-function ax.Util:CapText(text, maxLength)
+function ax.util:CapText(text, maxLength)
     if ( !isstring(text) or !isnumber(maxLength) or maxLength <= 0 ) then
-        ax.Util:PrintError("Attempted to cap text with invalid parameters", text, maxLength)
+        ax.util:PrintError("Attempted to cap text with invalid parameters", text, maxLength)
         return ""
     end
 
@@ -878,9 +878,9 @@ end
 -- @param text string The text to cap.
 -- @param maxLength number The maximum length of the text.
 -- @return string The capped text.
-function ax.Util:CapTextWord(text, maxLength)
+function ax.util:CapTextWord(text, maxLength)
     if ( !isstring(text) or !isnumber(maxLength) or maxLength <= 0 ) then
-        ax.Util:PrintError("Attempted to cap text with invalid parameters", text, maxLength)
+        ax.util:PrintError("Attempted to cap text with invalid parameters", text, maxLength)
         return ""
     end
 
@@ -913,7 +913,7 @@ if ( CLIENT ) then
     -- @param font string The font to use.
     -- @param text string The text to measure.
     -- @return number The width of the text.
-    function ax.Util:GetTextWidth(font, text)
+    function ax.util:GetTextWidth(font, text)
         surface.SetFont(font)
         return select(1, surface.GetTextSize(text))
     end
@@ -922,7 +922,7 @@ if ( CLIENT ) then
     -- @realm client
     -- @param font string The font to use.
     -- @return number The height of the text.
-    function ax.Util:GetTextHeight(font)
+    function ax.util:GetTextHeight(font)
         surface.SetFont(font)
         return select(2, surface.GetTextSize("W"))
     end
@@ -933,12 +933,12 @@ if ( CLIENT ) then
     -- @param text string The text to measure.
     -- @return number The width of the text.
     -- @return number The height of the text.
-    function ax.Util:GetTextSize(font, text)
+    function ax.util:GetTextSize(font, text)
         surface.SetFont(font)
         return surface.GetTextSize(text)
     end
 
-    local blurMaterial = ax.Util:GetMaterial("pp/blurscreen")
+    local blurMaterial = ax.util:GetMaterial("pp/blurscreen")
     local scrW, scrH = ScrW(), ScrH()
 
     --- Draws a blur within a panel's bounds. Falls back to a dim overlay if blur is disabled.
@@ -946,8 +946,8 @@ if ( CLIENT ) then
     -- @param intensity number Blur strength (0–10 suggested).
     -- @param steps number Blur quality/steps. Defaults to 0.2.
     -- @param alpha number Overlay alpha (default 255).
-    -- @usage ax.Util:DrawBlur(panel, 6, 0.2, 200)
-    function ax.Util:DrawBlur(panel, intensity, steps, alpha)
+    -- @usage ax.util:DrawBlur(panel, 6, 0.2, 200)
+    function ax.util:DrawBlur(panel, intensity, steps, alpha)
         if ( !IsValid(panel) or alpha == 0 ) then return end
 
         if ( ax.option:Get("performance.blur") != true ) then
@@ -981,8 +981,8 @@ if ( CLIENT ) then
     -- @param intensity number Blur strength (0–10 suggested).
     -- @param steps number Blur quality/steps. Defaults to 0.2.
     -- @param alpha number Overlay alpha (default 255).
-    -- @usage ax.Util:DrawBlurRect(0, 0, 512, 256, 8, 0.2, 180)
-    function ax.Util:DrawBlurRect(x, y, width, height, intensity, steps, alpha)
+    -- @usage ax.util:DrawBlurRect(0, 0, 512, 256, 8, 0.2, 180)
+    function ax.util:DrawBlurRect(x, y, width, height, intensity, steps, alpha)
         if ( alpha == 0 ) then return end
 
         if ( ax.option:Get("performance.blur") != true ) then
@@ -1017,7 +1017,7 @@ if ( CLIENT ) then
     --- Prepare unit-circle vertices (radius = 1) for given segments.
     -- @param segments number Number of segments to approximate circle.
     -- @return table List of unit vertices.
-    function ax.Util:GetUnitCircle(segments)
+    function ax.util:GetUnitCircle(segments)
         if ( !unitCircleCache[segments] ) then
             local verts = { { x = 0, y = 0 } }
             for i = 0, segments do
@@ -1037,7 +1037,7 @@ if ( CLIENT ) then
     -- @param radius number Circle radius.
     -- @param segments number Number of segments.
     -- @param color Color Fill color.
-    function ax.Util:DrawCircle(x, y, radius, segments, color)
+    function ax.util:DrawCircle(x, y, radius, segments, color)
         local key = radius .. "_" .. segments
         local shape = circleCache[key]
 
@@ -1071,7 +1071,7 @@ if ( CLIENT ) then
     -- @param radius number Circle radius.
     -- @param segments number Number of segments.
     -- @param color Color Fill color.
-    function ax.Util:DrawCircleScaled(x, y, radius, segments, color)
+    function ax.util:DrawCircleScaled(x, y, radius, segments, color)
         local unitVerts = self:GetUnitCircle(segments)
         local verts = drawVertsCache[segments]
 
@@ -1094,14 +1094,14 @@ if ( CLIENT ) then
         surface.DrawPoly(verts)
     end
 
-    hook.Add("OnScreenSizeChanged", "ax.Util.ClearCircleCache", function()
+    hook.Add("OnScreenSizeChanged", "ax.util.ClearCircleCache", function()
         circleCache = {}
         unitCircleCache = {}
         drawVertsCache = {}
     end)
 end
 
-function ax.Util:VerifyVersion()
+function ax.util:VerifyVersion()
     local version = file.Read("parallax/parallax-version.json", "LUA")
     if ( !version or version == "" ) then
         self:PrintError("Failed to read Parallax version file!")
@@ -1147,18 +1147,18 @@ function ax.Util:VerifyVersion()
     end)
 end
 
-function ax.Util:IsFaction(object)
+function ax.util:IsFaction(object)
     return getmetatable(object) == ax.faction.meta
 end
 
-function ax.Util:IsCharacter(object)
-    return getmetatable(object) == ax.Character.meta
+function ax.util:IsCharacter(object)
+    return getmetatable(object) == ax.character.meta
 end
 
-function ax.Util:IsClass(object)
+function ax.util:IsClass(object)
     return getmetatable(object) == ax.class.meta
 end
 
-function ax.Util:IsItem(object)
+function ax.util:IsItem(object)
     return getmetatable(object) == ax.item.meta
 end

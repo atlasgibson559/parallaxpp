@@ -335,7 +335,7 @@ function ax.Animations:SetModelClass(model, class)
     class = string.lower(class)
 
     if ( !self.stored[class] ) then
-        ax.Util:PrintError("Animation class '" .. class .. "' does not exist!")
+        ax.util:PrintError("Animation class '" .. class .. "' does not exist!")
         return false
     end
 
@@ -355,9 +355,9 @@ function ax.Animations:GetModelClass(model)
     end
 
     -- Otherwise check the model name
-    if ( ax.Util:FindString(model, "player") or ax.Util:FindString(model, "pm") ) then
+    if ( ax.util:FindString(model, "player") or ax.util:FindString(model, "pm") ) then
         return "player"
-    elseif ( ax.Util:FindString(model, "female") ) then
+    elseif ( ax.util:FindString(model, "female") ) then
         return "citizen_female"
     end
 
@@ -383,7 +383,7 @@ function playerMeta:IsFemale()
         return _isFemale(self)
     end
 
-    if ( ax.Util:FindString(modelClass, "female") ) then
+    if ( ax.util:FindString(modelClass, "female") ) then
         return true
     end
 
@@ -420,7 +420,7 @@ if ( SERVER ) then
 
         local sequenceID = self:LookupSequence(sequence)
         if ( sequenceID == -1 ) then
-            ax.Util:PrintError("Invalid sequence \"" .. sequence .. "\"!")
+            ax.util:PrintError("Invalid sequence \"" .. sequence .. "\"!")
             return
         end
 

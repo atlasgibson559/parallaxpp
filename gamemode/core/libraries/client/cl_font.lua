@@ -39,7 +39,7 @@ end
 
 concommand.Add("ax_list_font", function(client)
     for name, data in pairs(ax.font.stored) do
-        ax.Util:Print("Font: ", ax.color:Get("cyan"), name)
+        ax.util:Print("Font: ", ax.color:Get("cyan"), name)
         PrintTable(data)
     end
 end)

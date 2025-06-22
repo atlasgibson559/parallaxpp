@@ -15,7 +15,7 @@
 
 ax.net:Hook("character.cache.all", function(data)
     if ( !istable(data) ) then
-        ax.Util:PrintError("Invalid data received for character cache!")
+        ax.util:PrintError("Invalid data received for character cache!")
         return
     end
 
@@ -28,20 +28,20 @@ ax.net:Hook("character.cache.all", function(data)
     local clientTable = client:GetTable()
 
     for k, v in pairs(data) do
-        local character = ax.Character:CreateObject(v.ID, v, client)
+        local character = ax.character:CreateObject(v.ID, v, client)
         local characterID = character:GetID()
 
-        ax.Character.stored = ax.Character.stored or {}
-        ax.Character.stored[characterID] = character
+        ax.character.stored = ax.character.stored or {}
+        ax.character.stored[characterID] = character
 
         clientTable.axCharacters = clientTable.axCharacters or {}
         clientTable.axCharacters[characterID] = character
     end
 
     -- Rebuild the main menu
-    if ( IsValid(ax.GUI.Mainmenu) ) then
-        ax.GUI.Mainmenu:Remove()
-        ax.GUI.Mainmenu = vgui.Create("ax.Mainmenu")
+    if ( IsValid(ax.gui.Mainmenu) ) then
+        ax.gui.Mainmenu:Remove()
+        ax.gui.Mainmenu = vgui.Create("ax.Mainmenu")
     end
 
     ax.Client:Notify("All characters cached!", NOTIFY_HINT)
@@ -53,11 +53,11 @@ ax.net:Hook("character.cache", function(data)
     local client = ax.Client
     local clientTable = client:GetTable()
 
-    local character = ax.Character:CreateObject(data.ID, data, client)
+    local character = ax.character:CreateObject(data.ID, data, client)
     local characterID = character:GetID()
 
-    ax.Character.stored = ax.Character.stored or {}
-    ax.Character.stored[characterID] = character
+    ax.character.stored = ax.character.stored or {}
+    ax.character.stored[characterID] = character
 
     clientTable.axCharacters = clientTable.axCharacters or {}
     clientTable.axCharacters[characterID] = character
@@ -79,10 +79,10 @@ end)
 ax.net:Hook("character.delete", function(characterID)
     if ( !isnumber(characterID) ) then return end
 
-    local character = ax.Character.stored[characterID]
+    local character = ax.character.stored[characterID]
     if ( !character ) then return end
 
-    ax.Character.stored[characterID] = nil
+    ax.character.stored[characterID] = nil
 
     local client = ax.Client
     local clientTable = client:GetTable()
@@ -92,8 +92,8 @@ ax.net:Hook("character.delete", function(characterID)
 
     clientTable.axCharacter = nil
 
-    if ( IsValid(ax.GUI.Mainmenu) ) then
-        ax.GUI.Mainmenu:Populate()
+    if ( IsValid(ax.gui.Mainmenu) ) then
+        ax.gui.Mainmenu:Populate()
     end
 
     ax.notification:Add("Character " .. characterID .. " deleted!", 5, ax.config:Get("color.success"))
@@ -108,23 +108,23 @@ end)
 ax.net:Hook("character.load", function(characterID)
     if ( characterID == 0 ) then return end
 
-    if ( IsValid(ax.GUI.Mainmenu) ) then
-        ax.GUI.Mainmenu:Remove()
+    if ( IsValid(ax.gui.Mainmenu) ) then
+        ax.gui.Mainmenu:Remove()
     end
 
     local client = ax.Client
 
-    local character, reason = ax.Character:CreateObject(characterID, ax.Character.stored[characterID], client)
+    local character, reason = ax.character:CreateObject(characterID, ax.character.stored[characterID], client)
     if ( !character ) then
-        ax.Util:PrintError("Failed to load character ", characterID, ", ", reason, "!")
+        ax.util:PrintError("Failed to load character ", characterID, ", ", reason, "!")
         return
     end
 
     local currentCharacter = client:GetCharacter()
     local clientTable = client:GetTable()
 
-    ax.Character.stored = ax.Character.stored or {}
-    ax.Character.stored[characterID] = character
+    ax.character.stored = ax.character.stored or {}
+    ax.character.stored[characterID] = character
 
     clientTable.axCharacters = clientTable.axCharacters or {}
     clientTable.axCharacters[characterID] = character
@@ -136,7 +136,7 @@ end)
 ax.net:Hook("character.variable.set", function(characterID, key, value)
     if ( !characterID or !key or !value ) then return end
 
-    local character = ax.Character:Get(characterID)
+    local character = ax.character:Get(characterID)
     if ( !character ) then return end
 
     character[key] = value
@@ -203,7 +203,7 @@ ax.net:Hook("inventory.cache", function(data)
     if ( inventory ) then
         ax.inventory.stored[inventory:GetID()] = inventory
 
-        local character = ax.Character.stored[inventory.CharacterID]
+        local character = ax.character.stored[inventory.CharacterID]
         if ( character ) then
             local inventories = character:GetInventories()
 
@@ -269,7 +269,7 @@ ax.net:Hook("inventory.item.remove", function(inventoryID, itemID)
 end)
 
 ax.net:Hook("inventory.refresh", function(inventoryID)
-    local panel = ax.GUI.Inventory
+    local panel = ax.gui.Inventory
     if ( IsValid(panel) ) then
         panel:SetInventory(inventoryID)
     end
@@ -351,11 +351,11 @@ ax.net:Hook("gesture.play", function(client, name)
 end)
 
 ax.net:Hook("splash", function()
-    ax.GUI.Splash = vgui.Create("ax.Splash")
+    ax.gui.Splash = vgui.Create("ax.Splash")
 end)
 
 ax.net:Hook("mainmenu", function()
-    ax.GUI.Mainmenu = vgui.Create("ax.Mainmenu")
+    ax.gui.Mainmenu = vgui.Create("ax.Mainmenu")
 end)
 
 ax.net:Hook("notification.send", function(text, type, duration)
@@ -493,7 +493,7 @@ end
 -- hook becomes trivial:
 ax.net:Hook("caption", function(arguments)
     if ( !isstring(arguments) or arguments == "" ) then
-        ax.Util:PrintError("Invalid arguments for caption!")
+        ax.util:PrintError("Invalid arguments for caption!")
         return
     end
 

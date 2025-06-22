@@ -14,7 +14,7 @@ DEFINE_BASECLASS("EditablePanel")
 local PANEL = {}
 
 function PANEL:Init()
-    ax.GUI.Inventory = self
+    ax.gui.Inventory = self
 
     self:Dock(FILL)
 
@@ -169,8 +169,8 @@ function PANEL:SetInventory(id)
         pnl:SetCount(group.count)
     end
 
-    if ( ax.GUI.InventoryItemIDLast and self:IsValidItemID(ax.GUI.InventoryItemIDLast) ) then
-        self:SetInfo(ax.GUI.InventoryItemIDLast)
+    if ( ax.gui.InventoryItemIDLast and self:IsValidItemID(ax.gui.InventoryItemIDLast) ) then
+        self:SetInfo(ax.gui.InventoryItemIDLast)
     else
         self:SetInfo(sortedItems[1])
     end
@@ -195,7 +195,7 @@ function PANEL:SetInfo(id)
         return
     end
 
-    ax.GUI.InventoryItemIDLast = id
+    ax.gui.InventoryItemIDLast = id
 
     local item = ax.item:Get(id)
 
@@ -221,7 +221,7 @@ function PANEL:SetInfo(id)
     name:SetText(item:GetName(), true)
 
     local description = item:GetDescription()
-    local descriptionWrapped = ax.Util:GetWrappedText(description, "parallax", self.info:GetWide() - 32)
+    local descriptionWrapped = ax.util:GetWrappedText(description, "parallax", self.info:GetWide() - 32)
     for k, v in pairs(descriptionWrapped) do
         local text = self.info:Add("ax.Text")
         text:Dock(TOP)

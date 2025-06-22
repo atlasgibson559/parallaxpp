@@ -72,7 +72,7 @@ function Derma_Message(text, title, buttonText)
     label:SetFont("ax.Huge.Bold")
     label:SetText(string.upper(title), true)
 
-    local wrapped = ax.Util:GetWrappedText(text, "parallax", frame:GetWide() - ScreenScale(16))
+    local wrapped = ax.util:GetWrappedText(text, "parallax", frame:GetWide() - ScreenScale(16))
     local textHeight = 0
     for i = 1, #wrapped do
         local line = wrapped[i]
@@ -131,7 +131,7 @@ function Derma_Query(text, title, ...)
     label:SetFont("ax.Huge.Bold")
     label:SetText(string.upper(title), true)
 
-    local wrapped = ax.Util:GetWrappedText(text, "parallax", frame:GetWide() - ScreenScale(16))
+    local wrapped = ax.util:GetWrappedText(text, "parallax", frame:GetWide() - ScreenScale(16))
     local textHeight = 0
     for i = 1, #wrapped do
         local line = wrapped[i]
@@ -210,7 +210,7 @@ function Derma_StringRequest(title, text, defaultText, onEnter, onCancel, okText
     label:SetFont("ax.Huge.Bold")
     label:SetText(string.upper(title), true)
 
-    local wrapped = ax.Util:GetWrappedText(text, "parallax", frame:GetWide() - ScreenScale(16))
+    local wrapped = ax.util:GetWrappedText(text, "parallax", frame:GetWide() - ScreenScale(16))
     local textHeight = 0
     for i = 1, #wrapped do
         local line = wrapped[i]

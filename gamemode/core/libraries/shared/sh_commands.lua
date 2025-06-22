@@ -35,14 +35,14 @@ ax.command.stored = {}
 -- })
 function ax.command:Register(commandName, info)
     if ( !isstring(commandName) ) then
-        ax.Util:PrintError("Attempted to register an invalid command!")
+        ax.util:PrintError("Attempted to register an invalid command!")
         return
     end
 
     commandName = string.gsub(commandName, "%s+", " ")
 
     if ( !isfunction(info.Callback) ) then
-        ax.Util:PrintError("Attempted to register a command with no callback!")
+        ax.util:PrintError("Attempted to register a command with no callback!")
         return
     end
 
@@ -80,7 +80,7 @@ end
 -- @return table The command.
 function ax.command:Get(identifier)
     if ( !isstring(identifier) ) then
-        ax.Util:PrintError("Attempted to get a command with an invalid identifier!")
+        ax.util:PrintError("Attempted to get a command with an invalid identifier!")
         return false
     end
 

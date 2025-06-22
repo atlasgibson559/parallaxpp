@@ -9,12 +9,12 @@
     Attribution is required. If you use or modify this file, you must retain this notice.
 ]]
 
-function ax.Util:HasMysqlooBinary()
+function ax.util:HasMysqlooBinary()
     return util.IsBinaryModuleInstalled("mysqloo")
 end
 
-if ( !ax.Util:HasMysqlooBinary() ) then
-    ax.Util:PrintWarning("MySQLOO binary not found in lua/bin/. ax.SQLOO disabled.")
+if ( !ax.util:HasMysqlooBinary() ) then
+    ax.util:PrintWarning("MySQLOO binary not found in lua/bin/. ax.SQLOO disabled.")
     return
 end
 
@@ -146,7 +146,7 @@ function ax.SQLOO:AddColumn(tableName, columnName, columnType, defaultValue)
 
             self:Query(alter)
         else
-            ax.Util:PrintWarning("Column '" .. columnName .. "' already exists in table '" .. tableName .. "'.")
+            ax.util:PrintWarning("Column '" .. columnName .. "' already exists in table '" .. tableName .. "'.")
         end
     end)
 end
@@ -183,7 +183,7 @@ function ax.SQLOO:LoadRow(tableName, key, value, callback)
             local row = result[1]
             local vars = self.tables[tableName]
             if ( !vars ) then
-                ax.Util:PrintError("No registered variables for table '" .. tableName .. "'")
+                ax.util:PrintError("No registered variables for table '" .. tableName .. "'")
                 return
             end
 
@@ -286,7 +286,7 @@ end
 function ax.SQLOO:Query(query, onSuccess, onError)
     if ( !self.db or self.db:status() != mysqloo.DATABASE_CONNECTED ) then
         local uniqueID = util.CRC(query .. tostring(onSuccess) .. tostring(onError))
-        ax.Util:PrintWarning("Database not connected, queuing query. (" .. uniqueID .. ")")
+        ax.util:PrintWarning("Database not connected, queuing query. (" .. uniqueID .. ")")
 
         self.queryQueue = self.queryQueue or {}
         table.insert(self.queryQueue, {query = query, onSuccess = onSuccess, onError = onError})
@@ -305,7 +305,7 @@ function ax.SQLOO:Query(query, onSuccess, onError)
                         self:Query(queuedQuery.query, queuedQuery.onSuccess, queuedQuery.onError)
 
                         uniqueID = util.CRC(queuedQuery.query .. tostring(queuedQuery.onSuccess) .. tostring(queuedQuery.onError))
-                        ax.Util:PrintSuccess("Executing queued query: " .. uniqueID)
+                        ax.util:PrintSuccess("Executing queued query: " .. uniqueID)
                     end
 
                     self.queryQueue = {}
@@ -313,10 +313,10 @@ function ax.SQLOO:Query(query, onSuccess, onError)
                     timer.Remove("ax.SQLOO.wait")
                     self.queryTimerStarted = false
 
-                    ax.Util:PrintError("Database connection failed after 5 seconds. Aborting queued queries.")
+                    ax.util:PrintError("Database connection failed after 5 seconds. Aborting queued queries.")
                     self.queryQueue = {}
                 else
-                    ax.Util:PrintWarning("Waiting for database connection...")
+                    ax.util:PrintWarning("Waiting for database connection...")
                 end
             end)
         end
@@ -326,7 +326,7 @@ function ax.SQLOO:Query(query, onSuccess, onError)
 
     local q = self.db:query(query)
     if ( !q ) then
-        ax.Util:PrintError("Failed to create query for: " .. query)
+        ax.util:PrintError("Failed to create query for: " .. query)
 
         if ( onError ) then
             onError("Failed to create query")
@@ -342,8 +342,8 @@ function ax.SQLOO:Query(query, onSuccess, onError)
     end
 
     q.onError = function(_, errString)
-        ax.Util:PrintError("Query failed: " .. errString)
-        ax.Util:PrintError("Query: " .. query)
+        ax.util:PrintError("Query failed: " .. errString)
+        ax.util:PrintError("Query: " .. query)
 
         if ( onError ) then
             onError(errString)
@@ -384,7 +384,7 @@ function ax.SQLOO:Reconnect()
     if ( self.db and self.db:status() == mysqloo.DATABASE_NOT_CONNECTED ) then
         self.db:connect()
     else
-        ax.Util:PrintWarning("Database is already connected or not initialized.")
+        ax.util:PrintWarning("Database is already connected or not initialized.")
     end
 end
 
@@ -425,7 +425,7 @@ function ax.SQLOO:PrintStatus()
         statusText = "Connection failed"
     end
 
-    ax.Util:Print("MySQL Status: " .. statusText)
+    ax.util:Print("MySQL Status: " .. statusText)
 end
 
 --- Cheks if the database is connected.

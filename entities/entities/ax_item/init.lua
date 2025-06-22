@@ -16,7 +16,7 @@ include("shared.lua")
 function ENT:SetItem(itemID, uniqueID)
     local itemDef = ax.item:Get(uniqueID)
     if ( !istable(itemDef) ) then
-        ax.Util:PrintError("Attempted to set item with an invalid item definition for entity " .. self:EntIndex() .. "!")
+        ax.util:PrintError("Attempted to set item with an invalid item definition for entity " .. self:EntIndex() .. "!")
         return
     end
 

@@ -12,7 +12,7 @@
 DeriveGamemode("sandbox")
 GM.RefreshTimeStart = SysTime()
 
-Parallax = Parallax or {Util = {}, Meta = {}, Config = {}, Globals = {}}
+ax = ax or {util = {}, meta = {}, config = {}, globals = {}}
 
 AddCSLuaFile("cl_init.lua")
 
@@ -39,8 +39,6 @@ for i = 1, #addons do
 end
 
 resource.AddWorkshop("3479969076")
-
-ax = ax or Parallax
 
 resource.AddFile("resource/fonts/gordin-black.ttf")
 resource.AddFile("resource/fonts/gordin-bold.ttf")

@@ -12,8 +12,8 @@
 local MODULE = MODULE
 
 function MODULE:ShouldDrawStamina()
-    if ( IsValid(ax.GUI.Mainmenu) ) then return false end
-    if ( IsValid(ax.GUI.Tab) ) then return false end
+    if ( IsValid(ax.gui.Mainmenu) ) then return false end
+    if ( IsValid(ax.gui.Tab) ) then return false end
 
     return IsValid(ax.Client) and ax.config:Get("stamina", true) and ax.Client:Alive() and istable(ax.Client:GetRelay("stamina"))
 end
@@ -25,7 +25,7 @@ local staminaLast = 0
 function MODULE:HUDPaint()
     local shouldDraw = hook.Run("ShouldDrawStamina")
     if ( shouldDraw == false ) then
-        ax.Globals.drawingStamina = nil
+        ax.globals.drawingStamina = nil
         return
     end
 
@@ -47,7 +47,7 @@ function MODULE:HUDPaint()
         local barWidth, barHeight = scrW / 6, ScreenScale(4)
         local barX, barY = scrW / 2 - barWidth / 2, scrH / 1.025 - barHeight / 2
 
-        ax.Util:DrawBlurRect(barX, barY, barWidth, barHeight, 2, nil, staminaAlpha)
+        ax.util:DrawBlurRect(barX, barY, barWidth, barHeight, 2, nil, staminaAlpha)
 
         surface.SetDrawColor(ColorAlpha(ax.color:Get("background.transparent"), staminaAlpha / 2))
         surface.DrawRect(barX, barY, barWidth, barHeight)
@@ -55,8 +55,8 @@ function MODULE:HUDPaint()
         surface.SetDrawColor(ColorAlpha(ax.color:Get("white"), staminaAlpha))
         surface.DrawRect(barX, barY, barWidth * staminaLerp, barHeight)
 
-        ax.Globals.drawingStamina = true
+        ax.globals.drawingStamina = true
     else
-        ax.Globals.drawingStamina = nil
+        ax.globals.drawingStamina = nil
     end
 end

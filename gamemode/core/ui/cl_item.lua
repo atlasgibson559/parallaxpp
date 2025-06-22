@@ -88,7 +88,7 @@ function PANEL:SetItem(id)
 end
 
 function PANEL:DoClick()
-    local inventoryPanel = ax.GUI.Inventory
+    local inventoryPanel = ax.gui.Inventory
     if ( !IsValid(inventoryPanel) ) then return end
 
     inventoryPanel:SetInfo(self:GetID())

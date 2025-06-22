@@ -63,4 +63,4 @@ end
 
 vgui.Register("ax.Mainmenu.Options", PANEL, "EditablePanel")
 
-ax.GUI.OptionsLast = nil
+ax.gui.OptionsLast = nil

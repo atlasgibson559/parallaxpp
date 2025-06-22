@@ -22,11 +22,11 @@
 -- @within ax.item
 function ax.item:Add(characterID, inventoryID, uniqueID, data, callback)
     if ( !characterID or !uniqueID or !self.stored[uniqueID] ) then
-        ax.Util:PrintError("Invalid parameters for item addition: characterID=" .. tostring(characterID) .. ", uniqueID=" .. tostring(uniqueID))
+        ax.util:PrintError("Invalid parameters for item addition: characterID=" .. tostring(characterID) .. ", uniqueID=" .. tostring(uniqueID))
         return
     end
 
-    local character = ax.Character:Get(characterID)
+    local character = ax.character:Get(characterID)
     if ( character and !inventoryID ) then
         inventoryID = character:GetInventory()
     end
@@ -46,7 +46,7 @@ function ax.item:Add(characterID, inventoryID, uniqueID, data, callback)
     }, function(result)
         local itemID = tonumber(result)
         if ( !itemID ) then
-            ax.Util:PrintError("Failed to create item in database: " .. tostring(result))
+            ax.util:PrintError("Failed to create item in database: " .. tostring(result))
             return
         end
 
@@ -59,7 +59,7 @@ function ax.item:Add(characterID, inventoryID, uniqueID, data, callback)
         })
 
         if ( !item ) then
-            ax.Util:PrintError("Failed to create item object for item ID " .. itemID)
+            ax.util:PrintError("Failed to create item object for item ID " .. itemID)
             return
         end
 
@@ -81,7 +81,7 @@ function ax.item:Add(characterID, inventoryID, uniqueID, data, callback)
             end
         end
 
-        local receiver = ax.Character:GetPlayerByCharacter(characterID)
+        local receiver = ax.character:GetPlayerByCharacter(characterID)
         if ( IsValid(receiver) ) then
             ax.net:Start(receiver, "item.add", itemID, inventoryID, uniqueID, data)
         end
@@ -104,7 +104,7 @@ function ax.item:Transfer(itemID, fromInventoryID, toInventoryID, callback)
     local toInventory = ax.inventory:Get(toInventoryID)
 
     if ( toInventory and !toInventory:HasSpaceFor(item:GetWeight()) ) then
-        local receiver = ax.Character:GetPlayerByCharacter(item:GetOwner())
+        local receiver = ax.character:GetPlayerByCharacter(item:GetOwner())
         if ( IsValid(receiver) ) then
             receiver:Notify("Inventory is too full to transfer this item.")
         end
@@ -143,41 +143,41 @@ end
 function ax.item:PerformAction(itemID, actionName, callback)
     local item = self:Get(itemID)
     if ( !item or !actionName ) then
-        ax.Util:PrintError("Invalid parameters for item action: itemID=" .. tostring(itemID) .. ", actionName=" .. tostring(actionName))
+        ax.util:PrintError("Invalid parameters for item action: itemID=" .. tostring(itemID) .. ", actionName=" .. tostring(actionName))
         return false
     end
 
     local base = self.stored[item:GetUniqueID()]
     if ( !base or !base.Actions ) then
-        ax.Util:PrintError("Item '" .. item:GetUniqueID() .. "' does not have actions defined.")
+        ax.util:PrintError("Item '" .. item:GetUniqueID() .. "' does not have actions defined.")
         return false
     end
 
     local action = base.Actions[actionName]
     if ( !action ) then
-        ax.Util:PrintError("Action '" .. actionName .. "' not found for item '" .. item:GetUniqueID() .. "'.")
+        ax.util:PrintError("Action '" .. actionName .. "' not found for item '" .. item:GetUniqueID() .. "'.")
         return false
     end
 
-    local client = ax.Character:GetPlayerByCharacter(item:GetOwner())
+    local client = ax.character:GetPlayerByCharacter(item:GetOwner())
     if ( !IsValid(client) ) then
-        ax.Util:PrintError("Invalid client for item action: " .. tostring(item:GetOwner()))
+        ax.util:PrintError("Invalid client for item action: " .. tostring(item:GetOwner()))
         return false
     end
 
-    local character = ax.Character:Get(item:GetOwner())
+    local character = ax.character:Get(item:GetOwner())
     if ( !character ) then
-        ax.Util:PrintError("Invalid character for item action: " .. tostring(item:GetOwner()))
+        ax.util:PrintError("Invalid character for item action: " .. tostring(item:GetOwner()))
         return false
     end
 
     local inventoryID = item:GetInventory()
     if ( inventoryID != character:GetInventory():GetID() ) then
         if ( inventoryID == 0 and actionName != "Take" ) then
-            ax.Util:PrintWarning(client, " attempted to perform action '" .. actionName .. "' on item '" .. item:GetUniqueID() .. "' without a valid inventory.")
+            ax.util:PrintWarning(client, " attempted to perform action '" .. actionName .. "' on item '" .. item:GetUniqueID() .. "' without a valid inventory.")
             return false
         elseif ( inventoryID != 0 and actionName == "Take" ) then
-            ax.Util:PrintWarning(client, " attempted to perform action '" .. actionName .. "' on item '" .. item:GetUniqueID() .. "' in inventory ID " .. inventoryID .. ", but the action is not allowed.")
+            ax.util:PrintWarning(client, " attempted to perform action '" .. actionName .. "' on item '" .. item:GetUniqueID() .. "' in inventory ID " .. inventoryID .. ", but the action is not allowed.")
             return false
         end
     end
@@ -216,14 +216,14 @@ function ax.item:PerformAction(itemID, actionName, callback)
 end
 
 function ax.item:Cache(characterID, callback)
-    if ( !ax.Character:Get(characterID) ) then
-        ax.Util:PrintError("Invalid character ID for item cache: " .. tostring(characterID))
+    if ( !ax.character:Get(characterID) ) then
+        ax.util:PrintError("Invalid character ID for item cache: " .. tostring(characterID))
         return
     end
 
     ax.database:Select("ax_items", nil, "character_id = " .. characterID .. " OR character_id = 0", function(result)
         if ( !result or #result == 0 ) then
-            ax.Util:PrintWarning("No items found for character ID " .. characterID)
+            ax.util:PrintWarning("No items found for character ID " .. characterID)
             if ( callback ) then
                 callback({})
             end
@@ -238,7 +238,7 @@ function ax.item:Cache(characterID, callback)
             if ( self.stored[uniqueID] ) then
                 local item = self:CreateObject(row)
                 if ( !item ) then
-                    ax.Util:PrintError("Failed to create object for item #" .. itemID .. ", skipping")
+                    ax.util:PrintError("Failed to create object for item #" .. itemID .. ", skipping")
                     continue
                 end
 
@@ -252,7 +252,7 @@ function ax.item:Cache(characterID, callback)
                             character_id = newCharID
                         }, "id = " .. itemID)
                     else
-                        ax.Util:PrintError("Invalid orphaned item #" .. itemID .. " (no inventory)")
+                        ax.util:PrintError("Invalid orphaned item #" .. itemID .. " (no inventory)")
                         ax.database:Delete("ax_items", "id = " .. itemID)
                         continue
                     end
@@ -264,7 +264,7 @@ function ax.item:Cache(characterID, callback)
                     item:OnCache()
                 end
             else
-                ax.Util:PrintError("Unknown item unique ID '" .. tostring(uniqueID) .. "' in DB, skipping")
+                ax.util:PrintError("Unknown item unique ID '" .. tostring(uniqueID) .. "' in DB, skipping")
             end
         end
 
@@ -280,7 +280,7 @@ function ax.item:Cache(characterID, callback)
             end
         end
 
-        local client = ax.Character:GetPlayerByCharacter(characterID)
+        local client = ax.character:GetPlayerByCharacter(characterID)
         if ( IsValid(client) ) then
             ax.net:Start(client, "item.cache", instanceList)
         end
@@ -298,7 +298,7 @@ end
 function ax.item:Remove(itemID, callback)
     local item = self.instances[itemID]
     if ( !item ) then
-        ax.Util:PrintError("Invalid item ID for removal: " .. tostring(itemID))
+        ax.util:PrintError("Invalid item ID for removal: " .. tostring(itemID))
         return false
     end
 
@@ -314,7 +314,7 @@ function ax.item:Remove(itemID, callback)
     ax.database:Delete("ax_items", "id = " .. itemID)
 
     -- Notify client
-    local client = ax.Character:GetPlayerByCharacter(item:GetOwner())
+    local client = ax.character:GetPlayerByCharacter(item:GetOwner())
     if ( IsValid(client) ) then
         ax.net:Start(client, "inventory.item.remove", inventoryID, itemID)
     end
@@ -333,13 +333,13 @@ end
 
 function ax.item:Spawn(itemID, uniqueID, position, angles, callback, data)
     if ( !uniqueID or !position or !self.stored[uniqueID] ) then
-        ax.Util:PrintError("Invalid parameters for item spawn.")
+        ax.util:PrintError("Invalid parameters for item spawn.")
         return nil
     end
 
     local entity = ents.Create("ax_item")
     if ( !IsValid(entity) ) then
-        ax.Util:PrintError("Failed to create item entity for unique ID '" .. uniqueID .. "'.")
+        ax.util:PrintError("Failed to create item entity for unique ID '" .. uniqueID .. "'.")
         return nil
     end
 
@@ -347,7 +347,7 @@ function ax.item:Spawn(itemID, uniqueID, position, angles, callback, data)
         position = position:GetDropPosition()
         angles = position:GetAngles()
     elseif ( !isvector(position) ) then
-        ax.Util:PrintError("Invalid position provided for item spawn: " .. tostring(position))
+        ax.util:PrintError("Invalid position provided for item spawn: " .. tostring(position))
         return nil
     end
 

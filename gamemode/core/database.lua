@@ -20,17 +20,17 @@ ax.database.backend = ax.database.backend or ax.SQLite -- Default to SQLite if M
 -- @tparam table[opt] config MySQL connection config
 -- @usage ax.database:Initialize({ host = "localhost", username = "root", password = "", database = "gmod", port = 3306 })
 function ax.database:Initialize(config)
-    if ( ax.Util:HasMysqlooBinary() and ax.SQLOO ) then
+    if ( ax.util:HasMysqlooBinary() and ax.SQLOO ) then
         if ( config ) then
-            ax.Util:Print("Initializing MySQL connection...")
+            ax.util:Print("Initializing MySQL connection...")
             ax.SQLOO:Initialize(config, function()
-                ax.Util:PrintSuccess("MySQL connection established.")
+                ax.util:PrintSuccess("MySQL connection established.")
                 self.backend = ax.SQLOO
                 self:LoadTables()
 
                 hook.Run("DatabaseConnected")
             end, function(err)
-                ax.Util:PrintError("MySQL connection failed: " .. err)
+                ax.util:PrintError("MySQL connection failed: " .. err)
                 self:Fallback(err)
 
                 hook.Run("DatabaseConnectionFailed", err)
@@ -48,7 +48,7 @@ end
 -- @usage ax.database:Fallback("MySQL connection failed")
 function ax.database:Fallback(reason)
     self.backend = ax.SQLite
-    ax.Util:PrintWarning((reason or "MySQL unavailable") .. ". Falling back to SQLite.")
+    ax.util:PrintWarning((reason or "MySQL unavailable") .. ". Falling back to SQLite.")
 
     hook.Run("DatabaseFallback", reason)
 end
@@ -68,9 +68,9 @@ local function dispatch(fn, ...)
         return ax.database.backend[fn](ax.database.backend, ...)
     else
         if ( ax.database.backend == nil ) then
-            ax.Util:PrintError("Database backend not initialized, cannot call: " .. fn .. " from " .. debug.getinfo(2, "S").source)
+            ax.util:PrintError("Database backend not initialized, cannot call: " .. fn .. " from " .. debug.getinfo(2, "S").source)
         else
-            ax.Util:PrintError("Database backend missing method: " .. fn)
+            ax.util:PrintError("Database backend missing method: " .. fn)
         end
 
         return false
@@ -146,11 +146,11 @@ end
 -- @return "Using MySQL backend." or "Using SQLite backend."
 function ax.database:PrintBackend()
     if ( self.backend == ax.SQLOO ) then
-        ax.Util:Print("Using MySQL backend.")
+        ax.util:Print("Using MySQL backend.")
     elseif ( self.backend == ax.SQLite ) then
-        ax.Util:Print("Using SQLite backend.")
+        ax.util:Print("Using SQLite backend.")
     else
         -- Quite unlikely, but just in case
-        ax.Util:PrintError("Unknown database backend in use!")
+        ax.util:PrintError("Unknown database backend in use!")
     end
 end

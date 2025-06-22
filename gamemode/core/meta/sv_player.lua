@@ -59,7 +59,7 @@ function PLAYER:SaveDB(callback)
 
         ax.net:Start(self, "database.save", clientTable.axDatabase or {})
     else
-        ax.Util:PrintError("Player database not initialized, cannot save")
+        ax.util:PrintError("Player database not initialized, cannot save")
     end
 end
 
