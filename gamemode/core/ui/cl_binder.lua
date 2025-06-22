@@ -9,9 +9,9 @@
     Attribution is required. If you use or modify this file, you must retain this notice.
 ]]
 
---- ax.Binder
+--- ax.binder
 -- A simple key binder panel for binding a single key input.
--- @panel ax.Binder
+-- @panel ax.binder
 
 local PANEL = {}
 
@@ -29,13 +29,12 @@ hook.Add("Think", "ax.Keybinds.logic", function()
         return
     end
 
-
     for optionName, keyCode in pairs(ax.Binds) do
         local optionData = ax.option.stored[optionName]
         if ( !istable(optionData) or optionData.Type != ax.types.number or !optionData.IsKeybind ) then continue end
         if ( !isnumber(keyCode) ) then continue end
 
-        if ( input.IsKeyDown(keyCode) ) then
+        if ( input.IsKeyDown(keyCode) or input.IsMouseDown(keyCode) ) then
             if ( !release[optionName] ) then
                 release[optionName] = true
 
@@ -81,7 +80,23 @@ function PANEL:Init()
 end
 
 function PANEL:OnMouseReleased(mouseCode)
-    if ( mouseCode != MOUSE_LEFT ) then return end
+    if ( mouseCode != MOUSE_LEFT ) then
+        self.Trapping = false
+        self:SetKeyboardInputEnabled(false)
+
+        for optionName, keyCode in pairs(ax.Binds) do
+            if ( keyCode == self:GetSelectedNumber() ) then
+                ax.Binds[optionName] = nil
+                ax.option:Set(optionName, KEY_NONE)
+                break
+            end
+        end
+
+        self:SetSelectedNumber(0)
+        self:UpdateText()
+        return
+    end
+
     self:GetParent():RequestFocus()
     self:SetText("...")
 
@@ -140,4 +155,4 @@ function PANEL:Think()
     end
 end
 
-vgui.Register("ax.Binder", PANEL, "ax.Button")
+vgui.Register("ax.binder", PANEL, "ax.button")
