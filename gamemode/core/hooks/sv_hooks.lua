@@ -454,11 +454,6 @@ function GM:PlayerDeath(client, inflictor, attacker)
 
         local deathSound = hook.Run("GetPlayerDeathSound", client, inflictor, attacker)
         if ( deathSound and deathSound != "" and !client:InObserver() ) then
-            if ( !file.Exists("sound/" .. deathSound, "GAME") ) then
-                ax.util:PrintWarning("PlayerDeathSound: Sound file does not exist! " .. deathSound)
-                return false
-            end
-
             client:EmitSound(deathSound, 75, 100, 1, CHAN_VOICE)
         end
 
