@@ -138,6 +138,4 @@ if ( CLIENT ) then
     end)
 end
 
-ax.Colour = ax.color
-ax.colour = ax.color
-ax.color = ax.color
+ax.colour = ax.color -- tea
