@@ -46,8 +46,10 @@ end
 --- Compares the faction with another faction.
 -- @param other The other faction to compare with.
 -- @treturn boolean Whether the factions are equal.
-function FACTION:__eq(other)
-    return self.ID == other.ID
+function FACTION:__eq(other) -- TODO: I don't think this even works lol
+    return isnumber(other) and self:GetID() == other or
+            isstring(other) and self:GetUniqueID() == other or
+            istable(other) and self:GetID() == other:GetID() and self:GetUniqueID() == other:GetUniqueID()
 end
 
 --- Gets the faction's ID.
