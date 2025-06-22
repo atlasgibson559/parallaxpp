@@ -17,7 +17,7 @@ local PANEL = {}
 
 AccessorFunc(PANEL, "m_iSelectedNumber", "SelectedNumber", FORCE_NUMBER)
 
-ax.Binds = ax.Binds or {}
+ax.binds = ax.binds or {}
 local release = {}
 hook.Add("Think", "ax.Keybinds.logic", function()
     if ( !system.HasFocus() or gui.IsConsoleVisible() or gui.IsGameUIVisible() or vgui.CursorVisible() ) then
@@ -29,7 +29,7 @@ hook.Add("Think", "ax.Keybinds.logic", function()
         return
     end
 
-    for optionName, keyCode in pairs(ax.Binds) do
+    for optionName, keyCode in pairs(ax.binds) do
         local optionData = ax.option.stored[optionName]
         if ( !istable(optionData) or optionData.Type != ax.types.number or !optionData.IsKeybind ) then continue end
         if ( !isnumber(keyCode) ) then continue end
@@ -84,9 +84,9 @@ function PANEL:OnMouseReleased(mouseCode)
         self.Trapping = false
         self:SetKeyboardInputEnabled(false)
 
-        for optionName, keyCode in pairs(ax.Binds) do
+        for optionName, keyCode in pairs(ax.binds) do
             if ( keyCode == self:GetSelectedNumber() ) then
-                ax.Binds[optionName] = nil
+                ax.binds[optionName] = nil
                 ax.option:Set(optionName, KEY_NONE)
                 break
             end
