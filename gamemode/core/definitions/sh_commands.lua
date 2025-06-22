@@ -321,3 +321,20 @@ Parallax.Command:Register("ToggleRaise", {
         client:ToggleWeaponRaise()
     end
 })
+
+Parallax.Command:Register("FallOver", {
+    Arguments = {
+        {
+            Type = Parallax.Types.number,
+            ErrorMsg = "You must provide a valid player to make fall over!",
+            Optional = true
+        }
+    },
+
+    Callback = function(info, client, arguments)
+        local character = client:GetCharacter()
+        if ( !character ) then return end
+
+        client:SetRagdolled(true, arguments[1] or 5)
+    end
+})
