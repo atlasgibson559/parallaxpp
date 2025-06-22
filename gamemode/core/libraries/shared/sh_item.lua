@@ -202,5 +202,3 @@ if ( CLIENT ) then
         return item
     end
 end
-
-ax.item = ax.item

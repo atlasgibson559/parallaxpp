@@ -36,5 +36,3 @@ function ax.notification:Send(client, text, iType, duration)
         notification.AddLegacy(text, iType, duration)
     end
 end
-
-ax.notification = ax.notification

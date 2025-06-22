@@ -63,5 +63,3 @@ function hook.Call(name, gm, ...)
 
     return hook.axCall(name, gm, ...)
 end
-
-ax.hook = ax.hooks

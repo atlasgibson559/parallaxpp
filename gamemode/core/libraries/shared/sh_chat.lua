@@ -58,5 +58,3 @@ end
 function ax.chat:Get(uniqueID)
     return self.classes[uniqueID]
 end
-
-ax.chat = ax.chat

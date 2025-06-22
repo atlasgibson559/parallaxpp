@@ -57,5 +57,3 @@ function ax.data:Get(key, fallback, bGlobal, bMap, bRefresh)
 
     return fallback
 end
-
-ax.data = ax.data

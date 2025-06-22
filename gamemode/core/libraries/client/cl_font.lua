@@ -43,5 +43,3 @@ concommand.Add("ax_list_font", function(client)
         PrintTable(data)
     end
 end)
-
-ax.font = ax.font

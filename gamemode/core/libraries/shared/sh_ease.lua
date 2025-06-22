@@ -84,5 +84,3 @@ function ax.ease:Lerp(easeType, time, startValue, endValue)
         return Lerp(easedT, startValue, endValue)
     end
 end
-
-ax.ease = ax.ease

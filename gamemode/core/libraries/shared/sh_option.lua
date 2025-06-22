@@ -203,5 +203,3 @@ function ax.option:Register(key, data)
 
     return true
 end
-
-ax.option = ax.option

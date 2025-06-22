@@ -123,5 +123,3 @@ if ( CLIENT ) then
         ax.net:Start("command.run", command, arguments)
     end
 end
-
-ax.command = ax.command

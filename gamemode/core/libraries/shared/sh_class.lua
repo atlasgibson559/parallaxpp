@@ -88,5 +88,3 @@ end
 function ax.class:GetAll()
     return self.instances
 end
-
-ax.class = ax.class

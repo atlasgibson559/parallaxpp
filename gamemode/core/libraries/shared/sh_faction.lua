@@ -94,5 +94,3 @@ end
 function ax.faction:GetAll()
     return self.instances
 end
-
-ax.faction = ax.faction

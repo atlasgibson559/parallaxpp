@@ -110,5 +110,3 @@ function ax.module:LoadFolder(path)
 
     hook.Run("PostInitializeModules")
 end
-
-ax.module = ax.module

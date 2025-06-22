@@ -146,5 +146,3 @@ if ( CLIENT ) then
     ax.net:Start(nil, "test", "hello", "world")
 end
 ]]
-
-ax.net = ax.net

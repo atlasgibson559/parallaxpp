@@ -57,5 +57,3 @@ function ax.inventory:GetByCharacterID(characterID)
 
     return inventories
 end
-
-ax.inventory = ax.inventory

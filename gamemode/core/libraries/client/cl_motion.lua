@@ -177,5 +177,3 @@ do
         ax.motion:CancelAll(self)
     end
 end
-
-ax.motion = ax.motion

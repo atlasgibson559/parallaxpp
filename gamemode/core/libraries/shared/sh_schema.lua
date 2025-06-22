@@ -110,5 +110,3 @@ function ax.schema:Initialize()
 
     return true
 end
-
-ax.schema = ax.schema

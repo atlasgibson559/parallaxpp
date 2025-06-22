@@ -2951,5 +2951,3 @@ ax.utf8.lowerToUpper = ax.utf8.lowerToUpper or {
     𑣞 = "𑢾",
     𑣟 = "𑢿",
 }
-
-ax.utf8 = ax.utf8

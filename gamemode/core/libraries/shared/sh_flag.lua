@@ -33,5 +33,3 @@ end
 function ax.flag:GetAll()
     return self.stored
 end
-
-ax.flag = ax.flag

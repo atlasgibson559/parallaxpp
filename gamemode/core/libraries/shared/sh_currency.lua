@@ -51,5 +51,3 @@ if ( SERVER ) then
         return ent
     end
 end
-
-ax.currency = ax.currency

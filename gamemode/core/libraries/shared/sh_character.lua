@@ -183,5 +183,3 @@ end
 function ax.character:GetAllVariables()
     return self.variables
 end
-
-ax.character = ax.character

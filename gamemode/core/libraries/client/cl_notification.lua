@@ -162,5 +162,3 @@ sound.Add({
     level = 80,
     sound = "parallax/ui/generic.wav"
 })
-
-ax.notification = ax.notification

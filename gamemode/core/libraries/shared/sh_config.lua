@@ -193,5 +193,3 @@ function ax.config:Register(key, data)
 
     return true
 end
-
-ax.config = ax.config
