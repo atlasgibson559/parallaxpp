@@ -44,7 +44,7 @@ PLAYER.SteamName = PLAYER.SteamName or PLAYER.Name
 
 --- Gets the player's name, prioritizing the character's name if available.
 -- @treturn string The player's name or the character's name.
-function PLAYER:Name()
+function PLAYER:Nick()
     local character = self:GetCharacter()
     if ( character ) then
         return character:GetName()
@@ -52,8 +52,6 @@ function PLAYER:Name()
 
     return self:SteamName()
 end
-
-PLAYER.Nick = PLAYER.Name
 
 --- Sends a chat message to the player.
 -- @realm shared
