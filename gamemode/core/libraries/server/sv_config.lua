@@ -94,7 +94,7 @@ end
 function ax.config:Reset(key)
     local configData = self.stored[key]
     if ( !istable(configData) ) then
-        ax.util:PrintError("Config \"" .. key .. "\" does not exist!")
+        ax.util:PrintError("Config \"" .. tostring(key) .. "\" does not exist!")
         return false
     end
 

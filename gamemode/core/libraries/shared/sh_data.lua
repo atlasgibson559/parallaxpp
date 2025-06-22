@@ -25,7 +25,7 @@ function ax.data:Set(key, value, bGlobal, bMap)
     end
 
     file.CreateDir(path)
-    file.Write(path .. key .. ".json", util.TableToJSON({value}))
+    file.Write(path .. tostring(key) .. ".json", util.TableToJSON({value}))
 
     self.stored[key] = value
 
@@ -47,7 +47,7 @@ function ax.data:Get(key, fallback, bGlobal, bMap, bRefresh)
         path = path .. game.GetMap() .. "/"
     end
 
-    local data = file.Read(path .. key .. ".json", "DATA")
+    local data = file.Read(path .. tostring(key) .. ".json", "DATA")
     if ( data != nil ) then
         data = util.JSONToTable(data)
 

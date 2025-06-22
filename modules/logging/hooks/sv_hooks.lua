@@ -103,10 +103,10 @@ function MODULE:PostPlayerConfigChanged(client, key, value, oldValue)
             self:Send(ax.color:Get("red"), self:Format(client) .. " disabled logging")
         end
     else
-        self:Send(ax.color:Get("yellow"), self:Format(client) .. " changed config \"" .. key .. "\" from \"" .. tostring(oldValue) .. "\" to \"" .. tostring(value) .. "\"")
+        self:Send(ax.color:Get("yellow"), self:Format(client) .. " changed config \"" .. tostring(key) .. "\" from \"" .. tostring(oldValue) .. "\" to \"" .. tostring(value) .. "\"")
     end
 end
 
 function MODULE:PostPlayerConfigReset(client, key)
-    self:Send(ax.color:Get("yellow"), self:Format(client) .. " reset config \"" .. key .. "\"")
+    self:Send(ax.color:Get("yellow"), self:Format(client) .. " reset config \"" .. tostring(key) .. "\"")
 end

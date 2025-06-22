@@ -19,7 +19,7 @@ ax.option.clients = ax.option.clients or {}
 function ax.option:Set(client, key, value, bNoNetworking)
     local stored = self.stored[key]
     if ( !istable(stored) ) then
-        ax.util:PrintError("Option \"" .. key .. "\" does not exist!")
+        ax.util:PrintError("Option \"" .. tostring(key) .. "\" does not exist!")
         return false
     end
 
@@ -53,12 +53,12 @@ function ax.option:Get(client, key, fallback)
 
     local stored = ax.option.stored[key]
     if ( !istable(stored) ) then
-        ax.util:PrintError("Option \"" .. key .. "\" does not exist!")
+        ax.util:PrintError("Option \"" .. tostring(key) .. "\" does not exist!")
         return default
     end
 
     if ( stored.NoNetworking ) then
-        ax.util:PrintWarning("Option \"" .. key .. "\" is not networked!")
+        ax.util:PrintWarning("Option \"" .. tostring(key) .. "\" is not networked!")
         return fallback
     end
 

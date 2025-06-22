@@ -81,7 +81,7 @@ function ax.config:Set(key, value)
     end
 
     if ( ax.util:DetectType(value) != stored.Type ) then
-        ax.util:PrintError("Attempted to set config \"" .. key .. "\" with invalid type!")
+        ax.util:PrintError("Attempted to set config \"" .. tostring(key) .. "\" with invalid type!")
         return false
     end
 
@@ -164,7 +164,7 @@ function ax.config:Register(key, data)
 
     for _, v in pairs(requiredFields) do
         if ( data[v] == nil ) then
-            ax.util:PrintError("Configuration \"" .. key .. "\" is missing required field \"" .. v .. "\"!\n")
+            ax.util:PrintError("Configuration \"" .. tostring(key) .. "\" is missing required field \"" .. v .. "\"!\n")
             return false
         end
     end
@@ -173,7 +173,7 @@ function ax.config:Register(key, data)
         data.Type = ax.util:DetectType(data.Default)
 
         if ( data.Type == nil ) then
-            ax.util:PrintError("Config \"" .. key .. "\" has an invalid type!")
+            ax.util:PrintError("Config \"" .. tostring(key) .. "\" has an invalid type!")
             return false
         end
     end

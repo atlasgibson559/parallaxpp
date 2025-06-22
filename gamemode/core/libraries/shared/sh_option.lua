@@ -18,7 +18,7 @@ ax.option.stored = ax.option.stored or {}
 function ax.option:SetDefault(key, default)
     local stored = self.stored[key]
     if ( !istable(stored) ) then
-        ax.util:PrintError("Option \"" .. key .. "\" does not exist!")
+        ax.util:PrintError("Option \"" .. tostring(key) .. "\" does not exist!")
         return false
     end
 
@@ -76,7 +76,7 @@ if ( CLIENT ) then
     function ax.option:Set(key, value, bNoNetworking)
         local stored = self.stored[key]
         if ( !istable(stored) ) then
-            ax.util:PrintError("Option \"" .. key .. "\" does not exist!")
+            ax.util:PrintError("Option \"" .. tostring(key) .. "\" does not exist!")
             return false
         end
 
@@ -110,14 +110,14 @@ if ( CLIENT ) then
     function ax.option:Get(key, fallback)
         local optionData = self.stored[key]
         if ( !istable(optionData) ) then
-            ax.util:PrintError("Option \"" .. key .. "\" does not exist!")
+            ax.util:PrintError("Option \"" .. tostring(key) .. "\" does not exist!")
             return fallback
         end
 
         local instance = self.instances[key]
         if ( instance == nil ) then
             if ( optionData.Default == nil ) then
-                ax.util:PrintError("Option \"" .. key .. "\" has no value or default set!")
+                ax.util:PrintError("Option \"" .. tostring(key) .. "\" has no value or default set!")
                 return fallback
             end
 
@@ -130,7 +130,7 @@ if ( CLIENT ) then
     function ax.option:GetDefault(key)
         local optionData = self.stored[key]
         if ( !istable(optionData) ) then
-            ax.util:PrintError("Option \"" .. key .. "\" does not exist!")
+            ax.util:PrintError("Option \"" .. tostring(key) .. "\" does not exist!")
             return nil
         end
 
@@ -145,7 +145,7 @@ if ( CLIENT ) then
     function ax.option:Reset(key)
         local optionData = self.stored[key]
         if ( !istable(optionData) ) then
-            ax.util:PrintError("Option \"" .. key .. "\" does not exist!")
+            ax.util:PrintError("Option \"" .. tostring(key) .. "\" does not exist!")
             return false
         end
 
@@ -174,7 +174,7 @@ function ax.option:Register(key, data)
 
     for _, v in pairs(requiredFields) do
         if ( data[v] == nil ) then
-            ax.util:PrintError("Option \"" .. key .. "\" is missing required field \"" .. v .. "\"!\n")
+            ax.util:PrintError("Option \"" .. tostring(key) .. "\" is missing required field \"" .. v .. "\"!\n")
             return false
         end
     end
@@ -183,7 +183,7 @@ function ax.option:Register(key, data)
         data.Type = ax.util:DetectType(data.Default)
 
         if ( data.Type == nil ) then
-            ax.util:PrintError("Option \"" .. key .. "\" has an invalid type!")
+            ax.util:PrintError("Option \"" .. tostring(key) .. "\" has an invalid type!")
             return false
         end
     end
