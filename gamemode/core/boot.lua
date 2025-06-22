@@ -14,18 +14,18 @@ GM.Author = "Riggs and bloodycop6385"
 GM.Description = "Parallax is a modular roleplay framework for Garry's Mod, built for performance, structure, and developer clarity."
 GM.State = "Beta"
 
-Parallax.Util:Print("Framework Initializing...")
-Parallax.Util:LoadFolder("libraries/external")
-Parallax.Util:LoadFolder("libraries/client")
-Parallax.Util:LoadFolder("libraries/shared")
-Parallax.Util:LoadFolder("libraries/server")
-Parallax.Util:LoadFolder("definitions")
-Parallax.Util:LoadFolder("meta")
-Parallax.Util:LoadFolder("ui")
-Parallax.Util:LoadFolder("hooks")
-Parallax.Util:LoadFolder("net")
-Parallax.Util:LoadFolder("languages")
-Parallax.Util:Print("Framework Initialized.")
+ax.Util:Print("Framework Initializing...")
+ax.Util:LoadFolder("libraries/external")
+ax.Util:LoadFolder("libraries/client")
+ax.Util:LoadFolder("libraries/shared")
+ax.Util:LoadFolder("libraries/server")
+ax.Util:LoadFolder("definitions")
+ax.Util:LoadFolder("meta")
+ax.Util:LoadFolder("ui")
+ax.Util:LoadFolder("hooks")
+ax.Util:LoadFolder("net")
+ax.Util:LoadFolder("languages")
+ax.Util:Print("Framework Initialized.")
 
 function widgets.PlayerTick()
 end

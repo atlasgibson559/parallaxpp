@@ -22,8 +22,8 @@ ax = ax or Parallax
 
 LocalPlayerInternal = LocalPlayer
 function LocalPlayer()
-    if ( IsValid(Parallax.Client) ) then
-        return Parallax.Client
+    if ( IsValid(ax.Client) ) then
+        return ax.Client
     end
 
     return LocalPlayerInternal()

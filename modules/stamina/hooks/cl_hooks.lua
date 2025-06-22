@@ -12,10 +12,10 @@
 local MODULE = MODULE
 
 function MODULE:ShouldDrawStamina()
-    if ( IsValid(Parallax.GUI.Mainmenu) ) then return false end
-    if ( IsValid(Parallax.GUI.Tab) ) then return false end
+    if ( IsValid(ax.GUI.Mainmenu) ) then return false end
+    if ( IsValid(ax.GUI.Tab) ) then return false end
 
-    return IsValid(Parallax.Client) and Parallax.Config:Get("stamina", true) and Parallax.Client:Alive() and istable(Parallax.Client:GetRelay("stamina"))
+    return IsValid(ax.Client) and ax.config:Get("stamina", true) and ax.Client:Alive() and istable(ax.Client:GetRelay("stamina"))
 end
 
 local staminaLerp = 0
@@ -25,11 +25,11 @@ local staminaLast = 0
 function MODULE:HUDPaint()
     local shouldDraw = hook.Run("ShouldDrawStamina")
     if ( shouldDraw == false ) then
-        Parallax.Globals.drawingStamina = nil
+        ax.Globals.drawingStamina = nil
         return
     end
 
-    local staminaFraction = Parallax.Stamina:GetFraction()
+    local staminaFraction = ax.Stamina:GetFraction()
     staminaLerp = Lerp(FrameTime() * 5, staminaLerp, staminaFraction)
 
     if ( staminaLast != staminaFraction ) then
@@ -47,16 +47,16 @@ function MODULE:HUDPaint()
         local barWidth, barHeight = scrW / 6, ScreenScale(4)
         local barX, barY = scrW / 2 - barWidth / 2, scrH / 1.025 - barHeight / 2
 
-        Parallax.Util:DrawBlurRect(barX, barY, barWidth, barHeight, 2, nil, staminaAlpha)
+        ax.Util:DrawBlurRect(barX, barY, barWidth, barHeight, 2, nil, staminaAlpha)
 
-        surface.SetDrawColor(ColorAlpha(Parallax.Color:Get("background.transparent"), staminaAlpha / 2))
+        surface.SetDrawColor(ColorAlpha(ax.color:Get("background.transparent"), staminaAlpha / 2))
         surface.DrawRect(barX, barY, barWidth, barHeight)
 
-        surface.SetDrawColor(ColorAlpha(Parallax.Color:Get("white"), staminaAlpha))
+        surface.SetDrawColor(ColorAlpha(ax.color:Get("white"), staminaAlpha))
         surface.DrawRect(barX, barY, barWidth * staminaLerp, barHeight)
 
-        Parallax.Globals.drawingStamina = true
+        ax.Globals.drawingStamina = true
     else
-        Parallax.Globals.drawingStamina = nil
+        ax.Globals.drawingStamina = nil
     end
 end

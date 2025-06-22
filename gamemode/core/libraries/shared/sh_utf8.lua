@@ -11,15 +11,15 @@
 
 --- UTF8 library
 -- Helper functions to use on strings that may contain non-English characters.
--- @module Parallax.Utf8
+-- @module ax.utf8
 
-Parallax.Utf8 = Parallax.Utf8 or {}
+ax.utf8 = ax.utf8 or {}
 
 --- Changes any upper-case letters in a string to lower-case letters.
 -- @realm shared
 -- @param str string The string to convert.
 -- @return string Returns a string representing the value of a string converted to lower-case.
-function Parallax.Utf8:Lower(str)
+function ax.utf8:Lower(str)
     local lowercase = ""
     for i = 1, utf8.len(str) do
         local char = utf8.GetChar(str, i)
@@ -33,7 +33,7 @@ end
 -- @realm shared
 -- @param str string The string to convert.
 -- @return string Returns a string representing the value of a string converted to upper-case.
-function Parallax.Utf8:Upper(str)
+function ax.utf8:Upper(str)
     local uppercase = ""
     for i = 1, utf8.len(str) do
         local char = utf8.GetChar(str, i)
@@ -47,7 +47,7 @@ end
 -- Automatically generated using Python script.
 
 -- Uppercase to lowercase mapping
-Parallax.Utf8.upperToLower = Parallax.Utf8.upperToLower or {
+ax.utf8.upperToLower = ax.utf8.upperToLower or {
     -- ADLAM characters
     𞤀 = "𞤢",
     𞤁 = "𞤣",
@@ -1482,7 +1482,7 @@ Parallax.Utf8.upperToLower = Parallax.Utf8.upperToLower or {
 }
 
 -- Lowercase to uppercase mapping
-Parallax.Utf8.lowerToUpper = Parallax.Utf8.lowerToUpper or {
+ax.utf8.lowerToUpper = ax.utf8.lowerToUpper or {
     -- ADLAM characters
     𞤢 = "𞤀",
     𞤣 = "𞤁",
@@ -2952,4 +2952,4 @@ Parallax.Utf8.lowerToUpper = Parallax.Utf8.lowerToUpper or {
     𑣟 = "𑢿",
 }
 
-Parallax.utf8 = Parallax.Utf8
+ax.utf8 = ax.utf8

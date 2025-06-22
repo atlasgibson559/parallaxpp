@@ -60,10 +60,10 @@ function PANEL:Init()
 
     self:SetOverlap(0)
 
-    self.btnLeft = self:Add("Parallax.Button.Flat", self)
+    self.btnLeft = self:Add("ax.Button.Flat", self)
     self.btnLeft:SetText("")
 
-    self.btnRight = self:Add("Parallax.Button.Flat", self)
+    self.btnRight = self:Add("ax.Button.Flat", self)
     self.btnRight:SetText("")
 end
 
@@ -190,7 +190,7 @@ function PANEL:OnDragModified()
 end
 
 function PANEL:GenerateExample(classname, sheet)
-    local scroller = vgui.Create("Parallax.Scroller.Horizontal")
+    local scroller = vgui.Create("ax.Scroller.Horizontal")
     scroller:Dock(TOP)
     scroller:SetHeight(64)
     scroller:DockMargin(5, 50, 5, 50)
@@ -205,4 +205,4 @@ function PANEL:GenerateExample(classname, sheet)
     sheet:AddSheet(classname, scroller, nil, true, true)
 end
 
-vgui.Register("Parallax.Scroller.Horizontal", PANEL, "Panel")
+vgui.Register("ax.Scroller.Horizontal", PANEL, "Panel")
