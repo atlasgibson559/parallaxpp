@@ -94,3 +94,5 @@ end
 function Parallax.Faction:GetAll()
     return self.Instances
 end
+
+Parallax.faction = Parallax.Faction

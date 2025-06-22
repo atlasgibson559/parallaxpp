@@ -139,3 +139,5 @@ if ( CLIENT ) then
 end
 
 Parallax.Colour = Parallax.Color
+Parallax.colour = Parallax.Color
+Parallax.color = Parallax.Color

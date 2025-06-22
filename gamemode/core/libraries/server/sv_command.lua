@@ -127,3 +127,5 @@ end--[[, function(cmd, argStr, arguments)
     return commands
 end, "Lists all available commands."]])
 -- TODO: Add auto-complete for commands
+
+Parallax.command = Parallax.Command

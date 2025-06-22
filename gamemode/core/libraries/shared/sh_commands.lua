@@ -123,3 +123,5 @@ if ( CLIENT ) then
         Parallax.Net:Start("command.run", command, arguments)
     end
 end
+
+Parallax.command = Parallax.Command

@@ -190,4 +190,6 @@ function FACTION:Register()
 
     team.SetUp(self:GetID(), self:GetName(), self:GetColor(), false)
     hook.Run("PostFactionRegistered", self)
+
+    return #Parallax.Faction.Instances
 end

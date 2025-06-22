@@ -63,3 +63,5 @@ function hook.Call(name, gm, ...)
 
     return hook.axCall(name, gm, ...)
 end
+
+Parallax.hook = Parallax.Hooks

@@ -145,3 +145,5 @@ function Parallax.Config:Synchronize(client)
 
     return true
 end
+
+Parallax.config = Parallax.Config

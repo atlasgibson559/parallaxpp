@@ -162,3 +162,5 @@ sound.Add({
     level = 80,
     sound = "parallax/ui/generic.wav"
 })
+
+Parallax.notification = Parallax.Notification

@@ -208,7 +208,7 @@ Parallax.Character:RegisterVariable("faction", {
         if ( IsValid(client) ) then
             client:SetTeam(value)
         end
-    end
+    end,
 })
 
 Parallax.Character:RegisterVariable("class", {

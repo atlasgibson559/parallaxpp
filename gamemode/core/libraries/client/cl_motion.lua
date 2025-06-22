@@ -177,3 +177,5 @@ do
         Parallax.Motion:CancelAll(self)
     end
 end
+
+Parallax.motion = Parallax.Motion

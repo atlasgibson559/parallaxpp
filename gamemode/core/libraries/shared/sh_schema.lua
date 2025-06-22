@@ -110,3 +110,5 @@ function Parallax.Schema:Initialize()
 
     return true
 end
+
+Parallax.schema = Parallax.Schema

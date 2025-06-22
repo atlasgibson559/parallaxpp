@@ -128,3 +128,5 @@ concommand.Add("ax_localization_check", function(client, command, arguments)
 end)
 
 Parallax.Localisation = Parallax.Localization
+Parallax.localization = Parallax.Localization
+Parallax.localisation = Parallax.Localization

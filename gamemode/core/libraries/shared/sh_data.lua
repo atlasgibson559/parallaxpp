@@ -57,3 +57,5 @@ function Parallax.Data:Get(key, fallback, bGlobal, bMap, bRefresh)
 
     return fallback
 end
+
+Parallax.data = Parallax.Data

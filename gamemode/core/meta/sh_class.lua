@@ -166,4 +166,6 @@ function CLASS:Register()
     Parallax.Class.Stored[self.UniqueID] = self
 
     hook.Run("PostClassRegistered", self)
+
+    return #instances
 end

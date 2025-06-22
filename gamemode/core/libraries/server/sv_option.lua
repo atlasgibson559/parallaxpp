@@ -74,3 +74,5 @@ function Parallax.Option:Get(client, key, fallback)
 
     return fallback
 end
+
+Parallax.option = Parallax.Option

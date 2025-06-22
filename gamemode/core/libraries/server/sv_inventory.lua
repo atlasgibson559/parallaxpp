@@ -343,3 +343,5 @@ function Parallax.Inventory:RemoveItem(inventoryID, itemID)
 
     return true
 end
+
+Parallax.inventory = Parallax.Inventory

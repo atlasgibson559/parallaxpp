@@ -183,3 +183,5 @@ end
 function Parallax.Character:GetAllVariables()
     return self.variables
 end
+
+Parallax.character = Parallax.Character

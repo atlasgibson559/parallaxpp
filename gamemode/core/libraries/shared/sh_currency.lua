@@ -51,3 +51,5 @@ if ( SERVER ) then
         return ent
     end
 end
+
+Parallax.currency = Parallax.Currency

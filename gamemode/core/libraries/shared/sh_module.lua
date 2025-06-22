@@ -110,3 +110,5 @@ function Parallax.Module:LoadFolder(path)
 
     hook.Run("PostInitializeModules")
 end
+
+Parallax.module = Parallax.Module

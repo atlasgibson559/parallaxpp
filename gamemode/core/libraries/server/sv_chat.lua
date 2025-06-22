@@ -39,3 +39,5 @@ function Parallax.Chat:SendTo(players, uniqueID, text)
         Text = text
     })
 end
+
+Parallax.chat = Parallax.Chat

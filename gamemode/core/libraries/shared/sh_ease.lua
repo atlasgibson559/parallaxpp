@@ -84,3 +84,5 @@ function Parallax.Ease:Lerp(easeType, time, startValue, endValue)
         return Lerp(easedT, startValue, endValue)
     end
 end
+
+Parallax.ease = Parallax.Ease

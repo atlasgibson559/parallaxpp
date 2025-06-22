@@ -414,3 +414,5 @@ concommand.Add("ax_item_spawn", function(client, cmd, arguments)
         end
     end)
 end)
+
+Parallax.item = Parallax.Item

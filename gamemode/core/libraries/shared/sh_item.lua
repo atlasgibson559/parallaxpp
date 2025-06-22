@@ -202,3 +202,5 @@ if ( CLIENT ) then
         return item
     end
 end
+
+Parallax.item = Parallax.Item

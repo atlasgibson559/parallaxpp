@@ -58,3 +58,5 @@ end
 function Parallax.Chat:Get(uniqueID)
     return self.classes[uniqueID]
 end
+
+Parallax.chat = Parallax.Chat

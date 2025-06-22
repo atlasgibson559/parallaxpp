@@ -2951,3 +2951,5 @@ Parallax.Utf8.lowerToUpper = Parallax.Utf8.lowerToUpper or {
     𑣞 = "𑢾",
     𑣟 = "𑢿",
 }
+
+Parallax.utf8 = Parallax.Utf8

@@ -88,3 +88,5 @@ end
 function Parallax.Class:GetAll()
     return self.Instances
 end
+
+Parallax.class = Parallax.Class

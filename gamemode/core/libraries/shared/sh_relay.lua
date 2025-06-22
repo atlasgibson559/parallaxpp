@@ -150,3 +150,5 @@ else
         end
     end)
 end
+
+Parallax.relay = Parallax.Relay

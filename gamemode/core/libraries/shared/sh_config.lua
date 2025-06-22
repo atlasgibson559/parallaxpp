@@ -193,3 +193,5 @@ function Parallax.Config:Register(key, data)
 
     return true
 end
+
+Parallax.config = Parallax.Config

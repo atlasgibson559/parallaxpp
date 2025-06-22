@@ -33,3 +33,5 @@ end
 function Parallax.Flag:GetAll()
     return self.Stored
 end
+
+Parallax.flag = Parallax.Flag

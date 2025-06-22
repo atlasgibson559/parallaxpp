@@ -278,3 +278,5 @@ concommand.Add("ax_character_test_create", function(client, cmd, arguments)
         name = "Test Character"
     })
 end)
+
+Parallax.character = Parallax.Character

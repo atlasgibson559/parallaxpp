@@ -57,3 +57,5 @@ function Parallax.Inventory:GetByCharacterID(characterID)
 
     return inventories
 end
+
+Parallax.inventory = Parallax.Inventory

@@ -146,3 +146,5 @@ if ( CLIENT ) then
     Parallax.Net:Start(nil, "test", "hello", "world")
 end
 ]]
+
+Parallax.net = Parallax.Net

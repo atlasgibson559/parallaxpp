@@ -203,3 +203,5 @@ function Parallax.Option:Register(key, data)
 
     return true
 end
+
+Parallax.option = Parallax.Option

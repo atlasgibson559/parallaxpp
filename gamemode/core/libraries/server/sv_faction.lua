@@ -37,3 +37,5 @@ function Parallax.Faction:Join(client, factionID, bBypass)
     hook.Run("PlayerJoinedFaction", client, factionID, oldFaction.GetID and oldFaction:GetID())
     return true
 end
+
+Parallax.faction = Parallax.Faction

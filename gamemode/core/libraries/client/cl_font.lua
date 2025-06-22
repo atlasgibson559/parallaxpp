@@ -43,3 +43,5 @@ concommand.Add("ax_list_font", function(client)
         PrintTable(data)
     end
 end)
+
+Parallax.font = Parallax.Font

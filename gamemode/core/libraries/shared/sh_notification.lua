@@ -36,3 +36,5 @@ function Parallax.Notification:Send(client, text, iType, duration)
         notification.AddLegacy(text, iType, duration)
     end
 end
+
+Parallax.notification = Parallax.Notification
