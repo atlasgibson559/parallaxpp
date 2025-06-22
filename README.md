@@ -115,6 +115,14 @@ Overlooking such rules is a violation of license and may result in action agains
 
 ---
 
+## Resources
+
+- [Content](https://steamcommunity.com/sharedfiles/filedetails/?id=3479969076)
+- [Documentation](https://github.com/Parallax-Framework/parallax/wiki)
+- [Style Guide](https://github.com/Parallax-Framework/parallax/blob/main/STYLE.md)
+
+---
+
 ## Contact
 
 For questions, help, or to stay updated on development:
