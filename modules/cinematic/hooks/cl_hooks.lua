@@ -26,7 +26,6 @@ function MODULE:CalcView(ply, pos, ang, fov)
 end
 
 local offsetVector = Vector()
-local orangeColor = Color(255, 150, 0)
 
 function MODULE:PostDrawTranslucentRenderables()
     if ( !ax.Cinematic.Debug ) then return end
@@ -52,7 +51,7 @@ function MODULE:PostDrawTranslucentRenderables()
                     render.DrawLine(
                         last + offsetVector,
                         pos + offsetVector,
-                        orangeColor, true
+                        ax.color:Get("orange"), true
                     )
                 end
 
