@@ -20,7 +20,7 @@ ax.net:Hook("persistence.mark", function(client, ent)
     end
 
     ent:SetRelay("persistent", true)
-    ax.Log:Send(ax.Log:Format(client) .. " marked entity " .. tostring(ent) .. " as persistent.")
+    ax.log:Send(ax.log:Format(client) .. " marked entity " .. tostring(ent) .. " as persistent.")
     client:Notify("Marked entity " .. tostring(ent) .. " as persistent.")
 
     MODULE:SaveEntities()
@@ -35,7 +35,7 @@ ax.net:Hook("persistence.unmark", function(client, ent)
     end
 
     ent:SetRelay("persistent", false)
-    ax.Log:Send(ax.Log:Format(client) .. " unmarked entity " .. tostring(ent) .. " as persistent.")
+    ax.log:Send(ax.log:Format(client) .. " unmarked entity " .. tostring(ent) .. " as persistent.")
     client:Notify("Unmarked entity " .. tostring(ent) .. " as persistent.")
 
     MODULE:SaveEntities()
