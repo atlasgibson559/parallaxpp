@@ -99,11 +99,11 @@ end
 -- @treturn table A table of class instances associated with the faction.
 function FACTION:GetClasses()
     local classes = {}
-    local instanceCount = #ax.class.instances
-    for i = 1, instanceCount do
-        local v = ax.class.instances[i]
+    local instances = ax.class.instances
+    for i = 1, #instances do
+        local v = instances[i]
         if ( v.Faction == self:GetID() ) then
-            table.insert(classes, v)
+            classes[#classes + 1] = v
         end
     end
 
@@ -187,7 +187,7 @@ function FACTION:Register()
     self.UniqueID = self.UniqueID or uniqueID
     self.ID = #ax.faction.instances + 1
 
-    table.insert(ax.faction.instances, self)
+    ax.faction.instances[#ax.faction.instances + 1] = self
     ax.faction.stored[self.UniqueID] = self
 
     team.SetUp(self:GetID(), self:GetName(), self:GetColor(), false)

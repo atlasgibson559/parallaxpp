@@ -18,7 +18,7 @@ function MODULE:Send(...)
     for k, v in player.Iterator() do
         if ( !CAMI.PlayerHasAccess(v, "Parallax - Logging") ) then continue end
 
-        table.insert(receivers, v)
+        receivers[#receivers + 1] = v
     end
 
     -- Send to the remote console if we are in a dedicated server

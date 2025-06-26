@@ -37,7 +37,7 @@ function MODULE:PostDrawTranslucentRenderables()
 
             local points = table.Copy(node.ctrl or {})
             table.insert(points, 1, prev.pos)
-            table.insert(points, node.pos)
+            points[#points + 1] = node.pos
 
             local last = points[1]
             for j = 1, 60 do

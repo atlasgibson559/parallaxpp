@@ -18,7 +18,7 @@ function ax.chat:SendSpeaker(speaker, uniqueID, text)
         if ( !IsValid(v) or !v:Alive() ) then continue end
 
         if ( hook.Run("PlayerCanHearChat", speaker, v, uniqueID, text) != false ) then
-            table.insert(players, v)
+            players[#players + 1] = v
         end
     end
 

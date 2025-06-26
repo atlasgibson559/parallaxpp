@@ -22,9 +22,9 @@ function GM:PlayerInitialSpawn(client)
         for i = 1, #factionModels do
             local v = factionModels[i]
             if ( istable(v) ) then
-                table.insert(models, v[1])
+                models[#models + 1] =  v[1]
             else
-                table.insert(models, v)
+                models[#models + 1] = v
             end
         end
 

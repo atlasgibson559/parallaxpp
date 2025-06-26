@@ -45,13 +45,13 @@ function MODULE:SaveEntities()
         local methods = self.PersistentEntities[class]
         local data = methods and methods.Save and methods.Save(ent) or {}
 
-        table.insert(savedEntities, {
+        savedEntities[#savedEntities + 1] = {
             class = class,
             pos = ent:GetPos(),
             ang = ent:GetAngles(),
             mdl = ent:GetModel(),
             data = data
-        })
+        }
     end
 
     if ( savedEntities[1] != nil ) then

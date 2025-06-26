@@ -76,7 +76,7 @@ function chat.AddText(...)
         end
     end
 
-    table.insert(ax.chat.messages, panel)
+    ax.chat.messages[#ax.chat.messages + 1] = panel
 
     timer.Simple(0.1, function()
         if ( !IsValid(panel) ) then return end

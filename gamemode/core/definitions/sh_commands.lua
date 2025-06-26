@@ -205,7 +205,7 @@ ax.command:Register("CharGiveFlags", {
         local given = {}
         for i = 1, #flags do
             local flag = flags[i]
-            table.insert(given, flag)
+            given[#given + 1] = flag
         end
 
         -- Check if the flags are valid
@@ -274,7 +274,7 @@ ax.command:Register("CharTakeFlags", {
         local taken = {}
         for i = 1, #flags do
             local flag = flags[i]
-            table.insert(taken, flag)
+            taken[#taken + 1] = flag
         end
 
         -- Check if the flags are valid

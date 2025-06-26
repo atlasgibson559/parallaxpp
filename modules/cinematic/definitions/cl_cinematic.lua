@@ -54,7 +54,7 @@ function ax.Cinematic:Start(duration, path)
             local distance = 0
             local points = table.Copy(ctrl)
             table.insert(points, 1, lastPos)
-            table.insert(points, pos)
+            points[#points + 1] = pos
             segment.points = points
 
             for j = 1, 50 do
@@ -73,7 +73,7 @@ function ax.Cinematic:Start(duration, path)
             segment.points = {}
         end
 
-        table.insert(self.Path, segment)
+        self.Path[#self.Path + 1] = segment
         lastPos = pos
     end
 
