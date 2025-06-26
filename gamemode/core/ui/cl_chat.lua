@@ -277,7 +277,7 @@ function PANEL:CycleRecommendations()
     self.chatType:SetText(data.UniqueID, true, true)
     self.chatType:RestartTyping()
 
-    surface.PlaySound("ax.button.Enter")
+    surface.PlaySound("ax.button.enter")
 end
 
 function PANEL:SetVisible(visible)
