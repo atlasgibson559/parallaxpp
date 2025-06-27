@@ -113,10 +113,10 @@ function GM:ScoreboardShow()
         return false
     end
 
-    if ( !IsValid(ax.gui.Tab) ) then
+    if ( !IsValid(ax.gui.tab) ) then
         vgui.Create("ax.tab")
     else
-        ax.gui.Tab:Remove()
+        ax.gui.tab:Remove()
     end
 
     return false
@@ -711,8 +711,8 @@ function GM:LoadFonts()
 end
 
 function GM:OnPauseMenuShow()
-    if ( IsValid(ax.gui.Tab) ) then
-        ax.gui.Tab:Close()
+    if ( IsValid(ax.gui.tab) ) then
+        ax.gui.tab:Close()
         return false
     end
 
@@ -740,15 +740,25 @@ function GM:PostHUDPaint()
 end
 
 function GM:ShouldDrawCrosshair()
-    if ( IsValid(ax.gui.mainmenu) ) then return false end
-    if ( IsValid(ax.gui.Tab) ) then return false end
+    if (
+        IsValid(ax.gui.mainmenu) or
+        IsValid(ax.gui.tab) or
+        IsValid(ax.gui.splash)
+    ) then
+        return false
+    end
 
     return true
 end
 
 function GM:ShouldDrawAmmoBox()
-    if ( IsValid(ax.gui.mainmenu) ) then return false end
-    if ( IsValid(ax.gui.Tab) ) then return false end
+    if (
+        IsValid(ax.gui.mainmenu) or
+        IsValid(ax.gui.tab) or
+        IsValid(ax.gui.splash)
+    ) then
+        return false
+    end
 
     local client = ax.client
     local activeWeapon = client:GetActiveWeapon()
@@ -767,8 +777,13 @@ function GM:ShouldDrawAmmoBox()
 end
 
 function GM:ShouldDrawHealthBar()
-    if ( IsValid(ax.gui.mainmenu) ) then return false end
-    if ( IsValid(ax.gui.Tab) ) then return false end
+    if (
+        IsValid(ax.gui.mainmenu) or
+        IsValid(ax.gui.tab) or
+        IsValid(ax.gui.splash)
+    ) then
+        return false
+    end
 
     local client = ax.client
     if ( !IsValid(client) or !client:Alive() ) then return false end
@@ -778,16 +793,26 @@ end
 
 function GM:ShouldDrawDebugHUD()
     if ( !ax.config:Get("debug.developer") ) then return false end
-    if ( IsValid(ax.gui.mainmenu) ) then return false end
-    if ( IsValid(ax.gui.Tab) ) then return false end
+    if (
+        IsValid(ax.gui.mainmenu) or
+        IsValid(ax.gui.tab) or
+        IsValid(ax.gui.splash)
+    ) then
+        return false
+    end
 
     return ax.client:IsDeveloper()
 end
 
 function GM:ShouldDrawPreviewHUD()
     if ( !ax.config:Get("debug.preview") ) then return false end
-    if ( IsValid(ax.gui.mainmenu) ) then return false end
-    if ( IsValid(ax.gui.Tab) ) then return false end
+    if (
+        IsValid(ax.gui.mainmenu) or
+        IsValid(ax.gui.tab) or
+        IsValid(ax.gui.splash)
+    ) then
+        return false
+    end
 
     return !hook.Run("ShouldDrawDebugHUD")
 end
