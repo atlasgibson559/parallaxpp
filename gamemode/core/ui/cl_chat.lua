@@ -14,11 +14,11 @@ local PANEL = {}
 DEFINE_BASECLASS("EditablePanel")
 
 function PANEL:Init()
-    if ( IsValid(ax.gui.Chatbox) ) then
-        ax.gui.Chatbox:Remove()
+    if ( IsValid(ax.gui.chatbox) ) then
+        ax.gui.chatbox:Remove()
     end
 
-    ax.gui.Chatbox = self
+    ax.gui.chatbox = self
 
     self:SetSize(hook.Run("GetChatboxSize"))
     self:SetPos(hook.Run("GetChatboxPos"))
@@ -327,8 +327,8 @@ end
 
 vgui.Register("ax.chatbox", PANEL, "EditablePanel")
 
-if ( IsValid(ax.gui.Chatbox) ) then
-    ax.gui.Chatbox:Remove()
+if ( IsValid(ax.gui.chatbox) ) then
+    ax.gui.chatbox:Remove()
 
     vgui.Create("ax.chatbox")
 end

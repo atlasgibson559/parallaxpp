@@ -157,7 +157,7 @@ function GM:InitPostEntity()
     ax.client = LocalPlayer()
     ax.option:Load()
 
-    if ( !IsValid(ax.gui.Chatbox) ) then
+    if ( !IsValid(ax.gui.chatbox) ) then
         vgui.Create("ax.chatbox")
     end
 end
@@ -716,8 +716,8 @@ function GM:OnPauseMenuShow()
         return false
     end
 
-    if ( IsValid(ax.gui.Chatbox) and ax.gui.Chatbox:GetAlpha() == 255 ) then
-        ax.gui.Chatbox:SetVisible(false)
+    if ( IsValid(ax.gui.chatbox) and ax.gui.chatbox:GetAlpha() == 255 ) then
+        ax.gui.chatbox:SetVisible(false)
         return false
     end
 
@@ -1056,13 +1056,13 @@ function GM:ChatboxOnTextChanged(text)
     ax.net:Start("client.chatbox.text.changed", text)
 
     -- Notify the command system about the text change
-    local command = ax.command:Get(ax.gui.Chatbox:GetChatType())
+    local command = ax.command:Get(ax.gui.chatbox:GetChatType())
     if ( command and command.OnChatTextChanged ) then
         command:OnTextChanged(text)
     end
 
     -- Notify the chat system about the text change
-    local chat = ax.chat:Get(ax.gui.Chatbox:GetChatType())
+    local chat = ax.chat:Get(ax.gui.chatbox:GetChatType())
     if ( chat and chat.OnChatTextChanged ) then
         chat:OnTextChanged(text)
     end
@@ -1088,7 +1088,7 @@ function GM:PlayerBindPress(client, bind, pressed)
     bind = bind:lower()
 
     if ( string.find(bind, "messagemode") and pressed ) then
-        ax.gui.Chatbox:SetVisible(true)
+        ax.gui.chatbox:SetVisible(true)
 
         for i = 1, #ax.chat.messages do
             local pnl = ax.chat.messages[i]
