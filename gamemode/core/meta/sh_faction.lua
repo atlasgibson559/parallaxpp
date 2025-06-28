@@ -110,6 +110,10 @@ function FACTION:GetClasses()
     return classes
 end
 
+function FACTION:GetAnimClass()
+    return self.AnimClass
+end
+
 --- Sets the faction's name.
 -- @param name The name of the faction.
 -- @treturn boolean True if the name was set successfully, false otherwise.
@@ -170,6 +174,21 @@ function FACTION:MakeDefault()
     self.IsDefault = true
 end
 
+function FACTION:SetAnimClass(animClass)
+    local animModule = ax.animations
+    if ( !istable(animModule) or !istable(animModule.stored) ) then
+        ax.util:PrintError("Attempted to set a faction's animation class without a valid animations module!")
+        return
+    end
+
+    if ( !isstring(animClass) or !istable(animModule.stored[animClass]) ) then
+        ax.util:PrintError("Attempted to set a faction's animation class without a valid animation class!")
+        return
+    end
+
+    self.AnimClass = animClass
+end
+
 function FACTION:Register()
     local bResult = hook.Run("PreFactionRegistered", self)
     if ( bResult == false ) then
@@ -192,6 +211,17 @@ function FACTION:Register()
 
     team.SetUp(self:GetID(), self:GetName(), self:GetColor(), false)
     hook.Run("PostFactionRegistered", self)
+
+    local animClass = self:GetAnimClass()
+    if ( isstring(animClass) ) then
+        local models = self:GetModels()
+        for i = 1, #models do
+            local path = models[i]
+            if ( istable(path) ) then path = path[1] end
+
+            ax.animations:SetModelClass(path, animClass)
+        end
+    end
 
     return #ax.faction.instances
 end
