@@ -95,8 +95,9 @@ end
 -- @realm shared
 -- @tparam[opt=64] number offset The offset distance for the drop position.
 -- @treturn Vector The position where the item will be dropped.
+
 function PLAYER:GetDropPosition(offset)
-    if ( offset == nil ) then offset = 64 end
+    if ( !isnumber(offset) ) then offset = 64 end
 
     local trace = util.TraceLine({
         start = self:GetShootPos(),

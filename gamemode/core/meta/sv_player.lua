@@ -152,9 +152,8 @@ function PLAYER:CreateServerRagdoll()
             phys:SetVelocity(velocity)
 
             local index = ragdoll:TranslatePhysBoneToBone(i)
-            local bone = self:TranslatePhysBoneToBone(index)
-            if ( bone != -1 ) then
-                local pos, ang = self:GetBonePosition(bone)
+            if ( index != -1 ) then
+                local pos, ang = self:GetBonePosition(index)
 
                 phys:SetPos(pos)
                 phys:SetAngles(ang)
@@ -210,7 +209,6 @@ function PLAYER:SetRagdolled(bState, duration)
                 if ( !IsValid(self) or !IsValid(ragdoll) ) then timer.Remove(timerID) return end
 
                 self:SetPos(ragdoll:GetPos())
-                self:SetVelocity(ragdoll:GetVelocity())
             end)
 
             ragdoll:CallOnRemove("ax.client.restore" .. self:SteamID64(), function(this)
@@ -237,7 +235,6 @@ function PLAYER:SetRagdolled(bState, duration)
                         self:SetAmmo(ammoCount, ammoType)
                     end
                 end
-
 
                 self:SelectWeapon("ax_hands")
                 self:SetRelay("ragdoll", nil)
