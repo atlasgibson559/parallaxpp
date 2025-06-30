@@ -14,7 +14,7 @@ local TOOL = ax.tool or {}
 function TOOL:Create()
     local tool = {}
 
-    setmetatable(tool, self)
+    tool = setmetatable(tool, self)
     self.__index = self
 
     tool.Mode           = nil
