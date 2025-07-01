@@ -13,8 +13,7 @@ local ENTITY = FindMetaTable("Entity")
 
 local CHAIR_CACHE = {}
 local vehicles = list.Get("Vehicles")
-local vehicleCount = #vehicles
-for i = 1, vehicleCount do
+for i = 1, #vehicles do
     local v = vehicles[i]
     if ( v.Category == "Chairs" ) then
         CHAIR_CACHE[v.Model] = true
