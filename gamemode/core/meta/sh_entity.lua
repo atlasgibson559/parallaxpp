@@ -147,7 +147,7 @@ function ENTITY:SetCooldown(action, cooldown)
     if ( !isstring(action) or !isnumber(cooldown) ) then return end
 
     local selfTable = self:GetTable()
-    selfTable["ax.Cooldown." .. action] = CurTime() + cooldown
+    selfTable["ax.cooldown." .. action] = CurTime() + cooldown
 end
 
 --- Checks if a specific action is on cooldown for the entity.
@@ -158,10 +158,10 @@ function ENTITY:OnCooldown(action)
     if ( !isstring(action) ) then return false end
 
     local selfTable = self:GetTable()
-    local cooldown = selfTable["ax.Cooldown." .. action]
+    local cooldown = selfTable["ax.cooldown." .. action]
 
     if ( !isnumber(cooldown) or cooldown <= CurTime() ) then
-        selfTable["ax.Cooldown." .. action] = nil
+        selfTable["ax.cooldown." .. action] = nil
         return false
     end
 
