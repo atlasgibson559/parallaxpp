@@ -100,7 +100,7 @@ function ax.character:SetVariable(id, key, value)
 
         if ( !data.NoNetworking ) then
             net.Start("ax.character.variable.set")
-                net.WriteUInt(id, 32)
+                net.WriteUInt(id, 16)
                 net.WriteString(key)
                 net.WriteType(value)
             net.Broadcast()
