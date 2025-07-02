@@ -79,13 +79,13 @@ function ENT:SetItem(itemID, uniqueID)
 
         net.Start("ax.item.entity")
             net.WriteEntity(self)
-            net.WriteUInt(newID, 16)
+            net.WriteUInt(itemID, 16)
         net.Broadcast()
     end
 
     net.Start("ax.item.entity")
         net.WriteEntity(self)
-        net.WriteUInt(newID, 16)
+        net.WriteUInt(itemID, 16)
     net.Broadcast()
 end
 
