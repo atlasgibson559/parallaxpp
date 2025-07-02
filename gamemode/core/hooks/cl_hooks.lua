@@ -14,7 +14,9 @@ function GM:PlayerStartVoice(client)
         g_VoicePanelList:Remove()
     end
 
-    ax.net:Start("client.voice.start", client)
+    net.Start("ax.client.voice.start")
+        net.WritePlayer(client)
+    net.SendToServer()
 end
 
 function GM:PlayerEndVoice(client)
@@ -22,7 +24,9 @@ function GM:PlayerEndVoice(client)
         g_VoicePanelList:Remove()
     end
 
-    ax.net:Start("client.voice.end", client)
+    net.Start("ax.client.voice.end")
+        net.WritePlayer(client)
+    net.SendToServer()
 end
 
 function GM:ShouldRenderMainMenu()
@@ -1053,7 +1057,9 @@ function GM:GetChatboxPos()
 end
 
 function GM:ChatboxOnTextChanged(text)
-    ax.net:Start("client.chatbox.text.changed", text)
+    net.Start("ax.client.chatbox.text.changed")
+        net.WriteString(text)
+    net.SendToServer()
 
     -- Notify the command system about the text change
     local command = ax.command:Get(ax.gui.chatbox:GetChatType())
@@ -1069,7 +1075,10 @@ function GM:ChatboxOnTextChanged(text)
 end
 
 function GM:ChatboxOnChatTypeChanged(newType, oldType)
-    ax.net:Start("client.chatbox.type.changed", newType, oldType)
+    net.Start("ax.client.chatbox.type.changed")
+        net.WriteString(newType)
+        net.WriteString(oldType)
+    net.SendToServer()
 
     -- Notify the command system about the chat type change
     local command = ax.command:Get(newType)
@@ -1142,6 +1151,12 @@ function GM:SpawnMenuOpen()
 end
 
 function GM:PostOptionsLoad(instancesTable)
+    for uniqueID, data in pairs(ax.option.stored) do
+        if ( data.Type == ax.types.number and data.IsKeybind ) then
+            ax.binds[data.Default] = uniqueID
+        end
+    end
+
     for optionName, value in pairs(instancesTable) do
         local optionData = ax.option.stored[optionName]
         if ( !istable(optionData) ) then continue end

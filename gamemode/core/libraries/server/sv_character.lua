@@ -57,7 +57,10 @@ function ax.character:Create(client, query, callback)
 
         self.stored[characterID] = character
 
-        ax.net:Start(client, "character.cache", character)
+        net.Start("ax.character.cache")
+            net.WriteTable(character)
+        net.Send(client)
+
         ax.inventory:Register({characterID = characterID})
 
         hook.Run("PostPlayerCreatedCharacter", client, character, query)
@@ -102,7 +105,10 @@ function ax.character:Load(client, characterID)
 
             hook.Run("PrePlayerLoadedCharacter", client, character, currentCharacter)
 
-            ax.net:Start(client, "character.load", characterID, character)
+            net.Start("ax.character.load")
+                net.WriteUInt(characterID, 32)
+                net.WriteTable(character)
+            net.Send(client)
 
             local clientTable = client:GetTable()
             clientTable.axCharacters = clientTable.axCharacters or {}
@@ -155,7 +161,9 @@ function ax.character:Delete(characterID, callback)
 
         client:KillSilent()
 
-        ax.net:Start(client, "character.delete", characterID)
+        net.Start("ax.character.delete")
+            net.WriteUInt(characterID, 32)
+        net.Send(client)
     end
 
     self.stored[characterID] = nil
@@ -206,7 +214,9 @@ function ax.character:Cache(client, characterID, callback)
         clientTable.axCharacters[characterID] = result[1]
         self.stored[characterID] = result[1]
 
-        ax.net:Start(client, "character.cache", result[1])
+        net.Start("ax.character.cache")
+            net.WriteTable(result[1])
+        net.Send(client)
 
         if ( callback ) then
             callback(true, result[1])
@@ -256,7 +266,9 @@ function ax.character:CacheAll(client, callback)
                 clientTable.axCharacters[id] = character
             end
 
-            ax.net:Start(client, "character.cache.all", clientTable.axCharacters)
+            net.Start("ax.character.cache.all")
+                net.WriteTable(clientTable.axCharacters)
+            net.Send(client)
 
             if ( callback ) then
                 callback(true, clientTable.axCharacters)

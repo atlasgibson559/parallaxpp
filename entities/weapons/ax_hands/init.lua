@@ -13,7 +13,7 @@ AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("shared.lua")
 include("shared.lua")
 
-ax.net:Hook("hands.reset", function(client)
+net.Receive("hands.reset", function(length, client)
     if ( client:OnCooldown("hands") ) then return end
     client:SetCooldown("hands", 0.5)
 

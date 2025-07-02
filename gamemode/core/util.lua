@@ -131,8 +131,14 @@ end
 -- @param client Player The player to send the message to.
 -- @param ... any The message to send.
 function ax.util:SendChatText(client, ...)
+	if ( client == nil ) then
+		client = select(2, player.Iterator())
+	end
+
 	if ( SERVER ) then
-		ax.net:Start(client, "chat.text", {...})
+		net.Start("ax.chat.text")
+			net.WriteTable({...})
+		net.Send(client)
 	else
 		chat.AddText(...)
 	end

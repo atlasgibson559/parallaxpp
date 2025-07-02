@@ -172,7 +172,11 @@ if ( SERVER ) then
         local client = ax.character:GetPlayerByCharacter(self:GetOwner())
         if ( !IsValid(client) ) then return end
 
-        ax.net:Start(client, "item.data", self:GetID(), key, value)
+        net.Start("ax.item.data")
+            net.WriteUInt(self:GetID(), 32)
+            net.WriteString(key)
+            net.WriteType(value)
+        net.Send(client)
     end
 end
 

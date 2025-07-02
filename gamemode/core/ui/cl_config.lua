@@ -164,7 +164,10 @@ function PANEL:AddConfig(configData)
         end
 
         panel.DoClick = function()
-            ax.net:Start("config.set", configData.UniqueID, !value)
+            net.Start("ax.config.set")
+                net.WriteString(configData.UniqueID)
+                net.WriteType(!value)
+            net.SendToServer()
 
             value = !value
 
@@ -174,14 +177,19 @@ function PANEL:AddConfig(configData)
         panel.DoRightClick = function()
             local menu = DermaMenu()
             menu:AddOption(ax.localization:GetPhrase("reset"), function()
-                ax.net:Start("config.reset", configData.UniqueID)
+                net.Start("ax.config.reset")
+                    net.WriteString(configData.UniqueID)
+                net.SendToServer()
 
                 value = ax.config:GetDefault(configData.UniqueID)
                 label:SetText(value and enabled or disabled, true)
             end):SetIcon("icon16/arrow_refresh.png")
             menu:AddSpacer()
             menu:AddOption(value and disable or enable, function()
-                ax.net:Start("config.set", configData.UniqueID, !value)
+                net.Start("ax.config.set")
+                    net.WriteString(configData.UniqueID)
+                    net.WriteType(!value)
+                net.SendToServer()
 
                 value = !value
 
@@ -242,13 +250,19 @@ function PANEL:AddConfig(configData)
         end
 
         slider.OnValueChanged = function(this, _)
-            ax.net:Start("config.set", configData.UniqueID, this:GetValue())
+            net.Start("ax.config.set")
+                net.WriteString(configData.UniqueID)
+                net.WriteType(this:GetValue())
+            net.SendToServer()
+
             ax.client:EmitSound("ui/buttonrollover.wav", 100, 100, 1, CHAN_STATIC)
         end
 
         panel.DoClick = function(this)
             if ( !slider.bCursorInside ) then
-                ax.net:Start("config.reset", configData.UniqueID)
+                net.Start("ax.config.reset")
+                    net.WriteString(configData.UniqueID)
+                net.SendToServer()
 
                 value = ax.config:GetDefault(configData.UniqueID)
                 slider:SetValue(value)
@@ -265,7 +279,9 @@ function PANEL:AddConfig(configData)
         panel.DoRightClick = function(this)
             local menu = DermaMenu()
             menu:AddOption(ax.localization:GetPhrase("reset"), function()
-                ax.net:Start("config.reset", configData.UniqueID)
+                net.Start("ax.config.reset")
+                    net.WriteString(configData.UniqueID)
+                net.SendToServer()
 
                 value = ax.config:GetDefault(configData.UniqueID)
                 slider:SetValue(value)
@@ -286,7 +302,10 @@ function PANEL:AddConfig(configData)
                             return
                         end
 
-                        ax.net:Start("config.set", configData.UniqueID, num)
+                        net.Start("ax.config.set")
+                            net.WriteString(configData.UniqueID)
+                            net.WriteType(num)
+                        net.SendToServer()
 
                         value = num
                         slider:SetValue(value)
@@ -341,7 +360,10 @@ function PANEL:AddConfig(configData)
             nextKey = nextKey or keys[1]
             nextKey = tostring(nextKey)
 
-            ax.net:Start("config.set", configData.UniqueID, nextKey)
+            net.Start("ax.config.set")
+                net.WriteString(configData.UniqueID)
+                net.WriteString(nextKey)
+            net.SendToServer()
 
             value = nextKey
 
@@ -351,7 +373,9 @@ function PANEL:AddConfig(configData)
         panel.DoRightClick = function()
             local menu = DermaMenu()
             menu:AddOption(ax.localization:GetPhrase("reset"), function()
-                ax.net:Start("config.reset", configData.UniqueID)
+                net.Start("ax.config.rest")
+                    net.WriteString(configData.UniqueID)
+                net.SendToServer()
 
                 value = ax.config:GetDefault(configData.UniqueID)
                 label:SetText(configs and configs[value] or unknown, true)
@@ -359,7 +383,10 @@ function PANEL:AddConfig(configData)
             menu:AddSpacer()
             for k2, v2 in SortedPairs(configs) do
                 menu:AddOption(v2, function()
-                    ax.net:Start("config.set", configData.UniqueID, k2)
+                    net.Start("ax.config.set")
+                        net.WriteString(configData.UniqueID)
+                        net.WriteType(k2)
+                    net.SendToServer()
 
                     value = k2
 
@@ -412,7 +439,10 @@ function PANEL:AddConfig(configData)
                 end
             end
             blocker.OnRemove = function(this)
-                ax.net:Start("config.set", configData.UniqueID, value)
+                net.Start("ax.config.set")
+                    net.WriteString(configData.UniqueID)
+                    net.WriteType(value)
+                net.SendToServer()
             end
 
             local frame = blocker:Add("EditablePanel")
@@ -435,7 +465,9 @@ function PANEL:AddConfig(configData)
         panel.DoRightClick = function()
             local menu = DermaMenu()
             menu:AddOption(ax.localization:GetPhrase("reset"), function()
-                ax.net:Start("config.reset", configData.UniqueID)
+                net.Start("ax.config.reset")
+                    net.WriteString(configData.UniqueID)
+                net.SendToServer()
 
                 value = ax.config:GetDefault(configData.UniqueID)
                 color.color = value
@@ -463,7 +495,10 @@ function PANEL:AddConfig(configData)
             local newValue = this:GetText()
             if ( newValue == value ) then return end
 
-            ax.net:Start("config.set", configData.UniqueID, newValue)
+            net.Start("ax.config.set")
+                net.WriteString(configData.UniqueID)
+                net.WriteType(newValue)
+            net.SendToServer()
 
             value = newValue
 
@@ -473,7 +508,9 @@ function PANEL:AddConfig(configData)
         panel.DoRightClick = function()
             local menu = DermaMenu()
             menu:AddOption(ax.localization:GetPhrase("reset"), function()
-                ax.net:Start("config.reset", configData.UniqueID)
+                net.Start("ax.config.reset")
+                    net.WriteString(configData.UniqueID)
+                net.SendToServer()
 
                 value = ax.config:GetDefault(configData.UniqueID)
                 text:SetText(value)
@@ -487,7 +524,10 @@ function PANEL:AddConfig(configData)
                     function(textString)
                         if ( textString == "" ) then return end
 
-                        ax.net:Start("config.set", configData.UniqueID, textString)
+                        net.Start("ax.config.set")
+                            net.WriteString(configData.UniqueID)
+                            net.WriteString(textString)
+                        net.SendToServer()
 
                         value = textString
                         text:SetText(value)
