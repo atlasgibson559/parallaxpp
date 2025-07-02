@@ -88,7 +88,7 @@ function ax.item:Add(characterID, inventoryID, uniqueID, data, callback)
                 net.WriteUInt(inventoryID, 16)
                 net.WriteString(uniqueID)
                 net.WriteTable(data)
-            net.Send(receivers)
+            net.Send(receiver)
         end
 
         if ( callback ) then
