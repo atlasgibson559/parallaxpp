@@ -108,7 +108,7 @@ function ax.inventory:Broadcast(inventory)
     if ( !inventory ) then return end
 
     local receivers = inventory:GetReceivers()
-    if ( !istable(receivers) ) then return end
+    if ( !istable(receivers) or receivers[1] == NULL ) then return end
 
     net.Start("ax.inventory.register")
         net.WriteTable({
@@ -260,7 +260,7 @@ function ax.inventory:AddItem(inventoryID, itemID, uniqueID, data)
     end
 
     local receivers = inventory:GetReceivers()
-    if ( !receivers or !istable(receivers) ) then
+    if ( !receivers or !istable(receivers) or receivers[1] == NULL ) then
         receivers = {}
     end
 
@@ -292,8 +292,8 @@ function ax.inventory:AddItem(inventoryID, itemID, uniqueID, data)
         }, "id = " .. itemID)
 
         net.Start("ax.inventory.item.add")
-            net.WriteUInt(inventoryID, 32)
-            net.WriteUInt(itemID, 32)
+            net.WriteUInt(inventoryID, 16)
+            net.WriteUInt(itemID, 16)
             net.WriteString(uniqueID)
             net.WriteTable(data)
         net.Send(receivers)
@@ -343,10 +343,10 @@ function ax.inventory:RemoveItem(inventoryID, itemID)
         }, "id = " .. itemID)
 
         local receivers = inventory:GetReceivers()
-        if ( istable(receivers) ) then
+        if ( istable(receivers) and receivers[1] != NULL ) then
             net.Start("ax.inventory.item.remove")
-                net.WriteUInt(inventoryID, 32)
-                net.WriteUInt(itemID, 32)
+                net.WriteUInt(inventoryID, 16)
+                net.WriteUInt(itemID, 16)
             net.Send(receivers)
         end
     end
@@ -355,5 +355,3 @@ function ax.inventory:RemoveItem(inventoryID, itemID)
 
     return true
 end
-
-ax.inventory = ax.inventory

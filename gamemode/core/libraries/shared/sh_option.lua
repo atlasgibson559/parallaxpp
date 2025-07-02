@@ -25,7 +25,7 @@ function ax.option:SetDefault(key, default)
     stored.Default = default
 
     if ( SERVER ) then
-        net.Start("option.sync")
+        net.Start("ax.option.sync")
             net.WriteTable(self.instances)
         net.Broadcast()
     end

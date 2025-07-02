@@ -84,8 +84,8 @@ function ax.item:Add(characterID, inventoryID, uniqueID, data, callback)
         local receiver = ax.character:GetPlayerByCharacter(characterID)
         if ( IsValid(receiver) ) then
             net.Start("ax.item.add")
-                net.WriteUInt(itemID, 32)
-                net.WriteUInt(inventoryID, 32)
+                net.WriteUInt(itemID, 16)
+                net.WriteUInt(inventoryID, 16)
                 net.WriteString(uniqueID)
                 net.WriteTable(data)
             net.Send(receivers)
@@ -214,7 +214,7 @@ function ax.item:PerformAction(itemID, actionName, callback)
     end
 
     net.Start("ax.inventory.refresh")
-        net.WriteUInt(inventoryID, 32)
+        net.WriteUInt(inventoryID, 16)
     net.Send(client)
 
     hook.Run("PostPlayerItemAction", client, actionName, item)
@@ -326,8 +326,8 @@ function ax.item:Remove(itemID, callback)
     local client = ax.character:GetPlayerByCharacter(item:GetOwner())
     if ( IsValid(client) ) then
         net.Start("ax.inventory.item.remove")
-            net.WriteUInt(inventoryID, 32)
-            net.WriteUInt(itemID, 32)
+            net.WriteUInt(inventoryID, 16)
+            net.WriteUInt(itemID, 16)
         net.Send(client)
     end
 

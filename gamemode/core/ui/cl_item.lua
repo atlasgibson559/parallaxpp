@@ -109,7 +109,7 @@ function PANEL:DoRightClick()
 
         menu:AddOption(actionData.Name or actionName, function()
             net.Start("ax.item.perform")
-                net.WriteUInt(itemID, 32)
+                net.WriteUInt(itemID, 16)
                 net.WriteString(actionName)
             net.SendToServer()
         end)

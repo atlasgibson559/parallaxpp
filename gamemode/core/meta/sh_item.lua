@@ -173,7 +173,7 @@ if ( SERVER ) then
         if ( !IsValid(client) ) then return end
 
         net.Start("ax.item.data")
-            net.WriteUInt(self:GetID(), 32)
+            net.WriteUInt(self:GetID(), 16)
             net.WriteString(key)
             net.WriteType(value)
         net.Send(client)

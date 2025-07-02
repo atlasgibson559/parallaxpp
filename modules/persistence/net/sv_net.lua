@@ -11,6 +11,7 @@
 
 local MODULE = MODULE
 
+util.AddNetworkString("ax.persistence.mark")
 net.Receive("ax.persistence.mark", function()
     local client = ax.client
     local ent = net.ReadEntity()
@@ -28,6 +29,7 @@ net.Receive("ax.persistence.mark", function()
     MODULE:SaveEntities()
 end)
 
+util.AddNetworkString("ax.persistence.unmark")
 net.Receive("ax.persistence.unmark", function()
     local client = ax.client
     local ent = net.ReadEntity()

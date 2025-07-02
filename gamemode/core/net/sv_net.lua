@@ -15,13 +15,13 @@
 
 util.AddNetworkString("ax.character.load")
 net.Receive("ax.character.load", function(len, client)
-    local characterID = net.ReadUInt(32) -- Replace with correct net.Read* for characterID
+    local characterID = net.ReadUInt(16)
     ax.character:Load(client, characterID)
 end)
 
 util.AddNetworkString("ax.character.delete")
 net.Receive("ax.character.delete", function(len, client)
-    local characterID = net.ReadUInt(32) -- Replace with correct net.Read* for characterID
+    local characterID = net.ReadUInt(16)
     local character = ax.character:Get(characterID)
     if ( !character ) then return end
 
@@ -35,7 +35,7 @@ end)
 
 util.AddNetworkString("ax.character.create")
 net.Receive("ax.character.create", function(len, client)
-    local payload = net.ReadTable() -- Replace with correct net.Read* for payload
+    local payload = net.ReadTable()
     if ( !istable(payload) ) then
         net.Start("ax.character.create.failed")
             net.WriteString("Invalid payload!")
@@ -103,7 +103,7 @@ end)
 
 util.AddNetworkString("ax.config.reset")
 net.Receive("ax.config.reset", function(len, client)
-    local key = net.ReadString() -- Replace with correct net.Read* for key
+    local key = net.ReadString()
     if ( !CAMI.PlayerHasAccess(client, "Parallax - Manage Config", nil) ) then return end
 
     local stored = ax.config.stored[key]
@@ -119,8 +119,8 @@ end)
 
 util.AddNetworkString("ax.config.set")
 net.Receive("ax.config.set", function(len, client)
-    local key = net.ReadString() -- Replace with correct net.Read* for key
-    local value = net.ReadType() -- Replace with correct net.Read* for value
+    local key = net.ReadString()
+    local value = net.ReadType()
     if ( !CAMI.PlayerHasAccess(client, "Parallax - Manage Config", nil) ) then return end
 
     local stored = ax.config.stored[key]
@@ -144,8 +144,8 @@ end)
 
 util.AddNetworkString("ax.option.set")
 net.Receive("ax.option.set", function(len, client)
-    local key = net.ReadString() -- Replace with correct net.Read* for key
-    local value = net.ReadType() -- Replace with correct net.Read* for value
+    local key = net.ReadString()
+    local value = net.ReadType()
     local bResult = hook.Run("PreOptionChanged", client, key, value)
     if ( bResult == false ) then return false end
 
@@ -156,7 +156,7 @@ end)
 
 util.AddNetworkString("ax.option.sync")
 net.Receive("ax.option.sync", function(len, client)
-    local data = net.ReadTable() -- Replace with correct net.Read* for data
+    local data = net.ReadTable()
     if ( !IsValid(client) or !istable(data) ) then return end
 
     for k, v in pairs(ax.option.stored) do
@@ -190,7 +190,7 @@ end)
 
 util.AddNetworkString("ax.inventory.cache")
 net.Receive("ax.inventory.cache", function(len, client)
-    local inventoryID = net.ReadUInt(32) -- Replace with correct net.Read* for inventoryID
+    local inventoryID = net.ReadUInt(16)
     if ( !inventoryID ) then return end
 
     ax.inventory:Cache(client, inventoryID)
@@ -200,22 +200,10 @@ end)
     Item Networking
 -----------------------------------------------------------------------------]]--
 
-util.AddNetworkString("ax.item.entity")
-net.Receive("ax.item.entity", function(len, client)
-    local itemID = net.ReadUInt(32) -- Replace with correct net.Read* for itemID
-    local entity = net.ReadEntity() -- Replace with correct net.Read* for entity
-    if ( !IsValid(entity) ) then return end
-
-    local item = ax.item:Get(itemID)
-    if ( !item ) then return end
-
-    item:SetEntity(entity)
-end)
-
 util.AddNetworkString("ax.item.perform")
 net.Receive("ax.item.perform", function(len, client)
-    local itemID = net.ReadUInt(32) -- Replace with correct net.Read* for itemID
-    local actionName = net.ReadString() -- Replace with correct net.Read* for actionName
+    local itemID = net.ReadUInt(16)
+    local actionName = net.ReadString()
     if ( !itemID or !actionName ) then return end
 
     local item = ax.item:Get(itemID)
@@ -226,7 +214,7 @@ end)
 
 util.AddNetworkString("ax.item.spawn")
 net.Receive("ax.item.spawn", function(len, client)
-    local uniqueID = net.ReadString() -- Replace with correct net.Read* for uniqueID
+    local uniqueID = net.ReadString()
     if ( !isstring(uniqueID) or !istable(ax.item.stored[uniqueID]) ) then return end
 
     local pos = client:GetEyeTrace().HitPos + vector_up
@@ -283,19 +271,19 @@ util.AddNetworkString("ax.splash")
 
 util.AddNetworkString("ax.client.voice.start")
 net.Receive("ax.client.voice.start", function(len, client)
-    local speaker = net.ReadPlayer() -- Replace with correct net.Read* for speaker
+    local speaker = net.ReadPlayer()
     hook.Run("PlayerStartVoice", speaker)
 end)
 
 util.AddNetworkString("ax.client.voice.end")
 net.Receive("ax.client.voice.end", function(len, client)
-    local prevSpeaker = net.ReadPlayer() -- Replace with correct net.Read* for prevSpeaker
+    local prevSpeaker = net.ReadPlayer()
     hook.Run("PlayerEndVoice", prevSpeaker)
 end)
 
 util.AddNetworkString("ax.client.chatbox.text.changed")
 net.Receive("ax.client.chatbox.text.changed", function(len, client)
-    local text = net.ReadString() -- Replace with correct net.Read* for text
+    local text = net.ReadString()
     if ( !IsValid(client) or !isstring(text) ) then return end
 
     hook.Run("PlayerChatTextChanged", client, text)
@@ -303,8 +291,8 @@ end)
 
 util.AddNetworkString("ax.client.chatbox.type.changed")
 net.Receive("ax.client.chatbox.type.changed", function(len, client)
-    local newType = net.ReadString() -- Replace with correct net.Read* for newType
-    local oldType = net.ReadString() -- Replace with correct net.Read* for oldType
+    local newType = net.ReadString()
+    local oldType = net.ReadString()
     if ( !IsValid(client) or !isstring(newType) or !isstring(oldType) ) then return end
 
     hook.Run("PlayerChatTypeChanged", client, newType, oldType)
@@ -312,7 +300,7 @@ end)
 
 util.AddNetworkString("ax.command.run")
 net.Receive("ax.command.run", function(len, client)
-    local command = net.ReadString() -- Replace with correct net.Read* for command
-    local arguments = net.ReadTable() -- Replace with correct net.Read* for arguments
+    local command = net.ReadString()
+    local arguments = net.ReadTable()
     ax.command:Run(client, command, arguments)
 end)

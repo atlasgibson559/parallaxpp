@@ -106,7 +106,7 @@ function ax.character:Load(client, characterID)
             hook.Run("PrePlayerLoadedCharacter", client, character, currentCharacter)
 
             net.Start("ax.character.load")
-                net.WriteUInt(characterID, 32)
+                net.WriteUInt(characterID, 16)
                 net.WriteTable(character)
             net.Send(client)
 
@@ -162,7 +162,7 @@ function ax.character:Delete(characterID, callback)
         client:KillSilent()
 
         net.Start("ax.character.delete")
-            net.WriteUInt(characterID, 32)
+            net.WriteUInt(characterID, 16)
         net.Send(client)
     end
 

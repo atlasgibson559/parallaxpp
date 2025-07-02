@@ -40,7 +40,7 @@ function ENT:Use(client)
 
     character:GiveMoney(amount)
 
-    net.Start("currency.give")
+    net.Start("ax.currency.give")
         net.WriteEntity(self)
         net.WriteUInt(amount, 32)
     net.Send(client)

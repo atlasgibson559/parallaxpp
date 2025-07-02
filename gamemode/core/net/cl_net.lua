@@ -385,7 +385,7 @@ net.Receive("ax.database.save", function(len)
 end)
 
 net.Receive("ax.gesture.play", function(len)
-    local client = net.ReadEntity()
+    local client = net.ReadPlayer()
     local name = net.ReadString()
     if ( !IsValid(client) ) then return end
 
@@ -410,7 +410,7 @@ net.Receive("ax.notification.send", function(len)
 end)
 
 net.Receive("ax.flag.list", function(len)
-    local target = net.ReadEntity()
+    local target = net.ReadPlayer()
     local hasFlags = net.ReadTable()
     if ( !IsValid(target) or !target:IsPlayer() ) then return end
 

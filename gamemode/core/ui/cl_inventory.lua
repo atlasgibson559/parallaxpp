@@ -246,7 +246,7 @@ function PANEL:SetInfo(id)
             button:SizeToContents()
             button.DoClick = function()
                 net.Start("ax.item.perform")
-                    net.WriteUInt(id, 32)
+                    net.WriteUInt(id, 16)
                     net.WriteString(actionName)
                 net.SendToServer()
             end

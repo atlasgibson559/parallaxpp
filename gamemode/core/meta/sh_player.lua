@@ -90,6 +90,7 @@ end
 function PLAYER:GesturePlay(name)
     if ( SERVER ) then
         net.Start("ax.gesture.play")
+            net.WritePlayer(self)
             net.WriteString(name)
         net.SendPVS(self:GetPos())
     else

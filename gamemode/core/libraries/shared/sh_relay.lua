@@ -43,7 +43,7 @@ function ax.relay:GetRelay(key, default)
 end
 
 if ( CLIENT ) then
-    net.Receive("relay.shared", function(len, client)
+    net.Receive("ax.relay.shared", function(len, client)
         local key = net.ReadString()
         local value = net.ReadType()
 
@@ -82,7 +82,7 @@ function playerMeta:GetRelay(key, default)
 end
 
 if ( CLIENT ) then
-    net.Receive("relay.user", function(len, client)
+    net.Receive("ax.relay.user", function(len, client)
         local index = net.ReadUInt(16)
         local key = net.ReadString()
         local value = net.ReadType()
@@ -124,7 +124,7 @@ function entityMeta:GetRelay(key, default)
 end
 
 if ( CLIENT ) then
-    net.Receive("relay.entity", function(len, client)
+    net.Receive("ax.relay.entity", function(len, client)
         local index = net.ReadUInt(16)
         local key = net.ReadString()
         local value = net.ReadType()

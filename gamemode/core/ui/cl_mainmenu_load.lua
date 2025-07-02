@@ -74,7 +74,7 @@ function PANEL:Populate()
 
         button.DoClick = function()
             net.Start("ax.character.load")
-                net.WriteUInt(v:GetID(), 32)
+                net.WriteUInt(v:GetID(), 16)
             net.SendToServer()
         end
 
@@ -192,7 +192,7 @@ function PANEL:PopulateDelete(characterID)
             "Delete Character",
             "Yes", function()
                 net.Start("ax.character.delete")
-                    net.WriteUInt(characterID, 32)
+                    net.WriteUInt(characterID, 16)
                 net.SendToServer()
             end,
             "No", function() end
