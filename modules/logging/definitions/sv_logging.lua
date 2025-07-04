@@ -11,6 +11,10 @@
 
 local MODULE = MODULE
 
+if ( SERVER ) then
+    util.AddNetworkString("ax.logging.send")
+end
+
 function MODULE:Send(...)
     if ( !ax.config:Get("logging", true) ) then return end
 
@@ -26,5 +30,7 @@ function MODULE:Send(...)
         ax.util:Print("[Logging] ", ...)
     end
 
-    ax.net:Start(receivers, "logging.send", {...})
+    net.Start("ax.logging.send")
+        net.WriteTable({...})
+    net.Send(receivers)
 end

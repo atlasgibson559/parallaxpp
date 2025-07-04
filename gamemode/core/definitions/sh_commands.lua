@@ -197,7 +197,10 @@ ax.command:Register("CharGiveFlags", {
                 end
             end
 
-            ax.net:Start(client, "flag.list", target, hasFlags)
+            net.Start("ax.flag.list")
+                net.WritePlayer(target)
+                net.WriteBool(hasFlags)
+            net.Send(client)
 
             return
         end

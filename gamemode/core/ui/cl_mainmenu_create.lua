@@ -291,7 +291,9 @@ function PANEL:PopulateCreateCharacter()
         end
 
         if ( isNextEmpty ) then
-            ax.net:Start("character.create", self.currentCreatePayload)
+            net.Start("ax.character.create")
+                net.WriteTable(self.currentCreatePayload)
+            net.SendToServer()
         else
             self.currentCreatePage = self.currentCreatePage + 1
             self:PopulateCreateCharacterForm()

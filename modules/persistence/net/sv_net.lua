@@ -11,8 +11,11 @@
 
 local MODULE = MODULE
 
-ax.net:Hook("persistence.mark", function(client, ent)
-    if ( !IsValid(client) or !client:IsAdmin() ) then return end
+util.AddNetworkString("ax.persistence.mark")
+net.Receive("ax.persistence.mark", function()
+    local client = ax.client
+    local ent = net.ReadEntity()
+    if ( !IsValid(client) or !client:IsAdmin() ) then return end -- TODO: Use CAMI
 
     if ( ent:GetRelay("persistent") == true ) then
         client:Notify("This entity is already marked for persistence.")
@@ -26,7 +29,10 @@ ax.net:Hook("persistence.mark", function(client, ent)
     MODULE:SaveEntities()
 end)
 
-ax.net:Hook("persistence.unmark", function(client, ent)
+util.AddNetworkString("ax.persistence.unmark")
+net.Receive("ax.persistence.unmark", function()
+    local client = ax.client
+    local ent = net.ReadEntity()
     if ( !IsValid(client) or !client:IsAdmin() ) then return end
 
     if ( ent:GetRelay("persistent") != true ) then

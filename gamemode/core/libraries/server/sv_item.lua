@@ -83,7 +83,12 @@ function ax.item:Add(characterID, inventoryID, uniqueID, data, callback)
 
         local receiver = ax.character:GetPlayerByCharacter(characterID)
         if ( IsValid(receiver) ) then
-            ax.net:Start(receiver, "item.add", itemID, inventoryID, uniqueID, data)
+            net.Start("ax.item.add")
+                net.WriteUInt(itemID, 16)
+                net.WriteUInt(inventoryID, 16)
+                net.WriteString(uniqueID)
+                net.WriteTable(data)
+            net.Send(receiver)
         end
 
         if ( callback ) then
@@ -208,7 +213,9 @@ function ax.item:PerformAction(itemID, actionName, callback)
         end
     end
 
-    ax.net:Start(client, "inventory.refresh", inventoryID)
+    net.Start("ax.inventory.refresh")
+        net.WriteUInt(inventoryID, 16)
+    net.Send(client)
 
     hook.Run("PostPlayerItemAction", client, actionName, item)
 
@@ -271,18 +278,20 @@ function ax.item:Cache(characterID, callback)
         local instanceList = {}
         for _, item in pairs(self.instances) do
             if ( item:GetOwner() == characterID ) then
-                table.insert(instanceList, {
+                instanceList[#instanceList + 1] = {
                     ID = item:GetID(),
                     UniqueID = item:GetUniqueID(),
                     Data = item:GetData(),
                     InventoryID = item:GetInventory()
-                })
+                }
             end
         end
 
         local client = ax.character:GetPlayerByCharacter(characterID)
         if ( IsValid(client) ) then
-            ax.net:Start(client, "item.cache", instanceList)
+            net.Start("ax.item.cache")
+                net.WriteTable(instanceList)
+            net.Send(client)
         end
 
         if ( callback ) then
@@ -316,7 +325,10 @@ function ax.item:Remove(itemID, callback)
     -- Notify client
     local client = ax.character:GetPlayerByCharacter(item:GetOwner())
     if ( IsValid(client) ) then
-        ax.net:Start(client, "inventory.item.remove", inventoryID, itemID)
+        net.Start("ax.inventory.item.remove")
+            net.WriteUInt(inventoryID, 16)
+            net.WriteUInt(itemID, 16)
+        net.Send(client)
     end
 
     -- Remove from memory

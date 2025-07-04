@@ -108,17 +108,19 @@ function ax.inventory:Broadcast(inventory)
     if ( !inventory ) then return end
 
     local receivers = inventory:GetReceivers()
-    if ( !istable(receivers) ) then return end
+    if ( !istable(receivers) or receivers[1] == NULL ) then return end
 
-    ax.net:Start(receivers, "inventory.register", {
-        ID = inventory:GetID(),
-        CharacterID = inventory:GetOwner(),
-        Name = inventory:GetName(),
-        MaxWeight = inventory:GetMaxWeight(),
-        Items = inventory:GetItems(),
-        Data = inventory:GetData(),
-        Receivers = inventory.Receivers
-    })
+    net.Start("ax.inventory.register")
+        net.WriteTable({
+            ID = inventory:GetID(),
+            CharacterID = inventory:GetOwner(),
+            Name = inventory:GetName(),
+            MaxWeight = inventory:GetMaxWeight(),
+            Items = inventory:GetItems(),
+            Data = inventory:GetData(),
+            Receivers = inventory.Receivers
+        })
+    net.Send(receivers)
 end
 
 function ax.inventory:Cache(client, inventoryID, callback)
@@ -169,15 +171,17 @@ function ax.inventory:Cache(client, inventoryID, callback)
 
                 inventory.Items = itemIDs
 
-                ax.net:Start(client, "inventory.cache", {
-                    ID = inventory:GetID(),
-                    CharacterID = inventory:GetOwner(),
-                    Name = inventory:GetName(),
-                    MaxWeight = inventory:GetMaxWeight(),
-                    Items = inventory:GetItems(),
-                    Data = inventory:GetData(),
-                    Receivers = inventory.Receivers
-                })
+                net.Start("ax.inventory.cache")
+                    net.WriteTable({
+                        ID = inventory:GetID(),
+                        CharacterID = inventory:GetOwner(),
+                        Name = inventory:GetName(),
+                        MaxWeight = inventory:GetMaxWeight(),
+                        Items = inventory:GetItems(),
+                        Data = inventory:GetData(),
+                        Receivers = inventory.Receivers
+                    })
+                net.Send(client)
 
                 if ( callback ) then
                     callback(inventory)
@@ -256,7 +260,7 @@ function ax.inventory:AddItem(inventoryID, itemID, uniqueID, data)
     end
 
     local receivers = inventory:GetReceivers()
-    if ( !receivers or !istable(receivers) ) then
+    if ( !receivers or !istable(receivers) or receivers[1] == NULL ) then
         receivers = {}
     end
 
@@ -287,7 +291,12 @@ function ax.inventory:AddItem(inventoryID, itemID, uniqueID, data)
             data = util.TableToJSON(data)
         }, "id = " .. itemID)
 
-        ax.net:Start(receivers, "inventory.item.add", inventoryID, itemID, uniqueID, data)
+        net.Start("ax.inventory.item.add")
+            net.WriteUInt(inventoryID, 16)
+            net.WriteUInt(itemID, 16)
+            net.WriteString(uniqueID)
+            net.WriteTable(data)
+        net.Send(receivers)
     end
 
     hook.Run("OnItemAdded", item, inventoryID, uniqueID, data)
@@ -334,8 +343,11 @@ function ax.inventory:RemoveItem(inventoryID, itemID)
         }, "id = " .. itemID)
 
         local receivers = inventory:GetReceivers()
-        if ( istable(receivers) ) then
-            ax.net:Start(receivers, "inventory.item.remove", inventoryID, itemID)
+        if ( istable(receivers) and receivers[1] != NULL ) then
+            net.Start("ax.inventory.item.remove")
+                net.WriteUInt(inventoryID, 16)
+                net.WriteUInt(itemID, 16)
+            net.Send(receivers)
         end
     end
 
@@ -343,5 +355,3 @@ function ax.inventory:RemoveItem(inventoryID, itemID)
 
     return true
 end
-
-ax.inventory = ax.inventory

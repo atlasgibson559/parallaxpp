@@ -118,7 +118,7 @@ function INV:GetReceivers()
         table.insert(receivers, owner)
     end
 
-    if ( self.Receivers ) then
+    if ( istable(self.Receivers) ) then
         for i = 1, #self.Receivers do
             local receiver = self.Receivers[i]
             if ( IsValid(receiver) and receiver:IsPlayer() ) then
