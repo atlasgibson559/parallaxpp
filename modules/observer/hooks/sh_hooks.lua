@@ -51,7 +51,7 @@ function MODULE:OnPlayerObserver(client, state)
 
     local logging = ax.module:Get("logging")
     if ( logging ) then
-        logging:Send(client:Nick() .. " is now " .. (state and "observing" or "no longer observing") .. ".")
+        logging:Send(client:PrettyPrint() .. " is now " .. (state and "observing" or "no longer observing") .. ".")
     end
 end
 
