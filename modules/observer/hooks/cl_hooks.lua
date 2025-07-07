@@ -12,14 +12,14 @@
 local MODULE = MODULE
 
 function MODULE:DrawPhysgunBeam(client, physgun, enabled, target, physBone, hitPos)
-    if ( CAMI.PlayerHasAccess(client, "Parallax - Observer") and client:GetNoDraw() and client:GetMoveType() == MOVETYPE_NOCLIP ) then
+    if ( client:InObserver() ) then
         return false
     end
 end
 
 function MODULE:HUDPaint()
     local client = ax.client
-    if ( !IsValid(client) or !client:InObserver() or !client:Alive() or !client:GetNoDraw() ) then return end
+    if ( !client:InObserver() or !client:Alive() ) then return end
 
     if ( hook.Run("ShouldDrawObserverHUD", client) == false ) then return end
 
