@@ -216,7 +216,7 @@ function PLAYER:PrettyPrint(bIncludeICName)
         "%s%s%s",
         self:SteamName(),
         bIncludeICName and character and " (" .. character:GetName() .. " // " .. character:GetID() .. ")" or "",
-        self:IsBot() and " [BOT]" or " [" .. self:SteamID64() .. "]"
+        self:IsBot() and " [BOT #" .. self:EntIndex() .. "]" or " [" .. self:SteamID64() .. "]"
     )
 end
 
