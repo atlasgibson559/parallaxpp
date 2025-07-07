@@ -51,7 +51,7 @@ function ax.util:CoerceType(typeID, value)
             return value
         end
     elseif ( typeID == ax.types.steamid ) then
-        if ( isstring(value) and #value == 19 and string.match(value, "STEAM_%d:%d:%d+") ) then
+        if ( isstring(value) and #value == 19 and string.match(value, "STEAM_%d:%d:%d+") != nil ) then
             return value
         end
     elseif ( typeID == ax.types.steamid64 ) then
