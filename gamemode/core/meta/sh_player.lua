@@ -203,6 +203,10 @@ function PLAYER:IsFemale()
     return false
 end
 
+--- Returns a pretty-printed string representation of the player.
+-- @realm shared
+-- @tparam[opt=false] boolean bIncludeICName Whether to include the in-character name and ID.
+-- @treturn string The pretty-printed string.
 function PLAYER:PrettyPrint(bIncludeICName)
     if ( bIncludeICName == nil ) then bIncludeICName = false end
 
