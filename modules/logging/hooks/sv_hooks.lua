@@ -27,7 +27,7 @@ function MODULE:DoPlayerDeath(client, attacker, dmginfo)
         end
     end
 
-    self:Send(ax.color:Get("red"), client:PrettyPrint() .. " was killed by " .. attackerName .. " using " .. weaponName)
+    self:Send(ax.color:Get("red"), client:PrettyPrint(true) .. " was killed by " .. attackerName .. " using " .. weaponName)
 end
 
 function MODULE:EntityTakeDamage(ent, dmginfo)
@@ -40,57 +40,57 @@ function MODULE:EntityTakeDamage(ent, dmginfo)
 end
 
 function MODULE:PlayerInitialSpawn(client)
-    self:Send(client:PrettyPrint() .. " connected")
+    self:Send(client:PrettyPrint(true) .. " connected")
 end
 
 function MODULE:PlayerDisconnected(client)
-    self:Send(client:PrettyPrint() .. " disconnected")
+    self:Send(client:PrettyPrint(true) .. " disconnected")
 end
 
 function MODULE:PlayerSwitchWeapon(client, oldWeapon, newWeapon)
     if ( !IsValid(client) ) then return end
 
     if ( IsValid(oldWeapon) ) then
-        self:Send(client:PrettyPrint() .. " switched from " .. self:Format(oldWeapon) .. " to " .. self:Format(newWeapon))
+        self:Send(client:PrettyPrint(true) .. " switched from " .. self:Format(oldWeapon) .. " to " .. self:Format(newWeapon))
     else
-        self:Send(client:PrettyPrint() .. " switched to " .. self:Format(newWeapon))
+        self:Send(client:PrettyPrint(true) .. " switched to " .. self:Format(newWeapon))
     end
 end
 
 function MODULE:PlayerSay(client, text)
-    self:Send(client:PrettyPrint() .. " said: " .. text)
+    self:Send(client:PrettyPrint(true) .. " said: " .. text)
 end
 
 function MODULE:PlayerSpawn(client)
-    self:Send(client:PrettyPrint() .. " spawned")
+    self:Send(client:PrettyPrint(true) .. " spawned")
 end
 
 function MODULE:PlayerSpawnedProp(client, model, entity)
-    self:Send(client:PrettyPrint() .. " spawned a prop (" .. self:Format(entity) .. ")")
+    self:Send(client:PrettyPrint(true) .. " spawned a prop (" .. self:Format(entity) .. ")")
 end
 
 function MODULE:PlayerSpawnedSENT(client, entity)
-    self:Send(client:PrettyPrint() .. " spawned a SENT (" .. self:Format(entity) .. ")")
+    self:Send(client:PrettyPrint(true) .. " spawned a SENT (" .. self:Format(entity) .. ")")
 end
 
 function MODULE:PlayerSpawnedRagdoll(client, model, entity)
-    self:Send(client:PrettyPrint() .. " spawned a ragdoll (" .. self:Format(entity) .. ")")
+    self:Send(client:PrettyPrint(true) .. " spawned a ragdoll (" .. self:Format(entity) .. ")")
 end
 
 function MODULE:PlayerSpawnedVehicle(client, entity)
-    self:Send(client:PrettyPrint() .. " spawned a vehicle (" .. self:Format(entity) .. ")")
+    self:Send(client:PrettyPrint(true) .. " spawned a vehicle (" .. self:Format(entity) .. ")")
 end
 
 function MODULE:PlayerSpawnedEffect(client, model, entity)
-    self:Send(client:PrettyPrint() .. " spawned an effect (" .. self:Format(entity) .. ")")
+    self:Send(client:PrettyPrint(true) .. " spawned an effect (" .. self:Format(entity) .. ")")
 end
 
 function MODULE:PlayerSpawnedNPC(client, entity)
-    self:Send(client:PrettyPrint() .. " spawned an NPC (" .. self:Format(entity) .. ")")
+    self:Send(client:PrettyPrint(true) .. " spawned an NPC (" .. self:Format(entity) .. ")")
 end
 
 function MODULE:PlayerSpawnedSWEP(client, entity)
-    self:Send(client:PrettyPrint() .. " spawned a SWEP (" .. self:Format(entity) .. ")")
+    self:Send(client:PrettyPrint(true) .. " spawned a SWEP (" .. self:Format(entity) .. ")")
 end
 
 MODULE.PlayerGiveSWEP = MODULE.PlayerSpawnedSWEP
@@ -98,15 +98,15 @@ MODULE.PlayerGiveSWEP = MODULE.PlayerSpawnedSWEP
 function MODULE:PostPlayerConfigChanged(client, key, value, oldValue)
     if ( key == "logging" ) then
         if ( value == true ) then
-            self:Send(ax.color:Get("green"), client:PrettyPrint() .. " enabled logging")
+            self:Send(ax.color:Get("green"), client:PrettyPrint(true) .. " enabled logging")
         else
-            self:Send(ax.color:Get("red"), client:PrettyPrint() .. " disabled logging")
+            self:Send(ax.color:Get("red"), client:PrettyPrint(true) .. " disabled logging")
         end
     else
-        self:Send(ax.color:Get("yellow"), client:PrettyPrint() .. " changed config \"" .. tostring(key) .. "\" from \"" .. tostring(oldValue) .. "\" to \"" .. tostring(value) .. "\"")
+        self:Send(ax.color:Get("yellow"), client:PrettyPrint(true) .. " changed config \"" .. tostring(key) .. "\" from \"" .. tostring(oldValue) .. "\" to \"" .. tostring(value) .. "\"")
     end
 end
 
 function MODULE:PostPlayerConfigReset(client, key)
-    self:Send(ax.color:Get("yellow"), client:PrettyPrint() .. " reset config \"" .. tostring(key) .. "\"")
+    self:Send(ax.color:Get("yellow"), client:PrettyPrint(true) .. " reset config \"" .. tostring(key) .. "\"")
 end
