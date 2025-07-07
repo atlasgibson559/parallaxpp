@@ -66,6 +66,8 @@ local hashFinalCharacters = {
 }
 
 function ax.chat:Format(message)
+    if ( !ax.config:Get("chat.format") ) then return message end
+
     if ( !hashFinalCharacters[string.sub(message, -1)] ) then
         message = message .. "."
     end
