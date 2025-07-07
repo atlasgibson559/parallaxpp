@@ -14,7 +14,6 @@
 
 ax.localization = {}
 ax.localization.stored = {}
-ax.localisation = ax.localization -- tea
 
 --- Register a new language.
 -- @realm client
@@ -127,3 +126,5 @@ concommand.Add("ax_localization_check", function(client, command, arguments)
         end
     end
 end)
+
+ax.localisation = ax.localization
