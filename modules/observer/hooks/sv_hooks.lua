@@ -12,7 +12,7 @@
 local MODULE = MODULE
 
 function MODULE:EntityTakeDamage(target, dmgInfo)
-    if ( !IsValid(target) or !target:IsPlayer() ) then return end
+    if ( !target:IsPlayer() ) then return end
 
     if ( target:InObserver() ) then
         return true
