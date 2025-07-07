@@ -103,7 +103,10 @@ function ax.character:Load(client, characterID)
 
             self.stored[characterID] = character
 
-            hook.Run("PrePlayerLoadedCharacter", client, character, currentCharacter)
+            local canLoad, reason = hook.Run("PrePlayerLoadedCharacter", client, character, currentCharacter)
+            if ( canLoad == false ) then
+                return client:Notify(reason or "Hook denied character loading!")
+            end
 
             net.Start("ax.character.load")
                 net.WriteUInt(characterID, 16)

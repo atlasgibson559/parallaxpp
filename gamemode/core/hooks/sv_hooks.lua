@@ -157,24 +157,41 @@ function GM:PostPlayerLoadout(client)
     end
 end
 
-function GM:PrePlayerLoadedCharacter(client, character, previousCharacter)
-    if ( !previousCharacter ) then return end
-
-    previousCharacter:SetData("health", client:Health())
-
-    local groups = {}
-    for i = 0, client:GetNumBodyGroups() - 1 do
-        local name = client:GetBodygroupName(i)
-        if ( name and name != "" ) then
-            groups[name] = client:GetBodygroup(i)
-        end
+function GM:PrePlayerCreatedCharacter(client, payload)
+    local maxCharacters = ax.config:Get("characters.maxCount")
+    if ( table.Count(client:GetCharacters()) >= maxCharacters ) then
+        return false, "You have reached the maximum number of characters! (" .. maxCharacters .. ")"
     end
 
-    previousCharacter:SetData("groups", groups)
-    previousCharacter:SetData("last_pos", client:GetPos())
-    previousCharacter:SetData("last_ang", client:EyeAngles())
-    previousCharacter:SetPlayTime(previousCharacter:GetPlayTime() + (os.time() - previousCharacter:GetLastPlayed()))
-    previousCharacter:SetLastPlayed(os.time())
+    return true
+end
+
+function GM:PrePlayerLoadedCharacter(client, character, previousCharacter)
+    if ( client:OnCooldown("character.switch") ) then
+        return false, "You are on cooldown for switching characters!"
+    end
+
+    if ( !client:Alive() ) then
+        return false, "You cannot switch characters while being dead!"
+    end
+
+    if ( previousCharacter ) then
+        previousCharacter:SetData("health", client:Health())
+
+        local groups = {}
+        for i = 0, client:GetNumBodyGroups() - 1 do
+            local name = client:GetBodygroupName(i)
+            if ( name and name != "" ) then
+                groups[name] = client:GetBodygroup(i)
+            end
+        end
+
+        previousCharacter:SetData("groups", groups)
+        previousCharacter:SetData("last_pos", client:GetPos())
+        previousCharacter:SetData("last_ang", client:EyeAngles())
+        previousCharacter:SetPlayTime(previousCharacter:GetPlayTime() + (os.time() - previousCharacter:GetLastPlayed()))
+        previousCharacter:SetLastPlayed(os.time())
+    end
 end
 
 function GM:PostPlayerLoadedCharacter(client, character, previousCharacter)
@@ -210,6 +227,8 @@ function GM:PostPlayerLoadedCharacter(client, character, previousCharacter)
     if ( istable(classData) and isfunction(classData.OnCharacterLoaded) ) then
         classData:OnCharacterLoaded(client)
     end
+
+    client:SetCooldown("character.switch", 10)
 end
 
 function GM:PlayerDeathThink(client)
@@ -550,13 +569,4 @@ function GM:PlayerSpawnNPC(client, npc_type, weapon)
     if ( !character ) then return end
 
     return character:HasFlag("n") or client:IsAdmin()
-end
-
-function GM:PrePlayerCreatedCharacter(client, payload)
-    local maxCharacters = ax.config:Get("characters.maxCount")
-    if ( table.Count(client:GetCharacters()) >= maxCharacters ) then
-        return false, "You have reached the maximum number of characters! (" .. maxCharacters .. ")"
-    end
-
-    return true
 end
