@@ -70,7 +70,7 @@ function PANEL:Init()
         self:SetVisible(false)
     end
 
-    self.entry.OnTextChanged = function(this)
+    self.entry.OnChange = function(this)
         local chatType = "IC"
         local text = this:GetValue()
         if ( string.sub(text, 1, 3) == ".//" ) then

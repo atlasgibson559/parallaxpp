@@ -361,7 +361,7 @@ function PANEL:PopulateCreateCharacterForm()
             entry:SetNumeric(v.Numeric or false)
             entry:SetAllowNonAsciiCharacters(v.AllowNonAscii or false)
 
-            entry.OnTextChanged = function(this)
+            entry.OnChange = function(this)
                 local text = this:GetValue()
 
                 if ( isfunction(v.OnChange) ) then
@@ -405,7 +405,7 @@ function PANEL:PopulateCreateCharacterForm()
             entry:SetTall(ScreenScaleH(12) * 4)
             entry:SetZPos(zPos)
 
-            entry.OnTextChanged = function(this)
+            entry.OnChange = function(this)
                 local text = this:GetValue()
 
                 if ( isfunction(v.OnChange) ) then
