@@ -11,7 +11,7 @@
 
 local MODULE = MODULE
 
-function MODULE:CalcView(ply, pos, ang, fov)
+function MODULE:CalcView(client, pos, ang, fov)
     if ( !ax.Cinematic.Active ) then return end
 
     local camPos, camAng, camFov = ax.Cinematic:GetValue()
