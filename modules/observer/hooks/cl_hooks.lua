@@ -23,10 +23,13 @@ function MODULE:HUDPaint()
 
     if ( hook.Run("ShouldDrawObserverHUD", client) == false ) then return end
 
-    local playerCount = 0
+    local players = 0
+    local connecting = 0
     local admins = 0
     for k, v in player.Iterator() do
-        playerCount = playerCount + 1
+        if ( !IsValid(v) ) then connecting = connecting + 1 continue end
+
+        players = players + 1
 
         if ( v:IsAdmin() ) then
             admins = admins + 1
@@ -66,10 +69,10 @@ function MODULE:HUDPaint()
 
     local y = 10
 
-    local _, h = draw.SimpleText("Players: " .. playerCount, "DermaDefault", 10, y, ax.color:Get("text"))
+    local _, h = draw.SimpleText("PLAYERS: " .. players .. "(" .. connecting .. " CONNECTING" .. ")", "DermaDefault", 10, y, ax.color:Get("text"))
     y = y + h + 2
 
-    _, h = draw.SimpleText("Admins: " .. admins, "DermaDefault", 10, y, ax.color:Get("text"))
+    _, h = draw.SimpleText("ADMINS: " .. admins, "DermaDefault", 10, y, ax.color:Get("text"))
     y = y + h + 2
 
     hook.Run("PostDrawObserverHUD", client)
