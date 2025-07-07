@@ -499,6 +499,21 @@ end
 function GM:PrePlayerConfigChanged(client, key, value, oldValue)
 end
 
+function GM:OnEntityCreated(entity)
+    timer.Simple(0.1, function()
+        if ( !IsValid(entity) ) then return end
+
+        if ( entity:IsDoor() ) then
+            entity:SetRelay("locked", entity:IsLocked())
+
+            local master = entity:GetMasterDoor()
+            if ( IsValid(master) ) then
+                entity:SetRelay("master", master:EntIndex())
+            end
+        end
+    end)
+end
+
 gameevent.Listen("OnRequestFullUpdate")
 hook.Add("OnRequestFullUpdate", "ax.OnRequestFullUpdate", function(data)
     if ( !istable(data) or !isnumber(data.userid) ) then return end
