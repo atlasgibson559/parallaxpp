@@ -14,6 +14,7 @@
 
 ax.color = {}
 ax.color.stored = {}
+ax.colour = ax.color -- tea
 
 --- Registers a new color.
 -- @realm shared
@@ -137,5 +138,3 @@ if ( CLIENT ) then
         end
     end)
 end
-
-ax.colour = ax.color -- tea
