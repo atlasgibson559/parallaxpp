@@ -179,6 +179,13 @@ function PLAYER:SetRagdolled(bState, duration)
         return
     end
 
+    -- Remove any existing ragdoll first
+    local existingRagdoll = self:GetRelay("ragdoll")
+    if ( IsValid(existingRagdoll) ) then
+        existingRagdoll:Remove()
+        self:SetRelay("ragdoll", nil)
+    end
+
     self:SetNoDraw(true)
     self:SetNotSolid(true)
     self:SetNoTarget(true)
