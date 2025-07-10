@@ -9,12 +9,10 @@
     Attribution is required. If you use or modify this file, you must retain this notice.
 ]]
 
-local MODULE = MODULE
-
-ax.config:Register("voicechat.modes.enabled", {
-    Name = "config.voicechat.modes.enabled",
-    Description = "config.voicechat.modes.enabled.help",
-    SubCategory = "category.color",
+ax.config:Register("thirdperson.tracecheck", {
+    Name = "options.thirdperson.traceplayercheck",
     Type = ax.types.bool,
-    Default = true,
+    Default = false,
+    Description = "options.thirdperson.traceplayercheck.help",
+    Category = "category.thirdperson"
 })

@@ -9,8 +9,17 @@
     Attribution is required. If you use or modify this file, you must retain this notice.
 ]]
 
-local MODULE = MODULE
+ax.stamina = ax.stamina or {}
 
-MODULE.Name = "Cinematic"
-MODULE.Description = "Smoothly interpolates through scene points with support for various easing methods, scene visualization, and developer debugging. Modular and configurable for easy integration."
-MODULE.Author = "Riggs"
+--- Gets the local player's stamina from relay
+-- @return number
+function ax.stamina:Get()
+    return ax.client:GetRelay("stamina").current
+end
+
+--- Gets the local player's stamina as a fraction [0–1]
+-- @return number
+function ax.stamina:GetFraction()
+    local max = ax.client:GetRelay("stamina").max
+    return self:Get() / max
+end
