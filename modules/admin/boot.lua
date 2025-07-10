@@ -9,14 +9,15 @@
     Attribution is required. If you use or modify this file, you must retain this notice.
 ]]
 
+-- This is not a final implementation and is subject to change.
+
 local MODULE = MODULE
 
-MODULE.Name        = "Admin"
-MODULE.ID          = "admin"
+MODULE.Name = "Admin"
 MODULE.Description = "Editable admin system using CAMI and Parallax persistence."
-MODULE.Author      = "Riggs"
+MODULE.Author = "Riggs"
 
-MODULE.Groups      = {}
+MODULE.Groups = {}
 MODULE.Permissions = {}
 
 --- Registers a usergroup and stores it persistently.
