@@ -153,7 +153,7 @@ if ( CLIENT ) then
     -- Default icon map for common weapons
     -- This can be extended with more icons as needed
     local iconMap = {
-        ["ax_hands"] = "gui/hand_human_left.png",
+        ["ax_hands"] = "materials/gui/hand_human_left.png",
         ["gmod_camera"] = "materials/entities/gmod_camera.png",
         ["gmod_tool"] = "materials/entities/gmod_tool.png",
         ["weapon_357"] = "materials/entities/weapon_357.png",
@@ -189,7 +189,7 @@ if ( CLIENT ) then
         end
 
         -- If no icon found, return a default icon
-        return ax.util:GetMaterial("gui/noicon.png")
+        return ax.util:GetMaterial("materials/gui/noicon.png")
     end
 
     -- Sound effects for weapon selection
