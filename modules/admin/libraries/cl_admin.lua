@@ -110,7 +110,7 @@ function MODULE:CreateAdminMenu()
         -- Action buttons
         CreateButton("Kick", "Parallax - Kick Players", function()
             Derma_StringRequest("Kick Player", "Enter reason:", "No reason provided", function(text)
-                ax.command:Run("kick", selectedPlayer:UserID(), text)
+                ax.command:Run("PlyKick", selectedPlayer:UserID(), text)
             end)
         end)
 
@@ -141,7 +141,7 @@ function MODULE:CreateAdminMenu()
             banBtn.DoClick = function()
                 local reason = reasonEntry:GetValue()
                 local duration = durationEntry:GetValue()
-                ax.command:Run("ban", selectedPlayer:UserID(), duration, reason)
+                ax.command:Run("PlyBan", selectedPlayer:UserID(), duration, reason)
                 reasonFrame:Close()
             end
 

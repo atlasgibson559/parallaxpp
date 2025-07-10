@@ -48,7 +48,8 @@ ax.command:Register("PlyKick", {
         end
 
         MODULE:LogAction(client, "kicked", target, reason)
-        ax.util:SendChatText(nil, MODULE:GetGroupColor(client), client:SteamName() .. " kicked " .. target:SteamName() .. " (" .. reason .. ")")
+
+        ax.notification:Send(nil, client:SteamName() .. " has kicked " .. target:SteamName() .. ". Reason: " .. reason)
 
         target:Kick(reason)
     end
@@ -115,8 +116,7 @@ ax.command:Register("PlyBan", {
         MODULE.BannedPlayers[target:SteamID64()] = banData
         MODULE:SaveData()
 
-        local durationText = duration > 0 and string.format(" for %d minutes", duration) or " permanently"
-        ax.util:SendChatText(nil, MODULE:GetGroupColor(client), client:SteamName() .. " banned " .. target:SteamName() .. durationText .. " (" .. reason .. ")")
+        ax.notification:Send(nil, client:SteamName() .. " has banned " .. target:SteamName() .. ". Reason: " .. reason .. (duration > 0 and " for " .. duration .. " minutes." or " permanently."))
 
         target:Kick("Banned: " .. reason)
     end
