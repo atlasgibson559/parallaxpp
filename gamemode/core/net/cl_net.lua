@@ -128,11 +128,10 @@ net.Receive("ax.character.load", function(len)
     end
 
     local currentCharacter = client:GetCharacter()
-    local clientTable = client:GetTable()
-
     ax.character.stored = ax.character.stored or {}
     ax.character.stored[characterID] = character
 
+    local clientTable = client:GetTable()
     clientTable.axCharacters = clientTable.axCharacters or {}
     clientTable.axCharacters[characterID] = character
     clientTable.axCharacter = character
@@ -151,6 +150,25 @@ net.Receive("ax.character.variable.set", function(len)
     if ( !character ) then return end
 
     character[key] = value
+end)
+
+net.Receive("ax.character.sync", function(len)
+    local client = Entity(net.ReadUInt(16))
+    if ( !IsValid(client) ) then print ("Invalid client for character sync!") return end
+
+    local characterID = net.ReadUInt(16)
+    if ( !characterID ) then return end
+
+    local character = ax.character:CreateObject(characterID, net.ReadTable(), client)
+    if ( !istable(character) ) then return end
+
+    ax.character.stored = ax.character.stored or {}
+    ax.character.stored[characterID] = character
+
+    local clientTable = client:GetTable()
+    clientTable.axCharacters = clientTable.axCharacters or {}
+    clientTable.axCharacters[characterID] = character
+    clientTable.axCharacter = character
 end)
 
 --[[-----------------------------------------------------------------------------

@@ -13,7 +13,7 @@
 -- @module ax.character
 
 function ax.character:Create(client, query, callback)
-    if ( !IsValid(client) or !client:IsPlayer() ) then
+    if ( !IsValid(client) ) then
         return callback(false, "Invalid player!")
     end
 
@@ -63,6 +63,8 @@ function ax.character:Create(client, query, callback)
 
         ax.inventory:Register({characterID = characterID})
 
+        ax.character:Sync(client, characterID)
+
         hook.Run("PostPlayerCreatedCharacter", client, character, query)
 
         return callback(true, character)
@@ -70,7 +72,7 @@ function ax.character:Create(client, query, callback)
 end
 
 function ax.character:Load(client, characterID)
-    if ( !IsValid(client) or !client:IsPlayer() ) then
+    if ( !IsValid(client) ) then
         ax.util:PrintError("Attempted to load character for invalid player (" .. tostring(client) .. ")")
         return false
     end
@@ -127,6 +129,8 @@ function ax.character:Load(client, characterID)
                 ax.item:Cache(characterID)
             end)
 
+            ax.character:Sync(client, characterID)
+
             hook.Run("PostPlayerLoadedCharacter", client, character, currentCharacter)
 
             return character
@@ -171,6 +175,8 @@ function ax.character:Delete(characterID, callback)
 
     self.stored[characterID] = nil
 
+    ax.character:Sync(client, characterID)
+
     -- Delete all related inventories and items for this character
     ax.database:Delete("ax_inventories", string.format("character_id = %s", sql.SQLStr(characterID)))
     ax.database:Delete("ax_items", string.format("character_id = %s", sql.SQLStr(characterID)))
@@ -184,7 +190,7 @@ function ax.character:Delete(characterID, callback)
 end
 
 function ax.character:Cache(client, characterID, callback)
-    if ( !IsValid(client) or !client:IsPlayer() ) then
+    if ( !IsValid(client) ) then
         ax.util:PrintError("Attempted to cache character for invalid player (" .. tostring(client) .. ")")
         return false
     end
@@ -228,7 +234,7 @@ function ax.character:Cache(client, characterID, callback)
 end
 
 function ax.character:CacheAll(client, callback)
-    if ( !IsValid(client) or !client:IsPlayer() ) then
+    if ( !IsValid(client) ) then
         ax.util:PrintError("Attempted to load characters for invalid player (" .. tostring(client) .. ")")
 
         if ( callback ) then
@@ -286,6 +292,33 @@ function ax.character:CacheAll(client, callback)
             end
         end
     end)
+end
+
+--- Synchronizes the character data from the server to clients.
+function ax.character:Sync(client, characterID)
+    if ( !IsValid(client) ) then
+        ax.util:PrintError("Attempted to sync character for invalid player (" .. tostring(client) .. ")")
+        return false
+    end
+
+    if ( !isnumber(characterID) ) then
+        ax.util:PrintError("Attempted to sync character with invalid ID (" .. tostring(characterID) .. ")")
+        return false
+    end
+
+    local character = self.stored[characterID]
+    if ( !character ) then
+        ax.util:PrintError("Attempted to sync character that does not exist (" .. characterID .. ")")
+        return false
+    end
+
+    net.Start("ax.character.sync")
+        net.WriteUInt(client:EntIndex(), 16)
+        net.WriteUInt(characterID, 16)
+        net.WriteTable(character)
+    net.Broadcast()
+
+    return true
 end
 
 concommand.Add("ax_character_test_create", function(client, cmd, arguments)

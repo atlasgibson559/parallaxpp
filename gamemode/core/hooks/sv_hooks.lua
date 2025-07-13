@@ -15,21 +15,50 @@ function GM:PlayerInitialSpawn(client)
     ax.util:Print("Starting to load player " .. client:SteamName() .. " (" .. client:SteamID64() .. ")")
 
     if ( client:IsBot() ) then
-        local factionBot = math.random(#ax.faction.instances)
+        timer.Simple(1, function()
+            if ( !IsValid(client) ) then return end
 
-        local models = {}
-        local factionModels = ax.faction:Get(factionBot):GetModels()
-        for i = 1, #factionModels do
-            local v = factionModels[i]
-            if ( istable(v) ) then
-                models[#models + 1] =  v[1]
-            else
-                models[#models + 1] = v
+            local factionBot = math.random(#ax.faction.instances)
+
+            local models = {}
+            local factionModels = ax.faction:Get(factionBot):GetModels()
+            for i = 1, #factionModels do
+                local v = factionModels[i]
+                if ( istable(v) ) then
+                    models[#models + 1] =  v[1]
+                else
+                    models[#models + 1] = v
+                end
             end
-        end
 
-        client:SetModel(models[math.random(#models)])
-        client:SetTeam(factionBot)
+            client:SetModel(models[math.random(#models)])
+            client:SetTeam(factionBot)
+
+            local characterID = math.random(100000, 999999)
+            local character = ax.character:CreateObject(characterID, {
+                name = client:SteamName(),
+                model = client:GetModel(),
+                faction = factionBot,
+                schema = engine.ActiveGamemode(),
+                steamid = client:SteamID64()
+            }, client)
+            if ( character ) then
+                ax.character.stored[characterID] = character
+
+                local clientTable = client:GetTable()
+                clientTable.axCharacters = clientTable.axCharacters or {}
+                clientTable.axCharacters[characterID] = character
+                clientTable.axCharacter = character
+
+                net.Start("ax.character.cache")
+                    net.WriteTable(character)
+                net.Send(client)
+
+                ax.character:Sync(client, characterID)
+
+                hook.Run("PostPlayerCreatedCharacter", client, character, query)
+            end
+        end)
     end
 end
 
@@ -38,6 +67,8 @@ function GM:PlayerReady(client)
     client:SetModel("models/player/kleiner.mdl")
 
     client:KillSilent()
+
+    print("Player " .. client:SteamName() .. " (" .. client:SteamID64() .. ") is ready.")
 
     local activeGamemode = engine.ActiveGamemode()
     if ( activeGamemode == "parallax" ) then
@@ -470,7 +501,7 @@ function GM:DoPlayerDeath(client, attacker, dmgInfo)
         existingRagdoll:Remove()
         client:SetRelay("ragdoll", nil)
     end
-    
+
     if ( hook.Run("PreSpawnClientRagdoll", client, attacker, dmgInfo ) != false ) then
         local ragdoll = client:CreateRagdoll()
 
