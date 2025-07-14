@@ -20,6 +20,16 @@ function CHAR:__tostring()
     return "character[" .. self:GetID() .. "]"
 end
 
+function CHAR:PrettyPrint()
+    local player = self:GetPlayer()
+    return string.format(
+        "Character %d SteamID: %s, Player: %s",
+        self:GetID(),
+        self:GetSteamID(),
+        IsValid(player) and player:SteamName() or "N/A"
+    )
+end
+
 --- Compares the character with another character.
 -- @param other The other character to compare with.
 -- @treturn boolean Whether the characters are equal.
