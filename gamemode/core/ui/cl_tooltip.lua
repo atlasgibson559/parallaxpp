@@ -60,13 +60,13 @@ function PANEL:SizeToContents()
     local titleWidth = ax.util:GetTextWidth("ax.large.bold", title)
     width = math.max(width, titleWidth)
     for i = 1, #descWrapped do
-        local descWidth = ax.util:GetTextWidth("parallax", descWrapped[i])
+        local descWidth = ax.util:GetTextWidth("ax.regular", descWrapped[i])
         width = math.max(width, descWidth)
     end
 
     local height = ax.util:GetTextHeight("ax.large.bold")
     for i = 1, #descWrapped do
-        height = height + ax.util:GetTextHeight("parallax")
+        height = height + ax.util:GetTextHeight("ax.regular")
     end
 
     self:SetSize(width + 32, height + 8)
@@ -114,7 +114,7 @@ function PANEL:Paint(width, height)
     local desc = ax.localization:GetPhrase(self.description) or self.description
     local descWrapped = ax.util:GetWrappedText(desc, "ax.regular", width - 32)
     for i = 1, #descWrapped do
-        draw.SimpleText(descWrapped[i], "ax.regular", 16, 48 + (i - 1) * ax.util:GetTextHeight("parallax"), ax.color:Get("text"), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+        draw.SimpleText(descWrapped[i], "ax.regular", 16, 48 + (i - 1) * ax.util:GetTextHeight("ax.regular"), ax.color:Get("text"), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
     end
 end
 
