@@ -59,7 +59,7 @@ function playerMeta:SetRelay(key, value, bNetworked, recipients)
     end
 
     if ( bNetworked == false ) then
-        recipient = self
+        recipients = self
     else
         if ( recipients == nil ) then
             recipients = select(2, player.Iterator())
@@ -75,7 +75,7 @@ function playerMeta:SetRelay(key, value, bNetworked, recipients)
             net.WriteUInt(index, 16)
             net.WriteString(key)
             net.WriteType(value)
-        net.Send(recipient)
+        net.Send(recipients)
     end
 end
 
@@ -109,7 +109,7 @@ function entityMeta:SetRelay(key, value, bNetworked, recipients)
     end
 
     if ( bNetworked == false ) then
-        recipient = self
+        recipients = self
     else
         if ( recipients == nil ) then
             recipients = select(2, player.Iterator())
@@ -125,7 +125,7 @@ function entityMeta:SetRelay(key, value, bNetworked, recipients)
             net.WriteUInt(index, 16)
             net.WriteString(key)
             net.WriteType(value)
-        net.Send(recipient)
+        net.Send(recipients)
     end
 end
 
