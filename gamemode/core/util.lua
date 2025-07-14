@@ -137,7 +137,7 @@ function ax.util:SendChatText(client, ...)
 
     if ( SERVER ) then
         net.Start("ax.chat.text")
-            net.WriteTable({...})
+            net.WriteTable({...}, true)
         net.Send(client)
     else
         chat.AddText(...)

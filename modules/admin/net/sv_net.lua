@@ -31,10 +31,10 @@ net.Receive("ax.admin.logs.request", function(len, client)
     local sendLogs = {}
 
     for i = startIndex, #logs do
-        table.insert(sendLogs, logs[i])
+       sendLogs[#sendLogs + 1] = logs[i]
     end
 
     net.Start("ax.admin.logs.response")
-        net.WriteTable(sendLogs)
+        net.WriteTable(sendLogs, true)
     net.Send(client)
 end)

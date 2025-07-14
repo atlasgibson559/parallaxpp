@@ -31,6 +31,6 @@ function MODULE:Send(...)
     end
 
     net.Start("ax.logging.send")
-        net.WriteTable({...})
+        net.WriteTable({...}, true)
     net.Send(receivers)
 end

@@ -123,7 +123,7 @@ if ( CLIENT ) then
 
         net.Start("ax.command.run")
             net.WriteString(command)
-            net.WriteTable(arguments)
+            net.WriteTable(arguments, true)
         net.SendToServer()
     end
 end
