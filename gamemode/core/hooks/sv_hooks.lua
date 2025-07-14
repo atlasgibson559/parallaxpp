@@ -18,6 +18,8 @@ function GM:PlayerInitialSpawn(client)
         timer.Simple(1, function()
             if ( !IsValid(client) ) then return end
 
+            ax.util:SendChatText(nil, ax.color:Get("cyan.dark"), client:SteamName() .. " has joined the server.")
+
             local factionBot = math.random(#ax.faction.instances)
 
             local models = {}
@@ -74,6 +76,7 @@ function GM:PlayerReady(client)
     if ( activeGamemode == "parallax" ) then
         -- Sometimes people might forget to actually set their startup gamemode to their schema rather than the actual framework... so we check for that
         ax.util:PrintError("You are running Parallax without a schema! Please set your startup gamemode to your schema (e.g. 'parallax-skeleton' instead of 'parallax').")
+        ax.util:SendChatText(nil, ax.color:Get("red.soft"), "You are running Parallax without a schema! Please set your startup gamemode to your schema (e.g. 'parallax-skeleton' instead of 'parallax').")
 
         net.Start("ax.splash")
         net.Send(client)
@@ -82,7 +85,7 @@ function GM:PlayerReady(client)
     end
 
     ax.character:CacheAll(client, function()
-        ax.util:SendChatText(nil, Color(25, 75, 150), client:SteamName() .. " has joined the server.")
+        ax.util:SendChatText(nil, ax.color:Get("cyan.dark"), client:SteamName() .. " has joined the server.")
 
         net.Start("ax.splash")
         net.Send(client)
@@ -140,6 +143,8 @@ function GM:PlayerDisconnected(client)
             clientOptions = nil
         end
     end
+
+    ax.util:SendChatText(nil, ax.color:Get("maroon.soft"), client:SteamName() .. " has left the server.")
 end
 
 function GM:PlayerSpawn(client)
