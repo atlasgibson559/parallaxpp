@@ -254,7 +254,7 @@ ax.config:Register("chat.radius.yell", {
     Description = "config.chat.radius.yell.help",
     Category = "category.chat",
     Type = ax.types.number,
-    Default = 1024,
+    Default = 1000,
     Min = 0,
     Max = 1000,
     Decimals = 0
