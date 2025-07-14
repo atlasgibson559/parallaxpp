@@ -64,7 +64,12 @@ end
 
 local gmod_language = GetConVar("gmod_language")
 function ax.localization:GetPhrase(key, ...)
-    local languageName = ( gmod_language and gmod_language:GetString() ) or "en"
+    local languageName = "en"
+    if ( SERVER ) then
+        languageName = ax.config:Get("langugage")
+    elseif ( CLIENT and gmod_language and gmod_language:GetString() != "" ) then
+        languageName = gmod_language:GetString()
+    end
 
     local data = self:Get(languageName)
     if ( !istable(data) ) then

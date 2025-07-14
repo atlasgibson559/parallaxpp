@@ -131,6 +131,44 @@ function GM:PlayerCanHearChat(client, listener, uniqueID, text)
 end
 
 function GM:PreConfigChanged(key, value, oldValue)
+    local stored = ax.config.stored[key]
+    if ( !istable(stored) ) then
+        ax.util:PrintError("Attempted to set unknown config \"" .. tostring(key) .. "\"!")
+        return false
+    end
+
+    if ( stored.Type == ax.types.array ) then
+        local populate = stored.Populate
+        if ( isfunction(populate) ) then
+            local options = populate()
+            if ( !istable(options) or !options[value] ) then
+                ax.util:PrintError("Attempted to set option \"" .. tostring(key) .. "\" with invalid value!")
+                return false
+            end
+        elseif ( !istable(stored.Values) or !stored.Values[value] ) then
+            ax.util:PrintError("Attempted to set option \"" .. tostring(key) .. "\" with invalid value!")
+            return false
+        end
+    else
+        if ( ax.util:DetectType(value) != stored.Type ) then
+            ax.util:PrintError("Attempted to set option \"" .. tostring(key) .. "\" with invalid type!")
+            return false
+        end
+    end
+
+    if ( isnumber(value) ) then
+        if ( isnumber(stored.Min) and value < stored.Min ) then
+            ax.util:PrintError("Option \"" .. tostring(key) .. "\" is below minimum value!")
+            return false
+        end
+
+        if ( isnumber(stored.Max) and value > stored.Max ) then
+            ax.util:PrintError("Option \"" .. tostring(key) .. "\" is above maximum value!")
+            return false
+        end
+    end
+
+    return true
 end
 
 function GM:PostConfigChanged(key, value, oldValue, client)
