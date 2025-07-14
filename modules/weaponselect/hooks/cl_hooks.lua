@@ -243,7 +243,7 @@ function MODULE:HUDPaint()
 
         local iconMaterial = MODULE.WeaponIcons:GetIcon(weapon)
         if ( iconMaterial ) then
-            if ( isstring(iconMaterial) and string.find(iconMaterial, ".vmt") ) then
+            if ( isstring(iconMaterial) and ax.util:FindString(iconMaterial, ".vmt") ) then
                 surface.SetTexture(surface.GetTextureID(iconMaterial))
             else
                 surface.SetMaterial(iconMaterial)

@@ -150,7 +150,7 @@ function CHAR:HasFlag(flag)
     local flags = self:GetFlags()
     if ( !isstring(flags) or flags == "" ) then return false end
 
-    if ( string.find(flags, flag) ) then return true end
+    if ( ax.util:FindString(flags, flag) ) then return true end
 
     return false
 end

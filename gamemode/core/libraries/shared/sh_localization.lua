@@ -93,7 +93,7 @@ function ax.localization:GetPhrase(key, ...)
         end
 
         value = string.format(value, unpack(args))
-    elseif ( string.find(value, "%%s") ) then
+    elseif ( ax.util:FindString(value, "%%s") ) then
         -- If the string contains a %s but no additional arguments, we remove it.
         value = string.gsub(value, "%%s", "")
     end

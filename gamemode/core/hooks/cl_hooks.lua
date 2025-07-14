@@ -1045,7 +1045,7 @@ end
 function GM:PlayerBindPress(client, bind, pressed)
     bind = bind:lower()
 
-    if ( string.find(bind, "messagemode") and pressed ) then
+    if ( ax.util:FindString(bind, "messagemode") and pressed ) then
         ax.gui.chatbox:SetVisible(true)
 
         for i = 1, #ax.chat.messages do

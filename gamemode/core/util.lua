@@ -313,15 +313,15 @@ function ax.util:LoadFile(path, realm)
         return
     end
 
-    if ( ( realm == "server" or string.find(path, "sv_") ) and SERVER ) then
+    if ( ( realm == "server" or ax.util:FindString(path, "sv_") ) and SERVER ) then
         include(path)
-    elseif ( realm == "shared" or string.find(path, "shared.lua") or string.find(path, "sh_") ) then
+    elseif ( realm == "shared" or ax.util:FindString(path, "shared.lua") or ax.util:FindString(path, "sh_") ) then
         if ( SERVER ) then
             AddCSLuaFile(path)
         end
 
         include(path)
-    elseif ( realm == "client" or string.find(path, "cl_") ) then
+    elseif ( realm == "client" or ax.util:FindString(path, "cl_") ) then
         if ( SERVER ) then
             AddCSLuaFile(path)
         else
@@ -336,7 +336,7 @@ end
 -- @param bFromLua boolean Whether or not the files are being loaded from Lua.
 function ax.util:LoadFolder(directory, bFromLua)
     local baseDir = debug.getinfo(2).source
-    baseDir = string.sub(baseDir, 2, string.find(baseDir, "/[^/]*$"))
+    baseDir = string.sub(baseDir, 2, ax.util:FindString(baseDir, "/[^/]*$"))
     baseDir = string.gsub(baseDir, "gamemodes/", "")
 
     if ( bFromLua ) then
@@ -733,7 +733,7 @@ function ax.util:LoadTools(path)
     for i = 1, #files do
         local val = files[i]
 
-        local _, _, toolmode = string.find(val, "([%w_]*).lua")
+        local _, _, toolmode = ax.util:FindString(val, "([%w_]*).lua")
         toolmode = toolmode:lower()
 
         TOOL = ax.tool:Create()
@@ -957,15 +957,15 @@ if ( CLIENT ) then
                     surface.CreateFont("ax." .. name .. "." .. family, {
                         font = fontName,
                         size = size,
-                        weight = string.find(family, "bold") and 900 or 700,
+                        weight = ax.util:FindString(family, "bold") and 900 or 700,
                         antialias = true
                     })
                 else
                     surface.CreateFont("ax." .. name .. "." .. family, {
                         font = font,
                         size = size,
-                        weight = string.find(family, "bold") and 900 or 700,
-                        italic = string.find(family, "italic"),
+                        weight = ax.util:FindString(family, "bold") and 900 or 700,
+                        italic = ax.util:FindString(family, "italic"),
                         antialias = true
                     })
                 end
@@ -975,8 +975,8 @@ if ( CLIENT ) then
                 surface.CreateFont("ax." .. name .. "." .. family, {
                     font = font,
                     size = size,
-                    weight = string.find(family, "bold") and 900 or 700,
-                    italic = string.find(family, "italic"),
+                    weight = ax.util:FindString(family, "bold") and 900 or 700,
+                    italic = ax.util:FindString(family, "italic"),
                     antialias = true
                 })
             end

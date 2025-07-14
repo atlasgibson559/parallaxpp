@@ -372,7 +372,13 @@ function SWEP:AllowPickup(target)
     local physicsObject = target:GetPhysicsObject()
     local owner = self:GetOwner()
 
-    return ( IsValid(physicsObject) and IsValid(owner) and !physicsObject:HasGameFlag(FVPHYSICS_NO_PLAYER_PICKUP) and physicsObject:GetMass() < ax.config:Get("hands.max.Carry", 160) and !self:IsEntityStoodOn(target) and target.CanPickup != false ) and hook.Run("CanPlayerPickup", owner, target) != false
+    return ( IsValid(physicsObject)
+    and IsValid(owner)
+    and !physicsObject:HasGameFlag(FVPHYSICS_NO_PLAYER_PICKUP)
+    and physicsObject:GetMass() < ax.config:Get("hands.max.Carry", 160)
+    and !self:IsEntityStoodOn(target)
+    and target.CanPickup != false )
+    and hook.Run("CanPlayerPickup", owner, target) != false
 end
 
 function SWEP:DoPickup(throw)

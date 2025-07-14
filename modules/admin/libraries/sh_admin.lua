@@ -171,7 +171,7 @@ function MODULE:GetLogs(filter)
             include = false
         end
 
-        if ( filter.action and !string.find(log.action, filter.action) ) then
+        if ( filter.action and !ax.util:FindString(log.action, filter.action) ) then
             include = false
         end
 
