@@ -60,18 +60,19 @@ function MODULE:UpdateWeaponDescriptions()
     local weapons = client:GetWeapons()
     self.weaponDescriptions = {}
 
-    for i, weapon in ipairs(weapons) do
-        if ( IsValid(weapon) ) then
-            local desc = ""
-            if ( weapon.Instructions and weapon.Instructions != "" ) then
-                desc = weapon.Instructions
-            elseif ( weapon.Description and weapon.Description != "" ) then
-                desc = weapon.Description
-            else
-                desc = "No description available"
-            end
-            self.weaponDescriptions[i] = desc
+    for i = 1, #weapons do
+        local weapon = weapons[i]
+        if ( !IsValid(weapon) ) then continue end
+
+        local desc = ""
+        if ( weapon.Instructions and weapon.Instructions != "" ) then
+            desc = weapon.Instructions
+        elseif ( weapon.Description and weapon.Description != "" ) then
+            desc = weapon.Description
+        else
+            desc = "No description available"
         end
+        self.weaponDescriptions[i] = desc
     end
 end
 
@@ -96,14 +97,14 @@ function MODULE:HUDPaint()
     if ( !ax.option:Get("weaponselect.enabled", true) ) then return end
 
     local client = ax.client
-    if ( !IsValid(client) or !client:Alive() ) then
+    if ( !client:Alive() ) then
         self.alpha = 0
         self.targetAlpha = 0
         return
     end
 
     local weapons = client:GetWeapons()
-    if ( !weapons or #weapons == 0 ) then return end
+    if ( !istable(weapons) or weapons[1] == NULL ) then return end
 
     local frameTime = FrameTime()
     local currentTime = CurTime()
@@ -266,6 +267,7 @@ function MODULE:HUDPaint()
             if ( string.len(desc) > 35 ) then
                 desc = string.sub(desc, 1, 35) .. "..."
             end
+
             surface.SetTextColor(descColor.r, descColor.g, descColor.b, descColor.a)
             surface.SetFont("ax.tiny")
             surface.SetTextPos(nameX, descY)
@@ -273,8 +275,7 @@ function MODULE:HUDPaint()
         end
 
         -- Selection number
-        local numberColor = ColorAlpha(THEME.accent, self.alpha * 0.8)
-        surface.SetTextColor(numberColor.r, numberColor.g, numberColor.b, numberColor.a)
+        surface.SetTextColor(THEME.accent.r, THEME.accent.g, THEME.accent.b, self.alpha * 0.8)
         surface.SetFont("ax.small")
         local numberText = tostring(i)
         local numberW, numberH = surface.GetTextSize(numberText)
@@ -311,10 +312,10 @@ function MODULE:ShowWeaponSelection()
     if ( !ax.option:Get("weaponselect.enabled", true) ) then return end
 
     local client = ax.client
-    if ( !IsValid(client) or !client:Alive() ) then return end
+    if ( !client:Alive() ) then return end
 
     local weapons = client:GetWeapons()
-    if ( !weapons or #weapons == 0 ) then return end
+    if ( !istable(weapons) or weapons[1] == NULL ) then return end
 
     -- Only initialize if not already shown
     local wasVisible = self.alpha > 0 or self.targetAlpha > 0
@@ -400,7 +401,7 @@ function MODULE:SelectCurrentWeapon()
     if ( !IsValid(client) ) then return end
 
     local weapons = client:GetWeapons()
-    if ( !weapons or #weapons == 0 ) then return end
+    if ( !istable(weapons) or weapons[1] == NULL ) then return end
 
     local weapon = weapons[self.currentIndex]
     if ( IsValid(weapon) ) then
@@ -423,6 +424,8 @@ function MODULE:PlayerBindPress(client, bind, pressed)
     -- Don't interfere with vehicle controls
     if ( client:InVehicle() ) then return end
 
+    local weapons = client:GetWeapons()
+
     -- Handle weapon selection binds
     if ( bind:find("invprev") ) then
         -- If menu isn't visible, show it; otherwise just refresh
@@ -432,8 +435,7 @@ function MODULE:PlayerBindPress(client, bind, pressed)
             self:RefreshWeaponSelection()
         end
 
-        local weapons = client:GetWeapons()
-        if ( weapons and #weapons > 0 ) then
+        if ( weapons[1] != NULL ) then
             local newIndex = self.currentIndex - 1
             if ( newIndex < 1 ) then newIndex = #weapons end
             self:OnWeaponChanged(newIndex)
@@ -448,8 +450,7 @@ function MODULE:PlayerBindPress(client, bind, pressed)
             self:RefreshWeaponSelection()
         end
 
-        local weapons = client:GetWeapons()
-        if ( weapons and #weapons > 0 ) then
+        if ( weapons[1] != NULL ) then
             local newIndex = self.currentIndex + 1
             if ( newIndex > #weapons ) then newIndex = 1 end
             self:OnWeaponChanged(newIndex)
@@ -457,13 +458,12 @@ function MODULE:PlayerBindPress(client, bind, pressed)
 
         return true
     elseif ( bind:find("slot") ) then
-        local slot = tonumber(bind:match("slot(%d)"))
+        local slot = tonumber(string.match(bind, "slot(%d)"))
         if ( slot ) then
             -- Always show for slot selection since it's direct
             self:ShowWeaponSelection()
 
-            local weapons = client:GetWeapons()
-            if ( weapons and weapons[slot] ) then
+            if ( weapons[slot] ) then
                 self:OnWeaponChanged(slot)
             end
         end
@@ -480,10 +480,7 @@ function MODULE:ScoreboardShow()
     self:HideWeaponSelection()
 end
 
--- Hide when player dies
-function MODULE:Think()
-    local client = ax.client
-    if ( !IsValid(client) or !client:Alive() ) then
-        self:HideWeaponSelection()
-    end
-end
+net.Receive("ax.weaponselect.deathclose", function()
+    -- Close weapon selection on death
+    MODULE:HideWeaponSelection()
+end)
