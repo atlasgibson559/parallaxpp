@@ -149,6 +149,7 @@ if ( CLIENT ) then
 
     -- Weapon icon helper functions
     MODULE.WeaponIcons = MODULE.WeaponIcons or {}
+    MODULE.WeaponIcons.Cache = {}
 
     -- Default icon map for common weapons
     -- This can be extended with more icons as needed
@@ -176,20 +177,46 @@ if ( CLIENT ) then
         local class = weapon:GetClass()
         if ( !class or class == "" ) then return nil end
 
+        -- Check cache first
+        if ( self.Cache[class] ) then
+            return self.Cache[class]
+        end
+
         -- Check if the weapon has a custom icon defined
         local iconPath = hook.Run("GetWeaponIcon", class)
         if ( iconPath and iconPath != "" ) then
-            return ax.util:GetMaterial(iconPath)
+            self.Cache[class] = ax.util:GetMaterial(iconPath)
+            return self.Cache[class]
         end
 
         -- Check the default icon map
         iconPath = iconMap[class]
         if ( iconPath and file.Exists(iconPath, "GAME") ) then
-            return ax.util:GetMaterial(iconPath)
+            self.Cache[class] = ax.util:GetMaterial(iconPath)
+            return self.Cache[class]
+        end
+
+        -- Search the game paths for a matching icon
+        local iconFiles = file.Find("materials/entities/*.png", "GAME")
+        for _, iconFile in ipairs(iconFiles) do
+            if ( string.find(iconFile, class) ) then
+                self.Cache[class] = ax.util:GetMaterial("materials/entities/" .. iconFile)
+                return self.Cache[class]
+            end
+        end
+
+        -- If no icon found, search in HUD materials like TFA does
+        iconFiles = file.Find("materials/vgui/hud/*.png", "GAME")
+        for _, iconFile in ipairs(iconFiles) do
+            if ( string.find(iconFile, class) ) then
+                self.Cache[class] = ax.util:GetMaterial("materials/vgui/hud/" .. iconFile)
+                return self.Cache[class]
+            end
         end
 
         -- If no icon found, return a default icon
-        return ax.util:GetMaterial("materials/gui/noicon.png")
+        self.Cache[class] = ax.util:GetMaterial("materials/gui/noicon.png")
+        return self.Cache[class]
     end
 
     -- Sound effects for weapon selection
