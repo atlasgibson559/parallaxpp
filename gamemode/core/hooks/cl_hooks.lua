@@ -626,8 +626,8 @@ end
 local families = {
     ["regular"] = "GorDIN Regular",
     ["bold"] = "GorDIN Bold",
-    ["italic"] = "GorDIN Italic",
-    ["italic.bold"] = "GorDIN Italic Bold"
+    ["italic"] = "GorDIN Regular",
+    ["italic.bold"] = "GorDIN Bold"
 }
 
 function GM:LoadFonts()
