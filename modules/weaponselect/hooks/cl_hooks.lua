@@ -427,12 +427,20 @@ function MODULE:PlayerBindPress(client, bind, pressed)
     bind = bind:lower()
 
     -- Don't interfere with vehicle controls
-    if ( client:InVehicle() ) then return end
+    local activeWep = client:GetActiveWeapon()
+    if ( client:InVehicle() or IsValid(activeWep) and activeWep:GetClass() == "weapon_physgun" and client:KeyDown(IN_ATTACK) ) then return end
+
+    -- Credits @ Helix
+    local bTool
+    if ( IsValid(activeWep) and activeWep:GetClass() == "gmod_tool" ) then
+        local tool = client:GetTool()
+        bTool = tool and (tool.Scroll != nil)
+    end
 
     local weapons = client:GetWeapons()
 
     -- Handle weapon selection binds
-    if ( bind:find("invprev") ) then
+    if ( bind:find("invprev") and !bTool ) then
         -- If menu isn't visible, show it; otherwise just refresh
         if ( self.alpha <= 0 and self.targetAlpha <= 0 ) then
             self:ShowWeaponSelection()
@@ -447,7 +455,7 @@ function MODULE:PlayerBindPress(client, bind, pressed)
         end
 
         return true
-    elseif ( bind:find("invnext") ) then
+    elseif ( bind:find("invnext") and !bTool ) then
         -- If menu isn't visible, show it; otherwise just refresh
         if ( self.alpha <= 0 and self.targetAlpha <= 0 ) then
             self:ShowWeaponSelection()
