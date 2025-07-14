@@ -53,9 +53,13 @@ if ( CLIENT ) then
     end)
 end
 
-function playerMeta:SetRelay(key, value, recipient)
-    if ( recipient == nil ) then
-        recipient = select(2, player.Iterator())
+function playerMeta:SetRelay(key, value, bNetworked, recipients)
+    if ( bNetworked == false ) then
+        recipient = self
+    else
+        if ( recipients == nil ) then
+            recipients = select(2, player.Iterator())
+        end
     end
 
     if ( SERVER ) then
