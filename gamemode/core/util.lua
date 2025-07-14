@@ -927,8 +927,9 @@ if ( CLIENT ) then
 	-- @param name string The name of the font family.
 	-- @param font string The font to use for the family.
 	-- @param size number The size of the font.
+	-- @param familiesOverride table Optional table of families to override the default ones.
 	-- @usage ax.util:CreateFontFamily("MyFont", "Arial", 16)
-	function ax.util:CreateFontFamily(name, font, size)
+	function ax.util:CreateFontFamily(name, font, size, familiesOverride)
 		if ( !font or font == "" ) then
 			ax.util:PrintError("Failed to create font family '" .. name .. "': Font is not defined.")
 			return
@@ -948,14 +949,37 @@ if ( CLIENT ) then
 		})
 
 		-- Create the font families
-		for _, family in ipairs(families) do
-			surface.CreateFont("ax." .. name .. "." .. family, {
-				font = font,
-				size = size,
-				weight = family:find("bold") and 900 or 700,
-				italic = family:find("italic"),
-				antialias = true
-			})
+		if ( familiesOverride and istable(familiesOverride) ) then
+			-- If familiesOverride is provided, use it instead of the default families
+			-- Though familiesOverride may use the key as the family name and the value as the font name incase of custom fonts
+			for family, fontName in pairs(familiesOverride) do
+				if ( isstring(family) and isstring(fontName) ) then
+					surface.CreateFont("ax." .. name .. "." .. family, {
+						font = fontName,
+						size = size,
+						weight = family:find("bold") and 900 or 700,
+						antialias = true
+					})
+				else
+					surface.CreateFont("ax." .. name .. "." .. family, {
+						font = font,
+						size = size,
+						weight = family:find("bold") and 900 or 700,
+						italic = family:find("italic"),
+						antialias = true
+					})
+				end
+			end
+		else
+			for _, family in ipairs(families) do
+				surface.CreateFont("ax." .. name .. "." .. family, {
+					font = font,
+					size = size,
+					weight = family:find("bold") and 900 or 700,
+					italic = family:find("italic"),
+					antialias = true
+				})
+			end
 		end
 
 		ax.util:Print("Font family '" .. name .. "' created successfully.")

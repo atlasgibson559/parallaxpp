@@ -623,13 +623,22 @@ function GM:HUDShouldDraw(name)
     return !elements[name]
 end
 
+local families = {
+    ["regular"] = "GorDIN Regular",
+    ["bold"] = "GorDIN Bold",
+    ["italic"] = "GorDIN Italic",
+    ["italic.bold"] = "GorDIN Italic Bold"
+}
+
 function GM:LoadFonts()
-    ax.util:CreateFontFamily("tiny", "GorDIN Regular", ScreenScaleH(6))
-    ax.util:CreateFontFamily("small", "GorDIN Regular", ScreenScaleH(8))
-    ax.util:CreateFontFamily("regular", "GorDIN Regular", ScreenScaleH(10))
-    ax.util:CreateFontFamily("large", "GorDIN Regular", ScreenScaleH(16))
-    ax.util:CreateFontFamily("massive", "GorDIN Regular", ScreenScaleH(24))
-    ax.util:CreateFontFamily("huge", "GorDIN Regular", ScreenScaleH(32))
+    hook.Run("PreLoadFonts")
+
+    ax.util:CreateFontFamily("tiny", "GorDIN Regular", ScreenScaleH(6), families)
+    ax.util:CreateFontFamily("small", "GorDIN Regular", ScreenScaleH(8), families)
+    ax.util:CreateFontFamily("regular", "GorDIN Regular", ScreenScaleH(10), families)
+    ax.util:CreateFontFamily("large", "GorDIN Regular", ScreenScaleH(16), families)
+    ax.util:CreateFontFamily("massive", "GorDIN Regular", ScreenScaleH(24), families)
+    ax.util:CreateFontFamily("huge", "GorDIN Regular", ScreenScaleH(32), families)
 
     surface.CreateFont("ax.developer", {
         font = "Courier New",
