@@ -957,15 +957,15 @@ if ( CLIENT ) then
                     surface.CreateFont("ax." .. name .. "." .. family, {
                         font = fontName,
                         size = size,
-                        weight = family:find("bold") and 900 or 700,
+                        weight = string.find(family, "bold") and 900 or 700,
                         antialias = true
                     })
                 else
                     surface.CreateFont("ax." .. name .. "." .. family, {
                         font = font,
                         size = size,
-                        weight = family:find("bold") and 900 or 700,
-                        italic = family:find("italic"),
+                        weight = string.find(family, "bold") and 900 or 700,
+                        italic = string.find(family, "italic"),
                         antialias = true
                     })
                 end
@@ -975,8 +975,8 @@ if ( CLIENT ) then
                 surface.CreateFont("ax." .. name .. "." .. family, {
                     font = font,
                     size = size,
-                    weight = family:find("bold") and 900 or 700,
-                    italic = family:find("italic"),
+                    weight = string.find(family, "bold") and 900 or 700,
+                    italic = string.find(family, "italic"),
                     antialias = true
                 })
             end
