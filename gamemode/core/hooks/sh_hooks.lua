@@ -140,30 +140,30 @@ function GM:PreConfigChanged(key, value, oldValue)
     if ( stored.Type == ax.types.array ) then
         local populate = stored.Populate
         if ( isfunction(populate) ) then
-            local options = populate()
-            if ( !istable(options) or !options[value] ) then
-                ax.util:PrintError("Attempted to set option \"" .. tostring(key) .. "\" with invalid value!")
+            local configs = populate()
+            if ( !istable(configs) or !configs[value] ) then
+                ax.util:PrintError("Attempted to set config \"" .. tostring(key) .. "\" with invalid value!")
                 return false
             end
         elseif ( !istable(stored.Values) or !stored.Values[value] ) then
-            ax.util:PrintError("Attempted to set option \"" .. tostring(key) .. "\" with invalid value!")
+            ax.util:PrintError("Attempted to set config \"" .. tostring(key) .. "\" with invalid value!")
             return false
         end
     else
         if ( ax.util:DetectType(value) != stored.Type ) then
-            ax.util:PrintError("Attempted to set option \"" .. tostring(key) .. "\" with invalid type!")
+            ax.util:PrintError("Attempted to set config \"" .. tostring(key) .. "\" with invalid type!")
             return false
         end
     end
 
     if ( isnumber(value) ) then
         if ( isnumber(stored.Min) and value < stored.Min ) then
-            ax.util:PrintError("Option \"" .. tostring(key) .. "\" is below minimum value!")
+            ax.util:PrintError("Config \"" .. tostring(key) .. "\" is below minimum value!")
             return false
         end
 
         if ( isnumber(stored.Max) and value > stored.Max ) then
-            ax.util:PrintError("Option \"" .. tostring(key) .. "\" is above maximum value!")
+            ax.util:PrintError("Config \"" .. tostring(key) .. "\" is above maximum value!")
             return false
         end
     end
