@@ -58,7 +58,7 @@ function GM:PlayerInitialSpawn(client)
 
                 ax.character:Sync(client, characterID)
 
-                hook.Run("PostPlayerCreatedCharacter", client, character, query)
+                hook.Run("PostPlayerCreatedCharacter", client, character, nil)
             end
         end)
     end
