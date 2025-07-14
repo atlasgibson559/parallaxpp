@@ -336,7 +336,7 @@ end
 -- @param bFromLua boolean Whether or not the files are being loaded from Lua.
 function ax.util:LoadFolder(directory, bFromLua)
     local baseDir = debug.getinfo(2).source
-    baseDir = string.sub(baseDir, 2, ax.util:FindString(baseDir, "/[^/]*$"))
+    baseDir = string.sub(baseDir, 2, string.find(baseDir, "/[^/]*$"))
     baseDir = string.gsub(baseDir, "gamemodes/", "")
 
     if ( bFromLua ) then
