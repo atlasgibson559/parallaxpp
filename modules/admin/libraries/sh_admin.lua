@@ -128,7 +128,7 @@ function MODULE:LogAction(admin, action, target, reason, duration)
     table.insert(self.AdminLogs, logEntry)
 
     -- Keep only last 1000 log entries
-    if ( #self.AdminLogs > 1000 ) then
+    if ( self.AdminLogs[1000] != nil ) then
         table.remove(self.AdminLogs, 1)
     end
 
