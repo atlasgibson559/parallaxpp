@@ -138,12 +138,7 @@ end
 -- @tparam number amount The amount of money to check.
 -- @treturn boolean Whether the character can afford the amount.
 function CHAR:CanAfford(amount)
-    if ( amount < 0 ) then
-        amount = math.abs(amount)
-        ax.util:PrintWarning("Character " .. self:GetID() .. " tried to check negative amount, converted to positive number. Call :TakeMoney instead!")
-    end
-
-    return self:GetMoney() >= amount
+    return self:GetMoney() >= math.abs(amount)
 end
 
 --- Checks if the character has a specific flag.

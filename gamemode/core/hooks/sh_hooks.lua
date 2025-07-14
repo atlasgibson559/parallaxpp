@@ -27,31 +27,19 @@ end
 
 function GM:PlayerGetToolgun(client)
     local character = client:GetCharacter()
-    return CAMI.PlayerHasAccess(client, "Parallax - Toolgun", nil) or character and character:HasFlag("t")
+    return CAMI.PlayerHasAccess(client, "Parallax - Toolgun", nil) or ( character and character:HasFlag("t") )
 end
 
 function GM:PlayerGetPhysgun(client)
     local character = client:GetCharacter()
-    return CAMI.PlayerHasAccess(client, "Parallax - Physgun", nil) or character and character:HasFlag("p")
+    return CAMI.PlayerHasAccess(client, "Parallax - Physgun", nil) or ( character and character:HasFlag("p") )
 end
 
-function GM:PlayerCanCreateCharacter(client, character)
+function GM:PrePlayerTakeItem(client, item)
     return true
 end
 
-function GM:PlayerCanDeleteCharacter(client, character)
-    return true
-end
-
-function GM:PlayerCanLoadCharacter(client, character, currentCharacter)
-    return true
-end
-
-function GM:CanPlayerTakeItem(client, item)
-    return true
-end
-
-function GM:ItemCanBeDestroyed(item, damageInfo)
+function GM:PreItemDestroy(item, damageInfo)
     return true
 end
 
