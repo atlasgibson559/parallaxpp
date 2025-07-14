@@ -133,3 +133,22 @@ concommand.Add("ax_localization_check", function(client, command, arguments)
 end)
 
 ax.localisation = ax.localization
+
+if ( CLIENT ) then
+    cvars.AddChangeCallback("gmod_language", function(convar, oldValue, newValue)
+        for i = 1, #ax.gui do
+        local v = ax.gui[i]
+        if ( ispanel(v) and IsValid(v) ) then
+            local className = v:GetClassName()
+            v:Remove()
+
+            -- Attempt to recreate the GUI element
+            if ( className == "ax.mainmenu" ) then
+                vgui.Create("ax.mainmenu")
+            elseif ( className == "ax.tab" ) then
+                vgui.Create("ax.tab")
+            end
+        end
+    end
+    end, "ax.localisation.gameLangChange")
+end
