@@ -346,26 +346,31 @@ function PANEL:AddConfig(configData)
 
         panel.DoClick = function()
             -- Pick the next key depending on where the cursor is near the label, if the cursor is near the left side of the label, pick the previous key, if it's near the right side, pick the next key.
-            local x, _ = label:CursorPos()
-            local w, _ = label:GetSize()
-            local percent = x / w
-            local nextKey = nil
-            for i = 1, #keys do
-                if ( keys[i] == value ) then
-                    nextKey = keys[i + (percent < 0.5 and -1 or 1)] or keys[1]
-                    break
+            local newKey = value
+            local x, y = label:CursorPos()
+            local w, h = label:GetSize()
+            local pitch = 100
+            if ( x < w / 2 ) then
+                -- Cursor is on the left side, pick the previous key.
+                local index = table.KeyFromValue(keys, value)
+                if ( index and index > 1 ) then
+                    newKey = keys[index - 1]
+                    pitch = 80
+                end
+            else
+                -- Cursor is on the right side, pick the next key.
+                local index = table.KeyFromValue(keys, value)
+                if ( index and index < #keys ) then
+                    newKey = keys[index + 1]
+                    pitch = 120
                 end
             end
 
-            nextKey = nextKey or keys[1]
-            nextKey = tostring(nextKey)
-
             net.Start("ax.config.set")
                 net.WriteString(configData.UniqueID)
-                net.WriteString(nextKey)
+                net.WriteType(newKey)
             net.SendToServer()
-
-            value = nextKey
+            value = newKey
 
             label:SetText("< " .. (configs and configs[value] or unknown) .. " >", true)
         end
@@ -373,12 +378,12 @@ function PANEL:AddConfig(configData)
         panel.DoRightClick = function()
             local menu = DermaMenu()
             menu:AddOption(ax.localization:GetPhrase("reset"), function()
-                net.Start("ax.config.rest")
+                net.Start("ax.config.reset")
                     net.WriteString(configData.UniqueID)
                 net.SendToServer()
+                value = ax.option:Get(configData.UniqueID)
 
-                value = ax.config:GetDefault(configData.UniqueID)
-                label:SetText(configs and configs[value] or unknown, true)
+                label:SetText("< " .. (configs and configs[value] or unknown) .. " >", true)
             end):SetIcon("icon16/arrow_refresh.png")
             menu:AddSpacer()
             for k2, v2 in SortedPairs(configs) do
@@ -387,7 +392,6 @@ function PANEL:AddConfig(configData)
                         net.WriteString(configData.UniqueID)
                         net.WriteType(k2)
                     net.SendToServer()
-
                     value = k2
 
                     phrase = (configs and configs[value]) and ax.localization:GetPhrase(configs[value]) or unknown

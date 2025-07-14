@@ -9,8 +9,8 @@
     Attribution is required. If you use or modify this file, you must retain this notice.
 ]]
 
-ax.Derma = ax.Derma or {}
-ax.Derma.open = ax.Derma.open or {}
+ax.derma = ax.derma or {}
+ax.derma.open = ax.derma.open or {}
 
 local matBlurScreen = Material("pp/blurscreen")
 
@@ -64,7 +64,7 @@ function Derma_Message(text, title, buttonText)
         end
     end
 
-    ax.Derma.open[#ax.Derma.open + 1] = frame
+    ax.derma.open[#ax.derma.open + 1] = frame
 
     local label = frame:Add("ax.text")
     label:Dock(TOP)
@@ -123,7 +123,7 @@ function Derma_Query(text, title, ...)
         end
     end
 
-    ax.Derma.open[#ax.Derma.open + 1] = frame
+    ax.derma.open[#ax.derma.open + 1] = frame
 
     local label = frame:Add("ax.text")
     label:Dock(TOP)
@@ -202,7 +202,7 @@ function Derma_StringRequest(title, text, defaultText, onEnter, onCancel, okText
         end
     end
 
-    ax.Derma.open[#ax.Derma.open + 1] = frame
+    ax.derma.open[#ax.derma.open + 1] = frame
 
     local label = frame:Add("ax.text")
     label:Dock(TOP)
@@ -264,15 +264,15 @@ function Derma_StringRequest(title, text, defaultText, onEnter, onCancel, okText
 end
 
 function Derma_HideAll()
-    local openCount = #ax.Derma.open
+    local openCount = #ax.derma.open
     for i = 1, openCount do
-        local frame = ax.Derma.open[i]
+        local frame = ax.derma.open[i]
         if ( IsValid(frame) ) then
             frame:Remove()
         end
     end
 
-    ax.Derma.open = {}
+    ax.derma.open = {}
 end
 
 concommand.Add("ax_derma_hideall", function()
