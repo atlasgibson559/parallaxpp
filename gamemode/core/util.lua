@@ -915,6 +915,52 @@ function ax.util:CapTextWord(text, maxLength)
 end
 
 if ( CLIENT ) then
+	local families = {
+		"regular",
+		"bold",
+		"italic",
+		"italic.bold"
+	}
+
+	--- Creates a font family with the given name, font, and size.
+	-- @realm client
+	-- @param name string The name of the font family.
+	-- @param font string The font to use for the family.
+	-- @param size number The size of the font.
+	-- @usage ax.util:CreateFontFamily("MyFont", "Arial", 16)
+	function ax.util:CreateFontFamily(name, font, size)
+		if ( !font or font == "" ) then
+			ax.util:PrintError("Failed to create font family '" .. name .. "': Font is not defined.")
+			return
+		end
+
+		if ( !size or size <= 0 ) then
+			ax.util:PrintError("Failed to create font family '" .. name .. "': Size is not defined or invalid.")
+			return
+		end
+
+		-- Create the base font
+		surface.CreateFont("ax." .. name, {
+			font = font,
+			size = size,
+			weight = 700,
+			antialias = true
+		})
+
+		-- Create the font families
+		for _, family in ipairs(families) do
+			surface.CreateFont("ax." .. name .. "." .. family, {
+				font = font,
+				size = size,
+				weight = family:find("bold") and 900 or 700,
+				italic = family:find("italic"),
+				antialias = true
+			})
+		end
+
+		ax.util:Print("Font family '" .. name .. "' created successfully.")
+	end
+
 	--- Returns the given text's width.
 	-- @realm client
 	-- @param font string The font to use.
