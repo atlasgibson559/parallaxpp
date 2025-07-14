@@ -197,20 +197,32 @@ if ( CLIENT ) then
         end
 
         -- Search the game paths for a matching icon
-        local iconFiles = file.Find("materials/entities/*.png", "GAME")
+        local iconFiles = file.Find("materials/entities/*", "GAME")
         for _, iconFile in ipairs(iconFiles) do
             if ( string.find(iconFile, class) ) then
-                self.Cache[class] = ax.util:GetMaterial("materials/entities/" .. iconFile)
-                return self.Cache[class]
+                if ( string.EndsWith(iconFile, ".vmt") ) then
+                    self.Cache[class] = "entities/" .. iconFile
+                    -- If it's a VMT, we store the path directly
+                    return self.Cache[class]
+                else
+                    self.Cache[class] = ax.util:GetMaterial("materials/entities/" .. iconFile)
+                    return self.Cache[class]
+                end
             end
         end
 
         -- If no icon found, search in HUD materials like TFA does
-        iconFiles = file.Find("materials/vgui/hud/*.png", "GAME")
+        iconFiles = file.Find("materials/vgui/hud/*", "GAME")
         for _, iconFile in ipairs(iconFiles) do
             if ( string.find(iconFile, class) ) then
-                self.Cache[class] = ax.util:GetMaterial("materials/vgui/hud/" .. iconFile)
-                return self.Cache[class]
+                if ( string.EndsWith(iconFile, ".vmt") ) then
+                    self.Cache[class] = "vgui/hud/" .. iconFile
+                    -- If it's a VMT, we store the path directly
+                    return self.Cache[class]
+                else
+                    self.Cache[class] = ax.util:GetMaterial("materials/vgui/hud/" .. iconFile)
+                    return self.Cache[class]
+                end
             end
         end
 

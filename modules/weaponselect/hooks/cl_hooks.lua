@@ -243,7 +243,12 @@ function MODULE:HUDPaint()
 
         local iconMaterial = MODULE.WeaponIcons:GetIcon(weapon)
         if ( iconMaterial ) then
-            surface.SetMaterial(iconMaterial)
+            if ( isstring(iconMaterial) and string.find(iconMaterial, ".vmt") ) then
+                surface.SetTexture(surface.GetTextureID(iconMaterial))
+            else
+                surface.SetMaterial(iconMaterial)
+            end
+
             surface.SetDrawColor(255, 255, 255, self.alpha)
             surface.DrawTexturedRect(iconX, iconY, ICON_SIZE, ICON_SIZE)
         end
