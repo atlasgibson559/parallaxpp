@@ -22,7 +22,10 @@
 -- Credit @ Helix :: https://github.com/NebulousCloud/helix/blob/master/gamemode/core/sh_util.lua
 function ax.util:CoerceType(typeID, value)
 	if ( typeID == nil or value == nil ) then
-		ax.util:PrintError("Attempted to coerce a type with no type ID or value! (" .. tostring(typeID) .. ", " .. tostring(value) .. ")")
+		if ( ax.config:Get("debug.developer") ) then
+			ax.util:PrintError("Attempted to coerce a type with no type ID or value! (" .. tostring(typeID) .. ", " .. tostring(value) .. ")")
+		end
+
 		return nil
 	end
 
@@ -39,13 +42,7 @@ function ax.util:CoerceType(typeID, value)
 	elseif ( typeID == ax.types.color ) then
 		return ( IsColor(value) or ( istable(value) and isnumber(value.r) and isnumber(value.g) and isnumber(value.b) and isnumber(value.a) ) ) and value
 	elseif ( typeID == ax.types.player ) then
-		if ( isstring(value) ) then
-			return ax.util:FindPlayer(value)
-		elseif ( isnumber(value) ) then
-			return Player(value)
-		elseif ( IsValid(value) and value:IsPlayer() ) then
-			return value
-		end
+		return ax.util:FindPlayer(value)
 	elseif ( typeID == ax.types.character ) then
 		if ( istable(value) and ax.util:IsCharacter(value) ) then
 			return value
@@ -193,7 +190,7 @@ function ax.util:Print(...)
 	local clientColor = bConfigInit and ax.config:Get("color.client.message", clientMessageColor) or clientMessageColor
 
 	local realmColor = SERVER and serverColor or clientColor
-	MsgC(tagColor, "[Parallax] ", realmColor, unpack(arguments))
+	MsgC(tagColor, "[PARALLAX] ", realmColor, unpack(arguments))
 
 	if ( CLIENT and bConfigInit and ax.config:Get("debug.developer") ) then
 		chat.AddText(tagColor, "[Parallax] ", realmColor, unpack(arguments))
@@ -242,7 +239,7 @@ function ax.util:PrintError(...)
 	local tagColor = bConfigInit and ax.config:Get("color.framework", violetColor) or violetColor
 	local batchColor = bConfigInit and ax.config:Get("color.error", errorColor) or errorColor
 
-	MsgC(tagColor, "[Parallax] ", batchColor, "[Error] ", unpack(arguments))
+	MsgC(tagColor, "[PARALLAX] ", batchColor, "[Error] ", unpack(arguments))
 
 	if ( CLIENT and bConfigInit and ax.config:Get("debug.developer") ) then
 		chat.AddText(tagColor, "[Parallax] ", batchColor, "[Error] ", unpack(arguments))
@@ -259,7 +256,7 @@ function ax.util:PrintError(...)
 			log[#log + 1] = string.format("%s:%d", file, lineNum) .. "\n"
 		end
 		log = table.concat(log, " -> ")
-		MsgC(tagColor, "[Parallax] ", batchColor, "[Error] [Traceback] ", log, "\n")
+		MsgC(tagColor, "[PARALLAX] ", batchColor, "[ERROR] [TRACEBACK] ", log, "\n")
 	end
 
 	_printingError = false
@@ -277,7 +274,7 @@ function ax.util:PrintWarning(...)
 	local tagColor = bConfigInit and ax.config:Get("color.framework", violetColor) or violetColor
 	local batchColor = bConfigInit and ax.config:Get("color.warning", warningColor) or warningColor
 
-	MsgC(tagColor, "[Parallax] ", batchColor, "[Warning] ", unpack(arguments))
+	MsgC(tagColor, "[PARALLAX] ", batchColor, "[WARNING] ", unpack(arguments))
 
 	if ( CLIENT and bConfigInit and ax.config:Get("debug.developer") ) then
 		chat.AddText(tagColor, "[Parallax] ", batchColor, "[Warning] ", unpack(arguments))
@@ -297,7 +294,7 @@ function ax.util:PrintSuccess(...)
 	local tagColor = bConfigInit and ax.config:Get("color.framework", violetColor) or violetColor
 	local batchColor = bConfigInit and ax.config:Get("color.success", successColor) or successColor
 
-	MsgC(tagColor, "[Parallax] ", batchColor, "[Success] ", unpack(arguments))
+	MsgC(tagColor, "[PARALLAX] ", batchColor, "[SUCCESS] ", unpack(arguments))
 
 	if ( CLIENT and bConfigInit and ax.config:Get("debug.developer") ) then
 		chat.AddText(tagColor, "[Parallax] ", batchColor, "[Success] ", unpack(arguments))
@@ -440,7 +437,7 @@ function ax.util:FindPlayer(identifier)
 		end
 
 		for _, v in player.Iterator() do
-			if ( self:FindString(v:Name(), identifier) or self:FindString(v:SteamName(), identifier) or  self:FindString(v:SteamID(), identifier) or self:FindString(v:SteamID64(), identifier) ) then
+			if ( self:FindString(v:Name(), identifier) or self:FindString(v:SteamName(), identifier) or self:FindString(v:SteamID(), identifier) or self:FindString(v:SteamID64(), identifier) ) then
 				return v
 			end
 		end
