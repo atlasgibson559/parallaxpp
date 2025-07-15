@@ -564,6 +564,10 @@ end
 function GM:PrePlayerConfigChanged(client, key, value, oldValue)
 end
 
+function GM:ShowHelp(client)
+    return false
+end
+
 function GM:OnEntityCreated(entity)
     timer.Simple(0.1, function()
         if ( !IsValid(entity) ) then return end

@@ -9,6 +9,14 @@
     Attribution is required. If you use or modify this file, you must retain this notice.
 ]]
 
+function GM:PlayerButtonDown(client, button)
+    if ( !IsFirstTimePredicted() or !IsValid(client) or !client:IsPlayer() ) then return end
+
+    if ( button == KEY_F1 and !IsValid(ax.gui.info) ) then
+        vgui.Create("ax.info")
+    end
+end
+
 function GM:PlayerStartVoice(client)
     if ( IsValid(g_VoicePanelList) ) then
         g_VoicePanelList:Remove()
