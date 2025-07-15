@@ -655,13 +655,18 @@ function GM:LoadFonts()
         size = ScreenScaleH(6)
     })
 
-    surface.CreateFont("ax.chat", {
-        font = "GorDIN Regular",
-        size = ScreenScaleH(8) * ax.option:Get("chat.size.font", 1),
-        shadow = true
-    })
+    ax.util:CreateFontFamily("chat", "GorDIN Regular", ScreenScaleH(10) * ax.option:Get("chat.size.font", 1), families)
 
     hook.Run("PostLoadFonts")
+end
+
+function GM:GetChatFont(chatType)
+    local chatData = ax.chat:Get(chatType)
+    if ( chatData and chatData.Font ) then
+        return chatData.Font
+    end
+
+    return "ax.chat"
 end
 
 function GM:OnPauseMenuShow()
@@ -1018,13 +1023,13 @@ function GM:ChatboxOnTextChanged(text)
     net.SendToServer()
 
     -- Notify the command system about the text change
-    local command = ax.command:Get(ax.gui.chatbox:GetChatType())
+    local command = ax.command:Get(ax.chat.currentType)
     if ( command and command.OnChatTextChanged ) then
         command:OnTextChanged(text)
     end
 
     -- Notify the chat system about the text change
-    local chat = ax.chat:Get(ax.gui.chatbox:GetChatType())
+    local chat = ax.chat:Get(ax.chat.currentType)
     if ( chat and chat.OnChatTextChanged ) then
         chat:OnTextChanged(text)
     end

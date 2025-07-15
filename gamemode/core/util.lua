@@ -958,6 +958,7 @@ if ( CLIENT ) then
                         font = fontName,
                         size = size,
                         weight = ax.util:FindString(family, "bold") and 900 or 700,
+                        italic = ax.util:FindString(family, "italic"),
                         antialias = true
                     })
                 else
