@@ -90,7 +90,7 @@ function PANEL:Init()
     self.teamName:SetTall(ScreenScaleH(12))
     self.teamName:Dock(TOP)
     self.teamName:DockMargin(ScreenScale(2), 0, 0, 0)
-    self.teamName:SetFont("ax.italic.bold")
+    self.teamName:SetFont("ax.regular.italic.bold")
     self.teamName:SetContentAlignment(7)
 
     self.container = self:Add("EditablePanel")
