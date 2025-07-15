@@ -62,7 +62,7 @@ function PLAYER:ChatText(...)
 
     if ( SERVER ) then
         net.Start("ax.chat.text")
-            net.WriteTable(arguments, true)
+            net.WriteTable(arguments)
         net.Send(self)
     else
         chat.AddText(unpack(arguments))
