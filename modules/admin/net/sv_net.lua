@@ -34,6 +34,7 @@ util.AddNetworkString("ax.admin.usergroup.edit")
 util.AddNetworkString("ax.admin.usergroup.delete")
 util.AddNetworkString("ax.admin.usergroup.set")
 util.AddNetworkString("ax.admin.usergroup.list")
+util.AddNetworkString("ax.admin.usergroup.update")
 
 -- Handle admin logs request
 net.Receive("ax.admin.logs.request", function(len, client)
