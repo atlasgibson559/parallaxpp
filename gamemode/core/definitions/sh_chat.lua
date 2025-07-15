@@ -53,10 +53,7 @@ ax.chat:Register("me", {
         return speaker:GetPos():DistToSqr(listener:GetPos()) < radius ^ 2
     end,
     OnChatAdd = function(self, speaker, text)
-        local formattedText = ax.chat:Format(text)
-        formattedText = string.lower(string.sub(formattedText, 1, 1)) .. string.sub(formattedText, 2)
-        chat.AddText(ax.color:Get("chat.action"), speaker:Name() .. " " .. formattedText)
-        chat.PlaySound()
+        chat.AddText(ax.color:Get("chat.action"), "** ", speaker:Name(), " ", text) -- TODO: wtf, no italic support?
     end
 })
 
@@ -67,8 +64,7 @@ ax.chat:Register("it", {
         return speaker:GetPos():DistToSqr(listener:GetPos()) < radius ^ 2
     end,
     OnChatAdd = function(self, speaker, text)
-        chat.AddText(ax.color:Get("chat.action"), ax.chat:Format(text))
-        chat.PlaySound()
+        chat.AddText(ax.color:Get("chat.action"), "*** ", text)
     end
 })
 
