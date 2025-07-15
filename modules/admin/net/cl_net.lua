@@ -96,13 +96,13 @@ net.Receive("ax.admin.ticket.update", function()
     MODULE.ClientTicketComments = comments
 
     -- Update ticket UI if open
-    if (IsValid(MODULE.TicketMenu)) then
-        MODULE.TicketMenu:RefreshTickets()
+    if (IsValid(ax.gui.tickets)) then
+        ax.gui.tickets:RefreshTickets()
     end
 
     -- Update admin menu if open
-    if (IsValid(MODULE.AdminMenu) and MODULE.AdminMenu.TicketsList) then
-        MODULE.AdminMenu:RefreshTickets()
+    if (IsValid(ax.gui.admin) and ax.gui.admin.ticketsList) then
+        ax.gui.admin:RefreshTickets()
     end
 end)
 

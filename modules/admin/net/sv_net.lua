@@ -170,6 +170,11 @@ net.Receive("ax.admin.ticket.claim", function(len, client)
 
     MODULE:SaveData()
 
+    net.Start("ax.admin.ticket.update")
+        net.WriteTable(MODULE.Tickets)
+        net.WriteTable(MODULE.TicketComments)
+    net.Send(client)
+
     -- Notify creator
     local creator = player.GetBySteamID64(ticket.creator)
     if (IsValid(creator)) then
@@ -209,6 +214,11 @@ net.Receive("ax.admin.ticket.close", function(len, client)
     ticket.lastActivity = os.time()
 
     MODULE:SaveData()
+
+    net.Start("ax.admin.ticket.update")
+        net.WriteTable(MODULE.Tickets)
+        net.WriteTable(MODULE.TicketComments)
+    net.Send(client)
 
     -- Notify relevant parties
     local creator = player.GetBySteamID64(ticket.creator)

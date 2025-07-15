@@ -35,6 +35,10 @@ function MODULE:CreateAdminMenu()
     adminMenu:SetBackgroundBlur(true)
     adminMenu:MakePopup()
 
+    -- Request ticket list
+    net.Start("ax.admin.ticket.list")
+    net.SendToServer()
+
     -- Create tab panel
     local tabPanel = vgui.Create("DPropertySheet", adminMenu)
     tabPanel:Dock(FILL)
@@ -305,6 +309,7 @@ function MODULE:CreateAdminMenu()
         end
     end
 
+    adminMenu.ticketsList = ticketsList
     adminMenu.RefreshTickets()
 
     tabPanel:AddSheet("Tickets", ticketsPanel, "icon16/report.png")
