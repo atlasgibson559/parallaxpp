@@ -19,4 +19,4 @@ if ( SERVER ) then
     util.AddNetworkString("ax.weaponselect.deathclose")
 end
 
--- I WROTE THIS IN VR
+-- I WROTE THIS IN VR ( NOT MODULE, JUST THIS COMMENT )
