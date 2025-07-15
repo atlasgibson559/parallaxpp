@@ -487,8 +487,10 @@ local function DrawTargetInfo(target, alpha, is3D2D)
         local targetPos = target:EyePos() + Vector(0, 0, 10)
         local distToSqr = targetPos:DistToSqr(client:WorldSpaceCenter())
         local teamColor = team.GetColor(target:Team())
+        local character = target:GetCharacter()
+        local name = hook.Run("GetCharacterName", target, client) or (character and character:GetName() or target:Nick())
         cam.Start3D2D(targetPos, Angle(0, client:EyeAngles().y + 270, 90), 0.02 + (distToSqr / 1024 ^ 2))
-            draw.SimpleTextOutlined(target:GetName(), "ax.huge.bold", 0, 0, ColorAlpha(teamColor, alpha), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 4, Color(0, 0, 0, alpha))
+            draw.SimpleTextOutlined(name, "ax.huge.bold", 0, 0, ColorAlpha(teamColor, alpha), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 4, Color(0, 0, 0, alpha))
         cam.End3D2D()
     else
         hook.Run("DrawTargetInfo", target, alpha, is3D2D)
@@ -650,16 +652,13 @@ function GM:LoadFonts()
 
     surface.CreateFont("ax.developer", {
         font = "Courier New",
-        size = 16,
-        weight = 700,
-        antialias = true
+        size = ScreenScaleH(6)
     })
 
     surface.CreateFont("ax.chat", {
         font = "GorDIN Regular",
         size = ScreenScaleH(8) * ax.option:Get("chat.size.font", 1),
-        weight = 700,
-        antialias = true
+        shadow = true
     })
 
     hook.Run("PostLoadFonts")
