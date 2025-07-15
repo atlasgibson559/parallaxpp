@@ -213,14 +213,14 @@ function MODULE:PlayerAuthed(client, steamid)
     if (savedGroup) then
         client:SetUserGroup(savedGroup.group)
     end
-    
+
     -- Check for temporary usergroup
     local tempGroup = self.TempUsergroups[steamid]
     if (tempGroup) then
         local remainingTime = tempGroup.expires - os.time()
         if (remainingTime > 0) then
             client:SetUserGroup(tempGroup.tempGroup)
-            
+
             -- Recreate timer
             timer.Create("TempUsergroup_" .. steamid, remainingTime, 1, function()
                 if (IsValid(client)) then
