@@ -490,7 +490,7 @@ ax.command:Register("CleanupMap", {
             return
         end
 
-        game.CleanUpMap()
+        game.CleanUpMap(false, {"env_fire", "entityflame", "_firesmoke"})
 
         MODULE:LogAction(client, "cleaned up map", nil, arguments[1] or "No reason provided")
 
