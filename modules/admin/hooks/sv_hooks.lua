@@ -121,19 +121,43 @@ end
 function MODULE:SaveData()
     local data = {
         banned_players = self.BannedPlayers,
-        admin_logs = self.AdminLogs
+        admin_logs = self.AdminLogs,
+        tickets = self.Tickets,
+        ticket_comments = self.TicketComments,
+        next_ticket_id = self.NextTicketID
     }
 
-    ax.data:Set("ax.admin.data", data, true, true)
+    ax.data:Set("admin", data, true, true)
 end
 
 function MODULE:LoadData()
-    local data = ax.data:Get("ax.admin.data", {}, true, true)
-    if ( data.banned_players ) then
+    local data = ax.data:Get("admin", {}, true, true)
+    if (data.banned_players) then
         self.BannedPlayers = data.banned_players
     end
 
-    if ( data.admin_logs ) then
+    if (data.admin_logs) then
         self.AdminLogs = data.admin_logs
     end
+
+    if (data.tickets) then
+        self.Tickets = data.tickets
+    end
+
+    if (data.ticket_comments) then
+        self.TicketComments = data.ticket_comments
+    end
+
+    if (data.next_ticket_id) then
+        self.NextTicketID = data.next_ticket_id
+    end
 end
+
+-- Ticket cleanup timer
+if (timer.Exists("Parallax.Admin.TicketCleanup")) then
+    timer.Remove("Parallax.Admin.TicketCleanup")
+end
+
+timer.Create("Parallax.Admin.TicketCleanup", 3600, 0, function()
+    MODULE:CleanupInactiveTickets()
+end)
