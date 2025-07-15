@@ -315,8 +315,14 @@ Secure networking system:
 -- Set global data
 ax.relay:SetGlobal("server_time", os.time())
 
--- Set entity data, this can ne for players or other entities
+-- Set entity data, this can be for players or other entities
 ax.relay:SetRelay(player, "credits", 1000)
+
+-- If you want, you can also use the player object directly, or the entity object
+player:SetRelay("message", "Hello, Player!")
+
+-- Get data from relay
+print(player:GetRelay("credits", "default value")) -- Prints 1000 or "default value" if not set
 ```
 
 #### `ax.sqlite` / `ax.sqloo`
