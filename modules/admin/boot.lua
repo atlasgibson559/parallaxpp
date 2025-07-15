@@ -15,8 +15,8 @@ MODULE.Name = "Admin"
 MODULE.Description = "Comprehensive admin system with features similar to other variants of admin systems, including user groups, permissions, logging, and hierarchy management."
 MODULE.Author = "Riggs"
 
-MODULE.Groups = {}
-MODULE.Permissions = {}
+MODULE.Groups = MODULE.Groups or {}
+MODULE.Permissions = MODULE.Permissions or {}
 MODULE.BannedPlayers = MODULE.BannedPlayers or {}
 MODULE.AdminLogs = MODULE.AdminLogs or {}
 MODULE.Tickets = MODULE.Tickets or {}

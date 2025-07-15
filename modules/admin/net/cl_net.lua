@@ -20,6 +20,9 @@ MODULE.ClientLogs = MODULE.ClientLogs or {}
 MODULE.ClientTickets = MODULE.ClientTickets or {}
 MODULE.ClientTicketComments = MODULE.ClientTicketComments or {}
 
+-- Client-side usergroup data
+MODULE.ClientTempUsergroups = MODULE.ClientTempUsergroups or {}
+
 -- Receive admin logs from server
 net.Receive("ax.admin.logs.response", function()
     local logs = net.ReadTable()
@@ -48,14 +51,29 @@ net.Receive("ax.admin.group.update", function()
     local steamid = net.ReadString()
     local group = net.ReadString()
 
-    if ( steamid == "" ) then
+    if (steamid == "" and group == "") then
         -- Full group data update
         MODULE.ClientGroups = net.ReadTable()
-    else
-        -- Single player group update
-        local client = player.GetBySteamID64(steamid)
-        if ( IsValid(client) ) then
-            client:SetUserGroup(group)
+
+        -- Update usergroups panel if open
+        if (IsValid(MODULE.AdminMenu)) then
+            local usergroupsPanel = nil
+            for _, child in pairs(MODULE.AdminMenu:GetChildren()) do
+                if (child:GetName() == "DPropertySheet") then
+                    for _, sheet in pairs(child:GetItems()) do
+                        if (sheet.Name == "Usergroups") then
+                            usergroupsPanel = sheet.Panel
+                            break
+                        end
+                    end
+                    break
+                end
+            end
+
+            if (IsValid(usergroupsPanel) and usergroupsPanel.RefreshGroupsList) then
+                usergroupsPanel:RefreshGroupsList()
+                usergroupsPanel:RefreshPlayersList()
+            end
         end
     end
 end)

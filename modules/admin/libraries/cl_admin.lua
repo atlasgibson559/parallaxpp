@@ -314,6 +314,25 @@ function MODULE:CreateAdminMenu()
 
     tabPanel:AddSheet("Tickets", ticketsPanel, "icon16/report.png")
 
+    -- Add usergroups tab
+    local usergroupsPanel = vgui.Create("DPanel")
+    usergroupsPanel:Dock(FILL)
+
+    MODULE:ShowUsergroupPanel(usergroupsPanel)
+
+    -- Find the tab panel and add the usergroups tab
+    local tabPanel = nil
+    for _, child in pairs(adminMenu:GetChildren()) do
+        if (child:GetName() == "DPropertySheet") then
+            tabPanel = child
+            break
+        end
+    end
+
+    if (IsValid(tabPanel)) then
+        tabPanel:AddSheet("Usergroups", usergroupsPanel, "icon16/group.png")
+    end
+
     ax.gui.admin = adminMenu
     MODULE.AdminMenu = adminMenu
 end
@@ -827,7 +846,460 @@ function MODULE:ShowTicketDetails(panel, ticket)
     end
 end
 
--- Open ticket menu command
-concommand.Add("ax_ticket_menu", function()
-    MODULE:CreateTicketMenu()
-end)
+-- Show usergroup management panel
+function MODULE:ShowUsergroupPanel(panel)
+    panel:Clear()
+
+    -- Title
+    local titleLabel = vgui.Create("DLabel", panel)
+    titleLabel:SetPos(10, 10)
+    titleLabel:SetSize(300, 20)
+    titleLabel:SetText("Usergroup Management")
+    titleLabel:SetFont("DermaDefaultBold")
+
+    -- Usergroup list
+    local groupsList = vgui.Create("DListView", panel)
+    groupsList:SetPos(10, 40)
+    groupsList:SetSize(350, 200)
+    groupsList:SetMultiSelect(false)
+    groupsList:AddColumn("Name")
+    groupsList:AddColumn("Inherits")
+    groupsList:AddColumn("Level")
+    groupsList:AddColumn("Immunity")
+
+    -- Populate usergroups
+    local function RefreshGroupsList()
+        groupsList:Clear()
+        for name, group in pairs(MODULE.ClientGroups) do
+            local line = groupsList:AddLine(name, group.Inherits or "user", group.Level or 0, group.Immunity or 0)
+            line.groupName = name
+            line.groupData = group
+
+            -- Color custom groups differently
+            if (group.Custom) then
+                line.Paint = function(this, width, height)
+                    surface.SetDrawColor(this:IsLineSelected() and ax.color:Get("blue.dark") or ax.color:Get("blue.soft"))
+                    surface.DrawRect(0, 0, width, height)
+                end
+            end
+        end
+    end
+
+    RefreshGroupsList()
+
+    -- Create Group button
+    local createButton = vgui.Create("DButton", panel)
+    createButton:SetPos(10, 250)
+    createButton:SetSize(80, 25)
+    createButton:SetText("Create")
+    createButton.DoClick = function()
+        MODULE:ShowCreateGroupDialog()
+    end
+
+    -- Edit Group button
+    local editButton = vgui.Create("DButton", panel)
+    editButton:SetPos(100, 250)
+    editButton:SetSize(80, 25)
+    editButton:SetText("Edit")
+    editButton.DoClick = function()
+        local selected = groupsList:GetSelectedLine()
+        if (selected) then
+            MODULE:ShowEditGroupDialog(selected.groupName, selected.groupData)
+        else
+            ax.notification:Send(ax.client, "Please select a usergroup to edit.")
+        end
+    end
+
+    -- Delete Group button
+    local deleteButton = vgui.Create("DButton", panel)
+    deleteButton:SetPos(190, 250)
+    deleteButton:SetSize(80, 25)
+    deleteButton:SetText("Delete")
+    deleteButton.DoClick = function()
+        local selected = groupsList:GetSelectedLine()
+        if (selected and selected.groupData.Custom) then
+            Derma_Query("Are you sure you want to delete the usergroup '" .. selected.groupName .. "'?", "Delete Usergroup", "Yes", function()
+                net.Start("ax.admin.usergroup.delete")
+                    net.WriteString(selected.groupName)
+                net.SendToServer()
+            end, "No", function() end)
+        else
+            ax.notification:Send(ax.client, "Please select a custom usergroup to delete.")
+        end
+    end
+
+    -- Player usergroup management
+    local playerLabel = vgui.Create("DLabel", panel)
+    playerLabel:SetPos(10, 290)
+    playerLabel:SetSize(300, 20)
+    playerLabel:SetText("Player Usergroup Management")
+    playerLabel:SetFont("DermaDefaultBold")
+
+    -- Player list
+    local playersList = vgui.Create("DListView", panel)
+    playersList:SetPos(10, 320)
+    playersList:SetSize(350, 150)
+    playersList:SetMultiSelect(false)
+    playersList:AddColumn("Name")
+    playersList:AddColumn("Current Group")
+    playersList:AddColumn("Temp Group")
+
+    -- Populate players
+    local function RefreshPlayersList()
+        playersList:Clear()
+        for _, ply in player.Iterator() do
+            local tempInfo = ""
+            local tempData = MODULE.ClientTempUsergroups and MODULE.ClientTempUsergroups[ply:SteamID64()]
+            if (tempData) then
+                local remaining = tempData.expires - os.time()
+                if (remaining > 0) then
+                    tempInfo = "(" .. string.FormattedTime(remaining) .. ")"
+                end
+            end
+
+            local line = playersList:AddLine(ply:SteamName(), ply:GetUserGroup(), tempInfo)
+            line.player = ply
+        end
+    end
+
+    RefreshPlayersList()
+
+    -- Set Group button
+    local setGroupButton = vgui.Create("DButton", panel)
+    setGroupButton:SetPos(10, 480)
+    setGroupButton:SetSize(100, 25)
+    setGroupButton:SetText("Set Group")
+    setGroupButton.DoClick = function()
+        local _, selected = playersList:GetSelectedLine()
+        if (selected and selected.player) then
+            MODULE:ShowSetGroupDialog(selected.player)
+        else
+            ax.notification:Send(ax.client, "Please select a player.")
+        end
+    end
+
+    -- Refresh button
+    local refreshButton = vgui.Create("DButton", panel)
+    refreshButton:SetPos(120, 480)
+    refreshButton:SetSize(80, 25)
+    refreshButton:SetText("Refresh")
+    refreshButton.DoClick = function()
+        RefreshGroupsList()
+        RefreshPlayersList()
+    end
+
+    -- Store refresh functions for external updates
+    panel.RefreshGroupsList = RefreshGroupsList
+    panel.RefreshPlayersList = RefreshPlayersList
+end
+
+-- Show create group dialog
+function MODULE:ShowCreateGroupDialog()
+    local frame = vgui.Create("DFrame")
+    frame:SetSize(400, 300)
+    frame:Center()
+    frame:SetTitle("Create Usergroup")
+    frame:MakePopup()
+
+    -- Name
+    local nameLabel = vgui.Create("DLabel", frame)
+    nameLabel:SetPos(20, 40)
+    nameLabel:SetSize(100, 20)
+    nameLabel:SetText("Name:")
+
+    local nameEntry = vgui.Create("DTextEntry", frame)
+    nameEntry:SetPos(120, 40)
+    nameEntry:SetSize(260, 25)
+    nameEntry:SetPlaceholderText("Enter group name...")
+
+    -- Inherits
+    local inheritsLabel = vgui.Create("DLabel", frame)
+    inheritsLabel:SetPos(20, 80)
+    inheritsLabel:SetSize(100, 20)
+    inheritsLabel:SetText("Inherits:")
+
+    local inheritsCombo = vgui.Create("DComboBox", frame)
+    inheritsCombo:SetPos(120, 80)
+    inheritsCombo:SetSize(260, 25)
+    inheritsCombo:SetValue("user")
+
+    -- Populate inherits dropdown
+    for name, _ in pairs(MODULE.ClientGroups) do
+        inheritsCombo:AddChoice(name)
+    end
+
+    -- Level
+    local levelLabel = vgui.Create("DLabel", frame)
+    levelLabel:SetPos(20, 120)
+    levelLabel:SetSize(100, 20)
+    levelLabel:SetText("Level:")
+
+    local levelSlider = vgui.Create("DNumSlider", frame)
+    levelSlider:SetPos(120, 120)
+    levelSlider:SetSize(260, 25)
+    levelSlider:SetText("")
+    levelSlider:SetMin(0)
+    levelSlider:SetMax(4)
+    levelSlider:SetDecimals(0)
+    levelSlider:SetValue(1)
+
+    -- Immunity
+    local immunityLabel = vgui.Create("DLabel", frame)
+    immunityLabel:SetPos(20, 160)
+    immunityLabel:SetSize(100, 20)
+    immunityLabel:SetText("Immunity:")
+
+    local immunitySlider = vgui.Create("DNumSlider", frame)
+    immunitySlider:SetPos(120, 160)
+    immunitySlider:SetSize(260, 25)
+    immunitySlider:SetText("")
+    immunitySlider:SetMin(0)
+    immunitySlider:SetMax(100)
+    immunitySlider:SetDecimals(0)
+    immunitySlider:SetValue(0)
+
+    -- Color
+    local colorLabel = vgui.Create("DLabel", frame)
+    colorLabel:SetPos(20, 200)
+    colorLabel:SetSize(100, 20)
+    colorLabel:SetText("Color:")
+
+    local colorMixer = vgui.Create("DColorMixer", frame)
+    colorMixer:SetPos(120, 200)
+    colorMixer:SetSize(260, 60)
+    colorMixer:SetPalette(true)
+    colorMixer:SetAlphaBar(false)
+    colorMixer:SetWangs(true)
+    colorMixer:SetColor(Color(255, 255, 255))
+
+    -- Buttons
+    local createBtn = vgui.Create("DButton", frame)
+    createBtn:SetPos(20, 270)
+    createBtn:SetSize(100, 25)
+    createBtn:SetText("Create")
+    createBtn.DoClick = function()
+        local name = nameEntry:GetValue()
+        local inherits = inheritsCombo:GetValue()
+        local level = levelSlider:GetValue()
+        local immunity = immunitySlider:GetValue()
+        local color = colorMixer:GetColor()
+
+        if (name == "") then
+            ax.notification:Send(ax.client, "Group name cannot be empty.")
+            return
+        end
+
+        net.Start("ax.admin.usergroup.create")
+            net.WriteTable({
+                name = name,
+                inherits = inherits,
+                level = level,
+                immunity = immunity,
+                color = color
+            })
+        net.SendToServer()
+
+        frame:Close()
+    end
+
+    local cancelBtn = vgui.Create("DButton", frame)
+    cancelBtn:SetPos(280, 270)
+    cancelBtn:SetSize(100, 25)
+    cancelBtn:SetText("Cancel")
+    cancelBtn.DoClick = function()
+        frame:Close()
+    end
+
+    nameEntry:RequestFocus()
+end
+
+-- Show edit group dialog
+function MODULE:ShowEditGroupDialog(groupName, groupData)
+    if (!groupData.Custom) then
+        ax.notification:Send(ax.client, "Cannot edit default usergroups.")
+        return
+    end
+
+    local frame = vgui.Create("DFrame")
+    frame:SetSize(400, 300)
+    frame:Center()
+    frame:SetTitle("Edit Usergroup: " .. groupName)
+    frame:MakePopup()
+
+    -- Same layout as create dialog but with current values
+    local nameLabel = vgui.Create("DLabel", frame)
+    nameLabel:SetPos(20, 40)
+    nameLabel:SetSize(100, 20)
+    nameLabel:SetText("Name: " .. groupName)
+
+    local inheritsLabel = vgui.Create("DLabel", frame)
+    inheritsLabel:SetPos(20, 80)
+    inheritsLabel:SetSize(100, 20)
+    inheritsLabel:SetText("Inherits:")
+
+    local inheritsCombo = vgui.Create("DComboBox", frame)
+    inheritsCombo:SetPos(120, 80)
+    inheritsCombo:SetSize(260, 25)
+    inheritsCombo:SetValue(groupData.Inherits or "user")
+
+    for name, _ in pairs(MODULE.ClientGroups) do
+        inheritsCombo:AddChoice(name)
+    end
+
+    local levelLabel = vgui.Create("DLabel", frame)
+    levelLabel:SetPos(20, 120)
+    levelLabel:SetSize(100, 20)
+    levelLabel:SetText("Level:")
+
+    local levelSlider = vgui.Create("DNumSlider", frame)
+    levelSlider:SetPos(120, 120)
+    levelSlider:SetSize(260, 25)
+    levelSlider:SetText("")
+    levelSlider:SetMin(0)
+    levelSlider:SetMax(4)
+    levelSlider:SetDecimals(0)
+    levelSlider:SetValue(groupData.Level or 1)
+
+    local immunityLabel = vgui.Create("DLabel", frame)
+    immunityLabel:SetPos(20, 160)
+    immunityLabel:SetSize(100, 20)
+    immunityLabel:SetText("Immunity:")
+
+    local immunitySlider = vgui.Create("DNumSlider", frame)
+    immunitySlider:SetPos(120, 160)
+    immunitySlider:SetSize(260, 25)
+    immunitySlider:SetText("")
+    immunitySlider:SetMin(0)
+    immunitySlider:SetMax(100)
+    immunitySlider:SetDecimals(0)
+    immunitySlider:SetValue(groupData.Immunity or 0)
+
+    local colorLabel = vgui.Create("DLabel", frame)
+    colorLabel:SetPos(20, 200)
+    colorLabel:SetSize(100, 20)
+    colorLabel:SetText("Color:")
+
+    local colorMixer = vgui.Create("DColorMixer", frame)
+    colorMixer:SetPos(120, 200)
+    colorMixer:SetSize(260, 60)
+    colorMixer:SetPalette(true)
+    colorMixer:SetAlphaBar(false)
+    colorMixer:SetWangs(true)
+    colorMixer:SetColor(groupData.Color or Color(255, 255, 255))
+
+    local saveBtn = vgui.Create("DButton", frame)
+    saveBtn:SetPos(20, 270)
+    saveBtn:SetSize(100, 25)
+    saveBtn:SetText("Save")
+    saveBtn.DoClick = function()
+        local inherits = inheritsCombo:GetValue()
+        local level = levelSlider:GetValue()
+        local immunity = immunitySlider:GetValue()
+        local color = colorMixer:GetColor()
+
+        net.Start("ax.admin.usergroup.edit")
+            net.WriteString(groupName)
+            net.WriteTable({
+                Inherits = inherits,
+                Level = level,
+                Immunity = immunity,
+                Color = color
+            })
+        net.SendToServer()
+
+        frame:Close()
+    end
+
+    local cancelBtn = vgui.Create("DButton", frame)
+    cancelBtn:SetPos(280, 270)
+    cancelBtn:SetSize(100, 25)
+    cancelBtn:SetText("Cancel")
+    cancelBtn.DoClick = function()
+        frame:Close()
+    end
+end
+
+-- Show set group dialog
+function MODULE:ShowSetGroupDialog(player)
+    local frame = vgui.Create("DFrame")
+    frame:SetSize(400, 250)
+    frame:Center()
+    frame:SetTitle("Set Usergroup: " .. player:SteamName())
+    frame:MakePopup()
+
+    -- Group selection
+    local groupLabel = vgui.Create("DLabel", frame)
+    groupLabel:SetPos(20, 40)
+    groupLabel:SetSize(100, 20)
+    groupLabel:SetText("Usergroup:")
+
+    local groupCombo = vgui.Create("DComboBox", frame)
+    groupCombo:SetPos(120, 40)
+    groupCombo:SetSize(260, 25)
+    groupCombo:SetValue(player:GetUserGroup())
+
+    for name, _ in pairs(MODULE.ClientGroups) do
+        groupCombo:AddChoice(name)
+    end
+
+    -- Duration
+    local durationLabel = vgui.Create("DLabel", frame)
+    durationLabel:SetPos(20, 80)
+    durationLabel:SetSize(100, 20)
+    durationLabel:SetText("Duration (min):")
+
+    local durationSlider = vgui.Create("DNumSlider", frame)
+    durationSlider:SetPos(120, 80)
+    durationSlider:SetSize(260, 25)
+    durationSlider:SetText("")
+    durationSlider:SetMin(0)
+    durationSlider:SetMax(10080)
+    durationSlider:SetDecimals(0)
+    durationSlider:SetValue(0)
+
+    -- Reason
+    local reasonLabel = vgui.Create("DLabel", frame)
+    reasonLabel:SetPos(20, 120)
+    reasonLabel:SetSize(100, 20)
+    reasonLabel:SetText("Reason:")
+
+    local reasonEntry = vgui.Create("DTextEntry", frame)
+    reasonEntry:SetPos(120, 120)
+    reasonEntry:SetSize(260, 25)
+    reasonEntry:SetPlaceholderText("Enter reason...")
+
+    -- Buttons
+    local setBtn = vgui.Create("DButton", frame)
+    setBtn:SetPos(20, 170)
+    setBtn:SetSize(100, 25)
+    setBtn:SetText("Set Group")
+    setBtn.DoClick = function()
+        local group = groupCombo:GetValue()
+        local duration = durationSlider:GetValue()
+        local reason = reasonEntry:GetValue()
+
+        if (reason == "") then
+            ax.notification:Send(ax.client, "Reason cannot be empty.")
+            return
+        end
+
+        net.Start("ax.admin.usergroup.set")
+            net.WriteString(player:SteamID64())
+            net.WriteString(group)
+            net.WriteUInt(duration, 32)
+            net.WriteString(reason)
+        net.SendToServer()
+
+        frame:Close()
+    end
+
+    local cancelBtn = vgui.Create("DButton", frame)
+    cancelBtn:SetPos(280, 170)
+    cancelBtn:SetSize(100, 25)
+    cancelBtn:SetText("Cancel")
+    cancelBtn.DoClick = function()
+        frame:Close()
+    end
+
+    reasonEntry:RequestFocus()
+end

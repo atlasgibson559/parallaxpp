@@ -28,6 +28,13 @@ util.AddNetworkString("ax.admin.ticket.list")
 util.AddNetworkString("ax.admin.ticket.notification")
 util.AddNetworkString("ax.admin.ticket.live_update")
 
+-- Network strings for usergroup management
+util.AddNetworkString("ax.admin.usergroup.create")
+util.AddNetworkString("ax.admin.usergroup.edit")
+util.AddNetworkString("ax.admin.usergroup.delete")
+util.AddNetworkString("ax.admin.usergroup.set")
+util.AddNetworkString("ax.admin.usergroup.list")
+
 -- Handle admin logs request
 net.Receive("ax.admin.logs.request", function(len, client)
     if ( !CAMI.PlayerHasAccess(client, "Parallax - View Logs", nil) ) then
@@ -287,4 +294,108 @@ net.Receive("ax.admin.ban.offline", function(len, client)
             net.Send(admin)
         end
     end
+end)
+
+-- Handle usergroup creation
+net.Receive("ax.admin.usergroup.create", function(len, client)
+    if (!CAMI.PlayerHasAccess(client, "Parallax - Manage Usergroups", nil)) then
+        return
+    end
+
+    local data = net.ReadTable()
+
+    if (CAMI.GetUsergroup(data.name)) then
+        ax.notification:Send(client, "Usergroup '" .. data.name .. "' already exists.")
+        return
+    end
+
+    if (!CAMI.GetUsergroup(data.inherits)) then
+        ax.notification:Send(client, "Inherits group '" .. data.inherits .. "' does not exist.")
+        return
+    end
+
+    MODULE:CreateUsergroup(data.name, data.inherits, data.level, data.color, data.immunity, client)
+    ax.notification:Send(client, "Created usergroup '" .. data.name .. "'.")
+end)
+
+-- Handle usergroup editing
+net.Receive("ax.admin.usergroup.edit", function(len, client)
+    if (!CAMI.PlayerHasAccess(client, "Parallax - Manage Usergroups", nil)) then
+        return
+    end
+
+    local groupName = net.ReadString()
+    local data = net.ReadTable()
+
+    if (MODULE:EditUsergroup(groupName, data, client)) then
+        ax.notification:Send(client, "Edited usergroup '" .. groupName .. "'.")
+    else
+        ax.notification:Send(client, "Failed to edit usergroup '" .. groupName .. "'.")
+    end
+end)
+
+-- Handle usergroup deletion
+net.Receive("ax.admin.usergroup.delete", function(len, client)
+    if (!CAMI.PlayerHasAccess(client, "Parallax - Manage Usergroups", nil)) then
+        return
+    end
+
+    local groupName = net.ReadString()
+
+    if (MODULE:DeleteUsergroup(groupName, client)) then
+        ax.notification:Send(client, "Deleted usergroup '" .. groupName .. "'.")
+    else
+        ax.notification:Send(client, "Failed to delete usergroup '" .. groupName .. "'.")
+    end
+end)
+
+-- Handle player usergroup setting
+net.Receive("ax.admin.usergroup.set", function(len, client)
+    if (!CAMI.PlayerHasAccess(client, "Parallax - Manage Usergroups", nil)) then
+        return
+    end
+
+    local steamID = net.ReadString()
+    local groupName = net.ReadString()
+    local duration = net.ReadUInt(32)
+    local reason = net.ReadString()
+
+    local target = player.GetBySteamID64(steamID)
+    if (!IsValid(target)) then
+        ax.notification:Send(client, "Player not found.")
+        return
+    end
+
+    if (!MODULE:CanTarget(client, target)) then
+        ax.notification:Send(client, "You cannot target this player.")
+        return
+    end
+
+    if (!CAMI.GetUsergroup(groupName)) then
+        ax.notification:Send(client, "Usergroup '" .. groupName .. "' does not exist.")
+        return
+    end
+
+    if (!MODULE:CanAssignGroup(client, groupName)) then
+        ax.notification:Send(client, "You don't have permission to assign this usergroup.")
+        return
+    end
+
+    MODULE:SetPlayerUsergroup(target, groupName, duration, reason, client)
+
+    local durationStr = duration > 0 and " for " .. duration .. " minutes" or " permanently"
+    ax.notification:Send(client, "Set " .. target:SteamName() .. "'s usergroup to " .. groupName .. durationStr)
+end)
+
+-- Handle usergroup list request
+net.Receive("ax.admin.usergroup.list", function(len, client)
+    if (!CAMI.PlayerHasAccess(client, "Parallax - Admin Menu", nil)) then
+        return
+    end
+
+    net.Start("ax.admin.group.update")
+        net.WriteString("")
+        net.WriteString("")
+        net.WriteTable(MODULE.Groups)
+    net.Send(client)
 end)

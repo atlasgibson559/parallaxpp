@@ -12,7 +12,7 @@
 local MODULE = MODULE
 
 -- Player connection handling
-function MODULE:PlayerReady(client)
+function MODULE:PostPlayerReady(client)
     -- Check if player is banned
     local steamid = client:SteamID64()
     local banData = self.BannedPlayers[steamid]
@@ -161,3 +161,34 @@ end
 timer.Create("Parallax.Admin.TicketCleanup", 3600, 0, function()
     MODULE:CleanupInactiveTickets()
 end)
+
+-- Handle player connect for usergroup restoration
+function MODULE:PlayerAuthed(client, steamid)
+    -- Restore saved usergroup
+    local savedGroup = self.PlayerUsergroups[steamid]
+    if (savedGroup) then
+        client:SetUserGroup(savedGroup.group)
+    end
+    
+    -- Check for temporary usergroup
+    local tempGroup = self.TempUsergroups[steamid]
+    if (tempGroup) then
+        local remainingTime = tempGroup.expires - os.time()
+        if (remainingTime > 0) then
+            client:SetUserGroup(tempGroup.tempGroup)
+            
+            -- Recreate timer
+            timer.Create("TempUsergroup_" .. steamid, remainingTime, 1, function()
+                if (IsValid(client)) then
+                    client:SetUserGroup(tempGroup.originalGroup)
+                    self:LogAction(nil, "temp usergroup expired", client, "Reverted from " .. tempGroup.tempGroup .. " to " .. tempGroup.originalGroup)
+                    ax.notification:Send(client, "Your temporary usergroup has expired. Reverted to " .. tempGroup.originalGroup)
+                end
+                self.TempUsergroups[steamid] = nil
+            end)
+        else
+            -- Expired, remove it
+            self.TempUsergroups[steamid] = nil
+        end
+    end
+end
