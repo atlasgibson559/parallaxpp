@@ -72,7 +72,7 @@ function PANEL:Populate()
 
             teamPanel.players[client:SteamID64()] = playerPanel
         end
-    end
+    end -- test
 end
 
 vgui.Register("ax.scoreboard", PANEL, "EditablePanel")
