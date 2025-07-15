@@ -75,7 +75,7 @@ function MODULE:PlayerDisconnected(client)
     timer.Simple(1, function()
         -- Clean up props owned by disconnected players
         for _, ent in ents.Iterator() do
-            if ( IsValid(ent) and ent:GetOwner() == client ) then
+            if ( ent:GetOwner() == client ) then
                 ent:Remove()
             end
         end

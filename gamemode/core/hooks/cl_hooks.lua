@@ -143,10 +143,6 @@ function GM:OnReloaded()
     if ( _reloaded ) then return end
     _reloaded = true
 
-    if ( !IsValid(ax.client) ) then
-        ax.client = LocalPlayer()
-    end
-
     if ( IsValid(currentStation) ) then
         currentStation:Stop()
         currentStation = nil
