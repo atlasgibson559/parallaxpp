@@ -431,7 +431,7 @@ local function DrawAmmo()
     local clipCount = activeWeapon:Clip1()
 
     local text = string.format("%d / %d", clipCount, ammoCount)
-    draw.SimpleText(text, "ax.bold", ScrW() - 16, ScrH() - 16, ax.color:Get("white"), TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM)
+    draw.SimpleText(text, "ax.regular.bold", ScrW() - 16, ScrH() - 16, ax.color:Get("white"), TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM)
 end
 
 local function DrawHealth()
@@ -938,7 +938,7 @@ function GM:PopulateHelpCategories(categories)
             end
 
             local nameLabel = panel:Add("ax.text")
-            nameLabel:SetFont("ax.bold")
+            nameLabel:SetFont("ax.regular.bold")
             nameLabel:SetText(commandName, true)
             nameLabel:Dock(TOP)
             nameLabel:DockMargin(8, 0, 8, 0)

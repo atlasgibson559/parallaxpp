@@ -146,11 +146,11 @@ function PANEL:Init()
     self.avatar:SetPos(0, 0)
 
     self.name = self:Add("ax.text")
-    self.name:SetFont("ax.bold")
+    self.name:SetFont("ax.regular.bold")
 
     self.ping = self:Add("ax.text")
     self.ping:SetSize(ScreenScale(32), self:GetTall())
-    self.ping:SetFont("ax.bold")
+    self.ping:SetFont("ax.regular.bold")
     self.ping:SetContentAlignment(6)
 
     self:SetMouseInputEnabled(true)
