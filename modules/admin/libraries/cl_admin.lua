@@ -53,7 +53,7 @@ function MODULE:CreateAdminMenu()
 
     -- Populate players list
     for _, client in player.Iterator() do
-        local line = playersList:AddLine(client:SteamName(), client:GetUserGroup(), client:SteamID())
+        local line = playersList:AddLine(client:SteamName(), client:GetUserGroup(), client:SteamID64())
         line.client = client
     end
 
@@ -104,7 +104,7 @@ function MODULE:CreateAdminMenu()
         local infoLabel = vgui.Create("DLabel", actionsPanel)
         infoLabel:SetPos(10, y)
         infoLabel:SetSize(380, 60)
-        infoLabel:SetText("Selected: " .. selectedPlayer:SteamName() .. "\nGroup: " .. selectedPlayer:GetUserGroup() .. "\nSteamID: " .. selectedPlayer:SteamID())
+        infoLabel:SetText("Selected: " .. selectedPlayer:SteamName() .. "\nGroup: " .. selectedPlayer:GetUserGroup() .. "\nSteamID: " .. selectedPlayer:SteamID64())
         infoLabel:SetWrap(true)
         infoLabel:SetAutoStretchVertical(true)
         y = y + 70
