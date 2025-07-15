@@ -321,6 +321,20 @@ function ax.character:Sync(client, characterID)
     return true
 end
 
+--- Synchronizes all active characters from the server to a specific client.
+function ax.character:SyncAll(client)
+    if ( !IsValid(client) ) then
+        ax.util:PrintError("Attempted to sync all characters for invalid player (" .. tostring(client) .. ")")
+        return false
+    end
+
+    net.Start("ax.character.sync.all")
+        net.WriteTable(self.stored)
+    net.Send(client)
+
+    return true
+end
+
 concommand.Add("ax_character_test_create", function(client, cmd, arguments)
     ax.character:Create(client, {
         name = "Test Character"

@@ -94,6 +94,8 @@ function GM:PlayerReady(client)
         client:SetNotSolid(true)
         client:SetMoveType(MOVETYPE_NONE)
 
+        ax.character:SyncAll(client) -- Probably a bad idea, might need to recreate the entire character system too...
+
         hook.Run("PostPlayerInitialSpawn", client)
 
         ax.util:Print("Finished loading player " .. client:SteamName() .. " (" .. client:SteamID64() .. ") in " .. math.Round(CurTime() - time, 2) .. " seconds.")
