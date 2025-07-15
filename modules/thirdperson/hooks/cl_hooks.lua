@@ -79,7 +79,7 @@ function MODULE:CalcView(client, pos, angles, fov)
     })
 
     local shootPos = traceData.HitPos
-    local followHitAngles = ax.option:Get("thirdperson.follow.it.angles", true)
+    local followHitAngles = ax.option:Get("thirdperson.follow.hit.angles", true)
     local followHitFov = ax.option:Get("thirdperson.follow.hit.fov", true)
 
     local viewBob = angle_zero
