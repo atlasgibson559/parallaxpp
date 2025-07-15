@@ -124,7 +124,10 @@ function MODULE:SaveData()
         admin_logs = self.AdminLogs,
         tickets = self.Tickets,
         ticket_comments = self.TicketComments,
-        next_ticket_id = self.NextTicketID
+        next_ticket_id = self.NextTicketID,
+        custom_usergroups = self.CustomUsergroups,
+        player_usergroups = self.PlayerUsergroups,
+        temp_usergroups = self.TempUsergroups
     }
 
     ax.data:Set("admin", data, true, true)
@@ -150,6 +153,47 @@ function MODULE:LoadData()
 
     if (data.next_ticket_id) then
         self.NextTicketID = data.next_ticket_id
+    end
+
+    if (data.custom_usergroups) then
+        self.CustomUsergroups = data.custom_usergroups
+
+        -- Re-register custom usergroups with CAMI
+        for name, usergroup in pairs(self.CustomUsergroups) do
+            CAMI.RegisterUsergroup({
+                Name = name,
+                Inherits = usergroup.Inherits
+            }, "Parallax")
+
+            self.Groups[name] = usergroup
+        end
+    end
+
+    if (data.player_usergroups) then
+        self.PlayerUsergroups = data.player_usergroups
+    end
+
+    if (data.temp_usergroups) then
+        self.TempUsergroups = data.temp_usergroups
+
+        -- Recreate temp usergroup timers
+        for steamID, tempData in pairs(self.TempUsergroups) do
+            local remainingTime = tempData.expires - os.time()
+            if (remainingTime > 0) then
+                timer.Create("TempUsergroup_" .. steamID, remainingTime, 1, function()
+                    local player = player.GetBySteamID64(steamID)
+                    if (IsValid(player)) then
+                        player:SetUserGroup(tempData.originalGroup)
+                        self:LogAction(nil, "temp usergroup expired", player, "Reverted from " .. tempData.tempGroup .. " to " .. tempData.originalGroup)
+                        ax.notification:Send(player, "Your temporary usergroup has expired. Reverted to " .. tempData.originalGroup)
+                    end
+                    self.TempUsergroups[steamID] = nil
+                end)
+            else
+                -- Expired, remove it
+                self.TempUsergroups[steamID] = nil
+            end
+        end
     end
 end
 
