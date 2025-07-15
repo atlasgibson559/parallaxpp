@@ -164,7 +164,7 @@ function PANEL:SetPlayer(client)
     end
 
     if ( IsValid(self.name) ) then
-        self.name:SetText(client:SteamName(), true)
+        self.name:SetText(client:Nick(), true)
         self.name:SetPos(self.avatar:GetWide() + 16, self:GetTall() / 2 - self.name:GetTall() / 2)
     end
 end
