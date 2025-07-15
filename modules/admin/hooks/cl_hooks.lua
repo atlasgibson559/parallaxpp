@@ -13,8 +13,12 @@ local MODULE = MODULE
 
 -- Bind F1 to admin menu
 function MODULE:PlayerButtonDown(client, button)
-    if ( button == KEY_F1 and IsFirstTimePredicted() and CAMI.PlayerHasAccess(client, "Parallax - Admin Menu", nil) ) then
+    if ( !IsFirstTimePredicted() or !IsValid(client) or !client:IsPlayer() ) then return end
+
+    if ( button == KEY_F4 and CAMI.PlayerHasAccess(client, "Parallax - Admin Menu", nil) ) then
         MODULE:CreateAdminMenu()
+    elseif ( button == KEY_F3 and ax.config:Get("admin.tickets.enabled", true) ) then
+        MODULE:CreateTicketMenu()
     end
 end
 
