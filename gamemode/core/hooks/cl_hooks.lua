@@ -510,7 +510,7 @@ local function UpdateNearbyEntities()
     lastEntityScan = currentTime
 
     -- Clear old entities
-    table.Empty(nearbyEntities)
+    nearbyEntities = {}
 
     -- Use spatial partitioning to find nearby entities
     local clientPos = ax.client:WorldSpaceCenter()

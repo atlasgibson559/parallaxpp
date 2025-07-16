@@ -14,6 +14,7 @@
 -----------------------------------------------------------------------------]]--
 
 util.AddNetworkString("ax.character.sync")
+util.AddNetworkString("ax.character.sync.all")
 
 util.AddNetworkString("ax.character.load")
 net.Receive("ax.character.load", function(len, client)
