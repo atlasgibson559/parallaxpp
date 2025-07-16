@@ -426,9 +426,9 @@ ax.config:Set("debug.developer", true)
 The framework includes comprehensive logging:
 ```lua
 -- Log different types of events
-ax.logging:Send(ax.color:Get("blue"), "This is a message using the blue color")
-ax.logging:Send(ax.color:Get("maroon"), "This is a message using the maroon color")
-ax.logging:Send(ax.color:Get("navy"), "This is a message using the navy color")
+ax.log:Send(ax.color:Get("blue"), "This is a message using the blue color")
+ax.log:Send(ax.color:Get("maroon"), "This is a message using the maroon color")
+ax.log:Send(ax.color:Get("navy"), "This is a message using the navy color")
 ```
 
 ---
