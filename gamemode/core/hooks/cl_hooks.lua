@@ -562,7 +562,7 @@ local function DrawTargetInfos(is3D2D)
         local distToSqr = targetPos:DistToSqr(clientWorldCenter)
 
         -- Early distance check
-        if ( distToSqr > TARGET_INFO_DISTANCE ^ 2 ) then
+        if ( distToSqr > infoDistance ^ 2 ) then
             alpha = Lerp(ft * 5, alpha, 0)
             targetAlpha[index] = alpha
             continue
