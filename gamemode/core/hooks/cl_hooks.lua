@@ -10,7 +10,7 @@
 ]]
 
 function GM:PlayerButtonDown(client, button)
-    if ( !IsFirstTimePredicted() or !IsValid(client) or !client:IsPlayer() ) then return end
+    if ( !IsFirstTimePredicted() ) then return end
 
     if ( button == KEY_F1 and !IsValid(ax.gui.info) ) then
         vgui.Create("ax.info")

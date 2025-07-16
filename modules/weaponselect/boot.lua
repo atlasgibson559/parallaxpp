@@ -18,3 +18,5 @@ MODULE.Author = "Riggs"
 if ( SERVER ) then
     util.AddNetworkString("ax.weaponselect.deathclose")
 end
+
+-- I WROTE THIS IN VR ( NOT MODULE, JUST THIS COMMENT ) (useless change, gotta test smth)
