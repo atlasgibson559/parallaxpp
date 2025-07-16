@@ -371,7 +371,7 @@ function ax.util:FindString(str, find)
     str = string.lower(str)
     find = string.lower(find)
 
-    return string.find(str, find) != nil
+    return string.find(str, find)
 end
 
 --- Searches a given text for the specified value.
