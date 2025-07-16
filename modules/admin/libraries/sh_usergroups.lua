@@ -16,108 +16,35 @@ if (SERVER) then
     MODULE.CustomUsergroups = MODULE.CustomUsergroups or {}
     MODULE.PlayerUsergroups = MODULE.PlayerUsergroups or {}
     MODULE.TempUsergroups = MODULE.TempUsergroups or {}
-end
 
---- Creates a new usergroup
--- @param name string - Group name
--- @param inherits string - Group to inherit from
--- @param level number - Hierarchy level
--- @param color Color - Group color
--- @param immunity number - Immunity level
--- @param admin Player - Admin who created the group
-function MODULE:CreateUsergroup(name, inherits, level, color, immunity, admin)
-    if (!SERVER) then return end
+    --- Deletes a usergroup
+    -- @param name string - Group name
+    -- @param admin Player - Admin who deleted the group
+    function MODULE:DeleteUsergroup(name, admin)
+        local usergroup = self.CustomUsergroups[name]
+        if (!usergroup) then return false end
 
-    local usergroup = {
-        Name = name,
-        Inherits = inherits or "user",
-        Level = level or 1,
-        Color = color or Color(255, 255, 255),
-        Immunity = immunity or 0,
-        Custom = true,
-        Creator = IsValid(admin) and admin:SteamID64() or "Console",
-        Created = os.time()
-    }
-
-    -- Register with CAMI
-    CAMI.RegisterUsergroup({
-        Name = name,
-        Inherits = inherits or "user"
-    }, "Parallax")
-
-    -- Store in our system
-    self.CustomUsergroups[name] = usergroup
-    self.Groups[name] = usergroup
-
-    self:SaveData()
-    self:LogAction(admin, "created usergroup", nil, "Created usergroup: " .. name)
-
-    -- Broadcast to all admins
-    self:BroadcastUsergroupUpdate()
-end
-
---- Edits an existing usergroup
--- @param name string - Group name
--- @param data table - New data
--- @param admin Player - Admin who edited the group
-function MODULE:EditUsergroup(name, data, admin)
-    if (!SERVER) then return end
-
-    local usergroup = self.CustomUsergroups[name] or self.Groups[name]
-    if (!usergroup) then return false end
-
-    -- Update data
-    if (data.Inherits) then usergroup.Inherits = data.Inherits end
-    if (data.Level) then usergroup.Level = data.Level end
-    if (data.Color) then usergroup.Color = data.Color end
-    if (data.Immunity) then usergroup.Immunity = data.Immunity end
-
-    -- Update CAMI registration
-    CAMI.RegisterUsergroup({
-        Name = name,
-        Inherits = usergroup.Inherits
-    }, "Parallax")
-
-    self:SaveData()
-    self:LogAction(admin, "edited usergroup", nil, "Edited usergroup: " .. name)
-
-    -- Broadcast to all admins
-    self:BroadcastUsergroupUpdate()
-
-    return true
-end
-
---- Deletes a usergroup
--- @param name string - Group name
--- @param admin Player - Admin who deleted the group
-function MODULE:DeleteUsergroup(name, admin)
-    if (!SERVER) then return end
-
-    local usergroup = self.CustomUsergroups[name]
-    if (!usergroup) then return false end
-
-    -- Move all players with this group to user
-    for _, ply in player.Iterator() do
-        if (ply:GetUserGroup() == name) then
-            self:SetPlayerUsergroup(ply, "user", 0, "Group deleted", admin)
+        -- Move all players with this group to user
+        for _, ply in player.Iterator() do
+            if (ply:GetUserGroup() == name) then
+                self:SetPlayerUsergroup(ply, "user", 0, "Group deleted", admin)
+            end
         end
+
+        -- Remove from systems
+        CAMI.UnregisterUsergroup(name, "Parallax")
+        self.CustomUsergroups[name] = nil
+        self.Groups[name] = nil
+
+        self:SaveData()
+        self:LogAction(admin, "deleted usergroup", nil, "Deleted usergroup: " .. name)
+
+        -- Broadcast to all admins
+        self:BroadcastUsergroupUpdate()
+
+        return true
     end
 
-    -- Remove from systems
-    CAMI.UnregisterUsergroup(name, "Parallax")
-    self.CustomUsergroups[name] = nil
-    self.Groups[name] = nil
-
-    self:SaveData()
-    self:LogAction(admin, "deleted usergroup", nil, "Deleted usergroup: " .. name)
-
-    -- Broadcast to all admins
-    self:BroadcastUsergroupUpdate()
-
-    return true
-end
-
-if ( SERVER ) then
     --- Sets a player's usergroup with optional duration
     -- @param player Player - Target player
     -- @param groupName string - Group name
@@ -180,7 +107,73 @@ if ( SERVER ) then
             net.WriteTable(self.Groups)
         net.Broadcast()
     end
+
+    --- Creates a new usergroup
+    -- @param name string - Group name
+    -- @param inherits string - Group to inherit from
+    -- @param level number - Hierarchy level
+    -- @param color Color - Group color
+    -- @param immunity number - Immunity level
+    -- @param admin Player - Admin who created the group
+    function MODULE:CreateUsergroup(name, inherits, level, color, immunity, admin)
+        local usergroup = {
+            Name = name,
+            Inherits = inherits or "user",
+            Level = level or 1,
+            Color = color or Color(255, 255, 255),
+            Immunity = immunity or 0,
+            Custom = true,
+            Creator = IsValid(admin) and admin:SteamID64() or "Console",
+            Created = os.time()
+        }
+
+        -- Register with CAMI
+        CAMI.RegisterUsergroup({
+            Name = name,
+            Inherits = inherits or "user"
+        }, "Parallax")
+
+        -- Store in our system
+        self.CustomUsergroups[name] = usergroup
+        self.Groups[name] = usergroup
+
+        self:SaveData()
+        self:LogAction(admin, "created usergroup", nil, "Created usergroup: " .. name)
+
+        -- Broadcast to all admins
+        self:BroadcastUsergroupUpdate()
+    end
+
+    --- Edits an existing usergroup
+    -- @param name string - Group name
+    -- @param data table - New data
+    -- @param admin Player - Admin who edited the group
+    function MODULE:EditUsergroup(name, data, admin)
+        local usergroup = self.CustomUsergroups[name] or self.Groups[name]
+        if (!usergroup) then return false end
+
+        -- Update data
+        if (data.Inherits) then usergroup.Inherits = data.Inherits end
+        if (data.Level) then usergroup.Level = data.Level end
+        if (data.Color) then usergroup.Color = data.Color end
+        if (data.Immunity) then usergroup.Immunity = data.Immunity end
+
+        -- Update CAMI registration
+        CAMI.RegisterUsergroup({
+            Name = name,
+            Inherits = usergroup.Inherits
+        }, "Parallax")
+
+        self:SaveData()
+        self:LogAction(admin, "edited usergroup", nil, "Edited usergroup: " .. name)
+
+        -- Broadcast to all admins
+        self:BroadcastUsergroupUpdate()
+
+        return true
+    end
 end
+
 
 --- Checks if an admin can assign a specific usergroup
 -- @param admin Player - Admin player
