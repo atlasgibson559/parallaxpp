@@ -319,18 +319,56 @@ ax.command:Register("ToggleRaise", {
 })
 
 ax.command:Register("FallOver", {
+    Description = "Make your character fall over.",
     Arguments = {
         {
             Type = ax.types.number,
-            ErrorMsg = "You must provide a valid player to make fall over!",
+            ErrorMsg = "You must provide a valid duration in seconds!",
             Optional = true
         }
     },
-
     Callback = function(info, client, arguments)
         local character = client:GetCharacter()
         if ( !character ) then return end
 
         client:SetRagdolled(true, arguments[1] or 5)
+    end
+})
+
+ax.command:Register("RefreshDefaultFlags", {
+    Description = "Refresh default flags for all characters or a specific player",
+    AdminOnly = true,
+    Arguments = {
+        {
+            Type = ax.types.player,
+            ErrorMsg = "You must provide a valid player!",
+            Optional = true
+        }
+    },
+    Callback = function(info, client, arguments)
+        local target = arguments[1]
+        if ( target ) then
+            -- Apply to specific player's character
+            local character = target:GetCharacter()
+            if ( !character ) then
+                client:Notify("The targeted player does not have a character!")
+                return
+            end
+
+            ax.character:ApplyDefaultFlags(character)
+            client:Notify("Applied default flags to " .. target:Nick() .. "'s character.", NOTIFY_HINT)
+        else
+            -- Apply to all online players
+            local count = 0
+            for _, v in player.Iterator() do
+                local character = v:GetCharacter()
+                if ( character ) then
+                    ax.character:ApplyDefaultFlags(character)
+                    count = count + 1
+                end
+            end
+
+            client:Notify("Applied default flags to " .. count .. " online characters.", NOTIFY_HINT)
+        end
     end
 })

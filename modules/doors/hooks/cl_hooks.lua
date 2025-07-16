@@ -22,15 +22,13 @@ function MODULE:PlayerButtonDown(client, key)
 end
 
 function MODULE:ShouldDrawTargetInfo(target, is3D2D)
-    local class = target:GetClass():lower()
-    if ( class:find("door") ) then
+    if ( target:IsDoor() ) then
         return true
     end
 end
 
 function MODULE:DrawTargetInfo(target, alpha, is3D2D)
-    local class = target:GetClass():lower()
-    if ( !class:find("door") ) then return end
+    if ( !target:IsDoor() ) then return end
 
     local ownerIndex = target:GetRelay("owner", 0)
     local owner = Entity(ownerIndex)
@@ -55,7 +53,7 @@ function MODULE:DrawTargetInfo(target, alpha, is3D2D)
     local pos = target:WorldSpaceCenter()
     local ang = target:GetAngles()
 
-    if ( class:find("prop_door_rotating") ) then
+    if ( target:GetClass():lower() == "prop_door_rotating" ) then
         cam.Start3D2D(pos + ang:Forward() * 2, ang + Angle(0, 90, 90), 0.04)
             draw.SimpleTextOutlined(msg, "ax.huge.bold", 0, 0, ColorAlpha(ax.config:Get("color.schema"), alpha), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 4, Color(0, 0, 0, alpha))
         cam.End3D2D()

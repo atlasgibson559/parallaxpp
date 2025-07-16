@@ -69,6 +69,7 @@ net.Receive("ax.character.create", function(len, client)
                 net.Start("ax.character.create.failed")
                     net.WriteString(reasonString or "Failed to validate character!")
                 net.Send(client)
+
                 return
             end
         end
