@@ -27,12 +27,18 @@ function ENTITY:IsChair()
     return CHAIR_CACHE[self:GetModel()]
 end
 
---- Returns `true` if this entity is a door. Internally, this checks to see if the entity's class has `door` in its name.
+local doors = {
+    ["func_door"] = true,
+    ["func_door_rotating"] = true,
+    ["prop_door_rotating"] = true
+}
+
+--- Returns `true` if this entity is a door.
 -- @realm shared
 -- @treturn bool Whether or not the entity is a door.
 function ENTITY:IsDoor()
-    local class = self:GetClass()
-    return (class and string.match(class, "door") != nil)
+    local class = self:GetClass():lower()
+    return doors[class] or hook.Run("IsEntityDoor", self, class) or false
 end
 
 --- Inherits the bodygroups of the given entity.

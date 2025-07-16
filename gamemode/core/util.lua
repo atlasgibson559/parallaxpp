@@ -361,7 +361,7 @@ end
 -- @realm shared
 -- @string str The value to get the type of.
 -- @string find The type to search for.
--- @return string The type of the value.
+-- @return boolean Whether or not the value matches the type.
 function ax.util:FindString(str, find)
     if ( str == nil or find == nil ) then
         ax.util:PrintError("Attempted to find a string with no value to find for! (" .. tostring(str) .. ", " .. tostring(find) .. ")")
@@ -731,9 +731,9 @@ end
 function ax.util:LoadTools(path)
     local files = file.Find(path .. "/*.lua", "LUA")
     for i = 1, #files do
-        local val = files[i]
+        local val = string.lower(files[i])
 
-        local _, _, toolmode = ax.util:FindString(val, "([%w_]*).lua")
+        local _, _, toolmode = string.find(val, "([%w_]*).lua")
         toolmode = toolmode:lower()
 
         TOOL = ax.tool:Create()

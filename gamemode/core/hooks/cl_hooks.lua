@@ -498,10 +498,58 @@ local function DrawTargetInfo(target, alpha, is3D2D)
 end
 
 local targetAlpha = {}
+local nearbyEntities = {}
+local lastEntityScan = 0
+local scanInterval = 0.1
+local infoDistance = 1024
+
+local function UpdateNearbyEntities()
+    local currentTime = CurTime()
+    if ( currentTime - lastEntityScan < scanInterval ) then return end
+
+    lastEntityScan = currentTime
+
+    -- Clear old entities
+    table.Empty(nearbyEntities)
+
+    -- Use spatial partitioning to find nearby entities
+    local clientPos = ax.client:WorldSpaceCenter()
+    local nearbyEnts = ents.FindInSphere(clientPos, infoDistance)
+
+    for i = 1, #nearbyEnts do
+        local ent = nearbyEnts[i]
+        if ( !IsValid(ent) or ent == ax.client ) then continue end
+
+        -- Pre-filter entities that we might want to show target info for
+        if ( hook.Run("ShouldDrawTargetInfo", ent, false) != false or
+            hook.Run("ShouldDrawTargetInfo", ent, true) != false ) then
+            nearbyEntities[#nearbyEntities + 1] = ent
+        end
+    end
+end
+
 local function DrawTargetInfos(is3D2D)
+    UpdateNearbyEntities()
+
     local client = ax.client
-    for k, v in ents.Iterator() do
-        if ( !IsValid(v) or v == client ) then continue end
+    local clientShootPos = client:GetShootPos()
+    local clientAimVector = client:GetAimVector()
+    local clientWorldCenter = client:WorldSpaceCenter()
+
+    -- Pre-calculate trace for aim detection
+    local aimTrace = util.TraceLine({
+        start = clientShootPos,
+        endpos = clientShootPos + clientAimVector * 192,
+        filter = client,
+        mask = MASK_SHOT
+    })
+
+    local ft = FrameTime()
+
+    for i = 1, #nearbyEntities do
+        local v = nearbyEntities[i]
+        if ( !IsValid(v) ) then continue end
+
         if ( hook.Run("ShouldDrawTargetInfo", v, is3D2D) == false ) then continue end
 
         local index = v:EntIndex()
@@ -509,32 +557,38 @@ local function DrawTargetInfos(is3D2D)
             targetAlpha[index] = 0
         end
 
-        local alpha = targetAlpha[index] or 0
+        local alpha = targetAlpha[index]
         local targetPos = v:WorldSpaceCenter()
-        local distToSqr = targetPos:DistToSqr(client:WorldSpaceCenter())
-        if ( distToSqr > 1024 ^ 2 ) then continue end
+        local distToSqr = targetPos:DistToSqr(clientWorldCenter)
 
-        local trace = util.TraceLine({
-            start = client:GetShootPos(),
-            endpos = client:GetShootPos() + client:GetAimVector() * 192,
-            filter = client,
-            mask = MASK_SHOT
-        })
+        -- Early distance check
+        if ( distToSqr > infoDistance ^ 2 ) then
+            alpha = Lerp(ft * 5, alpha, 0)
+            targetAlpha[index] = alpha
+            continue
+        end
 
-        local ft = FrameTime()
-        if ( distToSqr < 192 ^ 2 and trace.Entity == v ) then
+        -- Check if entity is being aimed at
+        local isAimedAt = (distToSqr < 192 ^ 2 and aimTrace.Entity == v)
+        if ( isAimedAt ) then
             alpha = Lerp(ft * 5, alpha, 255)
         else
             alpha = Lerp(ft * 5, alpha, 0)
         end
 
-        alpha = math.floor(alpha)
-        alpha = math.Clamp(alpha, 0, 255)
-
+        alpha = math.Clamp(math.floor(alpha), 0, 255)
         targetAlpha[index] = alpha
 
         if ( alpha > 0 ) then
             DrawTargetInfo(v, alpha, is3D2D)
+        end
+    end
+
+    -- Clean up alpha values for entities that no longer exist
+    for index, alpha in pairs(targetAlpha) do
+        local ent = Entity(index)
+        if ( !IsValid(ent) ) then
+            targetAlpha[index] = nil
         end
     end
 end
@@ -561,7 +615,6 @@ local textAngle = Angle(0, 0, 90)
 function GM:PostDrawTranslucentRenderables(bDrawingDepth, bDrawingSkybox)
     local client = ax.client
     if ( !IsValid(client) ) then return end
-
 
     DrawTargetInfos(true)
 
@@ -1023,13 +1076,13 @@ function GM:ChatboxOnTextChanged(text)
     net.SendToServer()
 
     -- Notify the command system about the text change
-    local command = ax.command:Get(ax.chat.currentType)
+    local command = ax.command:Get(ax.gui.chatbox:GetChatType())
     if ( command and command.OnChatTextChanged ) then
         command:OnTextChanged(text)
     end
 
     -- Notify the chat system about the text change
-    local chat = ax.chat:Get(ax.chat.currentType)
+    local chat = ax.chat:Get(ax.gui.chatbox:GetChatType())
     if ( chat and chat.OnChatTextChanged ) then
         chat:OnTextChanged(text)
     end

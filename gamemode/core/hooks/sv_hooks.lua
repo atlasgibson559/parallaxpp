@@ -232,6 +232,10 @@ function GM:PrePlayerLoadedCharacter(client, character, previousCharacter)
     end
 end
 
+function GM:PostPlayerCreatedCharacter(client, character)
+    ax.character:ApplyDefaultFlags(character)
+end
+
 function GM:PostPlayerLoadedCharacter(client, character, previousCharacter)
     if ( !character ) then return end
 
@@ -267,6 +271,8 @@ function GM:PostPlayerLoadedCharacter(client, character, previousCharacter)
     end
 
     client:SetCooldown("character.switch", 10)
+
+    ax.character:ApplyDefaultFlags(character)
 end
 
 function GM:PlayerDeathThink(client)
