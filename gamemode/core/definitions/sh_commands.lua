@@ -505,3 +505,59 @@ ax.command:Register("CharCheckMoney", {
         client:Notify(target:Nick() .. " has " .. ax.currency:Format(amount) .. ".", NOTIFY_HINT)
     end
 })
+
+ax.command:Register("CharResetName", {
+    Description = "Ask a user to reset their character's name",
+    AdminOnly = true,
+    Arguments = {
+        {
+            Type = ax.types.player,
+            ErrorMsg = "You must provide a valid player to reset the name for!"
+        }
+    },
+    Callback = function(info, client, arguments)
+        local target = arguments[1]
+
+        local character = target:GetCharacter()
+        if ( !character ) then
+            client:Notify("The targeted player does not have a character!")
+            return
+        end
+
+        target:GetTable().axResetRequestBy = client
+
+        net.Start("ax.character.namereset")
+        net.Send(target)
+
+        target:Notify("An admin has requested you to reset your character's name.", NOTIFY_HINT)
+        client:Notify("You have requested " .. target:Nick() .. " to reset their character's name.", NOTIFY_HINT)
+    end
+})
+
+ax.command:Register("CharResetDescription", {
+    Description = "Ask a user to reset their character's description",
+    AdminOnly = true,
+    Arguments = {
+        {
+            Type = ax.types.player,
+            ErrorMsg = "You must provide a valid player to reset the name for!"
+        }
+    },
+    Callback = function(info, client, arguments)
+        local target = arguments[1]
+
+        local character = target:GetCharacter()
+        if ( !character ) then
+            client:Notify("The targeted player does not have a character!")
+            return
+        end
+
+        target:GetTable().axResetRequestBy = client
+
+        net.Start("ax.character.descreset")
+        net.Send(target)
+
+        target:Notify("An admin has requested you to reset your character's description.", NOTIFY_HINT)
+        client:Notify("You have requested " .. target:Nick() .. " to reset their character's description.", NOTIFY_HINT)
+    end
+})
