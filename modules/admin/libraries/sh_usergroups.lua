@@ -117,69 +117,69 @@ function MODULE:DeleteUsergroup(name, admin)
     return true
 end
 
---- Sets a player's usergroup with optional duration
--- @param player Player - Target player
--- @param groupName string - Group name
--- @param duration number - Duration in minutes (0 = permanent)
--- @param reason string - Reason for change
--- @param admin Player - Admin who made the change
-function MODULE:SetPlayerUsergroup(player, groupName, duration, reason, admin)
-    if (!SERVER) then return end
+if ( SERVER ) then
+    --- Sets a player's usergroup with optional duration
+    -- @param player Player - Target player
+    -- @param groupName string - Group name
+    -- @param duration number - Duration in minutes (0 = permanent)
+    -- @param reason string - Reason for change
+    -- @param admin Player - Admin who made the change
+    function MODULE:SetPlayerUsergroup(player, groupName, duration, reason, admin)
+        local oldGroup = player:GetUserGroup()
+        local steamID = player:SteamID64()
 
-    local oldGroup = player:GetUserGroup()
-    local steamID = player:SteamID64()
+        -- Clear any existing temp usergroup
+        if (self.TempUsergroups[steamID]) then
+            timer.Remove("TempUsergroup_" .. steamID)
+            self.TempUsergroups[steamID] = nil
+        end
 
-    -- Clear any existing temp usergroup
-    if (self.TempUsergroups[steamID]) then
-        timer.Remove("TempUsergroup_" .. steamID)
-        self.TempUsergroups[steamID] = nil
-    end
+        -- Set the usergroup
+        player:SetUserGroup(groupName)
 
-    -- Set the usergroup
-    player:SetUserGroup(groupName)
-
-    -- Store permanent usergroup change
-    self.PlayerUsergroups[steamID] = {
-        group = groupName,
-        setBy = IsValid(admin) and admin:SteamID64() or "Console",
-        setByName = IsValid(admin) and admin:SteamName() or "Console",
-        reason = reason or "No reason provided",
-        timestamp = os.time()
-    }
-
-    -- Handle temporary usergroup
-    if (duration and duration > 0) then
-        self.TempUsergroups[steamID] = {
-            originalGroup = oldGroup,
-            tempGroup = groupName,
-            expires = os.time() + (duration * 60),
-            reason = reason,
-            setBy = IsValid(admin) and admin:SteamID64() or "Console"
+        -- Store permanent usergroup change
+        self.PlayerUsergroups[steamID] = {
+            group = groupName,
+            setBy = IsValid(admin) and admin:SteamID64() or "Console",
+            setByName = IsValid(admin) and admin:SteamName() or "Console",
+            reason = reason or "No reason provided",
+            timestamp = os.time()
         }
 
-        -- Create timer to revert
-        timer.Create("TempUsergroup_" .. steamID, duration * 60, 1, function()
-            if (IsValid(player)) then
-                player:SetUserGroup(oldGroup)
-                self:LogAction(nil, "temp usergroup expired", player, "Reverted from " .. groupName .. " to " .. oldGroup)
-                ax.notification:Send(player, "Your temporary usergroup has expired. Reverted to " .. oldGroup)
-            end
-            self.TempUsergroups[steamID] = nil
-        end)
+        -- Handle temporary usergroup
+        if (duration and duration > 0) then
+            self.TempUsergroups[steamID] = {
+                originalGroup = oldGroup,
+                tempGroup = groupName,
+                expires = os.time() + (duration * 60),
+                reason = reason,
+                setBy = IsValid(admin) and admin:SteamID64() or "Console"
+            }
+
+            -- Create timer to revert
+            timer.Create("TempUsergroup_" .. steamID, duration * 60, 1, function()
+                if (IsValid(player)) then
+                    player:SetUserGroup(oldGroup)
+                    self:LogAction(nil, "temp usergroup expired", player, "Reverted from " .. groupName .. " to " .. oldGroup)
+                    ax.notification:Send(player, "Your temporary usergroup has expired. Reverted to " .. oldGroup)
+                end
+                self.TempUsergroups[steamID] = nil
+            end)
+        end
+
+        -- Signal CAMI
+        CAMI.SignalUserGroupChanged(player, oldGroup, groupName, "Parallax")
+
+        self:SaveData()
+        self:LogAction(admin, "set usergroup", player, "Changed from " .. oldGroup .. " to " .. groupName .. " - " .. reason, duration)
+
+        -- Broadcast usergroup update
+        net.Start("ax.admin.group.update")
+            net.WriteString(steamID)
+            net.WriteString(groupName)
+            net.WriteTable(self.Groups)
+        net.Broadcast()
     end
-
-    -- Signal CAMI
-    CAMI.SignalUserGroupChanged(player, oldGroup, groupName, "Parallax")
-
-    self:SaveData()
-    self:LogAction(admin, "set usergroup", player, "Changed from " .. oldGroup .. " to " .. groupName .. " - " .. reason, duration)
-
-    -- Broadcast usergroup update
-    net.Start("ax.admin.group.update")
-        net.WriteString(steamID)
-        net.WriteString(groupName)
-        net.WriteTable(self.Groups)
-    net.Broadcast()
 end
 
 --- Checks if an admin can assign a specific usergroup
