@@ -481,7 +481,7 @@ local function DrawHealth()
     end
 end
 
-local function DrawTargetInfo(target, alpha, is3D2D)
+function GM:DrawTargetInfo(target, alpha, is3D2D)
     local client = ax.client
     if ( is3D2D and target:IsPlayer() ) then
         local targetPos = target:EyePos() + Vector(0, 0, 10)
@@ -492,8 +492,6 @@ local function DrawTargetInfo(target, alpha, is3D2D)
         cam.Start3D2D(targetPos, Angle(0, client:EyeAngles().y + 270, 90), 0.02 + (distToSqr / 1024 ^ 2))
             draw.SimpleTextOutlined(name, "ax.huge.bold", 0, 0, ColorAlpha(teamColor, alpha), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 4, Color(0, 0, 0, alpha))
         cam.End3D2D()
-    else
-        hook.Run("DrawTargetInfo", target, alpha, is3D2D)
     end
 end
 
@@ -580,7 +578,7 @@ local function DrawTargetInfos(is3D2D)
         targetAlpha[index] = alpha
 
         if ( alpha > 0 ) then
-            DrawTargetInfo(v, alpha, is3D2D)
+            hook.Run("DrawTargetInfo", v, alpha, is3D2D)
         end
     end
 
