@@ -39,11 +39,8 @@ function ax.character:RegisterVariable(key, data)
                     self:SetVariable(character:GetID(), key, value)
                 end
 
-                local field = data.Field
-                if ( field ) then
-                    ax.database:RegisterVar("ax_characters", key, data.Default or nil)
-                    self.fields[key] = field
-                end
+                local field = data.Field or key
+                ax.database:RegisterVar("ax_characters", field, data.Default or nil)
             end
         end
     else
@@ -58,11 +55,8 @@ function ax.character:RegisterVariable(key, data)
                 self:SetVariable(character:GetID(), key, value)
             end
 
-            local field = data.Field
-            if ( field ) then
-                ax.database:RegisterVar("ax_characters", key, data.Default or nil)
-                self.fields[key] = field
-            end
+            local field = data.Field or key
+            ax.database:RegisterVar("ax_characters", field, data.Default or nil)
         end
     end
 
