@@ -640,9 +640,9 @@ ax.command:Register("PlySetGroup", {
 
         local oldGroup = target:GetUserGroup()
         MODULE:SetPlayerUsergroup(target, groupName, duration, reason, client)
-        
+
         local durationStr = duration > 0 and " for " .. duration .. " minutes" or " permanently"
-        ax.notification:Send(nil, client:SteamName() .. " set " .. target:SteamName() .. "'s usergroup to " .. groupName .. durationStr .. ". Reason: " .. reason)
+        ax.notification:Send(nil, client:SteamName() .. " set " .. target:SteamName() .. "'s usergroup from '" .. oldGroup .. "' to '" .. groupName .. "'" .. durationStr .. ". Reason: " .. reason)
     end
 })
 
@@ -682,7 +682,7 @@ ax.command:Register("PlyRemoveGroup", {
 
         local oldGroup = target:GetUserGroup()
         MODULE:SetPlayerUsergroup(target, "user", 0, reason, client)
-        
+
         ax.notification:Send(nil, client:SteamName() .. " removed " .. target:SteamName() .. "'s usergroup (was " .. oldGroup .. "). Reason: " .. reason)
     end
 })

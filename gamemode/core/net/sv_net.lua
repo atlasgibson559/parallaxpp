@@ -14,6 +14,7 @@
 -----------------------------------------------------------------------------]]--
 
 util.AddNetworkString("ax.character.sync")
+util.AddNetworkString("ax.character.sync.all")
 
 util.AddNetworkString("ax.character.load")
 net.Receive("ax.character.load", function(len, client)
@@ -92,6 +93,62 @@ net.Receive("ax.character.create", function(len, client)
 
         hook.Run("PostPlayerCreatedCharacter", client, result, payload)
     end)
+end)
+
+util.AddNetworkString("ax.character.namereset")
+net.Receive("ax.character.namereset", function(len, client)
+    local character = client:GetCharacter()
+    if ( !character ) then return end
+
+    local newName = net.ReadString()
+    if ( !isstring(newName) or newName == "" ) then return end
+
+    local requestee = client:GetTable().axResetRequestBy
+
+    local bResult, message = ax.character.variables.name:OnValidate(nil, { name = newName, faction = character:GetFaction() }, client)
+    if ( bResult == false ) then
+        if ( IsValid(requestee) and requestee:IsAdmin() ) then
+            requestee:Notify(client:PrettyPrint() .. " has failed to reset their name. (" .. message .. ")")
+        end
+
+        return
+    end
+
+    character:SetName(newName)
+
+    if ( IsValid(requestee) and requestee:IsAdmin() ) then
+        requestee:Notify(client:PrettyPrint() .. " has reset their name.")
+    end
+
+    hook.Run("PostPlayerNameReset", client, newName)
+end)
+
+util.AddNetworkString("ax.character.descreset")
+net.Receive("ax.character.descreset", function(len, client)
+    local character = client:GetCharacter()
+    if ( !character ) then return end
+
+    local newDesc = net.ReadString()
+    if ( !isstring(newDesc) or newDesc == "" ) then return end
+
+    local requestee = client:GetTable().axResetRequestBy
+
+    local bResult, message = ax.character.variables.description:OnValidate(nil, { description = newDesc }, client)
+    if ( bResult == false ) then
+        if ( IsValid(requestee) and requestee:IsAdmin() ) then
+            requestee:Notify(client:PrettyPrint() .. " has failed to reset their description. (" .. message .. ")")
+        end
+
+        return
+    end
+
+    character:SetDescription(newDesc)
+
+    if ( IsValid(requestee) and requestee:IsAdmin() ) then
+        requestee:Notify(client:PrettyPrint() .. " has reset their description.")
+    end
+
+    hook.Run("PostPlayerDescriptionReset", client, newDesc)
 end)
 
 --[[-----------------------------------------------------------------------------
@@ -240,7 +297,6 @@ end)
 --[[-----------------------------------------------------------------------------
     Miscellaneous Networking
 -----------------------------------------------------------------------------]]--
-
 util.AddNetworkString("ax.caption")
 util.AddNetworkString("ax.character.cache")
 util.AddNetworkString("ax.character.cache.all")
