@@ -12,7 +12,7 @@
 ax.derma = ax.derma or {}
 ax.derma.open = ax.derma.open or {}
 
-local matBlurScreen = Material("pp/blurscreen")
+local matBlurScreen = ax.util:GetMaterial("pp/blurscreen")
 
 function Derma_DrawBackgroundBlur(panel, starttime)
     local fraction = 1
