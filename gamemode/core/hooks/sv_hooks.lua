@@ -171,6 +171,8 @@ function GM:PlayerLoadout(client)
 
     client:SetupHands()
 
+    local character = client:GetCharacter()
+
     -- Restore the character's skin
     client:SetSkin(character:GetSkin() or 0)
 
