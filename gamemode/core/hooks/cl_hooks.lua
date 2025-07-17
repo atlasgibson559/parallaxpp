@@ -516,7 +516,7 @@ local function UpdateNearbyEntities()
 
     for i = 1, #nearbyEnts do
         local ent = nearbyEnts[i]
-        if ( !IsValid(ent) or ent == ax.client ) then continue end
+        if ( ent == ax.client ) then continue end
 
         -- Pre-filter entities that we might want to show target info for
         if ( hook.Run("ShouldDrawTargetInfo", ent, false) != false or
